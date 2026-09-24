@@ -1,0 +1,17 @@
+{
+  "name": "합성 패널 (simulate_panel)",
+  "provider": "core.adapters.synthetic",
+  "license": "synthetic",
+  "url": null,
+  "query": {
+    "n_units": 80,
+    "n_treated": 30,
+    "start": 2012,
+    "end": 2019,
+    "treat_time": 2016,
+    "effect": -5.0,
+    "seed": 42
+  },
+  "rows": 640,
+  "fetched_at": "2026-09-23T17:47:09+00:00"
+}

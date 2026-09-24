@@ -1,0 +1,113 @@
+[
+  {
+    "method": "event_study",
+    "outcome": "night_ed_rate",
+    "estimate": -5.032702345732548,
+    "se": 0.5471286269132056,
+    "ci_low": -6.105054749393283,
+    "ci_high": -3.9603499420718125,
+    "p_value": 3.6335376481325645e-20,
+    "n_obs": 640,
+    "n_clusters": 80,
+    "assumptions_checked": {
+      "parallel_pretrends": {
+        "test": "joint Wald (chi2)",
+        "stat": 0.6252747974975548,
+        "df": 3,
+        "p_value": 0.8906226863229644,
+        "passed": true
+      },
+      "pre_periods": 4,
+      "n_adoption_cohorts": 1,
+      "placebo_time": {
+        "fake_treat_time": 2014,
+        "estimate": -0.32469326228919176,
+        "p_value": 0.5245409054480956,
+        "passed": true
+      }
+    },
+    "warnings": [],
+    "triggers": [],
+    "verdict": "identified",
+    "extra": {
+      "coefs": [
+        {
+          "rel_time": -4,
+          "coef": 0.44969282466849825,
+          "se": 0.6116580595373967,
+          "ci_low": -0.7677820885266659,
+          "ci_high": 1.6671677378636622
+        },
+        {
+          "rel_time": -3,
+          "coef": 0.17895423334833896,
+          "se": 0.6467334612792702,
+          "ci_low": -1.1083365206178435,
+          "ci_high": 1.4662449873145214
+        },
+        {
+          "rel_time": -2,
+          "coef": -0.020739466561547057,
+          "se": 0.559734439210234,
+          "ci_low": -1.1348629987606007,
+          "ci_high": 1.0933840656375067
+        },
+        {
+          "rel_time": -1,
+          "coef": 0.0,
+          "se": 0.0,
+          "ci_low": 0.0,
+          "ci_high": 0.0
+        },
+        {
+          "rel_time": 0,
+          "coef": -4.438542547221294,
+          "se": 0.6841551135912444,
+          "ci_low": -5.800319236899004,
+          "ci_high": -3.0767658575435837
+        },
+        {
+          "rel_time": 1,
+          "coef": -5.4012082194069535,
+          "se": 0.6881833855255733,
+          "ci_low": -6.771002983803212,
+          "ci_high": -4.031413455010695
+        },
+        {
+          "rel_time": 2,
+          "coef": -5.031560056431842,
+          "se": 0.6884702945405902,
+          "ci_low": -6.401925898937359,
+          "ci_high": -3.6611942139263256
+        },
+        {
+          "rel_time": 3,
+          "coef": -5.259498559870104,
+          "se": 0.6475211640626454,
+          "ci_low": -6.548357197007054,
+          "ci_high": -3.9706399227331532
+        }
+      ]
+    },
+    "identified": true
+  },
+  {
+    "method": "did_twfe",
+    "outcome": "night_ed_rate",
+    "estimate": -5.1846792435963724,
+    "se": 0.3875863716004593,
+    "ci_low": -5.95615061843084,
+    "ci_high": -4.413207868761905,
+    "p_value": 0.0,
+    "n_obs": 640,
+    "n_clusters": 80,
+    "assumptions_checked": {
+      "n_adoption_cohorts": 1
+    },
+    "warnings": [],
+    "triggers": [],
+    "verdict": "identified",
+    "extra": {},
+    "identified": true
+  }
+]

@@ -1,0 +1,73 @@
+# ⚠️ 합성(SYNTHETIC) 데이터 예제 — 실제 정책 효과 아님. 파이프라인 시연/템플릿용.
+case_id: _example_night_clinic
+title: "[예제·합성데이터] 달빛어린이병원 지정이 소아 야간 경증 응급실 방문에 미친 효과"
+question: >
+  달빛어린이병원(야간·휴일 소아 경증 진료기관)이 지정된 시군구에서,
+  지정되지 않은 시군구 대비 소아 야간 경증 응급실 방문율이 감소했는가?
+synthetic_data: true
+
+unit: {name: 시군구, id_col: region_id}
+time: {col: year, freq: year, start: 2012, end: 2019}   # COVID-19(2020~) 교란을 피하려 2019 까지
+
+treatment:
+  definition: "2016년에 달빛어린이병원이 1곳 이상 지정된 시군구 (예제 단순화: 동시 도입)"
+  group_col: treated
+  treat_time: 2016
+  # 실데이터는 지정 시점이 제각각(시차 도입) → first_treat_col 사용 + staggered 경고가 뜬다
+control:
+  definition: "2019년까지 지정 이력이 없는 시군구"
+  rationale: "처치 지역과 도입 전 방문율 추세가 평행하다고 가정 (event study 사전계수로 점검)"
+
+outcomes:
+  - name: 소아 야간 경증 응급실 방문율
+    col: night_ed_rate
+    definition: "0~14세 인구 1,000명당 18시~익일 09시 KTAS 4~5등급 응급실 방문 건수 (연간)"
+    unit: "건/천명"
+    primary: true
+    expected_direction: decrease
+
+estimator:
+  method: event_study
+  cluster_col: region_id
+  ref_period: -1
+  window: [-4, 3]
+  alpha: 0.05
+
+assumptions:
+  - name: 평행추세
+    description: "정책이 없었다면 처치·통제 지역의 방문율 추세는 같았을 것"
+    check: pretrend_test
+  - name: 도입시점 외생성
+    description: "지정 시점이 방문율 급증 등 결과변수 변화에 반응해 정해지지 않음"
+    check: placebo_time
+  - name: 파급효과 없음(SUTVA)
+    description: "인접 통제 시군구 주민이 처치 지역 병원을 이용해 통제군 방문율이 줄지 않음"
+    check: manual
+
+refutations:
+  - kind: placebo_time
+    params: {shift: 2}
+
+abstention:
+  - when: pretrend_rejected
+    verdict: not_identified
+    note: "사전추세가 다르면 DiD 추정치를 정책 효과로 보고하지 않는다"
+  - when: staggered_adoption
+    verdict: not_identified
+    note: "TWFE 대신 Callaway-Sant'Anna 로 재추정 전까지 보류"
+  - when: placebo_significant
+    verdict: conditional
+  - when: few_clusters
+    verdict: conditional
+  - when: ci_crosses_zero
+    verdict: conditional
+    note: "효과 없음이 아니라 '판별 불가'로 보고"
+
+thresholds: {pretrend_alpha: 0.10, min_clusters: 20, min_pre_periods: 3}
+
+data_sources:
+  - name: "합성 시군구 패널 (simulate_panel, seed=42, 참효과 -5.0)"
+    provider: core.adapters.synthetic
+    license: synthetic
+    adapter: synthetic
+    notes: "실데이터 후보는 data/README.md 참고"

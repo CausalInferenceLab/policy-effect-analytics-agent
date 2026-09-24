@@ -1,0 +1,30 @@
+name: 버그 리포트
+description: 코드·CI·앱이 예상대로 동작하지 않을 때
+title: "[버그] "
+labels: ["bug"]
+body:
+  - type: input
+    id: where
+    attributes:
+      label: 위치
+      placeholder: core/estimators, app/streamlit_app.py, cases/group3-.../estimate.py
+    validations:
+      required: true
+  - type: textarea
+    id: repro
+    attributes:
+      label: 재현 방법
+      description: 실행한 명령어를 그대로 붙여 주세요
+      render: bash
+    validations:
+      required: true
+  - type: textarea
+    id: error
+    attributes:
+      label: 에러 메시지 / 기대 동작
+      render: text
+  - type: input
+    id: env
+    attributes:
+      label: 환경
+      placeholder: macOS 14 / Python 3.11 / uv
