@@ -1,4 +1,6 @@
 import copy
+import os
+import shutil
 import subprocess
 import sys
 from pathlib import Path
@@ -44,7 +46,11 @@ def test_invalid_plans_rejected(mutate):
 
 
 def test_example_case_runs_end_to_end(tmp_path):
+    # 추적 중인 예제 산출물을 건드리지 않도록 임시 복사본에서 실행
+    case = tmp_path / "cases" / CASE.name
+    shutil.copytree(CASE, case)
+    env = {**os.environ, "PYTHONPATH": str(ROOT)}
     for script in ("fetch.py", "estimate.py"):
-        subprocess.run([sys.executable, str(CASE / script)], check=True, cwd=ROOT)
-    report = (CASE / "report.md").read_text(encoding="utf-8")
-    assert "합성(synthetic)" in report and (CASE / "figures" / "event_study.png").exists()
+        subprocess.run([sys.executable, str(case / script)], check=True, cwd=case, env=env)
+    report = (case / "report.md").read_text(encoding="utf-8")
+    assert "합성(synthetic)" in report and (case / "figures" / "event_study.png").exists()

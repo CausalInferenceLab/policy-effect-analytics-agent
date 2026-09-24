@@ -1,4 +1,4 @@
-.PHONY: install check lint test format app activity
+.PHONY: install check lint test format app activity flow
 
 PY ?= python
 
@@ -18,6 +18,11 @@ format:
 
 app:
 	streamlit run app/streamlit_app.py
+
+# Run the 6-step agent flow on a case (demo: skips the plan pre-registration gate).
+CASE ?= cases/_example_night_clinic
+flow:
+	$(PY) -m core.agent $(CASE) --allow-uncommitted
 
 activity:
 	$(PY) scripts/weekly_activity.py --days 7

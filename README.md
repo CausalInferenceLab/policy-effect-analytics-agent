@@ -24,7 +24,7 @@ cases/
   _example_*/         참고용 예시 케이스
   <조-주제>/          조별 케이스 (plan.yaml, fetch.py, estimate.py, report.md, figures/)
 app/streamlit_app.py  케이스 브라우저 (API 키 없이 실행)
-docs/ops/             GitHub 온보딩, 모니터링 가이드
+docs/ops/             조별 운영 가이드, GitHub 온보딩, 모니터링
 docs/strategy/        문제 정의·전략 문서
 scripts/              운영 스크립트 (weekly_activity.py 등)
 tests/                테스트
@@ -60,7 +60,7 @@ cp -r cases/_template cases/group3-youth-rent   # 폴더명: <조>-<주제>, 소
 3. **추정** — `estimate.py`: `core.estimators`로 효과 추정 + 반증(placebo 등) → `figures/*.png`
 4. **리포트** — `report.md`: 결과·한계·정책 시사점. `make app`에서 바로 보입니다.
 
-자세한 절차: [`cases/_template/README.md`](cases/_template/README.md), 협업 규칙: [`CONTRIBUTING.md`](CONTRIBUTING.md), GitHub가 처음이라면: [`docs/ops/github-onboarding.md`](docs/ops/github-onboarding.md)
+자세한 절차: [`cases/_template/README.md`](cases/_template/README.md), 협업 규칙: [`CONTRIBUTING.md`](CONTRIBUTING.md), GitHub가 처음이라면: [`docs/ops/github-onboarding.md`](docs/ops/github-onboarding.md), 조별 운영: [`docs/ops/group-guide.md`](docs/ops/group-guide.md)
 
 ## 7주 로드맵
 
@@ -73,6 +73,25 @@ cp -r cases/_template cases/group3-youth-rent   # 폴더명: <조>-<주제>, 소
 | 5 | 강건성·반증 + 에이전트화 | placebo/민감도, LangGraph 노드 연결 |
 | 6 | 리포트·플랫폼 | `report.md`, Streamlit 반영 |
 | 7 | 발표·회고·공개 정리 | 최종 PR 머지, 릴리스 태그 |
+
+## Flow — 6단계 에이전트 흐름
+
+`core.agent`가 케이스 하나를 아래 6단계로 실행하고 `cases/<케이스>/flow_log.json`에 단계별 결과를 남깁니다. 앱의 **Flow** 페이지(`make app` → 사이드바 Flow)에서 실행하거나 저장된 로그를 볼 수 있습니다.
+
+| 단계 | 하는 일 | 주차 |
+|---|---|---|
+| ① 문제 정의 | `plan.yaml` 검증 + 사전 등록(커밋) 확인 — 추정 전에 확정 | W3 |
+| ② 데이터 수집 | 공공데이터 수집·출처/라이선스 기록 | W2 |
+| ③ 지표 구조화 | 패널 구성·품질 점검 | W3 |
+| ④ 효과 추정 | DiD/이벤트 스터디/ITS + 반증 → 식별됨·조건부·식별 불가 | W4–5 |
+| ⑤ 과잉해석 가드 | 결론 보류 규칙 + 인과 단정 표현 검사 | W6 |
+| ⑥ 리포트 | `report.md`·그림·재현 기록 | W7 |
+
+```bash
+make flow CASE=cases/_example_night_clinic   # = python -m core.agent <케이스> --allow-uncommitted
+```
+
+`--allow-uncommitted`는 데모용입니다. 실제 분석은 `plan.yaml`을 먼저 커밋한 뒤 플래그 없이 실행하세요. LLM 서술은 `.env`에 키를 넣고 `--llm`으로 켭니다(`uv pip install -e ".[agent]"`).
 
 ## 라이선스
 
