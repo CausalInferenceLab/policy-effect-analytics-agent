@@ -1,0 +1,80 @@
+name: 케이스 제안
+description: 분석할 정책/사회 문제를 제안합니다 (조 주제 후보)
+title: "[케이스] "
+labels: ["case-proposal"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        결과를 보기 전에 질문을 먼저 적는 것이 목표입니다. 모르는 칸은 "미정"으로 두세요.
+  - type: input
+    id: group
+    attributes:
+      label: 조
+      placeholder: group3
+    validations:
+      required: true
+  - type: textarea
+    id: question
+    attributes:
+      label: 질문
+      description: 어떤 정책이 어떤 결과를 바꿨는지, 한 문장으로
+      placeholder: 2022년 청년월세 특별지원이 수혜 지역 청년 1인가구의 전출률을 낮췄는가?
+    validations:
+      required: true
+  - type: textarea
+    id: treatment
+    attributes:
+      label: 처치 (정책·시점·대상)
+      placeholder: 시행일, 적용 지역/집단, 처치 강도
+    validations:
+      required: true
+  - type: textarea
+    id: control
+    attributes:
+      label: 대조군
+      description: 정책이 없었다면 어땠을지 보여줄 비교 대상
+      placeholder: 미시행 지역, 연령 경계 바로 위 집단 등
+    validations:
+      required: true
+  - type: textarea
+    id: outcomes
+    attributes:
+      label: 결과 지표
+      placeholder: 월별 시군구 전출률 (KOSIS 인구이동통계)
+  - type: textarea
+    id: data
+    attributes:
+      label: 데이터 출처
+      description: 기관/데이터셋 이름과 URL, 기간·단위
+    validations:
+      required: true
+  - type: dropdown
+    id: license
+    attributes:
+      label: 데이터 라이선스
+      options:
+        - 공공누리 제1유형 (출처표시)
+        - 공공누리 제2유형 (출처표시+상업적 이용금지)
+        - 공공누리 제3유형 (출처표시+변경금지)
+        - 공공누리 제4유형 (출처표시+상업적 이용금지+변경금지)
+        - KOSIS 이용약관
+        - 기타 / 확인 필요
+    validations:
+      required: true
+  - type: dropdown
+    id: estimator
+    attributes:
+      label: 예상 추정 방법
+      options:
+        - 이중차분(DiD)
+        - 이벤트 스터디
+        - 합성통제(Synthetic Control)
+        - 단절적 시계열(ITS)
+        - 회귀불연속(RD)
+        - 모름 / 멘토링 필요
+  - type: textarea
+    id: risks
+    attributes:
+      label: 우려되는 가정 위반·중단 조건
+      placeholder: 동시 시행 정책, 사전 추세 불일치, 데이터 단절 등

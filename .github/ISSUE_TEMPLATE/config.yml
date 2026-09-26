@@ -1,0 +1,8 @@
+blank_issues_enabled: true
+contact_links:
+  - name: GitHub 사용법이 막혔어요
+    url: https://github.com/CausalInferenceLab/policy-effect-analytics-agent/blob/main/docs/ops/github-onboarding.md
+    about: 초대 수락 → clone → 브랜치 → PR 단계별 가이드
+  - name: 기여 규칙
+    url: https://github.com/CausalInferenceLab/policy-effect-analytics-agent/blob/main/CONTRIBUTING.md
+    about: 브랜치·커밋·리뷰 규칙
