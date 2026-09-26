@@ -1,8 +1,8 @@
 {
   "case_id": "t3-land-permit-2025",
-  "started_at": "2026-09-26T07:07:15+00:00",
-  "finished_at": "2026-09-26T07:07:20+00:00",
-  "git_sha": "0e9570f1f745fa79b42366e581270e928bb1a41d",
+  "started_at": "2026-09-26T07:28:46+00:00",
+  "finished_at": "2026-09-26T07:28:52+00:00",
+  "git_sha": "3ccf0b76a74f39efc81fdcd9537e96c99efece83",
   "git_dirty": true,
   "plan_sha256": "8f7e7b2d06338470404f27bdcac6a6acf9784785e5851a6729ca6673b27a1ff2",
   "data_sha256": "c35f969dc154aa5732b6e05759185eb3cf246f9a3f9641c5182ab89214a43aa6",

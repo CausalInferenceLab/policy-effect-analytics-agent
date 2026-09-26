@@ -10,7 +10,7 @@ import json
 import re
 from dataclasses import dataclass, field
 
-from .catalog import Policy
+from .catalog import Policy, Topic
 
 
 @dataclass
@@ -68,3 +68,25 @@ def _llm_pick(text: str, cands: list[Match]) -> None:
             m.picked_by, m.reason = "llm", f"LLM: {ans.get('reason', '')} ({m.reason})"
             cands.insert(0, cands.pop(i))
             return
+
+
+@dataclass
+class TopicMatch:
+    topic: Topic
+    score: float
+    hits: list[str]
+
+
+def match_topic(
+    text: str, topics: list[Topic], policies: list[Policy], top_k: int = 3
+) -> list[TopicMatch]:
+    """주제 키워드 + 주제에 속한 정책 키워드로 점수. 소셜 신호는 주제까지만 정한다."""
+    by_id = {p.id: p for p in policies}
+    t = _norm(text)
+    out = []
+    for tp in topics:
+        kws = dict.fromkeys(tp.keywords + [k for pid in tp.policies for k in by_id[pid].keywords])
+        hits = [k for k in kws if _norm(k) in t]
+        if hits:
+            out.append(TopicMatch(tp, float(sum(min(len(_norm(k)), 6) for k in hits)), hits))
+    return sorted(out, key=lambda m: m.score, reverse=True)[:top_k]

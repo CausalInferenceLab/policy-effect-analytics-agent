@@ -1,0 +1,50 @@
+name: pages
+
+# main 에 반영되면 정적 대시보드(_site/)를 만들어 GitHub Pages 로 배포한다.
+# 최초 1회: Settings → Pages → Build and deployment → Source: "GitHub Actions"
+# 선택: Settings → Secrets → Actions 에 LAW_OC(법제처 OC) 를 넣으면 조례 목록을 자동 수집한다.
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+  schedule:
+    - cron: "0 18 * * 0"   # 매주 월요일 03:00 KST 데이터 갱신
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      LAW_OC: ${{ secrets.LAW_OC }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+      - run: pip install -e .
+      - name: Refresh ordinance snapshots (법제처, optional)
+        if: ${{ env.LAW_OC != '' }}
+        run: python scripts/refresh_law_snapshots.py
+      - run: python site/build.py
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

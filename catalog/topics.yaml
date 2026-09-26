@@ -1,0 +1,98 @@
+# 주제(topic) 카탈로그 — 소셜 신호는 "어느 주제를 볼지"까지만 정합니다.
+#
+# 출발 키트 05 "주제 고르는 법"의 B 방식:
+#   소셜 신호 → 주제 지정 → 그 주제의 정책을 전부 모으기(법령·조례·고시) → 3개 관문 → 계획 먼저 → 효과 추정
+#   소셜 신호는 분석 대상을 고르는 데 쓰지 않고, ① 주제 좁히기 ② 선반영(미리 반응) 점검 ③ 관심도 자체를 결과로 — 에만 씁니다.
+#
+# collect: 정책 목록을 모으는 방법
+#   law_ordinance : 법제처 자치법규 API로 조례 제정일·지자체를 자동 수집 (query 사용)
+#   notice        : 부처·지자체 고시문에서 지정·해제 이력을 수집 (에이전트 과제)
+#   curated       : 카탈로그에 적은 정책만 (전국 단위 등)
+
+version: 1
+topics:
+  - id: housing-regulation
+    name: 부동산 거래 규제
+    question: 토지거래허가구역·규제지역 지정과 해제는 거래와 가격을 바꿨나?
+    keywords: [부동산, 집값, 아파트, 토지거래허가, 토허제, 토허구역, 토허, 규제지역, 투기과열, 조정대상, 강남3구, 용산, 잠삼대청, 풍선효과, 실거래가, 거래량]
+    policies: [T3]
+    collect:
+      method: notice
+      note: "국토부·서울시 고시에서 지정·해제 이력 전체(2017~)를 수집 → 지역×시점 처치표. 정리된 표가 없어 에이전트에게 맡기기 좋은 일"
+    events:
+      - {date: 2020-06-23, what: "잠실·삼성·대치·청담 토지거래허가구역 지정"}
+      - {date: 2025-02-12, what: "잠실·삼성·대치·청담 지정 해제 (발표·시행 월 기준)"}
+      - {date: 2025-03-24, what: "강남·서초·송파·용산 전역 지정", source: "https://www.ajunews.com/view/20250324064239711"}
+      - {date: 2025-10-20, what: "서울 전역·경기 12곳 지정 (10·15 대책)", source: "https://www.korea.kr/news/policyNewsView.do?newsId=148950973"}
+    gates:
+      when: {status: pass, note: "고시·보도자료로 날짜 확인"}
+      who: {status: pass, note: "지정 구 vs 미지정 구"}
+      what: {status: key, note: "국토부 실거래가 API — 키 발급 전이라 지금은 시뮬레이션"}
+
+  - id: local-currency
+    name: 지역화폐 (지역사랑상품권)
+    question: 지역화폐를 일찍 도입한 지자체의 지역 소비·소상공인 매출이 달라졌나?
+    keywords: [지역화폐, 지역사랑상품권, 지역상품권, 상품권, 지역경제, 골목상권, 소상공인]
+    policies: []
+    collect:
+      method: law_ordinance
+      query: [지역사랑상품권, 지역화폐]
+      note: "법제처 자치법규 API로 지자체별 조례·시행일자 자동 수집 (무료, 신청 즉시 승인). 발행 지자체가 2018년 66곳 → 2019년 172곳으로 늘어 시차 도입 비교가 가능. 검색 결과는 최신 개정 기준이라 '제정일'은 연혁으로 확인"
+    gates:
+      when: {status: pass, note: "조례 제정일을 법제처 API로 자동 수집"}
+      who: {status: pass, note: "일찍 도입 vs 늦게 도입 지자체 (시차 도입)"}
+      what: {status: key, note: "조폐공사 결제정보 API·상권 매출 — 키 필요"}
+    pitfalls: ["옆 지자체 소비를 끌어온다는 지적 → 인접 지자체 대조군 오염", "조례 제정일과 실제 발행일이 다름", "이름이 같아도 할인율·규모가 다름"]
+
+  - id: traffic-safety
+    name: 교통안전
+    question: 속도 하향·처벌 강화 같은 교통안전 정책은 사고를 줄였나?
+    keywords: [교통사고, 교통안전, 안전속도, "5030", 제한속도, 민식이법, 스쿨존, 어린이보호구역, 윤창호법, 음주운전, 보행자]
+    policies: [T4, T5, T6]
+    collect:
+      method: curated
+      note: "지자체별 조기 시행일(5030)은 보도자료·고시로 추가 수집"
+    gates:
+      when: {status: pass, note: "법 시행일 확정"}
+      who: {status: check, note: "5030은 조기 도입 지자체로 구분 가능, 민식이법·윤창호법은 전국 동시(관문 2 약함)"}
+      what: {status: key, note: "TAAS·도로교통공단 API — 키 필요"}
+
+  - id: air-quality
+    name: 대기질
+    question: 운행제한·계절관리제는 미세먼지와 이산화질소를 줄였나?
+    keywords: [미세먼지, 초미세먼지, 대기질, 공기, 녹색교통, 5등급, 운행제한, 계절관리제, NO2, 이산화질소, PM2.5]
+    policies: [T1, T8]
+    collect:
+      method: curated
+      note: "시행일만 보고 시행(오염도와 무관) → 비교가 깔끔"
+    gates:
+      when: {status: pass, note: "2019.12 시작, 매년 12~3월"}
+      who: {status: check, note: "녹색교통: 사대문 안 측정소 소수(합성통제 필요). 계절관리제: 수도권 위주 → 비수도권 비교 가능한지 확인"}
+      what: {status: pass, note: "에어코리아 확정자료 파일 (API는 하루 500회 제한)"}
+
+  - id: retail-hours
+    name: 대형마트 의무휴업
+    question: 의무휴업일을 평일로 바꾼 자치구의 골목상권 매출이 달라졌나?
+    keywords: [대형마트, 의무휴업, 휴업일, 전통시장, 골목상권, 상권, 매출]
+    policies: [T2]
+    collect:
+      method: notice
+      note: "자치구별 전환 고시일 수집 (시차 도입)"
+    gates:
+      when: {status: check, note: "전환 자치구 목록·날짜를 고시로 구축해야 함"}
+      who: {status: pass, note: "전환 vs 미전환 자치구"}
+      what: {status: key, note: "서울 상권분석서비스 추정매출 — 키 필요"}
+
+  - id: birth-marriage
+    name: 출산·혼인 지원
+    question: 지자체 출산·혼인장려금은 출생과 혼인을 늘렸나?
+    keywords: [출산, 출생, 저출산, 출산장려금, 출산지원금, 혼인, 결혼장려금, 혼인장려금, 인구]
+    policies: [T7]
+    collect:
+      method: law_ordinance
+      query: [출산장려금, 혼인장려금]
+      note: "법제처 자치법규 API로 조례 제정일 수집 → 처치 데이터셋 구축이 과제의 절반"
+    gates:
+      when: {status: pass, note: "조례 제정일 자동 수집"}
+      who: {status: pass, note: "도입 vs 미도입 시군구"}
+      what: {status: key, note: "KOSIS 시군구 출생·혼인 — 키 필요"}
