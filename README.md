@@ -25,6 +25,7 @@ cases/
   <조-주제>/          조별 케이스 (plan.yaml, fetch.py, estimate.py, report.md, figures/)
 app/streamlit_app.py  케이스 브라우저 (API 키 없이 실행)
 docs/ops/             조별 운영 가이드, GitHub 온보딩, 모니터링
+catalog/              정책 × 데이터셋 카탈로그 (이슈 → 데이터 연결)
 docs/strategy/        문제 정의·전략 문서
 scripts/              운영 스크립트 (weekly_activity.py 등)
 tests/                테스트
@@ -73,6 +74,22 @@ cp -r cases/_template cases/group3-youth-rent   # 폴더명: <조>-<주제>, 소
 | 5 | 강건성·반증 + 에이전트화 | placebo/민감도, LangGraph 노드 연결 |
 | 6 | 리포트·플랫폼 | `report.md`, Streamlit 반영 |
 | 7 | 발표·회고·공개 정리 | 최종 PR 머지, 릴리스 태그 |
+
+## 이슈 → 데이터 → 효과
+
+소셜 반응(뉴스 제목·SNS 글) 한 건에서 출발해 정책을 찾고, 공공데이터를 추천하고, 효과 분석까지 잇습니다.
+
+1. **정책 식별**: `catalog/policies.yaml`(정책 × 데이터셋 카탈로그)에서 키워드로 찾습니다. LLM은 후보 중에서 고르는 보조 역할만 합니다.
+2. **데이터셋 추천**: 카탈로그에 검증해 둔 데이터셋과 공공데이터포털 실시간 검색 결과를 보여줍니다.
+3. **분석 설계**: 카탈로그의 설계(이중차분·합성통제·단절 시계열)로 정합니다. LLM이 고르지 않습니다.
+4. **효과 분석**: 사전 등록된 `plan.yaml`로 아래 Flow를 실행합니다.
+
+```bash
+make app        # 사이드바 '이슈 → 데이터 → 효과'
+python -c "from core.discovery import discover; r=discover('토허제 확대하고 집값 잡혔나'); print(r.top.name, r.next_step)"
+```
+
+샘플: [`cases/t3-land-permit-2025`](cases/t3-land-permit-2025/) (현재 시뮬레이션 데이터, API 키 발급 후 실데이터로 전환)
 
 ## Flow — 6단계 에이전트 흐름
 

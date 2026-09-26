@@ -41,6 +41,7 @@ NULL_EFFECT = [
 TRIGGER_KO = {
     "pretrend_rejected": "사전추세 차이(평행추세 가정 기각)",
     "few_clusters": "클러스터 수 부족(표준오차 과소추정 위험)",
+    "few_treated_clusters": "처치 단위 수 부족(무작위화 추론 사용)",
     "staggered_adoption": "시차 도입에서 TWFE 편향 위험",
     "placebo_significant": "가짜 도입시점 검정 유의",
     "ci_crosses_zero": "신뢰구간이 0을 포함",

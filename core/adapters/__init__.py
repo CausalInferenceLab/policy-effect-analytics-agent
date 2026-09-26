@@ -3,9 +3,15 @@
 from .base import BaseAdapter, MissingAPIKey, SourceMeta
 from .kosis import KosisAdapter
 from .local import LocalFileAdapter
+from .molit import MolitAptTradeAdapter
 from .synthetic import SyntheticAdapter, simulate_panel
 
-REGISTRY = {"kosis": KosisAdapter, "local": LocalFileAdapter, "synthetic": SyntheticAdapter}
+REGISTRY = {
+    "kosis": KosisAdapter,
+    "local": LocalFileAdapter,
+    "molit": MolitAptTradeAdapter,
+    "synthetic": SyntheticAdapter,
+}
 
 __all__ = [
     "BaseAdapter",
@@ -13,6 +19,7 @@ __all__ = [
     "MissingAPIKey",
     "KosisAdapter",
     "LocalFileAdapter",
+    "MolitAptTradeAdapter",
     "SyntheticAdapter",
     "simulate_panel",
     "REGISTRY",

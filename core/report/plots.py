@@ -37,7 +37,12 @@ def raw_trends(
     return _finish(ax, out)
 
 
-def event_study_plot(coefs: pd.DataFrame, out, ylabel: str = "Effect vs t=-1"):
+def event_study_plot(
+    coefs: pd.DataFrame, out, ylabel: str | None = None, ci_note: str = "cluster-robust"
+):
+    """ci_note: 시점별 신뢰구간의 계산 방식 (처치 단위가 적으면 참고용임을 표시)."""
+    ref = coefs.loc[coefs["se"].eq(0) & coefs["coef"].eq(0), "rel_time"]
+    ylabel = ylabel or f"Effect vs t={int(ref.iloc[0]) if len(ref) else -1}"
     fig, ax = plt.subplots(figsize=(7, 4))
     pre = coefs["rel_time"] < 0
     for mask, c in ((pre, CTRL), (~pre, TREAT)):
@@ -55,7 +60,7 @@ def event_study_plot(coefs: pd.DataFrame, out, ylabel: str = "Effect vs t=-1"):
     ax.set(
         xlabel="Periods relative to policy (endpoints binned)",
         ylabel=ylabel,
-        title="Event study (95% CI, cluster-robust)",
+        title=f"Event study (95% CI, {ci_note})",
     )
     return _finish(ax, out)
 

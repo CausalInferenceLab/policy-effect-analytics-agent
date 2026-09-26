@@ -36,6 +36,7 @@ Method = Literal["did", "event_study", "its"]
 AbstainTrigger = Literal[
     "pretrend_rejected",  # 사전추세 결합검정 p < pretrend_alpha
     "few_clusters",  # 클러스터 수 < min_clusters
+    "few_treated_clusters",  # 처치 단위 < 10 → 무작위화 추론으로 대체
     "staggered_adoption",  # 도입시점이 여러 개인데 TWFE 사용
     "placebo_significant",  # 가짜 도입시점 검정이 유의
     "ci_crosses_zero",  # 신뢰구간이 0을 포함 (효과 '없음'이 아니라 '불확실')

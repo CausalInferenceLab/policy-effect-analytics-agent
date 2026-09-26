@@ -1,0 +1,88 @@
+# 사전 등록 분석계획 — 데이터를 보기 전에 작성·커밋했습니다.
+# 소셜 반응 예: "토허제 강남3구·용산까지 확대하고 집값 잡혔나? 옆 동네만 올랐다던데"
+#   → catalog/policies.yaml T3 → 이 계획.
+#
+# ⚠️ 지금은 API 키가 없어 시뮬레이션 데이터로 돌립니다(synthetic_data: true).
+#    실데이터 전환: DATA_GO_KR_API_KEY 설정 → data_sources 에서 molit 을 첫 번째로 올리고
+#    synthetic_data: false 로 바꾼 뒤 이 변경만 담은 PR 로 커밋(분석 설계는 그대로).
+case_id: t3-land-permit-2025
+title: "토지거래허가구역 확대 지정(2025.3.24)이 강남·서초·송파·용산 아파트 거래에 미친 효과"
+question: >
+  2025년 3월 24일 강남·서초·송파·용산구 전체 아파트를 토지거래허가구역으로 지정한 뒤,
+  서울의 나머지 21개 자치구와 비교해 이 4개 구의 아파트 매매 거래건수와 ㎡당 가격이 달라졌는가?
+synthetic_data: true
+
+unit: {name: 자치구, id_col: gu_code}
+time: {col: month_idx, freq: month, start: 0, end: 20}   # 0 = 2024-01, 20 = 2025-09
+
+treatment:
+  definition: "2025.3.24 토지거래허가구역 전역 지정 자치구(서초·강남·송파·용산). 첫 처치 월 = 2025-04 (month_idx 15)"
+  group_col: treated
+  treat_time: 15
+control:
+  definition: "서울 나머지 21개 자치구 (2025.9까지 미지정)"
+  rationale: >
+    같은 금리·대출 규제·서울 전체 수요 충격을 받으므로 지정이 없었을 때의 추세를 대리한다.
+    2025.10.20부터 서울 전역이 지정(10·15 대책)되어 그 이후는 대조군이 사라지므로 분석 기간에서 뺀다.
+
+outcomes:
+  - name: 아파트 매매 거래건수(로그)
+    col: log_trades
+    definition: "log(1 + 자치구·계약월별 아파트 매매 건수), 해제 거래 제외"
+    unit: "log 건"
+    primary: true
+    expected_direction: decrease
+  - name: ㎡당 거래가격 중위값(로그)
+    col: log_price_m2
+    definition: "log(자치구·계약월별 거래가격 ÷ 전용면적의 중위값)"
+    unit: "log 원/㎡"
+    expected_direction: unknown
+
+estimator:
+  method: event_study
+  cluster_col: gu_code
+  ref_period: -2          # 2025-03(전환월, month_idx 14)은 데이터에서 제외하므로 2025-02 를 기준으로
+  window: [-8, 5]
+  alpha: 0.05
+
+assumptions:
+  - name: 평행추세
+    description: "지정이 없었다면 4개 구와 나머지 21개 구의 거래 추세는 같았을 것"
+    check: pretrend_test
+  - name: 선반영 없음
+    description: "2025.2.12 잠실·삼성·대치·청담 해제 직후 급등이 사전추세를 흔들 수 있음 → 가짜 시점 검정"
+    check: placebo_time
+  - name: 파급효과 없음(SUTVA)
+    description: "수요가 마포·성동 등 인접 구로 옮겨가면 대조군이 오염되어 효과가 과대 추정됨"
+    check: manual
+
+refutations:
+  - kind: placebo_time
+    params: {shift: 3}
+
+abstention:
+  - when: pretrend_rejected
+    verdict: not_identified
+    note: "해제(2025.2) 선반영으로 사전추세가 다르면 지정 효과로 보고하지 않는다"
+  - when: placebo_significant
+    verdict: conditional
+  - when: ci_crosses_zero
+    verdict: conditional
+    note: "효과 없음이 아니라 '판별 불가'로 보고"
+  - when: few_clusters
+    verdict: conditional
+
+thresholds: {pretrend_alpha: 0.10, min_clusters: 20, min_pre_periods: 3}
+
+data_sources:
+  - name: "시뮬레이션 자치구×월 패널 (fetch.py, seed=7) — 실데이터 아님"
+    provider: core.adapters.synthetic
+    license: synthetic
+    notes: "API 키 발급 전 파이프라인 시연용. 효과 크기는 임의로 넣은 값"
+  - name: "국토교통부_아파트 매매 실거래가 상세 자료"
+    provider: "국토교통부 (공공데이터포털 15126468)"
+    url: "https://www.data.go.kr/data/15126468/openapi.do"
+    license: KOGL-1
+    adapter: molit
+    query: {start: "2024-01", end: "2025-09"}
+    notes: "DATA_GO_KR_API_KEY 필요(자동승인). 실데이터 전환 시 첫 번째로 올린다"
