@@ -70,3 +70,46 @@ class Policy(BaseModel):
 def load_catalog(path: str | Path = DEFAULT_CATALOG) -> list[Policy]:
     raw = yaml.safe_load(Path(path).read_text(encoding="utf-8"))
     return [Policy.model_validate(p) for p in raw["policies"]]
+
+
+DEFAULT_TOPICS = ROOT / "catalog" / "topics.yaml"
+
+GateStatus = Literal["pass", "check", "key", "fail"]
+GATE_KO = {"when": "언제", "who": "누가", "what": "무엇을"}
+GATE_STATUS_KO = {"pass": "통과", "check": "확인 필요", "key": "API 키 필요", "fail": "탈락"}
+
+
+class Gate(BaseModel):
+    status: GateStatus
+    note: str = ""
+
+
+class Collect(BaseModel):
+    method: Literal["law_ordinance", "notice", "curated"]
+    query: list[str] = []
+    note: str = ""
+
+
+class Event(BaseModel):
+    date: date
+    what: str
+    source: str | None = None
+
+
+class Topic(BaseModel):
+    """소셜 신호가 가리키는 '주제'. 분석 대상은 주제 안의 정책 전체다(출발 키트 B 방식)."""
+
+    id: str
+    name: str
+    question: str
+    keywords: list[str]
+    policies: list[str] = []
+    collect: Collect
+    events: list[Event] = []
+    gates: dict[Literal["when", "who", "what"], Gate]
+    pitfalls: list[str] = []
+
+
+def load_topics(path: str | Path = DEFAULT_TOPICS) -> list[Topic]:
+    raw = yaml.safe_load(Path(path).read_text(encoding="utf-8"))
+    return [Topic.model_validate(t) for t in raw["topics"]]

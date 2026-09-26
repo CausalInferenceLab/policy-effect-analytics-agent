@@ -342,7 +342,7 @@ def report(s: FlowState):
         figs["Raw trends"] = "figures/raw_trends.png"
         if "coefs" in r.extra:
             note = (
-                "per-period CIs cluster-robust, reference only: few treated units"
+                "per-period CIs: reference only (few treated units)"
                 if "few_treated_clusters" in r.triggers
                 else "cluster-robust"
             )

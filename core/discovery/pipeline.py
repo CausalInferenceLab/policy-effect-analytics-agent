@@ -5,8 +5,8 @@ from __future__ import annotations
 from dataclasses import dataclass, field
 from pathlib import Path
 
-from .catalog import ROOT, Policy, load_catalog
-from .match import Match, match_issue
+from .catalog import ROOT, Policy, Topic, load_catalog, load_topics
+from .match import Match, TopicMatch, match_issue, match_topic
 from .search import SearchHit, search_datago
 
 
@@ -16,6 +16,12 @@ class DiscoveryResult:
     matches: list[Match]
     live_hits: list[SearchHit] = field(default_factory=list)
     live_status: str = "실시간 검색 안 함"
+    topics: list[TopicMatch] = field(default_factory=list)
+    policies_in_topic: list[Policy] = field(default_factory=list)
+
+    @property
+    def topic(self) -> Topic | None:
+        return self.topics[0].topic if self.topics else None
 
     @property
     def top(self) -> Policy | None:
@@ -46,6 +52,10 @@ def discover(
 ) -> DiscoveryResult:
     cat = catalog if catalog is not None else load_catalog()
     res = DiscoveryResult(text=text, matches=match_issue(text, cat, use_llm=use_llm))
+    res.topics = match_topic(text, load_topics(), cat)
+    if res.topic:
+        by_id = {p.id: p for p in cat}
+        res.policies_in_topic = [by_id[i] for i in res.topic.policies]
     if live_search and res.top and res.top.search_terms:
         res.live_hits, res.live_status = search_datago(res.top.search_terms)
     return res
