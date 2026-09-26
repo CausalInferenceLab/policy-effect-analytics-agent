@@ -295,7 +295,8 @@ def _checks(plan, r) -> dict:
         if a.check == "pretrend_test" and "parallel_pretrends" in ac:
             x = ac["parallel_pretrends"]
             out[a.name] = (
-                f"사전계수 결합 Wald p={x['p_value']:.3f} → {'통과' if x['passed'] else '기각'}"
+                f"{x.get('test', '사전계수 결합검정')} p={x['p_value']:.3f} → "
+                f"{'통과' if x['passed'] else '기각'}"
             )
         elif a.check == "placebo_time" and "placebo_time" in ac:
             x = ac["placebo_time"]
@@ -340,7 +341,12 @@ def report(s: FlowState):
         raw_trends(df, r.outcome, p.time.col, p.treatment.group_col, tt, figdir / "raw_trends.png")
         figs["Raw trends"] = "figures/raw_trends.png"
         if "coefs" in r.extra:
-            event_study_plot(r.extra["coefs"], figdir / "event_study.png")
+            note = (
+                "per-period CIs cluster-robust, reference only: few treated units"
+                if "few_treated_clusters" in r.triggers
+                else "cluster-robust"
+            )
+            event_study_plot(r.extra["coefs"], figdir / "event_study.png", ci_note=note)
             figs["Event study"] = "figures/event_study.png"
     md = render_report(p, s.results, figs, _checks(p, r), narrative=s.guard.get("narrative"))
     s.report_path = s.case_dir / "report.md"

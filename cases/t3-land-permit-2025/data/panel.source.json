@@ -1,0 +1,12 @@
+{
+  "name": "시뮬레이션 자치구×월 패널 (실데이터 아님)",
+  "provider": "core.adapters.synthetic",
+  "license": "synthetic",
+  "url": null,
+  "query": {
+    "seed": 7,
+    "note": "API 키 없음 → 시뮬레이션"
+  },
+  "rows": 500,
+  "fetched_at": "2026-09-26T07:06:19+00:00"
+}

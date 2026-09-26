@@ -18,6 +18,7 @@ from scipy import stats
 
 from .diagnostics import check_clusters, check_staggered
 from .result import EffectResult
+from .ri import did_ri, event_study_ri
 
 
 def _first_treat(df, unit, time, group_col, first_treat_col, treat_time) -> pd.Series:
@@ -44,6 +45,7 @@ def did(
     covariates: list[str] = (),
     alpha: float = 0.05,
     min_clusters: int = 20,
+    min_treated_clusters: int = 10,
 ) -> EffectResult:
     """TWFE DiD. cluster 기본값은 unit (정책이 단위 수준에서 배정되므로)."""
     cluster = cluster or unit
@@ -65,6 +67,24 @@ def did(
         n_obs=int(fit._N),
         n_clusters=int(n_cl),
     )
+    treated_units = set(d.loc[d["_ft"].notna(), unit].unique())
+    balanced = d.groupby(unit)[time].nunique().nunique() == 1
+    if (
+        len(treated_units) < min_treated_clusters
+        and balanced
+        and d["_ft"].dropna().nunique() == 1
+        and not covariates
+    ):
+        ri = did_ri(d, y, unit, time, treated_units, int(d["_ft"].dropna().iloc[0]), alpha=alpha)
+        res.extra["crv1"] = {"ci": [res.ci_low, res.ci_high], "p_value": res.p_value}
+        res.ci_low, res.ci_high = ri["ci"]
+        res.p_value = ri["p"]
+        res.assumptions_checked["inference"] = "randomization inference"
+        res.warn(
+            f"처치 단위가 {len(treated_units)}개뿐이라 군집-강건 표준오차를 믿을 수 없습니다. "
+            "무작위화 추론으로 p값과 신뢰구간을 계산했습니다.",
+            "few_treated_clusters",
+        )
     check_clusters(res, n_cl, min_clusters)
     check_staggered(res, d.groupby(unit)["_ft"].first())
     return res
@@ -84,8 +104,12 @@ def event_study(
     pretrend_alpha: float = 0.10,
     alpha: float = 0.05,
     min_clusters: int = 20,
+    min_treated_clusters: int = 10,
 ) -> EffectResult:
     """상대시점 더미 TWFE. 창 밖 상대시점은 양끝으로 binning.
+
+    처치 단위가 min_treated_clusters 개 미만이고 균형 패널·동시 도입이면, 군집-강건 SE 대신
+    무작위화 추론(ri.py)으로 p값·신뢰구간·사전추세 검정을 계산한다.
 
     반환 EffectResult.estimate = 사후 계수들의 평균(단순평균),
     extra['coefs'] = 상대시점별 계수표, assumptions_checked['parallel_pretrends'] = 결합검정.
@@ -151,16 +175,37 @@ def event_study(
         n_clusters=int(n_cl),
         extra={"coefs": tab},
     )
-    res.assumptions_checked["parallel_pretrends"] = {
-        "test": "joint Wald (chi2)",
-        "stat": wald,
-        "df": len(pre),
-        "p_value": p_pre,
-        "passed": p_pre >= pretrend_alpha,
-    }
+    pretrend = {"test": "joint Wald (chi2, CRV1)", "stat": wald, "df": len(pre), "p_value": p_pre}
+    treated_units = set(d.loc[d["_ft"].notna(), unit].unique())
+    balanced = d.groupby(unit)[time].nunique().nunique() == 1
+    simultaneous = d["_ft"].dropna().nunique() == 1
+    if len(treated_units) < min_treated_clusters and balanced and simultaneous:
+        ri = event_study_ri(
+            d, y, unit, time, treated_units, int(d["_ft"].dropna().iloc[0]),
+            list(names.values()), lo, hi, alpha=alpha,
+        )  # fmt: skip
+        res.extra["crv1"] = {
+            "ci": [res.ci_low, res.ci_high],
+            "p_value": res.p_value,
+            "pretrend": pretrend,
+        }
+        res.ci_low, res.ci_high = ri["ci"]
+        res.p_value = ri["p_post"]
+        res.assumptions_checked["inference"] = ri["method"]
+        pretrend = {
+            "test": "randomization inference (사전 계수 제곱합)",
+            "p_value": ri["p_pretrend"],
+        }
+        p_pre = ri["p_pretrend"]
+        res.warn(
+            f"처치 단위가 {len(treated_units)}개뿐이라 군집-강건 표준오차를 믿을 수 없습니다. "
+            "무작위화 추론(처치 단위를 무작위로 바꿔 반복)으로 p값과 신뢰구간을 계산했습니다.",
+            "few_treated_clusters",
+        )
+    res.assumptions_checked["parallel_pretrends"] = {**pretrend, "passed": p_pre >= pretrend_alpha}
     if p_pre < pretrend_alpha:
         res.warn(
-            f"사전추세 결합검정 p={p_pre:.3f} < {pretrend_alpha}: 평행추세 가정이 의심됩니다. "
+            f"사전추세 검정 p={p_pre:.3f} < {pretrend_alpha}: 평행추세 가정이 의심됩니다. "
             "효과를 인과적으로 해석하지 마세요.",
             "pretrend_rejected",
         )

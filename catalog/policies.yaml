@@ -1,0 +1,187 @@
+# 정책 × 데이터셋 카탈로그
+# 소셜 반응(뉴스·SNS 글) → 정책 식별 → 추천 데이터셋 → 분석계획 초안을 잇는 기준 목록입니다.
+# 근거: docs/strategy/topic-guide.md, korea-cases.md. 날짜는 출처 링크로 확인한 값만 적습니다.
+#
+# design (core.discovery 의 규칙 기반 설계 판별 결과와 같은 어휘)
+#   did_simultaneous : 처치 단위 다수 + 동시 도입  → core 지원
+#   did_staggered    : 처치 단위 다수 + 시차 도입  → 추정 모듈 준비 중(W4), 지금은 보류 판정
+#   scm              : 처치 단위 1~5개            → 준비 중(W5)
+#   its              : 단일 시계열                → core 지원
+# access: api_key(자동승인 API 키 필요) | file(파일 다운로드) | manual(웹에서 수동 수집)
+
+version: 1
+policies:
+  - id: T3
+    name: 토지거래허가구역 확대 지정 (강남·서초·송파·용산 전역)
+    keywords: [토지거래허가, 토허제, 토허구역, 토허, 강남3구, 용산, 잠삼대청, 아파트, 집값, 거래량, 실거래가, 풍선효과]
+    summary: 2025.3.19 발표, 3.24부터 강남·서초·송파·용산구 전체 아파트를 토지거래허가구역으로 지정.
+    announced: 2025-03-19
+    effective: 2025-03-24
+    sources:
+      - https://www.ajunews.com/view/20250324064239711
+      - https://land.seoul.go.kr/land/other/appointStatusSeoul.do
+    unit: 서울 자치구 × 월
+    treated_units: [서초구, 강남구, 송파구, 용산구]
+    control_units: 서울 나머지 21개 자치구
+    outcomes: [아파트 매매 거래건수, ㎡당 거래가격 중위값]
+    design: did_simultaneous
+    datasets:
+      - id: "15126468"
+        name: 국토교통부_아파트 매매 실거래가 상세 자료
+        provider: 국토교통부
+        url: https://www.data.go.kr/data/15126468/openapi.do
+        access: api_key
+        license: KOGL-1
+        granularity: 시군구(5자리) × 계약년월, 거래 단위
+        role: outcome
+    search_terms: [아파트 매매 실거래가, 토지거래허가]
+    pitfalls:
+      - "대조군 오염: 10·15 대책으로 2025.10.20부터 서울 전역이 토허구역 → 분석은 2025.9까지만."
+      - "선반영: 2025.2.12 잠실·삼성·대치·청담 해제 직후 거래·가격 급등 → 사전추세 점검 필수, 2025.3은 전환월로 제외."
+      - "풍선효과(SUTVA 위반): 마포·성동 등 인접 구가 대조군이면 효과가 과대 추정될 수 있음."
+      - "신고 시차: 계약 후 30일 내 신고 → 최근 월 과소 집계."
+      - "표본 선택: 거래가 줄면 '거래된 집'만 관측 → 가격보다 거래량을 1차 결과로."
+    sample_case: cases/t3-land-permit-2025
+
+  - id: T1
+    name: 녹색교통지역 5등급 차량 운행제한
+    keywords: [녹색교통, 5등급, 운행제한, 사대문, 도심, 대기질, 미세먼지, NO2, 이산화질소, 배출가스]
+    summary: 서울 사대문 안 5등급 차량 운행제한. 2019.12 과태료 부과 시작.
+    effective: 2019-12-01
+    sources: ["https://news.seoul.go.kr/traffic/greentraffic"]
+    unit: 측정소 × 시간
+    treated_units: [녹색교통지역 안 측정소(1~3개)]
+    control_units: 서울 다른 도로변 측정소
+    outcomes: [NO2, PM2.5]
+    design: scm
+    datasets:
+      - id: airkorea-final-hourly
+        name: 에어코리아 최종확정 측정자료(시간별)
+        provider: 한국환경공단
+        url: https://www.airkorea.or.kr/web/last_amb_hour_data?pMENU_NO=123
+        access: file
+        license: KOGL-1
+        granularity: 측정소 × 시간
+        role: outcome
+    search_terms: [대기오염 측정, 미세먼지 측정정보]
+    pitfalls: ["처치 측정소 1~3개 → 클러스터 표준오차 불가, 합성통제·순열추론 필요", "코로나19(2020.2~) 교통량 급변", "미세먼지 계절관리제와 같은 시기 시작"]
+
+  - id: T2
+    name: 대형마트 의무휴업 평일 전환
+    keywords: [대형마트, 의무휴업, 평일, 일요일, 전통시장, 골목상권, 상권, 매출, 유통산업발전법]
+    summary: 자치구별로 대형마트 의무휴업일을 일요일에서 평일로 전환(서초 2024.1~ 등, 시차 도입).
+    unit: 상권 × 분기
+    treated_units: [전환 자치구의 상권]
+    control_units: 미전환 자치구의 같은 유형 상권
+    outcomes: [상권 추정매출, 주말 매출 비중]
+    design: did_staggered
+    datasets:
+      - id: OA-15572
+        name: 서울시 상권분석서비스(추정매출-상권)
+        provider: 서울특별시
+        url: https://data.seoul.go.kr/dataList/OA-15572/S/1/datasetView.do
+        access: api_key
+        license: KOGL-1
+        granularity: 상권 × 분기 (2021~)
+        role: outcome
+    search_terms: [상권 추정매출, 대형마트]
+    pitfalls: ["시차 도입 → TWFE 편향, CS 추정량 필요", "2024년 상권 공간단위 변경", "자치구별 전환일 목록을 직접 구축해야 함"]
+
+  - id: T4
+    name: 안전속도5030
+    keywords: [안전속도, "5030", 제한속도, 속도하향, 보행자, 교통사고, 사망자]
+    summary: 도시부 제한속도 50km/h(이면도로 30km/h) 전국 시행 2021.4.17.
+    effective: 2021-04-17
+    sources: ["https://www.korea.kr/news/policyNewsView.do?newsId=148891484"]
+    unit: 시군구 × 월
+    outcomes: [보행자 사고, 사망·중상]
+    design: did_staggered
+    datasets:
+      - id: koroad-opendata
+        name: 도로교통공단 교통사고 통계 Open API
+        provider: 도로교통공단
+        url: https://opendata.koroad.or.kr/api/selectSttDataSet.do
+        access: api_key
+        license: KOGL-1
+        granularity: 지자체 × 기간
+        role: outcome
+    search_terms: [교통사고 통계, 보행자 교통사고]
+    pitfalls: ["조기 도입 지자체 일자 확인 필요", "민식이법(2020.3)·코로나19와 겹침", "사고다발지역 API는 결과로 선택된 표본이라 결과지표로 쓰면 안 됨"]
+
+  - id: T5
+    name: 민식이법 (어린이보호구역)
+    keywords: [민식이법, 스쿨존, 어린이보호구역, 어린이 교통사고, 단속카메라]
+    summary: 2020.3.25 시행. 코로나19 등교 중단과 시점이 겹쳐 식별이 어려운 교육용 사례.
+    effective: 2020-03-25
+    unit: 스쿨존
+    outcomes: [어린이 교통사고]
+    design: did_simultaneous
+    datasets:
+      - id: "15012891"
+        name: 전국어린이보호구역표준데이터
+        provider: 행정안전부
+        url: https://www.data.go.kr/data/15012891/standard.do
+        access: file
+        license: KOGL-1
+        granularity: 보호구역(위경도, CCTV)
+        role: treatment
+    search_terms: [어린이보호구역]
+    pitfalls: ["코로나19 등교 중단과 동시 → 노출량 통제 불가, '식별 불가'가 정답에 가까움"]
+
+  - id: T6
+    name: 윤창호법 (음주운전 처벌 강화)
+    keywords: [윤창호법, 음주운전, 음주, 혈중알코올, 단속]
+    summary: 제1 윤창호법 2018.12.18, 제2 윤창호법 2019.6.25 시행.
+    effective: 2019-06-25
+    unit: 전국 × 월
+    outcomes: [음주운전 교통사고]
+    design: its
+    datasets:
+      - id: kosis-traffic
+        name: 경찰청 교통사고 통계 (KOSIS)
+        provider: 통계청 KOSIS
+        url: https://kosis.kr/visual/nsportalStats/detailContents.do?listId=M&statJipyoId=3715&vStatJipyoId=4878
+        access: api_key
+        license: KOGL-1
+        granularity: 전국 × 월
+        role: outcome
+    search_terms: [음주운전 교통사고]
+    pitfalls: ["적발 기반 지표 → 단속 강도 변화가 측정을 바꿈", "두 법 시행이 6개월 간격"]
+
+  - id: T7
+    name: 지자체 출산·혼인장려금
+    keywords: [출산장려금, 출산지원금, 혼인장려금, 저출산, 출생아, 혼인, 인구]
+    summary: 시군구별 장려금 신설·인상(시차 도입, 금액 연속 처치).
+    unit: 시군구 × 연
+    outcomes: [출생아 수, 혼인 건수]
+    design: did_staggered
+    datasets:
+      - id: DT_1B040A3
+        name: 인구동향조사 시군구별 (KOSIS)
+        provider: 통계청 KOSIS
+        url: https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1B040A3
+        access: api_key
+        license: KOGL-1
+        granularity: 시군구 × 연
+        role: outcome
+    search_terms: [출생아수 시군구, 출산장려금]
+    pitfalls: ["처치(조례) 데이터셋을 직접 구축해야 함", "역인과: 출산율이 떨어진 곳이 먼저 도입", "주소 이전 효과"]
+
+  - id: T8
+    name: 미세먼지 계절관리제
+    keywords: [계절관리제, 미세먼지, 초미세먼지, PM2.5, 겨울철]
+    summary: 매년 12~3월 전국 시행. 공간 대조군이 없어 식별이 약함.
+    unit: 측정소 × 일
+    outcomes: [PM2.5]
+    design: its
+    datasets:
+      - id: airkorea-final-hourly
+        name: 에어코리아 최종확정 측정자료(시간별)
+        provider: 한국환경공단
+        url: https://www.airkorea.or.kr/web/last_amb_hour_data?pMENU_NO=123
+        access: file
+        license: KOGL-1
+        granularity: 측정소 × 시간
+        role: outcome
+    search_terms: [미세먼지 측정정보]
+    pitfalls: ["전국 동시 → 공간 대조군 없음", "기상·국외 유입이 크게 교란"]
