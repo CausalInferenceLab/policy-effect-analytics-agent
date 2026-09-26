@@ -1,0 +1,10 @@
+# Minimal fixture for app tests (not validated against core schema).
+case_id: flow_case
+title: Flow fixture
+question: 야간 소아 진료 확대가 경증 응급실 방문을 줄였는가?
+synthetic_data: true
+treatment: {definition: 정책 도입 지역}
+control: {definition: 미도입 지역}
+estimator: {method: event_study}
+data_sources:
+  - {name: synthetic panel, provider: generated, license: synthetic}

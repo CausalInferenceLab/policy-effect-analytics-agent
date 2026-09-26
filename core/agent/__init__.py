@@ -1,31 +1,26 @@
-"""에이전트 툴 인터페이스 (스텁). W4~5 에 Develop 이 LangGraph tool 로 래핑.
+"""6단계 에이전트 흐름: 문제 정의 → 수집 → 지표 구조화 → 추정 → 과잉해석 가드 → 리포트.
 
-규약: 각 툴은 JSON 직렬화 가능한 입력/출력만 사용한다.
-  - validate_plan(path) -> {"ok": bool, "errors": [...]}
-  - run_estimate(plan_path, data_path) -> EffectResult.to_dict()
-LLM 은 plan.yaml 작성까지만 하고, 수치 계산은 반드시 core.estimators 를 호출한다.
+    python -m core.agent cases/_example_night_clinic --allow-uncommitted
+
+- state.py : FlowState + flow_log.json 스키마
+- nodes.py : 6개 노드 (FlowState -> FlowState)
+- graph.py : run_flow (순수 Python) / build_graph (LangGraph)
+- guard.py : 과잉해석 린터 + 판정별 서술 템플릿
+- llm.py   : OpenAI 호환 LLM 호출 (선택; 숫자 계산에는 절대 쓰지 않음)
+- tools.py : validate_plan / run_estimate (JSON 툴)
 """
 
-from __future__ import annotations
+from .graph import build_graph, langgraph_available, run_flow, write_flow_log
+from .state import STEPS, FlowState
+from .tools import run_estimate, validate_plan
 
-import pandas as pd
-from pydantic import ValidationError
-
-from ..schema.plan import load_plan
-
-
-def validate_plan(path: str) -> dict:
-    try:
-        load_plan(path)
-        return {"ok": True, "errors": []}
-    except ValidationError as e:
-        return {
-            "ok": False,
-            "errors": [f"{'.'.join(map(str, x['loc']))}: {x['msg']}" for x in e.errors()],
-        }
-
-
-def run_estimate(plan_path: str, data_path: str) -> list[dict]:
-    from ..pipeline import run_plan  # 지연 import
-
-    return [r.to_dict() for r in run_plan(load_plan(plan_path), pd.read_csv(data_path))]
+__all__ = [
+    "run_flow",
+    "build_graph",
+    "langgraph_available",
+    "write_flow_log",
+    "FlowState",
+    "STEPS",
+    "validate_plan",
+    "run_estimate",
+]

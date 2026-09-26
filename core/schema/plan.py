@@ -120,6 +120,8 @@ class DataSource(_Base):
     url: str | None = None
     license: License
     adapter: str | None = Field(None, description="core.adapters 의 어댑터 이름")
+    path: str = Field("data/panel.csv", description="케이스 폴더 기준 분석용 스냅샷 경로")
+    query: dict = Field({}, description="어댑터 fetch() 인자 (fetch.py 가 없을 때 사용)")
     notes: str = ""
 
 

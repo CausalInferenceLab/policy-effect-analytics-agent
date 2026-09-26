@@ -32,7 +32,11 @@ def results_table(results: list[EffectResult]) -> str:
 
 
 def render_report(
-    plan, results: list[EffectResult], figures: dict[str, str], checks: dict | None = None
+    plan,
+    results: list[EffectResult],
+    figures: dict[str, str],
+    checks: dict | None = None,
+    narrative: str | None = None,
 ) -> str:
     worst = max(
         results, key=lambda r: ["identified", "conditional", "not_identified"].index(r.verdict)
@@ -49,6 +53,7 @@ def render_report(
         "",
         f"**종합 판정**: {VERDICT_KO[worst.verdict]}",
         "",
+        *([narrative, ""] if narrative else []),
         "## 1. 설계",
         "",
         f"- 분석 단위: {plan.unit.name} (`{plan.unit.id_col}`), 기간 {plan.time.start}–{plan.time.end} ({plan.time.freq})",

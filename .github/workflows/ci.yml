@@ -31,10 +31,24 @@ jobs:
       - name: Install
         run: |
           python -m pip install --upgrade pip
-          pip install -e ".[dev]"
+          pip install -e ".[dev,agent]"
       - name: Ruff
         run: |
           ruff check .
           ruff format --check . || echo "::warning::ruff format differences (run 'ruff format .')"
       - name: Pytest
         run: pytest -q
+      - name: Example flow (offline)
+        run: make flow CASE=cases/_example_night_clinic
+      - name: Upload flow artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: example-flow
+          path: |
+            cases/_example_night_clinic/flow_log.json
+            cases/_example_night_clinic/run_manifest.json
+            cases/_example_night_clinic/report.md
+            cases/_example_night_clinic/figures/
+          if-no-files-found: warn
+          retention-days: 14

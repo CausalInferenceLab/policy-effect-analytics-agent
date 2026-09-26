@@ -1,0 +1,281 @@
+{
+  "schema_version": "1",
+  "case_dir": "cases/_example_night_clinic",
+  "question": "달빛어린이병원(야간·휴일 소아 경증 진료기관)이 지정된 시군구에서, 지정되지 않은 시군구 대비 소아 야간 경증 응급실 방문율이 감소했는가?\n",
+  "status": "warn",
+  "verdict": "identified",
+  "started_at": "2026-09-24T02:36:04+00:00",
+  "ended_at": "2026-09-24T02:36:05+00:00",
+  "steps": [
+    {
+      "index": 1,
+      "step": "define_problem",
+      "title": "① 문제 정의",
+      "status": "ok",
+      "started_at": "2026-09-24T02:36:05+00:00",
+      "ended_at": "2026-09-24T02:36:05+00:00",
+      "duration_s": 0.01,
+      "message": "분석계획 검증 완료, 사전 등록(git 커밋) 확인: _example_night_clinic",
+      "artifacts": {
+        "plan": "plan.yaml",
+        "plan_sha256": "362e754b978adfa67b1606f06bc758843000e8fb4e738dd70b255dc0d87833f1",
+        "committed": true
+      }
+    },
+    {
+      "index": 2,
+      "step": "collect",
+      "title": "② 데이터 수집",
+      "status": "warn",
+      "started_at": "2026-09-24T02:36:05+00:00",
+      "ended_at": "2026-09-24T02:36:05+00:00",
+      "duration_s": 0.0,
+      "message": "기존 스냅샷 재사용 (새로 받으려면 파일 삭제 후 재실행) / ⚠️ 합성 데이터 — 결과는 실제 정책 효과가 아님",
+      "artifacts": {
+        "data": "data/panel.csv",
+        "data_sha256": "20223bf371f64c27e897b820f9156c27ffce2588585c7d25386d082fa26d7eff",
+        "licenses": [
+          "synthetic"
+        ],
+        "method": "기존 스냅샷 재사용 (새로 받으려면 파일 삭제 후 재실행)",
+        "source_meta": "data/panel.source.json"
+      }
+    },
+    {
+      "index": 3,
+      "step": "structure_metrics",
+      "title": "③ 지표 구조화·품질 점검",
+      "status": "ok",
+      "started_at": "2026-09-24T02:36:05+00:00",
+      "ended_at": "2026-09-24T02:36:05+00:00",
+      "duration_s": 0.004,
+      "message": "11개 점검 모두 통과",
+      "artifacts": {
+        "rows": 640,
+        "units": 80
+      }
+    },
+    {
+      "index": 4,
+      "step": "estimate",
+      "title": "④ 효과 추정",
+      "status": "ok",
+      "started_at": "2026-09-24T02:36:05+00:00",
+      "ended_at": "2026-09-24T02:36:05+00:00",
+      "duration_s": 0.287,
+      "message": "event_study: -5.033 [-6.105, -3.960] → identified",
+      "artifacts": {
+        "night_ed_rate": {
+          "estimate": -5.0327,
+          "ci": [
+            -6.1051,
+            -3.9603
+          ],
+          "verdict": "identified"
+        }
+      }
+    },
+    {
+      "index": 5,
+      "step": "guard",
+      "title": "⑤ 과잉해석 가드",
+      "status": "ok",
+      "started_at": "2026-09-24T02:36:05+00:00",
+      "ended_at": "2026-09-24T02:36:05+00:00",
+      "duration_s": 0.0,
+      "message": "판정 identified, 서술=template",
+      "artifacts": {
+        "triggers": []
+      }
+    },
+    {
+      "index": 6,
+      "step": "report",
+      "title": "⑥ 리포트·재현 기록",
+      "status": "ok",
+      "started_at": "2026-09-24T02:36:05+00:00",
+      "ended_at": "2026-09-24T02:36:05+00:00",
+      "duration_s": 0.439,
+      "message": "리포트 2개 그림 포함 작성",
+      "artifacts": {
+        "report": "report.md",
+        "manifest": "run_manifest.json",
+        "figures": [
+          "figures/raw_trends.png",
+          "figures/event_study.png"
+        ]
+      }
+    }
+  ],
+  "quality": [
+    {
+      "check": "필수 컬럼",
+      "value": 4,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "시간 컬럼 정수형",
+      "value": "int64",
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "결측률 region_id",
+      "value": 0.0,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "결측률 year",
+      "value": 0.0,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "결측률 treated",
+      "value": 0.0,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "결측률 night_ed_rate",
+      "value": 0.0,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "사전 기간 수",
+      "value": 4,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "사후 기간 수",
+      "value": 4,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "처치 단위 수",
+      "value": 30,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "통제 단위 수",
+      "value": 50,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "단위×시점 중복",
+      "value": 0,
+      "status": "ok",
+      "message": ""
+    }
+  ],
+  "results": [
+    {
+      "method": "event_study",
+      "outcome": "night_ed_rate",
+      "estimate": -5.032702345732548,
+      "se": 0.5471286269132056,
+      "ci_low": -6.105054749393283,
+      "ci_high": -3.9603499420718125,
+      "p_value": 3.6335376481325645e-20,
+      "n_obs": 640,
+      "n_clusters": 80,
+      "assumptions_checked": {
+        "parallel_pretrends": {
+          "test": "joint Wald (chi2)",
+          "stat": 0.6252747974975548,
+          "df": 3,
+          "p_value": 0.8906226863229644,
+          "passed": true
+        },
+        "pre_periods": 4,
+        "n_adoption_cohorts": 1,
+        "placebo_time": {
+          "fake_treat_time": 2014,
+          "estimate": -0.32469326228919176,
+          "p_value": 0.5245409054480956,
+          "passed": true
+        }
+      },
+      "warnings": [],
+      "triggers": [],
+      "verdict": "identified",
+      "extra": {
+        "coefs": [
+          {
+            "rel_time": -4,
+            "coef": 0.44969282466849825,
+            "se": 0.6116580595373967,
+            "ci_low": -0.7677820885266659,
+            "ci_high": 1.6671677378636622
+          },
+          {
+            "rel_time": -3,
+            "coef": 0.17895423334833896,
+            "se": 0.6467334612792702,
+            "ci_low": -1.1083365206178435,
+            "ci_high": 1.4662449873145214
+          },
+          {
+            "rel_time": -2,
+            "coef": -0.020739466561547057,
+            "se": 0.559734439210234,
+            "ci_low": -1.1348629987606007,
+            "ci_high": 1.0933840656375067
+          },
+          {
+            "rel_time": -1,
+            "coef": 0.0,
+            "se": 0.0,
+            "ci_low": 0.0,
+            "ci_high": 0.0
+          },
+          {
+            "rel_time": 0,
+            "coef": -4.438542547221294,
+            "se": 0.6841551135912444,
+            "ci_low": -5.800319236899004,
+            "ci_high": -3.0767658575435837
+          },
+          {
+            "rel_time": 1,
+            "coef": -5.4012082194069535,
+            "se": 0.6881833855255733,
+            "ci_low": -6.771002983803212,
+            "ci_high": -4.031413455010695
+          },
+          {
+            "rel_time": 2,
+            "coef": -5.031560056431842,
+            "se": 0.6884702945405902,
+            "ci_low": -6.401925898937359,
+            "ci_high": -3.6611942139263256
+          },
+          {
+            "rel_time": 3,
+            "coef": -5.259498559870104,
+            "se": 0.6475211640626454,
+            "ci_low": -6.548357197007054,
+            "ci_high": -3.9706399227331532
+          }
+        ]
+      },
+      "identified": true
+    }
+  ],
+  "guard": {
+    "verdict": "identified",
+    "narrative_source": "template",
+    "passed": true,
+    "violations": [],
+    "rejected_llm_violations": [],
+    "narrative": "**요약**: 정책 도입 후 처치집단의 소아 야간 경증 응급실 방문율은(는) 통제집단 대비 평균 -5.03 건/천명 변화한 것으로 추정됩니다 (95% CI -6.11 ~ -3.96). 이 해석은 plan.yaml 의 식별 가정이 성립할 때에만 유효하며, 자동 점검에서 가정이 반박되지 않았다는 뜻이지 검증되었다는 뜻은 아닙니다."
+  },
+  "report_path": "report.md"
+}
