@@ -39,7 +39,8 @@ GitHub가 처음이라면 [GitHub 따라 하기](docs/ops/github-onboarding.md)�
 
 - **`plan.yaml`을 결과보다 먼저 커밋합니다.** 나중에 바꾸면 커밋 메시지에 이유를 적습니다.
 - 데이터 출처와 이용 조건(공공누리 유형 등)을 `plan.yaml`의 `data_sources`에 적습니다.
-- 그림과 숫자는 `fetch.py` → `make flow` 실행으로 다시 만들 수 있어야 합니다.
+- 그림과 숫자는 `fetch.py` → `make flow` 실행으로 다시 만들 수 있어야 합니다. `make flow`는 plan.yaml이 커밋되어 있지 않으면 계산하지 않습니다(연습은 `make demo`).
+- `report.md`·`figures/`는 자동으로 만들어집니다. 해석과 한계는 `discussion.md`에 쓰면 리포트 끝에 붙습니다.
 - 가정이 깨지면 판정을 "판단 불가"로 두는 것도 좋은 결과입니다.
 
 ## 6. 올리면 안 되는 것
@@ -62,7 +63,14 @@ make flow CASE=cases/<내ID>-<주제>
 python site/build.py && python -m http.server -d _site   # 사이트 미리보기
 ```
 
-## 9. 질문과 제안
+## 9. 질문과 제안 (구성원 모두가 봅니다)
+
+담당자를 따로 두지 않습니다. 모임 전에 각자 아래 두 목록을 훑고, 할 수 있는 것에 댓글을 달거나 PR로 반영합니다.
+
+- [사이트 질문 (`from-site`)](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/issues?q=is%3Aopen+label%3Afrom-site): 새 주제·데이터면 `catalog/`에 PR, 내 주제와 관련 있으면 내 분석에 반영
+- [법령 변경 (`law-change`)](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/issues?q=is%3Aopen+label%3Alaw-change): 매주 월요일 자동으로 열립니다. 시작일·대상이 바뀐 정책이면 `topics.yaml`의 `events`에 출처와 함께 추가
+- 처리한 사람이 이슈를 닫습니다.
+
 
 - 사이트 대화창에서 정리한 질문은 "이 대화를 제안으로 올리기" 버튼으로 이슈가 됩니다.
 - 버그는 "버그 리포트", 새 분석 주제는 "케이스 제안" 이슈로 올립니다.

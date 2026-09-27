@@ -109,6 +109,14 @@ def define_problem(s: FlowState):
     except ValidationError as e:
         errs = "; ".join(f"{'.'.join(map(str, x['loc']))}: {x['msg']}" for x in e.errors())
         raise FlowError(f"plan.yaml 스키마 오류 — {errs}") from e
+    folder = s.case_dir.name
+    in_cases = (
+        s.case_dir.resolve().parent.name == "cases"
+    )  # 레포의 cases/<내ID>-<주제>/ 일 때만 확인
+    if in_cases and not folder.startswith("_") and s.plan.case_id != folder:
+        raise FlowError(
+            f"plan.yaml 의 case_id({s.plan.case_id})가 폴더 이름({folder})과 다릅니다. 같게 맞춰 주세요."
+        )
     arts = {
         "plan": "plan.yaml",
         "plan_sha256": _sha256(path),
@@ -349,6 +357,9 @@ def report(s: FlowState):
             event_study_plot(r.extra["coefs"], figdir / "event_study.png", ci_note=note)
             figs["Event study"] = "figures/event_study.png"
     md = render_report(p, s.results, figs, _checks(p, r), narrative=s.guard.get("narrative"))
+    disc = s.case_dir / "discussion.md"  # 작성자가 쓰는 해석·한계. report.md 는 매번 새로 만든다
+    if disc.exists() and disc.read_text(encoding="utf-8").strip():
+        md += "\n\n---\n\n" + disc.read_text(encoding="utf-8").strip() + "\n"
     s.report_path = s.case_dir / "report.md"
     s.report_path.write_text(md, encoding="utf-8")
 

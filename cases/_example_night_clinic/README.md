@@ -8,7 +8,7 @@
 ## 실행
 ```bash
 python cases/_example_night_clinic/fetch.py      # data/panel.csv (+ panel.source.json)
-python cases/_example_night_clinic/estimate.py   # figures/*.png, report.md, results.json
+python cases/_example_night_clinic/estimate.py   # 이 예시만의 옛 방식. 새 케이스는 make flow 하나로 실행합니다
 ```
 
 ## 파일

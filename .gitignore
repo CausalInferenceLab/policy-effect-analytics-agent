@@ -33,6 +33,15 @@ data/cache/
 *.xlsx~
 ~$*
 
+# Case data: 원자료·가공 데이터는 올리지 않고 fetch.py 로 각자 받는다 (시뮬레이션 예시만 예외)
+cases/*/data/*
+!cases/*/data/README.md
+!cases/_example_night_clinic/data/*
+!cases/t3-land-permit-2025/data/*
+
+# Practice runs (make demo)
+_demo/
+
 # Generated at build time (GitHub Actions)
 catalog/snapshots/trends.json
 

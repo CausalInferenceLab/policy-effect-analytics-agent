@@ -11,18 +11,19 @@
 | 기간 | 2024-01 ~ 2025-09 (2025-03 전환월 제외, 2025.10.20 서울 전역 지정 이전까지) |
 | 결과 | 아파트 매매 거래건수(로그, 1차), ㎡당 가격 중위값(로그) |
 | 추정 | 이벤트 스터디 + **무작위화 추론** (처치 구가 4개뿐이라 군집-강건 표준오차를 쓰지 않음) |
+| 설계 | 1차 지정(3.24) 코호트만 보므로 **동시 도입** 이중차분. 10.20 서울 전역 지정까지 함께 보면 시차 도입이 됩니다([지금 이슈 가이드](https://causalinferencelab.github.io/policy-effect-analytics-agent/issues.html)) |
 
 ## 실행
 
 ```bash
-make flow CASE=cases/t3-land-permit-2025      # 또는 앱의 '이슈 → 데이터 → 효과' 화면
+make demo      # 이 예시를 _demo/ 에 복사해 돌립니다. 레포 파일은 바뀌지 않습니다
 ```
 
 ## 실데이터로 전환
 
 1. [공공데이터포털 15126468](https://www.data.go.kr/data/15126468/openapi.do)에서 활용신청(자동승인) → `.env`에 `DATA_GO_KR_API_KEY`
 2. `plan.yaml`에서 `data_sources` 순서를 바꿔 `molit`을 첫 번째로, `synthetic_data: false` → 이 변경만 PR로 커밋
-3. `rm data/panel.csv && make flow CASE=cases/t3-land-permit-2025`
+3. 레포 루트에서 `rm cases/t3-land-permit-2025/data/panel.csv && make flow CASE=cases/t3-land-permit-2025`
 
 `core/adapters/molit.py`는 공식 명세대로 작성했지만 아직 실제 호출로 검증하지 않았습니다. 첫 실행 때 응답 필드명을 확인하세요.
 

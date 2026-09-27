@@ -36,7 +36,7 @@ def _load(path: Path, name: str):
 
 
 def test_template_files_exist():
-    for name in ["plan.yaml", "fetch.py", "estimate.py", "report.md", "README.md"]:
+    for name in ["plan.yaml", "fetch.py", "discussion.md", "README.md"]:
         assert (TEMPLATE / name).is_file(), name
 
 
@@ -57,10 +57,20 @@ def test_template_validates_against_core_schema():
 
 def test_template_scripts_import():
     _load(TEMPLATE / "fetch.py", "tmpl_fetch")
-    _load(TEMPLATE / "estimate.py", "tmpl_estimate")
+    assert (TEMPLATE / "discussion.md").exists()
+
+
+def test_template_fetch_fails_with_clear_message(tmp_path):
+    """채우지 않은 fetch.py 는 알아볼 수 있는 안내와 함께 실패해야 한다."""
+    import subprocess
+    import sys
+
+    r = subprocess.run([sys.executable, str(TEMPLATE / "fetch.py")], capture_output=True, text=True)
+    assert r.returncode != 0 and "build_panel" in r.stderr
 
 
 def test_app_discovers_cases(tmp_path):
+    pytest.importorskip("streamlit")
     app = _load(ROOT / "app" / "streamlit_app.py", "streamlit_app")
     case = tmp_path / "gildong-demo"
     (case / "figures").mkdir(parents=True)
@@ -91,3 +101,16 @@ def test_weekly_activity_runs_on_temp_repo(tmp_path):
     stats = act.collect(tmp_path, days=7, ref=None)
     assert len(stats["cases/gildong-demo"].commits) == 1
     assert stats["cases/gildong-demo"].added == 1
+
+
+def test_plan_guide_example_validates(tmp_path):
+    """문서의 plan.yaml 예시가 실제 스키마를 통과해야 한다 (문서와 코드가 어긋나지 않게)."""
+    import re
+
+    from core.schema.plan import load_plan
+
+    text = (ROOT / "docs" / "strategy" / "plan-guide.md").read_text(encoding="utf-8")
+    block = re.search(r"```yaml\n(.*?)```", text, re.S).group(1)
+    path = tmp_path / "plan.yaml"
+    path.write_text(block, encoding="utf-8")
+    assert load_plan(path).case_id == "t3-land-permit-2025"

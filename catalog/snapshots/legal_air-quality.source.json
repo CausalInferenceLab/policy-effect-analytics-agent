@@ -1,0 +1,15 @@
+{
+  "topic": "air-quality",
+  "laws": [
+    "미세먼지 저감 및 관리에 관한 특별법"
+  ],
+  "admin_rules": [],
+  "rows": 57,
+  "by_group": {
+    "법령": 33,
+    "자치법규": 17,
+    "행정규칙": 7
+  },
+  "fetched": "2026-09-27",
+  "attribution": "출처: 법제처 국가법령정보센터 (law.go.kr)"
+}

@@ -1,0 +1,15 @@
+{
+  "topic": "traffic-safety",
+  "laws": [
+    "도로교통법"
+  ],
+  "admin_rules": [],
+  "rows": 661,
+  "by_group": {
+    "법령": 363,
+    "자치법규": 283,
+    "행정규칙": 15
+  },
+  "fetched": "2026-09-27",
+  "attribution": "출처: 법제처 국가법령정보센터 (law.go.kr)"
+}

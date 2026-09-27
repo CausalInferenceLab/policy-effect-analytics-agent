@@ -1,8 +1,8 @@
 # 분석 계획서 (사전 등록) — 데이터를 열어보기 "전에" 작성하고 먼저 PR 하세요.
 # 스키마: core/schema/plan.py  (정의되지 않은 필드는 검증 오류가 납니다)
-# 작성 요령: docs/strategy/plan-guide.md  |  완성 예시: cases/_example_night_clinic/plan.yaml
+# 작성 요령: docs/strategy/plan-guide.md  |  완성 예시: cases/t3-land-permit-2025/plan.yaml
 
-case_id: groupN-topic                # 폴더명과 동일 (소문자-하이픈)
+case_id: gildong-topic              # 폴더 이름과 똑같이 (<내ID>-<주제>, 소문자-하이픈)
 title: "정책 효과 분석 제목"
 question: >
   X 정책이 도입된 지역/집단에서, 도입되지 않은 곳 대비 Y가 변했는가?

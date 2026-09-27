@@ -29,7 +29,13 @@ def main(argv=None) -> int:
         print(
             f"{st.title:<18} {ICON.get(st.status, st.status):<5} {st.duration_s or 0:>6.2f}s  {st.message}"
         )
-    print(f"\n상태={s.status}  판정={s.verdict}  로그={s.case_dir / 'flow_log.json'}")
+    ko = {"identified": "효과 근거 있음", "conditional": "조건부", "not_identified": "판단 불가"}
+    each = ", ".join(f"{r.outcome}={ko.get(r.verdict, r.verdict)}" for r in s.results)
+    print(f"\n상태={s.status}  지표별 판정: {each or '없음'}")
+    if s.verdict:
+        print(
+            f"전체 판정(가장 보수적인 것): {ko.get(s.verdict, s.verdict)}  로그={s.case_dir / 'flow_log.json'}"
+        )
     return {"ok": 0, "warn": 0, "failed": 1}.get(s.status, 2)
 
 

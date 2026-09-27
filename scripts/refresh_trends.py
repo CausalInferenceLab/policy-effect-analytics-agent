@@ -5,6 +5,9 @@
      GITHUB_TOKEN, GITHUB_REPOSITORY 가 있을 때만 (Actions 에서는 자동으로 있음).
   2. 검색 관심도 — 네이버 데이터랩 검색어 트렌드, 최근 4주 평균(가장 높은 주제 = 100).
      NAVER_CLIENT_ID, NAVER_CLIENT_SECRET 시크릿이 있을 때만.
+     새 키는 NCP 'NAVER API HUB'(Search Trend)에서 발급합니다(2026.7.30부터 개발자센터 신규 신청 중단).
+     개발자센터에서 전에 받은 키도 2027.6.30까지 쓸 수 있어, 두 주소를 차례로 시도합니다.
+     네이버 결과값은 네이버 소유이므로 사이트에는 값이 아니라 '순위'만 보여 줍니다.
 둘 다 없으면 사이트는 '최근 시행·발표 순'으로 보여 주고 그렇게 표시한다.
 
     python scripts/refresh_trends.py
@@ -29,7 +32,15 @@ from core.discovery import load_topics  # noqa: E402
 
 OUT = ROOT / "catalog" / "snapshots" / "trends.json"
 DAYS = 30
-NAVER_URL = "https://openapi.naver.com/v1/datalab/search"
+# (주소, 헤더 이름 두 개) — API HUB 먼저, 실패하면 개발자센터
+NAVER_ENDPOINTS = [
+    (
+        "https://naverapihub.apigw.ntruss.com/search-trend/v1/search",
+        "X-NCP-APIGW-API-KEY-ID",
+        "X-NCP-APIGW-API-KEY",
+    ),
+    ("https://openapi.naver.com/v1/datalab/search", "X-Naver-Client-Id", "X-Naver-Client-Secret"),
+]
 
 
 # ─── 1. 사이트 질문 ─────────────────────────────────────────────────────────
@@ -110,6 +121,17 @@ def combine_batches(batches: list[dict[str, float]], anchor: str) -> dict[str, f
     return {k: round(100 * v / top, 1) if top else 0.0 for k, v in merged.items()}
 
 
+def naver_post(body: dict, cid: str, sec: str):
+    last = None
+    for url, h_id, h_sec in NAVER_ENDPOINTS:
+        r = requests.post(url, json=body, headers={h_id: cid, h_sec: sec}, timeout=20)
+        if r.ok:
+            return r
+        last = r
+    last.raise_for_status()
+    return last
+
+
 def fetch_naver(topics) -> dict[str, float] | None:
     cid, sec = os.getenv("NAVER_CLIENT_ID"), os.getenv("NAVER_CLIENT_SECRET")
     if not (cid and sec):
@@ -127,13 +149,7 @@ def fetch_naver(topics) -> dict[str, float] | None:
             "timeUnit": "week",
             "keywordGroups": [anchor, *chunk],
         }
-        r = requests.post(
-            NAVER_URL,
-            json=body,
-            headers={"X-Naver-Client-Id": cid, "X-Naver-Client-Secret": sec},
-            timeout=20,
-        )
-        r.raise_for_status()
+        r = naver_post(body, cid, sec)
         batches.append(
             {
                 res["title"]: (

@@ -101,6 +101,14 @@ class Event(BaseModel):
         return self.display or self.date.strftime("%Y.%m.%d")
 
 
+class Legal(BaseModel):
+    """주제의 법적 근거 씨앗. 수집기(core/adapters/legal.py)가 연혁·체계도·이력을 따라가 전부 모은다."""
+
+    laws: list[str] = []  # 근거 법률의 정확한 이름 → 시행령·시행규칙·하위 행정규칙·자치법규까지
+    admin_rules: list[str] = []  # 행정규칙 이름의 앞부분 → 지정·해제 공고 이력 (예: 투기과열지구)
+    note: str = ""  # API로 안 잡히는 것(지자체 공고, 행정지도 등)과 대신 볼 곳
+
+
 class Topic(BaseModel):
     """소셜 신호가 가리키는 '주제'. 분석 대상은 주제 안의 정책 전체다(출발 키트 B 방식)."""
 
@@ -110,6 +118,7 @@ class Topic(BaseModel):
     keywords: list[str]
     policies: list[str] = []
     collect: Collect
+    legal: Legal | None = None
     events: list[Event] = []
     gates: dict[Literal["when", "who", "what"], Gate]
     pitfalls: list[str] = []

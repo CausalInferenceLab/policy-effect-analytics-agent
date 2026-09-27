@@ -19,7 +19,6 @@ dependencies = [
   "statsmodels>=0.14",
   "pyfixest>=0.60",
   "scipy>=1.11",
-  "streamlit>=1.35",
   "requests>=2.31",
 ]
 
@@ -27,6 +26,7 @@ dependencies = [
 agent = ["langgraph>=0.2", "langchain-core>=0.3"]
 causal = ["dowhy>=0.12"]
 dev = ["pytest>=8", "ruff>=0.6", "pre-commit>=3.7"]
+app = ["streamlit>=1.35"]   # 개발용 화면(선택). 공개 사이트는 site/ 의 정적 페이지
 
 [project.urls]
 Repository = "https://github.com/CausalInferenceLab/policy-effect-analytics-agent"
