@@ -36,6 +36,8 @@ jobs:
         run: |
           ruff check .
           ruff format --check . || echo "::warning::ruff format differences (run 'ruff format .')"
+      - name: License check (no GPL/AGPL dependencies)
+        run: python scripts/check_licenses.py
       - name: Pytest
         run: pytest -q
       - name: Example flow (offline)

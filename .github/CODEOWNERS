@@ -1,27 +1,9 @@
-# CODEOWNERS — PR이 해당 경로를 수정하면 소유자에게 자동으로 리뷰 요청이 갑니다.
-# 채우는 법:
-#   1) GitHub Org > Teams 에서 팀 생성 (예: core-maintainers, group1 ... group6)
-#   2) 아래 @CausalInferenceLab/<team> 핸들을 실제 팀 이름으로 교체
-#   3) 조 폴더가 생기면 한 줄씩 추가: /cases/group3-*/  @CausalInferenceLab/group3
-#   4) 팀에 저장소 Write 권한을 부여해야 리뷰 요청이 동작합니다.
-# 규칙: 아래쪽 줄이 위쪽 줄보다 우선합니다.
+# 코드 소유자: PR이 열리면 아래 사람에게 자동으로 리뷰 요청이 갑니다.
+# 멘티 폴더(cases/<ID>-<주제>/)는 폴더를 만들 때 한 줄씩 추가합니다.
+#   예) /cases/gildong-*/   @gildong
 
-# 기본: 운영진
-*                       @CausalInferenceLab/mentors
-
-# 공통 엔진
-/core/                  @CausalInferenceLab/core-maintainers
-/tests/core/            @CausalInferenceLab/core-maintainers
-
-# 운영/인프라
-/.github/               @CausalInferenceLab/mentors
-/app/                   @CausalInferenceLab/mentors
-/cases/_template/       @CausalInferenceLab/mentors
-
-# 조별 케이스 (조 편성 후 주석 해제·수정)
-# /cases/group1-*/      @CausalInferenceLab/group1
-# /cases/group2-*/      @CausalInferenceLab/group2
-# /cases/group3-*/      @CausalInferenceLab/group3
-# /cases/group4-*/      @CausalInferenceLab/group4
-# /cases/group5-*/      @CausalInferenceLab/group5
-# /cases/group6-*/      @CausalInferenceLab/group6
+*                   @jsshin2022
+/core/              @jsshin2022
+/site/              @jsshin2022
+/catalog/           @jsshin2022
+/.github/           @jsshin2022

@@ -1,6 +1,6 @@
 # GitHub 온보딩 (처음 쓰는 분용)
 
-명령어는 그대로 복사해서 실행하세요. `group3`, `youth-rent`만 자기 조/주제로 바꾸면 됩니다.
+명령어는 그대로 복사해서 실행하세요. `gildong`은 자기 GitHub ID로, `local-currency`는 자기 주제로 바꾸면 됩니다.
 
 ## 0. 준비 (1회)
 
@@ -37,18 +37,18 @@ make check                                       # 통과하면 준비 끝
 ```bash
 git switch main
 git pull
-git switch -c group3/plan
+git switch -c gildong/plan
 ```
 
 ## 4. 작업하고 커밋하기
 
 ```bash
-cp -r cases/_template cases/group3-youth-rent    # 첫 작업일 때만
+cp -r cases/_template cases/gildong-local-currency    # 첫 작업일 때만
 # ... plan.yaml 수정 ...
 git status                                       # 무엇이 바뀌었는지 확인
-git add cases/group3-youth-rent
-git commit -m "plan(group3-youth-rent): 질문과 처치·대조 정의"
-git push -u origin group3/plan                   # 두 번째부터는 git push
+git add cases/gildong-local-currency
+git commit -m "plan(gildong-local-currency): 질문과 처치·대조 정의"
+git push -u origin gildong/plan                   # 두 번째부터는 git push
 ```
 
 - `git add .` 대신 **자기 폴더만** add 하는 습관을 들이세요 (`.env`, 원자료 실수 방지).
@@ -62,14 +62,14 @@ gh pr create --draft --fill              # 아직 작업 중이면 Draft
 
 1. PR 본문 체크리스트를 채웁니다.
 2. CI(초록 체크)를 기다립니다. 빨간 X면 `Details`를 눌러 로그를 확인하고, 고쳐서 다시 push 하면 PR이 자동 갱신됩니다.
-3. 조원 또는 멘토 1명 **Approve** 후 **Squash and merge**.
+3. 멘토 또는 다른 멘티 1명 **Approve** 후 **Squash and merge**.
 
 ## 6. 병합 후 정리
 
 ```bash
 git switch main
 git pull
-git branch -d group3/plan
+git branch -d gildong/plan
 ```
 
 ## 자주 막히는 곳
@@ -80,5 +80,5 @@ git branch -d group3/plan
 | `rejected ... fetch first` | `git pull --rebase` 후 다시 push |
 | 충돌(conflict) | 충돌 파일에서 `<<<<<<<` 구간 정리 → `git add 파일` → `git rebase --continue` |
 | `.env`를 실수로 커밋 | push 전이면 `git reset HEAD~1`. **push 했다면 즉시 키를 재발급**하고 운영진에게 알림 |
-| main에 커밋해버림 | `git switch -c group3/fix` 로 브랜치를 만든 뒤 push (main은 보호되어 push 안 됨) |
+| main에 커밋해버림 | `git switch -c gildong/fix` 로 브랜치를 만든 뒤 push (main은 보호되어 push 안 됨) |
 | CI의 ruff 에러 | 로컬에서 `make format` 후 다시 커밋 |

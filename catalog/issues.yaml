@@ -1,6 +1,6 @@
 # 지금 이슈인 정책 — 효과 추정 가이드
 # 이슈는 '주제'에 속합니다(topic). 분석은 이슈 하나가 아니라 그 주제의 정책 전체를 대상으로 하되,
-# 이 목록은 조가 어디서부터 볼지 정하는 출발점입니다. 시행일은 모두 source 링크에서 확인했습니다.
+# 이 목록은 멘티가 어디서부터 볼지 정하는 출발점입니다. 시행일은 모두 source 링크에서 확인했습니다.
 # design: did_simultaneous(동시 도입 이중차분) | did_staggered(시차 도입) | scm(합성통제) | its(단절 시계열)
 # datasets: catalog/datasets.yaml 의 id
 version: 1

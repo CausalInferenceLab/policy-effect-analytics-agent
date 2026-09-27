@@ -1,11 +1,11 @@
 # 케이스 템플릿
 
 ```bash
-git switch -c group3/plan
-cp -r cases/_template cases/group3-youth-rent   # <조>-<주제>, 소문자-하이픈
+git switch -c <내ID>/plan
+cp -r cases/_template cases/<내ID>-<주제>   # 예: cases/gildong-local-currency (소문자-하이픈)
 ```
 
-복사한 뒤 이 README는 조의 메모로 바꿔도 됩니다.
+복사한 뒤 이 README는 내 분석 메모로 바꿔도 됩니다.
 
 ## 4단계
 
@@ -17,8 +17,8 @@ cp -r cases/_template cases/group3-youth-rent   # <조>-<주제>, 소문자-하�
 | 4. 리포트 | `report.md` | 결과·한계·시사점 | `make app`에서 카드로 보임 |
 
 ```bash
-python cases/group3-youth-rent/fetch.py
-python cases/group3-youth-rent/estimate.py
+python cases/<내ID>-<주제>/fetch.py
+python cases/<내ID>-<주제>/estimate.py
 make app
 ```
 

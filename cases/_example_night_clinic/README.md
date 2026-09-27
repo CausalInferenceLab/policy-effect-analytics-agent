@@ -19,8 +19,8 @@ python cases/_example_night_clinic/estimate.py   # figures/*.png, report.md, res
 | `estimate.py` | `core.pipeline.run_plan` 실행 + 보조 DiD + 그림 + 리포트 |
 | `report.md` | 자동 생성 리포트 (판정·경고가 수치보다 먼저) |
 
-## 우리 조 케이스로 바꾸려면
-1. 이 폴더를 `cases/<조이름>_<주제>/` 로 복사 (또는 `cases/_template/` 사용)
+## 내 케이스로 바꾸려면
+1. 이 폴더를 `cases/<내ID>-<주제>/` 로 복사 (또는 `cases/_template/` 사용)
 2. `plan.yaml` 을 먼저 쓴다 — 특히 `control.rationale` 과 `abstention` 은 데이터 보기 **전에** 확정
 3. `fetch.py` 를 실데이터 어댑터로 교체하고 `synthetic_data: false`, `data_sources.license` 를 공공누리 유형으로
 4. 실제 지정 시점이 지역마다 다르면 `treatment.first_treat_col` 사용 → 시차도입 경고가 뜨는 것이 정상.

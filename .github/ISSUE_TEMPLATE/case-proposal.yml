@@ -1,5 +1,5 @@
 name: 케이스 제안
-description: 분석할 정책/사회 문제를 제안합니다 (조 주제 후보)
+description: 내가 분석할 정책·사회 문제를 제안합니다
 title: "[케이스] "
 labels: ["case-proposal"]
 body:
@@ -8,10 +8,10 @@ body:
       value: |
         결과를 보기 전에 질문을 먼저 적는 것이 목표입니다. 모르는 칸은 "미정"으로 두세요.
   - type: input
-    id: group
+    id: owner
     attributes:
-      label: 조
-      placeholder: group3
+      label: 담당자 GitHub ID
+      placeholder: gildong
     validations:
       required: true
   - type: textarea

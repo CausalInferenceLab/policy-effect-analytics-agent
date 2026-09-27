@@ -62,7 +62,7 @@ def test_template_scripts_import():
 
 def test_app_discovers_cases(tmp_path):
     app = _load(ROOT / "app" / "streamlit_app.py", "streamlit_app")
-    case = tmp_path / "group1-demo"
+    case = tmp_path / "gildong-demo"
     (case / "figures").mkdir(parents=True)
     (case / "plan.yaml").write_text("title: Demo\nquestion: q?\n", encoding="utf-8")
     (case / "report.md").write_text("# Demo", encoding="utf-8")
@@ -71,7 +71,7 @@ def test_app_discovers_cases(tmp_path):
     (tmp_path / "_template" / "plan.yaml").write_text("title: T\n", encoding="utf-8")
 
     cases = app.discover_cases(tmp_path)
-    assert [c.slug for c in cases] == ["group1-demo"]
+    assert [c.slug for c in cases] == ["gildong-demo"]
     assert cases[0].title == "Demo" and cases[0].report and len(cases[0].figures) == 1
     assert len(app.discover_cases(tmp_path, include_templates=True)) == 2
     # the real repo has at least the template
@@ -82,12 +82,12 @@ def test_weekly_activity_runs_on_temp_repo(tmp_path):
     act = _load(ROOT / "scripts" / "weekly_activity.py", "weekly_activity")
     git = ["git", "-C", str(tmp_path), "-c", "user.name=t", "-c", "user.email=t@t"]
     subprocess.run(["git", "init", "-q", str(tmp_path)], check=True)
-    f = tmp_path / "cases" / "group1-demo" / "plan.yaml"
+    f = tmp_path / "cases" / "gildong-demo" / "plan.yaml"
     f.parent.mkdir(parents=True)
     f.write_text("a: 1\n")
     subprocess.run([*git, "add", "."], check=True)
-    subprocess.run([*git, "commit", "-qm", "plan(group1-demo): init"], check=True)
+    subprocess.run([*git, "commit", "-qm", "plan(gildong-demo): init"], check=True)
 
     stats = act.collect(tmp_path, days=7, ref=None)
-    assert len(stats["cases/group1-demo"].commits) == 1
-    assert stats["cases/group1-demo"].added == 1
+    assert len(stats["cases/gildong-demo"].commits) == 1
+    assert stats["cases/gildong-demo"].added == 1

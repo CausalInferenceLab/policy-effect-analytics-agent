@@ -15,6 +15,7 @@
   }
 }
 * { box-sizing: border-box }
+[hidden] { display: none !important }
 html { scroll-behavior: smooth }
 body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.7 var(--sans); word-break: keep-all; overflow-wrap: break-word }
 a { color: var(--accent) }
@@ -63,10 +64,37 @@ section { padding: 52px 0 6px; scroll-margin-top: 60px }
 .gates, .tags { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0 4px }
 .dots { letter-spacing: 2px; color: var(--accent) }
 
-.ask { margin-top: 26px }
+.ask { margin-top: 26px; max-width: 820px }
 .ask textarea, .search input { width: 100%; font: inherit; font-size: 17px; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--hair); background: var(--surface); color: var(--ink) }
-.ask textarea { min-height: 76px }
-.ask textarea:focus, .search input:focus, select:focus { outline: 2px solid var(--accent); border-color: transparent }
+.ask textarea { min-height: 64px; resize: vertical }
+.ask textarea:focus, .search input:focus, select:focus, .ai-grid input:focus { outline: 2px solid var(--accent); border-color: transparent }
+.chat-form { display: flex; gap: 8px; align-items: flex-end }
+.chat-form .btn { border: 0; cursor: pointer; flex: none; height: 48px }
+.chat-meta { display: flex; gap: 6px 12px; flex-wrap: wrap; align-items: center; margin: 8px 0 0 }
+.linkish { background: none; border: 0; padding: 0; font: inherit; font-size: 14px; color: var(--accent); cursor: pointer; text-decoration: underline }
+.chat-log { display: flex; flex-direction: column; gap: 10px; max-height: 60vh; overflow-y: auto; margin: 0 0 12px; padding: 4px 2px }
+.msg { max-width: 92%; border-radius: 14px; padding: 10px 14px; border: 1px solid var(--hair); background: var(--surface) }
+.msg.user { align-self: flex-end; background: var(--accent-soft); border-color: transparent }
+.msg .who { font-size: 12px; font-weight: 700; color: var(--muted); margin-bottom: 2px }
+.msg .body p { margin: 0 0 6px } .msg .body p:last-child { margin-bottom: 0 }
+.msg .body ul, .msg .body ol { margin: 4px 0 8px }
+.msg .chips { margin: 8px 0 0 }
+pre.code { background: var(--sunk); border-radius: 10px; padding: 10px 12px; overflow-x: auto; font: 12.5px/1.5 var(--mono); margin: 6px 0 }
+pre.code code { background: none; padding: 0 }
+.ai-panel { margin-top: 10px; padding: 14px }
+.ai-grid { display: grid; gap: 8px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) }
+.ai-grid label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; color: var(--muted) }
+.ai-grid input { font: inherit; font-size: 14px; padding: 6px 10px; border-radius: 10px; border: 1px solid var(--hair); background: var(--surface); color: var(--ink) }
+.ai-panel .btn { border: 0; cursor: pointer }
+.ai-panel .btn.ghost { border: 1px solid var(--hair) }
+.rank { margin-top: 14px; background: var(--surface); border: 1px solid var(--hair); border-radius: 14px; padding: 12px 14px }
+.rank-head { display: flex; gap: 4px 10px; flex-wrap: wrap; align-items: baseline }
+.rank-list { list-style: none; padding: 0; margin: 8px 0 0; display: flex; flex-direction: column; gap: 2px }
+.rank-item { width: 100%; display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; gap: 10px; align-items: center; text-align: left; background: none; border: 0; border-radius: 10px; padding: 7px 8px; font: inherit; color: var(--ink); cursor: pointer }
+.rank-item:hover { background: var(--sunk) }
+.rank-item .rn { font: 800 16px var(--mono); color: var(--accent); text-align: center }
+.rank-item .rt { font-weight: 600 }
+.rank-item .rm { font-size: 12.5px; color: var(--muted); white-space: nowrap }
 .chips { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0 }
 .chip { border: 1px solid var(--hair); background: var(--surface); color: var(--ink2); border-radius: 999px; padding: 4px 12px; font: inherit; font-size: 13.5px; cursor: pointer }
 .chip[aria-pressed=true] { background: var(--ink); color: var(--paper); border-color: var(--ink) }
@@ -113,9 +141,30 @@ dl.terms { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, min
 dl.terms div { background: var(--surface); border: 1px solid var(--hair); border-radius: 12px; padding: 12px 14px }
 dl.terms dt { font-weight: 700 } dl.terms dd { margin: 4px 0 0; color: var(--ink2); font-size: 14.5px }
 
+.loop { background: var(--surface); border: 1px solid var(--hair); border-radius: 16px; padding: 16px }
+.loop h3 { margin: 0 0 12px }
+.steps { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr auto 1fr; gap: 8px; align-items: stretch }
+.step { background: var(--sunk); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 4px }
+.step .n { font: 700 12px var(--mono); color: var(--accent) }
+.step p { margin: 0; font-size: 14px; color: var(--ink2); flex: 1 }
+.step .where { font-size: 11.5px; color: var(--muted); background: none; padding: 0; word-break: break-all }
+.arrow { align-self: center; color: var(--accent); font-weight: 800 }
+.loop-join { text-align: center; color: var(--muted); font-size: 14px; margin: 10px 0 }
+.layer { display: grid; grid-template-columns: minmax(110px, 150px) 1fr; gap: 14px; align-items: center }
+.cells { display: grid; gap: 8px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)) }
+.cell { background: var(--sunk); border-radius: 10px; padding: 8px 10px }
+.cell b { font-size: 14px }
+
 footer { margin-top: 64px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--hair); padding-top: 16px }
 @media (max-width: 640px) {
   .list .topic { grid-template-columns: minmax(0, 1fr) }
   .hero { padding-top: 36px }
   .kv { grid-template-columns: minmax(0, 1fr) }
+  .chat-form { flex-direction: column; align-items: stretch }
+  .rank-item { grid-template-columns: 24px minmax(0, 1fr) }
+  .rank-item .rm { grid-column: 2; white-space: normal }
+  .msg { max-width: 100% }
+  .steps { grid-template-columns: minmax(0, 1fr) }
+  .arrow { transform: rotate(90deg); justify-self: center }
+  .layer { grid-template-columns: minmax(0, 1fr) }
 }
