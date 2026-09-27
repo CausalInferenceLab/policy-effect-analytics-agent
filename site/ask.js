@@ -84,13 +84,18 @@
     const ds = CAT.datasets.filter((d) => d.topics.includes(tp.id));
     const cnt = (r) => ds.filter((d) => d.roles.includes(r)).length;
     const gates = Object.entries(tp.gates).map(([k, g]) => `<li>${GATE[k]}: <b>${STATUS[g.status]}</b> — ${esc(g.note)}</li>`).join("");
+    const L = tp.legal;
+    const legal = L && (L.laws.length || L.admin_rules.length)
+      ? `<p>관련 법령은 법제처에서 자동으로 모읍니다: ${[...L.laws, ...L.admin_rules].map(esc).join(" · ")}${L.count ? ` (연혁·체계도 포함 ${L.count}건)` : ""}.</p>` +
+        (L.recent.length ? `<ul>${L.recent.map((r) => `<li>${esc(r.announced)} ${esc(r.name)} ${esc(r.change)}</li>`).join("")}</ul>` : "")
+      : (L && L.note ? `<p class="muted small">${esc(L.note)}</p>` : "");
     const iss = issues.length
       ? `<p>이 주제에서 지금 이슈인 정책은 ${issues.length}개입니다.</p><ul>${issues.map((i) => `<li><a href="issues.html#${i.id}">${esc(i.name)}</a> <span class="muted small">(${esc(i.effective)})</span></li>`).join("")}</ul>`
       : "";
     say(
       `<p><b>${esc(tp.name)}</b> 주제로 보입니다. <span class="muted small">(찾은 말: ${m.hits.map(esc).join(", ")})</span></p>
        <p>질문 하나만 보지 않고, 이 주제의 정책을 모두 모아 비교합니다. ${esc(tp.question)}</p>${iss}
-       <p>분석 전에 확인할 세 가지:</p><ul>${gates}</ul>
+       ${legal}<p>분석 전에 확인할 세 가지:</p><ul>${gates}</ul>
        <p>받을 수 있는 데이터 ${ds.length}개 — 처치 ${cnt("treatment")} · 결과 ${cnt("outcome")} · 통제 ${cnt("covariate")}</p>
        <p>무엇부터 해볼까요?</p>`,
       [
@@ -118,8 +123,9 @@
     if (!pits.length) return say("아직 정리된 주의점이 없습니다. 공통으로는 ① 정책 전 추세가 나란했는지, ② 같은 시기의 다른 정책, ③ 옆 지역으로 효과가 번지는지를 먼저 확인합니다.");
     say(`<ul>${pits.map((p) => `<li>${esc(p)}</li>`).join("")}</ul>`, [["분석 계획 초안", () => planReply(issue)]]);
   }
-  const DESIGN = { did_simultaneous: "event_study", did_staggered: "event_study", scm: "did", its: "its" };
-  const DESIGN_KO = { did_simultaneous: "이중차분", did_staggered: "시차 도입 이중차분(준비 중)", scm: "합성통제(준비 중)", its: "단절 시계열" };
+  // 추정 모듈이 준비된 방법으로 초안을 만든다. 시차 도입(4주차)·합성통제(5주차)는 준비되면 바꾼다.
+  const DESIGN = { did_simultaneous: "event_study", did_staggered: "event_study", scm: "event_study", its: "its" };
+  const DESIGN_KO = { did_simultaneous: "이중차분", did_staggered: "시차 도입 이중차분(준비 중)", scm: "합성통제 설계 — 모듈 준비 중(5주차)이라 초안은 이벤트 스터디로 둠", its: "단절 시계열" };
   function planReply(issue) {
     const tp = state.topic;
     issue = issue || state.issue || (tp && CAT.issues.find((i) => i.topic === tp.id));
@@ -185,7 +191,7 @@
   // ─── AI 모드: 사용자 키로 브라우저에서 직접 호출 ─────────────────────────
   function systemPrompt() {
     const compact = {
-      topics: CAT.topics.map((t) => ({ id: t.id, name: t.name, question: t.question, gates: t.gates })),
+      topics: CAT.topics.map((t) => ({ id: t.id, name: t.name, question: t.question, gates: t.gates, legal: t.legal })),
       issues: CAT.issues.map((i) => ({ id: i.id, name: i.name, topic: i.topic, effective: i.effective, treatment: i.treatment, control: i.control, outcomes: i.outcomes, design: i.design, datasets: i.datasets, pitfalls: i.pitfalls })),
       datasets: CAT.datasets.map((d) => ({ id: d.id, name: d.name, provider: d.provider, roles: d.roles, space: d.space, time: d.time, access: d.access, approval: d.approval, url: d.url, topics: d.topics })),
     };
@@ -195,7 +201,8 @@
 2. 분석 전에 세 가지를 확인한다: 언제 시작했나(공식 날짜), 누가 받았나(받은 곳과 안 받은 곳), 무엇으로 재나(전후 데이터).
 3. 데이터셋은 아래 카탈로그에 있는 것만 이름과 URL로 추천한다. 카탈로그에 없으면 "카탈로그에 없음, 공공데이터포털에서 찾아 제안해 달라"고 말한다. 데이터 ID나 날짜를 지어내지 않는다.
 4. 효과가 '있다/없다'를 단정하지 않는다. 너는 결과를 계산하지 않는다. 방법은 이중차분·시차 도입 이중차분·합성통제·단절 시계열 중에서 데이터 모양에 맞게 제안만 한다.
-5. 이 프로젝트는 공식 평가가 아니다. 공식 결과처럼 말하지 않는다.
+5. 이 프로젝트는 공식 평가가 아니다. 공식 결과처럼 말하지 않는다. 법률 자문도 하지 않는다: 법령은 '언제 무엇이 바뀌었나'를 찾는 데만 쓰고, 개인 상황에 대한 법 해석 요청에는 전문가 상담을 권한다.
+7. 첫 답에서 네가 AI라는 것을 한 문장으로 밝힌다.
 6. 카탈로그에 없는 새 주제·데이터·이슈를 사용자와 정리했다면 답 마지막에 다음 형식의 블록을 붙인다:
 \`\`\`proposal
 {"type":"topic|dataset|issue","title":"...","summary":"...","when":"...","who":"...","what":"...","datasets":["url 또는 이름"]}
@@ -311,7 +318,7 @@ ${JSON.stringify(compact)}`;
     $("#ai-key").value = "";
     const ok = $("#ai-provider").value !== "anthropic" || state.key;
     state.mode = ok ? "ai" : "guide";
-    $("#mode").textContent = ok ? "AI 모드" : "가이드 모드";
+    $("#mode").textContent = ok ? "AI 모드 · 답은 AI가 만듭니다" : "가이드 모드";
     $("#mode").className = "badge " + (ok ? "go" : "info");
     panel.hidden = true;
   };

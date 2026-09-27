@@ -24,8 +24,8 @@
 ```bash
 gh repo clone CausalInferenceLab/policy-effect-analytics-agent
 cd policy-effect-analytics-agent
-uv venv -p 3.11 && source .venv/bin/activate   # Windows: .venv\Scripts\activate
-make install                                     # make 없으면: uv pip install -e ".[dev]"
+python -m venv .venv && source .venv/bin/activate   # Python 3.11 이상. Windows: .venv\Scripts\activate
+pip install -e ".[dev]"                               # uv를 쓴다면: uv venv -p 3.11 && uv pip install -e ".[dev]"
 cp .env.example .env                             # API 키 입력 (커밋되지 않음)
 make check                                       # 통과하면 준비 끝
 ```

@@ -29,11 +29,27 @@ class MissingAPIKey(RuntimeError):
     pass
 
 
+def load_env(path: Path | None = None) -> None:
+    """레포 루트의 .env 를 읽어 아직 없는 환경변수만 채운다 (python-dotenv 없이). .env 는 커밋하지 않는다."""
+    path = path or Path(__file__).resolve().parents[2] / ".env"
+    if not path.exists():
+        return
+    for line in path.read_text(encoding="utf-8").splitlines():
+        line = line.strip()
+        if not line or line.startswith("#") or "=" not in line:
+            continue
+        k, v = line.split("=", 1)
+        v = v.strip().strip('"').strip("'")
+        if k.strip() and v and not os.getenv(k.strip()):
+            os.environ[k.strip()] = v
+
+
 class BaseAdapter(ABC):
     meta: SourceMeta
     api_key_env: str | None = None  # 필요한 환경변수 이름 (예: KOSIS_API_KEY)
 
     def api_key(self) -> str:
+        load_env()
         key = os.getenv(self.api_key_env or "", "")
         if not key:
             raise MissingAPIKey(

@@ -1,0 +1,15 @@
+{
+  "topic": "birth-marriage",
+  "laws": [
+    "인구전략기본법",
+    "저출산ㆍ고령사회기본법"
+  ],
+  "admin_rules": [],
+  "rows": 40,
+  "by_group": {
+    "법령": 23,
+    "자치법규": 17
+  },
+  "fetched": "2026-09-27",
+  "attribution": "출처: 법제처 국가법령정보센터 (law.go.kr)"
+}

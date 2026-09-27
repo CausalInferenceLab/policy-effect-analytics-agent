@@ -1,0 +1,15 @@
+{
+  "topic": "retail-hours",
+  "laws": [
+    "유통산업발전법"
+  ],
+  "admin_rules": [],
+  "rows": 540,
+  "by_group": {
+    "자치법규": 397,
+    "법령": 131,
+    "행정규칙": 12
+  },
+  "fetched": "2026-09-27",
+  "attribution": "출처: 법제처 국가법령정보센터 (law.go.kr)"
+}

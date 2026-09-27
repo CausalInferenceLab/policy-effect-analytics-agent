@@ -21,7 +21,16 @@
 | **요즘 궁금해하는 주제** | 대화창 아래 순위입니다. 최근 30일 사이트 질문 수 → 네이버 검색 관심도(키가 있을 때) → 최근 시행·발표일 순이고, 어떤 기준을 썼는지 화면에 적습니다. |
 | **지금 이슈** | 토지거래허가구역, 6·27 대출 한도, 민생회복 소비쿠폰, 고유가 피해지원금, K-패스 '모두의 카드' 등 6개 정책의 분석 가이드입니다. |
 | **데이터 지도** | 공공데이터 35개를 역할(누가 언제 받았나 / 무엇이 변했나 / 다른 요인), 단위, 받는 법, 이용 조건으로 정리했습니다. |
-| **주제 8개** | 주제마다 정책 타임라인, 세 가지 확인 상태, 데이터, 분석 예시가 있습니다. |
+| **주제 8개** | 주제마다 정책 타임라인, 세 가지 확인 상태, **관련 법령·행정규칙**(법제처 자동 수집), 데이터, 분석 예시가 있습니다. |
+
+## 데이터는 어디서 오나
+
+| 무엇 | 어디서 | 어떻게 |
+|---|---|---|
+| **정책이 언제, 누구에게** (법령·행정규칙·조례) | 법제처 국가법령정보 공동활용 API | 주제마다 근거 법률만 적으면 연혁·하위 규정·조례·지정/해제 공고를 모두 모읍니다. 매주 바뀐 것은 `law-change` 이슈로 알립니다. [자세히](catalog/README.md#법령정책-온톨로지-법제처-자동-수집) |
+| **정책 발표** (지자체 공고, 대출 규제 같은 행정지도) | 정부 보도자료(korea.kr) 등 | 법령 DB에 없어 `topics.yaml`의 `events`에 출처와 함께 사람이 적습니다 |
+| **무엇이 달라졌나** (결과) · **다른 요인** (통제) | 공공데이터포털, KOSIS, 서울 열린데이터광장 등 35개 | [데이터 지도](catalog/datasets.yaml)에 역할·단위·받는 법·이용 조건을 적고, 각 케이스의 `fetch.py`가 받습니다 |
+| **사람들이 궁금해하는 것** | 사이트 질문(GitHub 이슈), 네이버 검색어트렌드(선택) | 주제를 고르는 데만 씁니다 |
 
 ## 대화가 오픈소스가 되는 길
 
@@ -52,10 +61,10 @@
 git clone https://github.com/CausalInferenceLab/policy-effect-analytics-agent.git
 cd policy-effect-analytics-agent
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
-pip install -e ".[dev]"
+pip install -e ".[dev]"                               # Python 3.11 이상
 
-make flow CASE=cases/t3-land-permit-2025                 # 토지거래허가구역 예시를 6단계로 실행
-python site/build.py && python -m http.server -d _site   # 사이트를 http://localhost:8000 에서 보기
+make demo      # 토지거래허가구역 예시를 연습용 폴더(_demo/)에서 6단계로 실행. 레포 파일은 바뀌지 않음
+make site      # 사이트를 http://localhost:8000 에서 보기
 ```
 
 API 키 없이 돌아갑니다. 실제 데이터를 받으려면 `.env.example`을 `.env`로 복사해 키를 넣으세요. `.env`는 커밋되지 않습니다.
@@ -66,7 +75,9 @@ API 키 없이 돌아갑니다. 실제 데이터를 받으려면 `.env.example`�
 
 1. **주제 고르기**: 사이트 대화창·순위·지금 이슈에서 고르고 "케이스 제안" 이슈를 엽니다.
 2. **계획 올리기**: `cp -r cases/_template cases/<내ID>-<주제>`로 내 폴더를 만들고 `plan.yaml`을 써서 PR을 올립니다. 대화창의 "분석 계획 초안"을 출발점으로 써도 됩니다. 쓰는 법: [계획 작성 가이드](docs/strategy/plan-guide.md)
-3. **실행하고 공개**: `make flow CASE=cases/<내ID>-<주제>`로 돌리고 결과를 PR로 올립니다. 합쳐지면 사이트에 자동으로 올라옵니다.
+3. **실행하고 공개**: `fetch.py`로 `data/panel.csv`를 만들고 `make flow CASE=cases/<내ID>-<주제>`로 돌립니다. 해석은 `discussion.md`에 씁니다. 합쳐지면 사이트에 자동으로 올라옵니다.
+
+`make flow`는 plan.yaml이 커밋되어 있지 않으면 계산하지 않습니다(사전 등록). 사이트 질문과 법령 변경 이슈는 담당자 없이 구성원 모두가 봅니다.
 
 규칙은 세 가지입니다. 브랜치는 `<내ID>/<작업>`, 수정은 내 폴더만, 합치기는 리뷰 1명과 자동 검사 통과 뒤. 자세한 내용: [멘티 참여 가이드](docs/ops/mentee-guide.md) · [CONTRIBUTING](CONTRIBUTING.md) · [GitHub가 처음이라면](docs/ops/github-onboarding.md)
 
@@ -77,15 +88,16 @@ API 키 없이 돌아갑니다. 실제 데이터를 받으려면 `.env.example`�
 | [`cases/`](cases/) | 멘티별 분석 폴더 (`<내ID>-<주제>`, `_template`에서 시작) | 폴더 주인 |
 | [`catalog/`](catalog/) | 주제 · 이슈 · 데이터셋 목록 (데이터 지도) | 누구나 (PR) |
 | [`site/`](site/) | 공개 사이트와 대화창(`ask.js`) | 메인테이너 |
-| [`scripts/`](scripts/) | 조례 목록 · 순위 갱신, 라이선스 확인, 활동 확인 | 메인테이너 |
-| [`core/`](core/) | 주제 찾기(`discovery`) · 수집기(`adapters`) · 계산(`estimators`) · 6단계 실행(`agent`) | 메인테이너 |
+| [`scripts/`](scripts/) | 법령 · 조례 · 순위 갱신, 법령 변경 감지, 라이선스 · 활동 확인 | 메인테이너 |
+| [`core/`](core/) | 주제 찾기(`discovery`) · 수집기(`adapters`, 법령 온톨로지 포함) · 계산(`estimators`) · 6단계 실행(`agent`) | 메인테이너 |
+| `app/` | (선택) 개발용 Streamlit 화면. `pip install -e ".[app]"` 후 `make app` | 메인테이너 |
 | [`docs/`](docs/) | 국내 사례, 주제 고르기, 계획 작성법, 운영 가이드 | 운영진 |
 
 ## 지금 상태와 필요한 것
 
-- **완성**: 대화창(가이드 · 내 AI 키) · 대화 → 이슈 · 주제 순위 · 데이터 지도 · 6단계 실행 · 계획 커밋 확인 · 이중차분/단절 시계열 · 정책 지역이 적을 때의 무작위화 추론 · 과장 표현 차단 · 사이트 자동 공개(매일)
-- **키 대기**: 국토부 실거래가(실제 데이터 전환) · 법제처 조례 자동 수집(`LAW_OC`) · 순위의 검색 관심도(`NAVER_CLIENT_ID/SECRET`, 선택). 모두 레포 Settings → Secrets에만 넣습니다.
-- **결정 필요**: 키 없는 사람도 AI 대화를 쓰게 할지(사용량 제한이 있는 작은 중계 서버와 비용 부담 주체가 필요)
+- **완성**: 대화창(가이드 · 내 AI 키) · 대화 → 이슈 · 주제 순위 · 데이터 지도 · 법령 온톨로지(7개 주제 3,500여 건, 매주 변경 알림) · 6단계 실행 · 계획 커밋 확인 · 이중차분/단절 시계열 · 정책 지역이 적을 때의 무작위화 추론 · 과장 표현 차단 · 사이트 자동 공개(매일)
+- **키 대기**: 국토부 실거래가(실제 데이터 전환) · 법제처 매일 갱신(`LAW_OC`) · 순위의 검색 관심도(`NAVER_CLIENT_ID/SECRET`, 선택). 모두 레포 Settings → Secrets에만 넣습니다.
+- **결정 필요**: 키 없는 사람의 AI 대화 (권장: 구성원은 이슈에서 `@claude`로 답 받기, 공개 방문자용 중계 서버는 필요할 때만)
 - **다음**: 시차 도입 이중차분(4주차) · 합성통제(5주차) · 공공데이터포털 검색을 공식 API로 전환 · 검색량으로 "미리 반응했나" 점검
 
 ## 관련 프로젝트
@@ -95,6 +107,7 @@ API 키 없이 돌아갑니다. 실제 데이터를 받으려면 `.env.example`�
 | 프로젝트 | 무엇을 | 우리와의 관계 |
 |---|---|---|
 | [CAIS (causal-agent)](https://github.com/causalNLP/causal-agent), [Causal-Copilot](https://github.com/Lancelot39/Causal-Copilot) | LLM 인과 분석 에이전트 (MIT) | 범용 도구. 우리는 한국 공공데이터 · 정책 시작일 · 사전 등록에 집중 |
+| [korean-law-mcp](https://github.com/chrisryugj/korean-law-mcp) | 법제처 API를 AI 도구(MCP)로 묶은 서버 (MIT) | 법령 조회가 겹침. Claude로 법령을 탐색할 때 함께 쓰면 좋음. 우리는 재현용 스냅샷·변경 감지·효과 추정 연결에 집중 |
 | [PublicDataReader](https://github.com/WooilJeong/PublicDataReader), [kpubdata](https://github.com/yeongseon/kpubdata), [data-go-mcp-servers](https://github.com/Koomook/data-go-mcp-servers) | 공공데이터 수집 라이브러리 · MCP 서버 (MIT · Apache-2.0) | 수집 층을 보완. 필요하면 가져다 씀 |
 | [PolicyEngine](https://github.com/PolicyEngine/policyengine-core), [OpenFisca](https://github.com/openfisca/openfisca-core) | 세금·복지 제도 사전 시뮬레이션 (AGPL-3.0) | 목적이 다름. AGPL이라 코드를 가져오지 않음 |
 | 국회예산정책처 · 기획재정부 재정사업 평가 | 공식 평가 | 우리 결과는 공식 평가가 아니며 그렇게 보이지 않게 표시 |
@@ -103,6 +116,7 @@ API 키 없이 돌아갑니다. 실제 데이터를 받으려면 `.env.example`�
 
 코드는 [MIT](LICENSE)입니다. GPL·AGPL 패키지는 필수 의존성으로 넣지 않고 CI가 확인합니다(`scripts/check_licenses.py`).
 데이터는 출처마다 이용 조건이 다르며 데이터 지도와 각 케이스의 `plan.yaml`에 적습니다. 원자료와 가공 데이터 파일은 레포에 올리지 않고 `fetch.py`로 각자 받습니다.
+법령 목록(`catalog/snapshots/legal_*.csv`)은 이름·날짜 같은 메타데이터만 담으며, 출처는 법제처 국가법령정보센터입니다. 법률 자문이 아닙니다.
 
 ---
 

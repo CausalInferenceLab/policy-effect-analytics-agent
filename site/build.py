@@ -334,6 +334,7 @@ def catalog_json(topics, policies, issues, datasets) -> str:
                 ),
                 "gates": {k: {"status": g.status, "note": g.note} for k, g in t.gates.items()},
                 "pitfalls": t.pitfalls,
+                "legal": legal_summary(t),
             }
             for t in topics
         ],
@@ -375,6 +376,26 @@ def catalog_json(topics, policies, issues, datasets) -> str:
         ],
     }
     return json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
+
+
+def legal_summary(t) -> dict | None:
+    """대화창에 보여줄 법령 요약: 근거 법률과 최근 바뀐 핵심 3건."""
+    if not t.legal:
+        return None
+    df = legal_frame(t)
+    recent = (
+        legal_core(t, df).head(3)[["name", "change", "announced"]].to_dict("records")
+        if df is not None
+        else []
+    )
+    n = int(len(df)) if df is not None else 0
+    return {
+        "laws": t.legal.laws,
+        "admin_rules": t.legal.admin_rules,
+        "note": t.legal.note,
+        "count": n,
+        "recent": recent,
+    }
 
 
 def load_trends() -> dict:
@@ -423,8 +444,9 @@ def rank_topics(topics, issues, trends: dict, today: str | None = None):
 def ranking_block(topics, issues, trends: dict, n: int = 5) -> str:
     rows, has_q, has_s, basis = rank_topics(topics, issues, trends)
     items = []
-    for k, (t, q, s, last) in enumerate(rows[:n], 1):
-        meta = ([f"질문 {q}"] if has_q else []) + ([f"검색 {s:g}"] if has_s else [])
+    for k, (t, q, _s, last) in enumerate(rows[:n], 1):
+        # 네이버 결과값은 네이버 소유라 공개하지 않고 순서에만 쓴다
+        meta = [f"질문 {q}"] if has_q else []
         meta += [f"최근 {last[:7].replace('-', '.')}"] if last else []
         items.append(
             f'<li><button type="button" class="rank-item" data-ask="{e(t.question)}">'
@@ -485,7 +507,7 @@ def index_page(topics, policies, issues, datasets) -> str:
 <button class="btn primary" type="submit">보내기</button></form>
 <div class="chat-meta"><span id="mode" class="badge info">가이드 모드</span>
 <button type="button" id="ai-toggle" class="linkish">내 AI 키로 대화하기</button>
-<span class="muted small">대화는 이 브라우저 안에서만 쓰입니다. "제안으로 올리기"를 누를 때만 GitHub 이슈 화면으로 넘어갑니다.</span></div>
+<span class="muted small">대화는 이 브라우저 안에서만 쓰입니다. "제안으로 올리기"를 누를 때만 GitHub 이슈 화면으로 넘어갑니다. 법률 자문이 아닙니다.</span></div>
 <div id="ai-panel" class="card ai-panel" hidden>
 <p class="small" style="margin:0 0 8px">키를 넣으면 이 브라우저가 AI에 직접 묻습니다. 키는 이 페이지 메모리에만 있고 저장하지 않으며, 새로고침하면 사라집니다. 공용 PC에서는 쓰지 마세요.</p>
 <div class="ai-grid">
@@ -496,7 +518,7 @@ def index_page(topics, policies, issues, datasets) -> str:
 <div class="cta" style="margin-top:10px"><button type="button" id="ai-save" class="btn primary">연결</button>
 <button type="button" id="ai-off" class="btn ghost">가이드 모드로</button></div>
 <p class="muted small" style="margin:8px 0 0">로컬 Ollama는 <code>OLLAMA_ORIGINS=https://causalinferencelab.github.io</code>로 실행해야 브라우저에서 부를 수 있습니다.
-AI도 결과를 계산하지 않습니다. 주제·데이터·계획을 함께 정리할 뿐이고, 숫자는 레포의 분석 코드가 냅니다.</p></div>
+AI도 결과를 계산하지 않습니다. 주제·데이터·계획을 함께 정리할 뿐이고, 숫자는 레포의 분석 코드가 냅니다. 법률 자문이 아닙니다.</p></div>
 <div class="chips" aria-label="예시">{chips}</div>
 {ranking_block(topics, issues, load_trends())}
 </div>
@@ -744,6 +766,76 @@ def data_page(datasets, topics, issues) -> str:
 
 
 # ─── 주제 페이지 ──────────────────────────────────────────────────────────────
+def legal_frame(t) -> pd.DataFrame | None:
+    """법제처에서 모은 주제의 법령·행정규칙·자치법규 스냅샷 (scripts/refresh_legal.py)."""
+    path = ROOT / "catalog" / "snapshots" / f"legal_{t.id}.csv"
+    if not t.legal or not path.exists():
+        return None
+    return pd.read_csv(path, dtype=str).fillna("")
+
+
+def legal_core(t, df: pd.DataFrame) -> pd.DataFrame:
+    """핵심만: 근거 법률 자체의 개정 + 행정규칙 지정·해제 이력. 체계도로 넓게 딸려 온 것은 뺀다."""
+    laws = set(t.legal.laws)
+    core = df[(df["relation"] == "이력") | ((df["relation"] == "연혁") & df["name"].isin(laws))]
+    return core.sort_values("announced", ascending=False)
+
+
+def legal_block(t) -> str:
+    if not t.legal or not (t.legal.laws or t.legal.admin_rules):
+        note = f"<p class='muted'>{e(t.legal.note)}</p>" if t.legal and t.legal.note else ""
+        return f"<h3 style='margin-top:22px'>관련 법령</h3>{note}" if note else ""
+    df = legal_frame(t)
+    seeds = " · ".join(e(x) for x in t.legal.laws + t.legal.admin_rules)
+    head = (
+        "<h3 style='margin-top:22px'>관련 법령 · 행정규칙 (법제처 자동 수집)</h3>"
+        f"<p class='muted'>출발점: {seeds}. 여기서 연혁·체계도·지정/해제 이력을 따라가 전부 모읍니다.</p>"
+    )
+    if df is None:
+        return head + (
+            "<p class='card'>법제처 인증값이 레포에 등록되면 다음 갱신 때 채워집니다.</p>"
+        )
+    cnt = df["group"].value_counts()
+    src = ROOT / "catalog" / "snapshots" / f"legal_{t.id}.source.json"
+    fetched = json.loads(src.read_text(encoding="utf-8")).get("fetched", "") if src.exists() else ""
+    core = legal_core(t, df).head(12)
+    today = pd.Timestamp.today().strftime("%Y-%m-%d")
+    rows = "".join(
+        f"<tr><td>{e(r.announced)}</td><td>{e(r.kind)}</td><td><a href='{e(r.url)}'>{e(r.name)}</a></td>"
+        f"<td>{e(r.change)}"
+        + (" <span class='badge warn'>시행 예정</span>" if r.effective > today else "")
+        + f"</td><td>{e(r.effective)}</td></tr>"
+        for r in core.itertuples()
+    )
+    wide = df[df["relation"] == "체계도"]["group"].value_counts()
+    csv = f"{REPO}/blob/main/catalog/snapshots/legal_{t.id}.csv"
+    note = f"<p class='muted small'>{e(t.legal.note)}</p>" if t.legal.note else ""
+    return (
+        head
+        + '<div class="stats" style="margin-top:8px">'
+        + "".join(
+            f'<div class="stat"><div class="v">{cnt.get(g, 0)}</div><div class="l">{lab}</div></div>'
+            for g, lab in (
+                ("법령", "법령 개정 이력"),
+                ("행정규칙", "행정규칙"),
+                ("자치법규", "자치법규(조례 등)"),
+            )
+        )
+        + "</div>"
+        + "<p style='margin:14px 0 6px'><b>최근 바뀐 핵심</b> — 근거 법률 개정과 지정·해제 공고</p>"
+        + f"<div class='tablewrap'><table><tr><th>공포·발령</th><th>종류</th><th>이름</th><th>변경</th><th>시행</th></tr>{rows}</table></div>"
+        + f"<p class='muted small'>체계도로 연결된 하위 규정 {len(df[df['relation'] == '체계도'])}건"
+        + (
+            f" (행정규칙 {wide.get('행정규칙', 0)} · 자치법규 {wide.get('자치법규', 0)})"
+            if len(wide)
+            else ""
+        )
+        + f"까지 전체 목록: <a href='{csv}'>legal_{t.id}.csv</a> · {e(fetched)} 기준 · 출처: 법제처 국가법령정보센터</p>"
+        + note
+        + "<p class='muted small'>법령 개정이 곧 처치 시점은 아닙니다. 시행일·대상을 확인해 사람이 <code>events</code>에 옮깁니다.</p>"
+    )
+
+
 def topic_page(t, policies, issues, datasets) -> str:
     by_id = {p.id: p for p in policies}
     ps = [by_id[i] for i in t.policies]
@@ -773,6 +865,7 @@ def topic_page(t, policies, issues, datasets) -> str:
                 "<p class='card'>법제처 API로 지역별 조례와 시행일을 자동으로 모을 주제입니다. "
                 "법제처 인증값이 레포에 등록되면 다음 갱신 때 채워집니다.</p>"
             )
+    body.append(legal_block(t))
     if my_issues:
         items = "".join(
             f'<li><a href="../issues.html#{i.id}">{e(i.name)}</a> <span class="muted">({e(i.effective)})</span></li>'

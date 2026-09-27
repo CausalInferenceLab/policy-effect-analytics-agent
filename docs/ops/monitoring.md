@@ -29,8 +29,9 @@ gh pr list -R $R --state all --json headRefName,author,title,state \
 gh api "repos/$R/commits?path=cases/gildong-local-currency&since=${SINCE}T00:00:00Z" \
   --jq '.[] | [.commit.author.date,.commit.author.name,.commit.message] | @tsv'
 
-# 사이트 대화창에서 올라온 질문
+# 사이트 대화창에서 올라온 질문, 법령 변경 알림
 gh issue list -R $R --label from-site
+gh issue list -R $R --label law-change
 ```
 
 ## 건강 신호
@@ -46,4 +47,4 @@ gh issue list -R $R --label from-site
 
 1. `git fetch --all && python scripts/weekly_activity.py` → 조용한 폴더 확인
 2. 열린 PR 리뷰, 3일 넘은 PR에 코멘트
-3. `from-site` 라벨 이슈 훑어보기 → 좋은 질문은 `catalog/`로 옮기기
+3. `from-site`·`law-change` 이슈는 구성원 모두가 봅니다. 멘토는 한 주 넘게 댓글이 없는 것만 챙깁니다

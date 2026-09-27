@@ -3,7 +3,7 @@ name: pages
 # main 에 반영되면 정적 대시보드(_site/)를 만들어 GitHub Pages 로 배포한다.
 # 최초 1회: Settings → Pages → Build and deployment → Source: "GitHub Actions"
 # 선택: Settings → Secrets → Actions 에 넣으면 켜지는 것 (값은 절대 레포에 적지 않는다)
-#   LAW_OC                                  법제처 조례 목록 자동 수집
+#   LAW_OC                                  법제처 법령·행정규칙·조례 자동 수집 (주제별 법령 온톨로지)
 #   NAVER_CLIENT_ID, NAVER_CLIENT_SECRET    '요즘 궁금해하는 주제' 순위에 검색 관심도 추가
 on:
   push:
@@ -36,9 +36,11 @@ jobs:
           python-version: "3.11"
           cache: pip
       - run: pip install -e .
-      - name: Refresh ordinance snapshots (법제처, optional)
+      - name: Refresh law/policy ontology (법제처, optional)
         if: ${{ env.LAW_OC != '' }}
-        run: python scripts/refresh_law_snapshots.py
+        run: |
+          python scripts/refresh_law_snapshots.py   # 조례형 주제: 검색어로 지역별 조례 시행 연도(막대그래프). refresh_legal 은 근거 법률 기준 전체 온톨로지
+          python scripts/refresh_legal.py || echo "::warning::법제처 수집 일부 실패 — 커밋된 스냅샷으로 빌드합니다"
       - name: Refresh topic ranking (site questions + optional Naver DataLab)
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

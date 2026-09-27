@@ -1,0 +1,17 @@
+{
+  "topic": "public-transit",
+  "laws": [
+    "대중교통의 육성 및 이용촉진에 관한 법률"
+  ],
+  "admin_rules": [
+    "대중교통비 지원"
+  ],
+  "rows": 64,
+  "by_group": {
+    "법령": 53,
+    "행정규칙": 9,
+    "자치법규": 2
+  },
+  "fetched": "2026-09-27",
+  "attribution": "출처: 법제처 국가법령정보센터 (law.go.kr)"
+}

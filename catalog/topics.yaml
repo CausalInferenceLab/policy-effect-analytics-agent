@@ -19,6 +19,10 @@ topics:
     collect:
       method: notice
       note: "국토부·서울시 고시에서 지정·해제 이력 전체(2017~)를 수집 → 지역×시점 처치표. 정리된 표가 없어 에이전트에게 맡기기 좋은 일"
+    legal:
+      laws: [부동산 거래신고 등에 관한 법률, 주택법, 소득세법, 종합부동산세법]
+      admin_rules: [투기과열지구, 조정대상지역, 은행업감독규정]
+      note: "토지거래허가구역 지정(국토부·서울시 공고)과 대출 한도(금융위 행정지도)는 법제처 API에 없어 events에 출처와 함께 적습니다. 세법은 개정이 잦아 대부분 이 주제와 무관하니 양도세·종부세 조항 개정만 확인합니다"
     events:
       - {date: 2020-06-23, what: "잠실·삼성·대치·청담 토지거래허가구역 지정"}
       - {date: 2025-02-12, what: "잠실·삼성·대치·청담 지정 해제 (발표·시행 월 기준)"}
@@ -39,6 +43,9 @@ topics:
       method: law_ordinance
       query: [지역사랑상품권, 지역화폐]
       note: "법제처 자치법규 API로 지자체별 조례·시행일자 자동 수집 (무료, 신청 즉시 승인). 발행 지자체가 2018년 66곳 → 2019년 172곳으로 늘어 시차 도입 비교가 가능. 검색 결과는 최신 개정 기준이라 '제정일'은 연혁으로 확인"
+    legal:
+      laws: [지역사랑상품권 이용 활성화에 관한 법률]
+      admin_rules: []
     gates:
       when: {status: pass, note: "조례 제정일을 법제처 API로 자동 수집"}
       who: {status: pass, note: "일찍 도입 vs 늦게 도입 지자체 (시차 도입)"}
@@ -53,6 +60,10 @@ topics:
     collect:
       method: curated
       note: "지자체별 조기 시행일(5030)은 보도자료·고시로 추가 수집"
+    legal:
+      laws: [도로교통법]
+      admin_rules: []
+      note: "어린이보호구역 지정은 지자체 고시라 API에 없습니다"
     gates:
       when: {status: pass, note: "법 시행일 확정"}
       who: {status: check, note: "5030은 조기 도입 지자체로 구분 가능, 민식이법·윤창호법은 전국 동시(관문 2 약함)"}
@@ -66,6 +77,10 @@ topics:
     collect:
       method: curated
       note: "시행일만 보고 시행(오염도와 무관) → 비교가 깔끔"
+    legal:
+      laws: [미세먼지 저감 및 관리에 관한 특별법]
+      admin_rules: []
+      note: "계절관리제 시행 기간은 환경부 발표로 확인합니다"
     gates:
       when: {status: pass, note: "2019.12 시작, 매년 12~3월"}
       who: {status: check, note: "녹색교통: 사대문 안 측정소 소수(합성통제 필요). 계절관리제: 수도권 위주 → 비수도권 비교 가능한지 확인"}
@@ -79,6 +94,10 @@ topics:
     collect:
       method: notice
       note: "자치구별 전환 고시일 수집 (시차 도입)"
+    legal:
+      laws: [유통산업발전법]
+      admin_rules: []
+      note: "의무휴업일 변경은 각 지자체 고시라 API에 없습니다"
     gates:
       when: {status: check, note: "전환 자치구 목록·날짜를 고시로 구축해야 함"}
       who: {status: pass, note: "전환 vs 미전환 자치구"}
@@ -93,6 +112,10 @@ topics:
       method: law_ordinance
       query: [출산장려금, 혼인장려금]
       note: "법제처 자치법규 API로 조례 제정일 수집 → 처치 데이터셋 구축이 과제의 절반"
+    legal:
+      laws: [인구전략기본법, 저출산ㆍ고령사회기본법]
+      admin_rules: []
+      note: "2026년 인구전략기본법으로 이름이 바뀌어 옛 이름도 함께 봅니다"
     gates:
       when: {status: pass, note: "조례 제정일 자동 수집"}
       who: {status: pass, note: "도입 vs 미도입 시군구"}
@@ -106,6 +129,10 @@ topics:
     collect:
       method: curated
       note: "정부 발표문에서 지역별 지급액(수도권·비수도권·인구감소지역 차등)을 표로 정리 → 지급 강도로 비교"
+    legal:
+      laws: []
+      admin_rules: []
+      note: "추가경정예산 사업이라 근거 법령 개정이 없습니다. 정부 발표(events)로 봅니다"
     events:
       - {date: 2025-07-21, what: "민생회복 소비쿠폰 1차 지급 시작", source: "https://www.korea.kr/news/policyNewsView.do?newsId=148945532"}
       - {date: 2026-04-27, what: "고유가 피해지원금 1차 지급 시작", source: "https://www.korea.kr/news/policyNewsView.do?newsId=148963023"}
@@ -123,6 +150,9 @@ topics:
     collect:
       method: curated
       note: "지역별 환급 기준금액(수도권 62,000원 / 일반 지방권 55,000원 등)을 정리해 강도 비교"
+    legal:
+      laws: [대중교통의 육성 및 이용촉진에 관한 법률]
+      admin_rules: [대중교통비 지원]
     events:
       - {date: 2026-01-01, display: "2026.01", what: "K-패스 '모두의 카드' 시행 (공식 자료에 '1월부터'로만 표기)", source: "https://www.korea.kr/news/policyFocusView.do?newsId=148957978&pkgId=49500831"}
     gates:
