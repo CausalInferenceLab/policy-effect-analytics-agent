@@ -134,7 +134,7 @@ def define_problem(s: FlowState):
     return (
         "blocked",
         "사전 등록 게이트: plan.yaml 을 먼저 git 에 커밋하세요 "
-        "(데이터를 본 뒤 계획을 바꾸는 것을 막기 위함). 데모는 --allow-uncommitted.",
+        "(데이터를 본 뒤 계획을 바꾸는 것을 막기 위함). 연습만 하려면 make demo.",
         arts,
     )
 
@@ -286,7 +286,8 @@ def guard(s: FlowState):
     }
     if violations:
         raise FlowError(f"서술 린트 실패: {violations}")
-    msg = f"판정 {r.verdict}, 서술={source}"
+    ko = {"identified": "효과 근거 있음", "conditional": "조건부", "not_identified": "판단 불가"}
+    msg = f"1차 지표 판정 {ko.get(r.verdict, r.verdict)}, 서술={source}"
     if rejected:
         msg += f" (LLM 서술에서 과잉해석 {len(rejected)}건 → 템플릿으로 대체)"
     return (

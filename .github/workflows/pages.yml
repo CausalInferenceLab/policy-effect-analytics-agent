@@ -39,7 +39,7 @@ jobs:
       - name: Refresh law/policy ontology (법제처, optional)
         if: ${{ env.LAW_OC != '' }}
         run: |
-          python scripts/refresh_law_snapshots.py
+          python scripts/refresh_law_snapshots.py   # 조례형 주제: 검색어로 지역별 조례 시행 연도(막대그래프). refresh_legal 은 근거 법률 기준 전체 온톨로지
           python scripts/refresh_legal.py || echo "::warning::법제처 수집 일부 실패 — 커밋된 스냅샷으로 빌드합니다"
       - name: Refresh topic ranking (site questions + optional Naver DataLab)
         env:

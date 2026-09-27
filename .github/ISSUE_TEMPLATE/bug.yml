@@ -7,7 +7,7 @@ body:
     id: where
     attributes:
       label: 위치
-      placeholder: core/estimators, app/streamlit_app.py, cases/gildong-local-currency/estimate.py
+      placeholder: core/estimators, app/streamlit_app.py, cases/gildong-local-currency/fetch.py
     validations:
       required: true
   - type: textarea

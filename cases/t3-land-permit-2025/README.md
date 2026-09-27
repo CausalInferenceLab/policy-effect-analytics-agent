@@ -24,6 +24,7 @@ make demo      # 이 예시를 _demo/ 에 복사해 돌립니다. 레포 파일�
 1. [공공데이터포털 15126468](https://www.data.go.kr/data/15126468/openapi.do)에서 활용신청(자동승인) → `.env`에 `DATA_GO_KR_API_KEY`
 2. `plan.yaml`에서 `data_sources` 순서를 바꿔 `molit`을 첫 번째로, `synthetic_data: false` → 이 변경만 PR로 커밋
 3. 레포 루트에서 `rm cases/t3-land-permit-2025/data/panel.csv && make flow CASE=cases/t3-land-permit-2025`
+4. 실데이터로 만든 `data/panel.csv`는 커밋하지 않습니다(이 폴더만 시뮬레이션 데이터 때문에 예외로 열려 있음). 커밋 전에 `git restore --staged cases/t3-land-permit-2025/data/`
 
 `core/adapters/molit.py`는 공식 명세대로 작성했지만 아직 실제 호출로 검증하지 않았습니다. 첫 실행 때 응답 필드명을 확인하세요.
 
