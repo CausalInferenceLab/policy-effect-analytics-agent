@@ -1,0 +1,143 @@
+# 지금 이슈인 정책 — 효과 추정 가이드
+# 이슈는 '주제'에 속합니다(topic). 분석은 이슈 하나가 아니라 그 주제의 정책 전체를 대상으로 하되,
+# 이 목록은 조가 어디서부터 볼지 정하는 출발점입니다. 시행일은 모두 source 링크에서 확인했습니다.
+# design: did_simultaneous(동시 도입 이중차분) | did_staggered(시차 도입) | scm(합성통제) | its(단절 시계열)
+# datasets: catalog/datasets.yaml 의 id
+version: 1
+issues:
+- id: seoul-ltp-1015-2025
+  name: 10·15 부동산 대책 — 서울 전역·경기 12곳 토지거래허가구역 지정
+  topic: housing-regulation
+  issue: 서울 전역을 한 번에 묶은 거래 허가제가 집값을 잡았나, 거래만 얼어붙게 했나.
+  effective: '2025-10-20'
+  source: https://www.korea.kr/news/policyNewsView.do?newsId=148950973
+  treatment: 서울 신규 21개 구 + 경기 12곳(과천·광명·성남 분당/수정/중원·수원 영통/장안/팔달·안양 동안·용인 수지·의왕·하남)
+  control: 지정되지 않은 수도권 시군구(인천, 경기 나머지). 서울 기존 4개 구(강남·서초·송파·용산)는 이미 처치 → 제외 또는 별도 코호트
+  outcomes:
+  - 아파트 매매 거래건수
+  - 거래금액(㎡당)
+  - 가격지수
+  design: did_simultaneous
+  datasets:
+  - '15126468'
+  - '15134761'
+  - OA-21275
+  - DT_1B040A3
+  pitfalls:
+  - 같은 날 투기과열지구·조정대상지역 지정과 대출 규제(15억 초과 주담대 한도 축소)가 함께 발표 → 토허제만의 효과로 분리 불가, '패키지 효과'로 해석.
+  - 발표(10.15)~효력(10.20) 사이 선취매 가능성 → 기준일을 발표일로도 돌려보기.
+  - 비지정 경기 지역으로 수요가 옮겨가는 풍선효과 → 대조군이 오염됨(SUTVA 위반).
+  - 실거래 신고 기한(계약 후 30일) 때문에 최근 월 거래가 과소 집계.
+  difficulty: 2
+- id: seoul-ltp-gangnam-2025
+  name: 강남3구·용산 아파트 토지거래허가구역 지정 (2025.3)
+  topic: housing-regulation
+  issue: 해제 직후 급등하자 다시 묶은 조치가 가격 급등을 멈췄나. 10·15와 묶어 단계적 도입 비교 가능.
+  effective: '2025-03-24'
+  source: https://www.korea.kr/news/policyNewsView.do?newsId=148940714
+  treatment: 강남·서초·송파·용산구 전체 아파트 (2025.3.24 1차 코호트) → 나머지 서울 21개 구 (2025.10.20 2차 코호트)
+  control: 아직 지정되지 않은 서울·수도권 구(각 시점 기준 not-yet-treated)
+  outcomes:
+  - 아파트 매매 거래건수
+  - 거래가격
+  design: did_staggered
+  datasets:
+  - '15126468'
+  - '15134761'
+  - OA-21275
+  pitfalls:
+  - 직전 토지거래허가 해제 조치의 급등 효과와 겹침 → 사전추세가 평행하지 않음.
+  - 지정 대상을 '아파트'로 한정 → 결과 변수도 아파트로 맞춰야 함.
+  - 단계적 DiD는 TWFE 편향 → Callaway-Sant'Anna 등 이질효과 추정기 사용.
+  difficulty: 3
+- id: mortgage-cap-627-2025
+  name: 6·27 가계부채 관리 강화 방안 — 수도권·규제지역 주담대 6억 원 한도
+  topic: housing-regulation
+  issue: 대출 한도 상한이 고가 주택 거래를 줄였나, 지방과의 격차를 키웠나.
+  effective: '2025-06-28'
+  source: https://www.korea.kr/news/policyNewsView.do?newsId=148945077
+  treatment: 수도권·규제지역 주택 구입 (주담대 6억 한도, 6개월 전입의무)
+  control: 비수도권 시군구
+  outcomes:
+  - 아파트 매매 거래건수
+  - 고가(대출 6억 초과 필요) 구간 거래 비중
+  - 거래가격
+  design: did_simultaneous
+  datasets:
+  - '15126468'
+  - '15134761'
+  - DT_1B040A3
+  pitfalls:
+  - 가계대출 총량 축소는 전 금융권 전국 적용 → 대조군(지방)도 부분 처치.
+  - 효과는 대출 6억 초과가 필요한 고가 구간에 몰림 → 가격대별 삼중차분(DDD) 권장.
+  - 사후기간이 10·15 대책(2025.10.15) 전까지 약 3.5개월로 짧음.
+  difficulty: 2
+- id: consumption-coupon-2025
+  name: 민생회복 소비쿠폰 (2025)
+  topic: consumer-support
+  issue: 전 국민 현금성 쿠폰이 지역 소상공인 매출을 실제로 늘렸나, 비수도권 가산금은 효과가 더 컸나.
+  effective: '2025-07-21'
+  source: https://www.korea.kr/news/policyNewsView.do?newsId=148945532
+  treatment: 1차 1인당 기본 15만 원 + 비수도권 3만 원 + 인구감소지역 5만 원 가산(수급자 등 추가) → 지역별 1인당 지급 강도 차이
+  control: 수도권(가산 없음, 최저 강도)을 기준 집단으로 둔 강도(dose) 비교
+  outcomes:
+  - 지역사랑상품권 결제금액·건수
+  - 소상공인 점포 수 변화
+  design: did_simultaneous
+  datasets:
+  - '15108292'
+  - '15108296'
+  - '15125217'
+  - '15083033'
+  - DT_1B040A3
+  pitfalls:
+  - 전국 동시 지급 → 순수 대조군 없음. 가산금 차이(강도)로만 식별.
+  - 인구감소지역은 원래 소비 추세가 다름 → 평행추세 검정 필수.
+  - 지급 수단(카드·선불·지역사랑상품권) 선택 비율이 지역마다 달라 상품권 결제 API는 쿠폰 소비 일부만 보임.
+  - 2차 지급(9.22 예정, 국민 90%에 10만 원)과 사후기간이 겹침.
+  difficulty: 2
+- id: high-oil-support-2026
+  name: 고유가 피해지원금 (2026)
+  topic: consumer-support
+  issue: 소비쿠폰을 1년 만에 다시 푼 지원금이 효과가 있었나, 지역 차등(10~25만 원)이 소비 격차를 줄였나.
+  effective: '2026-04-27'
+  source: https://www.korea.kr/news/policyNewsView.do?newsId=148963023
+  treatment: 2차(2026.5.18~7.3, 소득하위 70%) 수도권 10만 / 비수도권 15만 / 인구감소 우대지역 20만 / 특별지역 25만 원 → 4단계 강도
+  control: 수도권(최저 강도) 기준 강도 비교, 사용기한(2026.8.31) 이후를 사후 종료 구간으로
+  outcomes:
+  - 지역사랑상품권 결제금액·건수
+  - 소상공인 점포 수
+  design: did_simultaneous
+  datasets:
+  - '15108292'
+  - '15125217'
+  - '15083033'
+  - DT_1B040A3
+  pitfalls:
+  - 지원 이유(고유가)가 소비 자체를 줄이는 충격 → 처치와 결과가 같은 원인에 묶임.
+  - 2025 소비쿠폰 직후라 이월효과·학습효과 가능.
+  - 1차(4.27, 취약계층)와 2차(5.18) 시점이 달라 기준일 정의가 결과를 바꿈.
+  difficulty: 3
+- id: modu-card-2026
+  name: K-패스 개편 '모두의 카드' (기준금액 초과분 전액 환급)
+  topic: public-transit
+  issue: 정액 초과분 전액 환급이 대중교통 이용을 늘렸나, 재정 대비 효과는 충분한가.
+  effective: 2026-01
+  effective_note: 공식 출처에 '2026년 1월부터 시행'으로만 적혀 있어 일(day) 미확인
+  source: https://www.korea.kr/news/policyFocusView.do?newsId=148957978&pkgId=49500831
+  treatment: '전국 K-패스 이용자 자동 전환. 기준금액 차등: 수도권 일반형 62,000원 / 일반 지방권 55,000원(대중교통 여건이 나쁜 지역일수록 낮음)'
+  control: 전국 동시 시행 → 자체 대조군 없음. 시행 전 추세(ITS) 또는 기준금액이 낮은 지역 vs 수도권 강도 비교
+  outcomes:
+  - 대중교통 일별 이용인원
+  - 수단 분담률
+  - 서울 지하철 역별 승하차
+  design: its
+  datasets:
+  - '15142080'
+  - '15142075'
+  - OA-12914
+  pitfalls:
+  - 전국 동시 도입 + 자동 전환 → 대조군이 없어 계절성·요금 인상·노선 변경을 모두 통제해야 함.
+  - 서울은 기후동행카드가 이미 있어 추가 처치 강도가 다른 지역보다 약함.
+  - 가입자·환급액 자료는 비공개 → 처치 강도를 지역 평균으로 근사해야 함.
+  difficulty: 3

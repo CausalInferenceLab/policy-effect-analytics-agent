@@ -1,11 +1,13 @@
 # 조별 운영 가이드
 
-조(약 5명)마다 공공데이터로 정책 효과 질문을 **하나** 정하고, 공용 저장소의 `cases/<조-주제>/` 폴더 하나에 결과를 쌓습니다.
-전체 흐름은 6단계 에이전트 Flow(README의 Flow 절)와 같고, 조원 역할도 이 단계에 맞춰 나눕니다.
+조(약 5명)마다 **주제 하나**를 맡아, 공용 저장소의 `cases/<조-주제>/` 폴더에 분석을 쌓습니다.
+조원 역할은 6단계 흐름(찾기 → 모으기 → 거르기 → 계획하기 → 비교하기 → 말하기)에 맞춰 나눕니다.
 
-- 완성 예시: [`cases/_example_night_clinic/`](../../cases/_example_night_clinic/) — 합성 데이터로 6단계를 끝까지 돌린 샘플
-- 주제 후보: [`docs/strategy/topic-guide.md`](../strategy/topic-guide.md) (T1~T8)
-- 분석계획 작성법: [`docs/strategy/plan-guide.md`](../strategy/plan-guide.md)
+**먼저 볼 것**
+- [지금 이슈](https://causalinferencelab.github.io/policy-effect-analytics-agent/issues.html): 논쟁 중인 정책 6개의 분석 가이드 (비교 방법, 받을 수 있는 데이터, 조심할 점)
+- [데이터 지도](https://causalinferencelab.github.io/policy-effect-analytics-agent/data.html): 공공데이터 35개를 역할·단위·받는 법으로 정리
+- 분석 예시: [`cases/t3-land-permit-2025/`](../../cases/t3-land-permit-2025/) (토지거래허가구역, 지금은 시뮬레이션 데이터)
+- 계획 쓰는 법: [`docs/strategy/plan-guide.md`](../strategy/plan-guide.md) · 주제 후보 더 보기: [`docs/strategy/topic-guide.md`](../strategy/topic-guide.md)
 
 ## 1. 역할 (5인 기준, 겸임 가능)
 
