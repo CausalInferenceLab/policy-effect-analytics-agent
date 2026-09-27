@@ -1,63 +1,49 @@
-# 활동 모니터링 (멘토·PM용)
+# 활동 확인 (멘토용)
 
-원칙: **커밋·PR이 곧 출석**입니다. 조별로 주 1회 이상 의미 있는 커밋과 PR 흐름이 보이면 건강한 상태입니다.
+원칙: **커밋과 PR이 곧 출석**입니다. 멘티마다 주 1회 이상 의미 있는 커밋과 PR 흐름이 보이면 건강한 상태입니다.
 
-## 1. 로컬 스크립트 (네트워크 불필요)
+## 로컬에서 한 번에 보기
 
 ```bash
-git fetch --all --prune                      # 병합 전 브랜치까지 포함하려면 먼저
-python scripts/weekly_activity.py            # 최근 7일, 모든 브랜치
-python scripts/weekly_activity.py --days 14 --ref origin/main   # main에 반영된 것만
-make activity
+git fetch --all
+python scripts/weekly_activity.py              # 최근 7일, 모든 브랜치
+python scripts/weekly_activity.py --days 14 --ref origin/main
 ```
 
-출력: `cases/<조>`별 커밋 수·작성자 수·변경 파일 수·추가/삭제 줄 수. 활동 없는 조는 `<- no activity` 표시.
+출력: 케이스 폴더(`cases/<ID>-<주제>`)별 커밋 수 · 작성자 · 변경 파일 수 · 추가/삭제 줄 수. 활동이 없는 폴더는 `<- no activity`로 표시됩니다.
 
-## 2. `gh` CLI 한 줄 명령
+## gh 명령으로 보기
 
 ```bash
 R=CausalInferenceLab/policy-effect-analytics-agent
-SINCE=$(date -d '7 days ago' +%F 2>/dev/null || date -v-7d +%F)   # Linux || macOS
+SINCE=$(date -d '7 days ago' +%F)
 
-# 이번 주 열린/병합된 PR
-gh pr list -R $R --state all --search "created:>=$SINCE" --limit 100
-gh pr list -R $R --state merged --search "merged:>=$SINCE"
+# 열린 PR 전체
+gh pr list -R $R --state open
 
-# 리뷰 대기 중인 PR (오래된 순)
-gh pr list -R $R --search "is:open review:required sort:created-asc"
+# 한 멘티의 브랜치 PR (브랜치 이름 = <ID>/<작업>)
+gh pr list -R $R --state all --json headRefName,author,title,state \
+  --jq '.[] | select(.headRefName|startswith("gildong/")) | [.state,.author.login,.title] | @tsv'
 
-# 조별 브랜치의 PR (브랜치 prefix = 조)
-gh pr list -R $R --state all --json headRefName,title,state,author \
-  --jq '.[] | select(.headRefName|startswith("group3/")) | [.state,.author.login,.title] | @tsv'
+# 한 멘티 폴더의 최근 커밋
+gh api "repos/$R/commits?path=cases/gildong-local-currency&since=${SINCE}T00:00:00Z" \
+  --jq '.[] | [.commit.author.date,.commit.author.name,.commit.message] | @tsv'
 
-# 이번 주 main 커밋 작성자별 수
-gh api "repos/$R/commits?since=${SINCE}T00:00:00Z&per_page=100" --paginate \
-  --jq '.[].author.login' | sort | uniq -c | sort -rn
-
-# 특정 조 폴더의 커밋
-gh api "repos/$R/commits?path=cases/group3-youth-rent&since=${SINCE}T00:00:00Z" \
-  --jq '.[] | [.commit.author.date[:10], .author.login, .commit.message] | @tsv'
-
-# CI 실패 현황
-gh run list -R $R --status failure --limit 20
-
-# 케이스 제안 이슈
-gh issue list -R $R --label case-proposal --state all
+# 사이트 대화창에서 올라온 질문
+gh issue list -R $R --label from-site
 ```
 
-## 3. "건강함"의 기준
+## 건강 신호
 
-| 지표 | 건강 | 주의 (멘토링 필요) |
+| 항목 | 건강 | 확인 필요 |
 |---|---|---|
-| 조별 주간 커밋 | 3개 이상, 2명 이상 작성자 | 0개 또는 1명만 커밋 |
-| PR 흐름 | 주 1개 이상 병합 | 7일 넘게 열린 PR, 리뷰 없음 |
-| CI | 병합 전 초록 | 같은 PR에서 3회 이상 연속 실패 |
-| 사전 등록 | 2주차에 `plan.yaml` 병합 | 결과 그림이 plan.yaml보다 먼저 커밋 |
-| 데이터 위생 | `data_sources.license` 기재 | 대용량/원자료 커밋, `.env` 흔적 |
+| 주간 커밋 | 2개 이상 | 0개 |
+| 계획 PR | 10.2까지 `plan.yaml` 합쳐짐 | 계획 없이 결과 먼저 |
+| 리뷰 | PR이 3일 안에 리뷰됨 | 1주 넘게 대기 |
+| CI | 초록 | 빨간 채로 방치 |
 
-## 4. 주간 루틴 (15분)
+## 주간 루틴
 
-1. `git fetch --all && make activity` → 조용한 조 확인
-2. `gh pr list ... review:required` → 오래된 PR 리뷰 배정
-3. `gh run list --status failure` → 반복 실패 조에 도움 요청 코멘트
-4. 결과를 주간 공지(노션/채널)에 3줄 요약
+1. `git fetch --all && python scripts/weekly_activity.py` → 조용한 폴더 확인
+2. 열린 PR 리뷰, 3일 넘은 PR에 코멘트
+3. `from-site` 라벨 이슈 훑어보기 → 좋은 질문은 `catalog/`로 옮기기

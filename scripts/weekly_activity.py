@@ -1,4 +1,4 @@
-"""Print commits and files changed per cases/<group> over the last N days.
+"""Print commits and files changed per cases/<id>-<topic> (one folder per mentee) over the last N days.
 
 Uses local `git log` only (no network). Run `git fetch --all` first to include
 branches that have not been merged yet.

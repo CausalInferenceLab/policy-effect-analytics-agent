@@ -113,7 +113,8 @@ def page(title: str, body: str, current: str, depth: int = 0) -> str:
 <span class="links">{links}<a href="{REPO}">GitHub ↗</a></span></div></nav>
 <div class="wrap">{body}
 <footer>가짜연구소 인과추론팀 × 오픈업 오픈소스 AI 특화형 트랙3 · 이 사이트의 숫자와 판정은 레포의 <code>catalog/</code>·<code>cases/</code>에서
-자동으로 만들어집니다(매주 월요일 갱신). 시뮬레이션 결과에는 따로 표시가 붙습니다. · <a href="{REPO}">소스 코드 (MIT)</a></footer>
+자동으로 만들어집니다. 시뮬레이션 결과에는 따로 표시가 붙습니다.<br>
+<b>공식 평가가 아닙니다.</b> 학습·연구용 오픈소스 분석이며 정부·공공기관의 공식 평가나 통계가 아니고, 데이터 제공 기관의 후원·보증을 뜻하지 않습니다. · <a href="{REPO}">소스 코드 (MIT)</a></footer>
 </div></body></html>"""
 
 
@@ -263,22 +264,8 @@ def case_block(case_rel: str, depth: int) -> str:
 
 
 # ─── 홈 ──────────────────────────────────────────────────────────────────────
+# 대화창 엔진은 site/ask.js (가이드 모드 + 사용자 키로 부르는 AI 모드). 여기서는 필터만 다룬다.
 HOME_JS = """
-const KW=__KW__;
-const norm=s=>s.replace(/\\s+/g,'').toLowerCase();
-const q=document.getElementById('q'),ans=document.getElementById('ans');
-function match(){
-  const t=norm(q.value);let best=null,bs=0,hits=[];
-  for(const [id,ks] of Object.entries(KW)){const h=ks.filter(k=>t.includes(norm(k)));
-    const s=h.reduce((a,k)=>a+Math.min(norm(k).length,6),0);if(s>bs){bs=s;best=id;hits=h;}}
-  document.querySelectorAll('#cards .topic').forEach(c=>c.classList.toggle('hit',c.dataset.topic===best));
-  if(!t){ans.textContent='입력한 글은 이 브라우저 안에서만 쓰이고, 어디에도 보내지 않습니다.';return;}
-  if(!best){ans.textContent='맞는 주제를 찾지 못했습니다. 정책 이름이나 지역을 넣어 보세요.';return;}
-  const c=document.querySelector(`#cards [data-topic="${best}"]`);
-  ans.innerHTML=`→ <a href="${c.getAttribute('href')}"><b>${c.querySelector('h3').textContent}</b></a> 주제입니다. 이 주제의 정책을 모두 모아서 봅니다. (찾은 말: ${hits.join(', ')})`;
-}
-q.addEventListener('input',match);
-document.querySelectorAll('.ex').forEach(b=>b.onclick=()=>{q.value=b.textContent;match();});
 document.querySelectorAll('.f').forEach(b=>b.onclick=()=>{
   document.querySelectorAll('.f').forEach(x=>x.setAttribute('aria-pressed',x===b));const f=b.dataset.f;
   document.querySelectorAll('#cards .topic').forEach(c=>c.hidden=!(f==='all'||(f==='result'?c.dataset.result==='1':f==='issue'?c.dataset.issue==='1':c.dataset.ready===f)));});
@@ -288,16 +275,20 @@ document.querySelectorAll('.v').forEach(b=>b.onclick=()=>{
 """
 
 HOME_STEPS = [
-    ("찾기", "뉴스·SNS에서 사람들이 궁금해하는 <b>주제</b>를 찾습니다", "누구나"),
-    ("모으기", "그 주제의 정책을 <b>전부</b> 모읍니다. 어느 지역이 언제 시작했는지", "수집 담당"),
+    ("찾기", "대화창이나 지금 이슈에서 사람들이 궁금해하는 <b>주제</b>를 고릅니다", "2주 · 9.27"),
+    ("모으기", "그 주제의 정책을 <b>전부</b> 모읍니다. 어느 지역이 언제 시작했는지", "2~3주"),
     (
         "거르기",
         "세 가지를 확인합니다. 언제 시작했나 · 누가 받았나 · 무엇으로 재나",
-        "문제 정의 담당",
+        "10.2 오프라인",
     ),
-    ("계획하기", "데이터를 보기 전에 분석 계획을 먼저 적어 둡니다", "문제 정의 담당"),
-    ("비교하기", "정책을 받은 곳과 안 받은 곳의 변화를 비교합니다", "추정 담당"),
-    ("말하기", "효과 근거 있음 · 조건부 · 판단 불가 중 하나로 정직하게 씁니다", "리포트 담당"),
+    ("계획하기", "데이터를 보기 전에 분석 계획을 먼저 적어 둡니다", "10.2 계획 PR"),
+    ("비교하기", "정책을 받은 곳과 안 받은 곳의 변화를 비교합니다", "3~5주"),
+    (
+        "말하기",
+        "효과 근거 있음 · 조건부 · 판단 불가 중 하나로 정직하게 씁니다",
+        "6~7주 · 11.1 공개",
+    ),
 ]
 HOME_EXAMPLES = [
     "토허제 확대하고 강남 집값 잡혔나요?",
@@ -305,18 +296,148 @@ HOME_EXAMPLES = [
     "모두의 카드 나오고 지하철 더 타나?",
     "5030 속도 줄이고 사고 줄었나?",
 ]
+REFLECT_STEPS = [
+    ("대화", "궁금한 정책을 적으면 주제·데이터·조심할 점·분석 계획 초안을 함께 정리합니다."),
+    ("제안", "'제안으로 올리기'를 누르면 대화가 GitHub 이슈로 올라갑니다. 로그인만 있으면 됩니다."),
+    (
+        "검토",
+        "멘토·멘티가 이슈를 보고 새 주제·데이터셋은 카탈로그에, 분석은 케이스 폴더에 PR로 넣습니다.",
+    ),
+    (
+        "반영",
+        "합쳐지면 사이트가 다시 만들어집니다. 올라온 질문 수는 '요즘 궁금해하는 주제' 순위가 됩니다.",
+    ),
+]
+TRENDS = ROOT / "catalog" / "snapshots" / "trends.json"
+
+
+def catalog_json(topics, policies, issues, datasets) -> str:
+    """대화창(ask.js)이 읽는 카탈로그. </script> 가 끼어들지 않게 '</' 를 이스케이프한다."""
+    data = {
+        "repo": REPO,
+        "topics": [
+            {
+                "id": t.id,
+                "name": t.name,
+                "question": t.question,
+                "keywords": list(
+                    dict.fromkeys(
+                        t.keywords
+                        + [
+                            k
+                            for pid in t.policies
+                            for p in policies
+                            if p.id == pid
+                            for k in p.keywords
+                        ]
+                    )
+                ),
+                "gates": {k: {"status": g.status, "note": g.note} for k, g in t.gates.items()},
+                "pitfalls": t.pitfalls,
+            }
+            for t in topics
+        ],
+        "issues": [
+            i.model_dump(
+                include={
+                    "id",
+                    "name",
+                    "topic",
+                    "issue",
+                    "effective",
+                    "treatment",
+                    "control",
+                    "outcomes",
+                    "design",
+                    "datasets",
+                    "pitfalls",
+                }
+            )
+            for i in issues
+        ],
+        "datasets": [
+            d.model_dump(
+                include={
+                    "id",
+                    "name",
+                    "provider",
+                    "url",
+                    "roles",
+                    "space",
+                    "time",
+                    "access",
+                    "approval",
+                    "license",
+                    "topics",
+                }
+            )
+            for d in datasets
+        ],
+    }
+    return json.dumps(data, ensure_ascii=False).replace("</", "<\\/")
+
+
+def load_trends() -> dict:
+    try:
+        return json.loads(TRENDS.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+
+
+def latest_event(t, issues, today: str) -> str:
+    """주제의 가장 최근 시행·발표일 (오늘 이후 예정일은 뺀다). ISO 문자열이라 사전순 비교가 곧 날짜순."""
+    ds = [ev.date.isoformat() for ev in t.events] + [i.effective for i in issues if i.topic == t.id]
+    ds = [d for d in ds if d <= today]
+    return max(ds, default="")
+
+
+def rank_topics(topics, issues, trends: dict, today: str | None = None):
+    """사이트 질문 수 → 검색 관심도 → 최근 시행·발표일 순. 없는 신호는 0으로 두고 표시하지 않는다."""
+    import datetime as _dt
+
+    today = today or _dt.date.today().isoformat()
+    tt = trends.get("topics", {})
+    rows = [
+        (
+            t,
+            tt.get(t.id, {}).get("questions", 0),
+            tt.get(t.id, {}).get("search", 0.0),
+            latest_event(t, issues, today),
+        )
+        for t in topics
+    ]
+    rows.sort(key=lambda r: (r[1], r[2], r[3]), reverse=True)
+    srcs = set(trends.get("sources", []))
+    has_q = "site_questions" in srcs and any(r[1] for r in rows)
+    has_s = "naver_datalab" in srcs and any(r[2] for r in rows)
+    if has_q or has_s:
+        parts = (["최근 30일 사이트 질문 수"] if has_q else []) + (
+            ["네이버 검색 관심도"] if has_s else []
+        )
+        basis = f"{' · '.join(parts)} 기준 · {e(trends.get('updated', ''))} 갱신"
+    else:
+        basis = "아직 모인 질문이 없어 최근 시행·발표 순입니다. 대화를 제안으로 올리면 순위에 반영됩니다."
+    return rows, has_q, has_s, basis
+
+
+def ranking_block(topics, issues, trends: dict, n: int = 5) -> str:
+    rows, has_q, has_s, basis = rank_topics(topics, issues, trends)
+    items = []
+    for k, (t, q, s, last) in enumerate(rows[:n], 1):
+        meta = ([f"질문 {q}"] if has_q else []) + ([f"검색 {s:g}"] if has_s else [])
+        meta += [f"최근 {last[:7].replace('-', '.')}"] if last else []
+        items.append(
+            f'<li><button type="button" class="rank-item" data-ask="{e(t.question)}">'
+            f'<span class="rn">{k}</span><span class="rt">{e(t.name)}</span>'
+            f'<span class="rm">{" · ".join(meta)}</span></button></li>'
+        )
+    return (
+        '<div class="rank"><div class="rank-head"><b>요즘 궁금해하는 주제</b>'
+        f'<span class="muted small">{basis}</span></div><ol class="rank-list">{"".join(items)}</ol></div>'
+    )
 
 
 def index_page(topics, policies, issues, datasets) -> str:
-    kw = {
-        t.id: list(
-            dict.fromkeys(
-                t.keywords
-                + [k for pid in t.policies for p in policies if p.id == pid for k in p.keywords]
-            )
-        )
-        for t in topics
-    }
     issue_topics = {i.topic for i in issues}
     cards = []
     for t in topics:
@@ -339,20 +460,47 @@ def index_page(topics, policies, issues, datasets) -> str:
         for i in issues
     )
     n_api = sum(d.access == "open_api" for d in datasets)
-    chips = "".join(f'<button class="chip ex" type="button">{e(x)}</button>' for x in HOME_EXAMPLES)
+    chips = "".join(
+        f'<button class="chip" type="button" data-ask="{e(x)}">{e(x)}</button>'
+        for x in HOME_EXAMPLES
+    )
     flow = "".join(
         f'<div class="card"><span class="n">{i + 1:02d}</span><b>{a}</b><p>{b}</p><div class="who">{c}</div></div>'
         for i, (a, b, c) in enumerate(HOME_STEPS)
     )
-    js = HOME_JS.replace("__KW__", json.dumps(kw, ensure_ascii=False))
+    reflect = "".join(
+        f'<div class="card"><span class="n">{i + 1:02d}</span><b>{a}</b><p>{b}</p></div>'
+        for i, (a, b) in enumerate(REFLECT_STEPS)
+    )
     body = f"""
-<div class="hero"><span class="eyebrow">공공데이터 · 인과추론 · 오픈소스</span>
+<div class="hero"><span class="eyebrow">오픈소스 · 공공데이터 · 인과추론</span>
 <h1>그 정책, 정말 효과가 있었을까?</h1>
 <p class="lede">뉴스와 SNS에서 사람들이 묻는 정책을 공공데이터로 확인합니다.
 정책을 받은 곳과 안 받은 곳을 비교하고, 데이터로 판단할 수 없으면 <b>판단할 수 없다고</b> 말합니다.</p>
-<div class="ask"><textarea id="q" aria-label="궁금한 정책 이야기" placeholder="궁금한 정책 이야기를 적어 보세요"></textarea>
+
+<div class="ask" id="ask">
+<div id="chat-log" class="chat-log" aria-live="polite" hidden></div>
+<form id="chat-form" class="chat-form">
+<textarea id="q" rows="2" aria-label="궁금한 정책 이야기" placeholder="궁금한 정책 이야기를 적어 보세요"></textarea>
+<button class="btn primary" type="submit">보내기</button></form>
+<div class="chat-meta"><span id="mode" class="badge info">가이드 모드</span>
+<button type="button" id="ai-toggle" class="linkish">내 AI 키로 대화하기</button>
+<span class="muted small">대화는 이 브라우저 안에서만 쓰입니다. "제안으로 올리기"를 누를 때만 GitHub 이슈 화면으로 넘어갑니다.</span></div>
+<div id="ai-panel" class="card ai-panel" hidden>
+<p class="small" style="margin:0 0 8px">키를 넣으면 이 브라우저가 AI에 직접 묻습니다. 키는 이 페이지 메모리에만 있고 저장하지 않으며, 새로고침하면 사라집니다. 공용 PC에서는 쓰지 마세요.</p>
+<div class="ai-grid">
+<label>AI<select id="ai-provider"><option value="anthropic">Claude (Anthropic)</option><option value="openai">OpenAI 호환 (Ollama 등)</option></select></label>
+<label id="ai-base-row" hidden>주소<input id="ai-base" placeholder="http://localhost:11434/v1"></label>
+<label>모델<input id="ai-model" placeholder="비우면 기본값"></label>
+<label>API 키<input id="ai-key" type="password" autocomplete="off" placeholder="sk-..."></label></div>
+<div class="cta" style="margin-top:10px"><button type="button" id="ai-save" class="btn primary">연결</button>
+<button type="button" id="ai-off" class="btn ghost">가이드 모드로</button></div>
+<p class="muted small" style="margin:8px 0 0">로컬 Ollama는 <code>OLLAMA_ORIGINS=https://causalinferencelab.github.io</code>로 실행해야 브라우저에서 부를 수 있습니다.
+AI도 결과를 계산하지 않습니다. 주제·데이터·계획을 함께 정리할 뿐이고, 숫자는 레포의 분석 코드가 냅니다.</p></div>
 <div class="chips" aria-label="예시">{chips}</div>
-<p id="ans" class="muted">입력한 글은 이 브라우저 안에서만 쓰이고, 어디에도 보내지 않습니다.</p></div>
+{ranking_block(topics, issues, load_trends())}
+</div>
+
 <div class="stats">
 <a class="stat" href="#topics"><div class="v">{len(topics)}</div><div class="l">분석 주제</div></a>
 <a class="stat" href="issues.html"><div class="v">{len(issues)}</div><div class="l">지금 이슈인 정책</div></a>
@@ -360,7 +508,10 @@ def index_page(topics, policies, issues, datasets) -> str:
 <a class="stat" href="data.html"><div class="v">{n_api}</div><div class="l">오픈API로 받을 수 있는 것</div></a>
 </div></div>
 
-<section id="how"><h2>이렇게 확인합니다</h2><p class="sub">여섯 단계는 조원 역할과 7주 일정에 그대로 대응합니다.</p>
+<section id="reflect"><h2>대화가 오픈소스가 되는 길</h2><p class="sub">여기서 나눈 질문이 새 주제·새 데이터·새 분석으로 쌓입니다. 없던 공공데이터 정책 분석을 함께 만드는 방식입니다.</p>
+<div class="flow">{reflect}</div></section>
+
+<section id="how"><h2>이렇게 확인합니다</h2><p class="sub">여섯 단계는 7주 일정에 그대로 대응합니다. 멘티 한 사람이 주제 하나를 끝까지 갑니다.</p>
 <div class="flow">{flow}</div></section>
 
 <section id="issues"><h2>지금 이슈인 정책</h2><p class="sub">요즘 논쟁 중인 정책을 어떻게 분석할 수 있는지, 어떤 데이터를 받을 수 있는지 정리했습니다.</p>
@@ -383,7 +534,7 @@ def index_page(topics, policies, issues, datasets) -> str:
 <ul><li>조용했지만 효과가 컸던 정책이 빠집니다</li><li>화제가 되면 신청이 늘어 효과가 부풀려집니다</li>
 <li>시행 전부터 화제였다면 사람들이 미리 움직여 비교가 흔들립니다</li></ul></div>
 <div class="card"><h3><span class="badge go">우리 방식</span> 화제는 출발점으로만</h3>
-<ul><li>화제는 <b>어느 주제를 볼지</b>만 정합니다</li><li>그 주제의 정책을 <b>전부</b> 모아 비교합니다</li>
+<ul><li>화제는 <b>어느 주제를 볼지</b>만 정합니다. 순위도 주제를 고르는 데만 씁니다</li><li>그 주제의 정책을 <b>전부</b> 모아 비교합니다</li>
 <li>검색량·기사 수는 '미리 반응했나'를 점검하는 데 다시 씁니다</li></ul></div></div></section>
 
 <section id="trust"><h2>믿을 수 있게 만드는 장치</h2>
@@ -396,14 +547,17 @@ def index_page(topics, policies, issues, datasets) -> str:
 <div class="card"><div class="icon">6</div><h3>한계를 숨기지 않는다</h3><p class="muted">시뮬레이션, 키 대기, 확인 필요 상태를 배지로 그대로 보여줍니다.</p></div>
 </div></section>
 
-<section id="join"><h2>참여하기</h2><p class="sub">조마다 주제 하나를 맡아 <code>cases/</code> 폴더에 분석을 추가합니다.</p>
+<section id="join"><h2>참여하기</h2><p class="sub">멘티 한 사람이 주제 하나를 맡아 <code>cases/&lt;내 GitHub ID&gt;-&lt;주제&gt;/</code> 폴더에 분석을 추가합니다.</p>
 <div class="grid3">
-<div class="card"><div class="icon">①</div><h3>주제 고르기</h3><p class="muted">위 주제나 <a href="issues.html">지금 이슈</a>에서 고릅니다. 새 주제는 GitHub 이슈로 제안합니다.</p></div>
-<div class="card"><div class="icon">②</div><h3>계획 올리기</h3><p class="muted"><code>cases/_template</code>을 복사해 plan.yaml을 쓰고 PR로 올립니다.</p></div>
+<div class="card"><div class="icon">①</div><h3>주제 고르기</h3><p class="muted">위 대화창·순위·<a href="issues.html">지금 이슈</a>에서 고르고, GitHub에 "케이스 제안" 이슈를 엽니다.</p></div>
+<div class="card"><div class="icon">②</div><h3>계획 올리기</h3><p class="muted"><code>cases/_template</code>을 내 폴더로 복사해 plan.yaml을 쓰고 PR로 올립니다. 대화창의 "분석 계획 초안"을 출발점으로 써도 됩니다.</p></div>
 <div class="card"><div class="icon">③</div><h3>실행하고 공개</h3><p class="muted"><code>make flow</code>로 돌리고 PR이 합쳐지면 이 사이트에 자동으로 올라옵니다.</p></div>
-</div><div class="cta"><a class="btn primary" href="{REPO}/blob/main/docs/ops/group-guide.md">조별 운영 가이드</a>
-<a class="btn ghost" href="{REPO}/blob/main/docs/ops/github-onboarding.md">GitHub가 처음이라면</a></div></section>
-<script>{js}</script>"""
+</div><div class="cta"><a class="btn primary" href="{REPO}/blob/main/docs/ops/mentee-guide.md">멘티 참여 가이드</a>
+<a class="btn ghost" href="{REPO}/blob/main/docs/ops/github-onboarding.md">GitHub가 처음이라면</a>
+<a class="btn ghost" href="{REPO}/issues?q=label%3Afrom-site">올라온 질문 보기</a></div></section>
+<script type="application/json" id="catalog">{catalog_json(topics, policies, issues, datasets)}</script>
+<script src="ask.js"></script>
+<script>{HOME_JS}</script>"""
     return page("정책 효과 분석 플랫폼", body, "index.html")
 
 
@@ -467,7 +621,7 @@ def issues_page(issues, datasets, topics) -> str:
 <p class="lede">2025~2026년에 논쟁이 된 정책 {len(issues)}개를 골라, 누구와 누구를 비교할지, 어떤 방법을 쓸지,
 어떤 데이터를 받을 수 있는지 정리했습니다. 시작일은 모두 정부 공식 자료에서 확인했습니다.</p></div>
 <div class="banner info" style="margin-top:20px">분석은 이슈 하나가 아니라 그 이슈가 속한 <b>주제 전체</b>로 합니다.
-이 목록은 조가 어디서부터 볼지 정하는 출발점입니다.</div>
+이 목록은 멘티가 어디서부터 볼지 정하는 출발점입니다.</div>
 <section style="padding-top:28px"><h2>효과 추정 5단계</h2><div class="grid3" style="margin-top:12px">{guide}</div></section>
 <section><h2>분석 방법 고르기</h2><p class="sub">방법은 데이터 모양을 보고 규칙이 정합니다. 결과를 본 뒤 사람이나 AI가 고르지 않습니다.</p>
 <div class="grid">{designs}</div></section>
@@ -692,6 +846,7 @@ def main() -> None:
         (OUT / "topics" / f"{t.id}.html").write_text(
             topic_page(t, policies, issues, datasets), encoding="utf-8"
         )
+    shutil.copy(HERE / "ask.js", OUT / "ask.js")
     (OUT / ".nojekyll").write_text("")
     print(f"_site/ 생성: 주제 {len(topics)} · 이슈 {len(issues)} · 데이터셋 {len(datasets)}")
 
