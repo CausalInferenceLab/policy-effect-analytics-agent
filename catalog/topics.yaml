@@ -22,6 +22,7 @@ topics:
     events:
       - {date: 2020-06-23, what: "잠실·삼성·대치·청담 토지거래허가구역 지정"}
       - {date: 2025-02-12, what: "잠실·삼성·대치·청담 지정 해제 (발표·시행 월 기준)"}
+      - {date: 2025-06-28, what: "6·27 대책 — 수도권·규제지역 주담대 6억 원 한도", source: "https://www.korea.kr/news/policyNewsView.do?newsId=148945077"}
       - {date: 2025-03-24, what: "강남·서초·송파·용산 전역 지정", source: "https://www.ajunews.com/view/20250324064239711"}
       - {date: 2025-10-20, what: "서울 전역·경기 12곳 지정 (10·15 대책)", source: "https://www.korea.kr/news/policyNewsView.do?newsId=148950973"}
     gates:
@@ -96,3 +97,36 @@ topics:
       when: {status: pass, note: "조례 제정일 자동 수집"}
       who: {status: pass, note: "도입 vs 미도입 시군구"}
       what: {status: key, note: "KOSIS 시군구 출생·혼인 — 키 필요"}
+
+  - id: consumer-support
+    name: 소비 지원금·쿠폰
+    question: 민생회복 소비쿠폰·고유가 피해지원금 같은 현금성 지원이 동네 소비를 늘렸나?
+    keywords: [소비쿠폰, 민생회복, 지원금, 피해지원금, 고유가, 재난지원금, 소상공인, 동네 가게, 소비, 매출]
+    policies: []
+    collect:
+      method: curated
+      note: "정부 발표문에서 지역별 지급액(수도권·비수도권·인구감소지역 차등)을 표로 정리 → 지급 강도로 비교"
+    events:
+      - {date: 2025-07-21, what: "민생회복 소비쿠폰 1차 지급 시작", source: "https://www.korea.kr/news/policyNewsView.do?newsId=148945532"}
+      - {date: 2026-04-27, what: "고유가 피해지원금 1차 지급 시작", source: "https://www.korea.kr/news/policyNewsView.do?newsId=148963023"}
+    gates:
+      when: {status: pass, note: "정부 발표로 지급 시작일 확인"}
+      who: {status: check, note: "전국 동시 지급 → 지역별 지급액 차이(강도)로만 비교 가능"}
+      what: {status: key, note: "조폐공사 지역사랑상품권 결제정보 API(자동승인) — 키 필요"}
+    pitfalls: ["순수 대조군이 없음 → '더 받은 지역 vs 덜 받은 지역'으로 비교", "지급 수단(카드·상품권) 선택이 지역마다 달라 상품권 결제는 일부만 보임", "1차·2차 지급 시점이 겹침"]
+
+  - id: public-transit
+    name: 대중교통 요금 지원
+    question: K-패스 '모두의 카드' 같은 요금 환급이 대중교통 이용을 늘렸나?
+    keywords: [대중교통, K-패스, 케이패스, 모두의 카드, 기후동행카드, 교통비, 환급, 버스, 지하철, 승하차]
+    policies: []
+    collect:
+      method: curated
+      note: "지역별 환급 기준금액(수도권 62,000원 / 일반 지방권 55,000원 등)을 정리해 강도 비교"
+    events:
+      - {date: 2026-01-01, display: "2026.01", what: "K-패스 '모두의 카드' 시행 (공식 자료에 '1월부터'로만 표기)", source: "https://www.korea.kr/news/policyFocusView.do?newsId=148957978&pkgId=49500831"}
+    gates:
+      when: {status: check, note: "시행 '월'만 확인, 정확한 날짜 확인 필요"}
+      who: {status: check, note: "전국 동시 → 기준금액이 다른 지역끼리 비교하거나 시행 전후 추세 비교"}
+      what: {status: key, note: "국토부 대중교통 이용인원 API(자동승인) — 키 필요"}
+    pitfalls: ["서울은 기후동행카드가 먼저 있어 추가 효과가 약함", "요금 인상·노선 변경·계절 요인을 함께 통제해야 함"]

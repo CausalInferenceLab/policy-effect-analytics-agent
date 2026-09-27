@@ -94,6 +94,11 @@ class Event(BaseModel):
     date: date
     what: str
     source: str | None = None
+    display: str | None = None  # 날짜를 '월'까지만 아는 경우 표시용 (예: "2026.01")
+
+    @property
+    def label(self) -> str:
+        return self.display or self.date.strftime("%Y.%m.%d")
 
 
 class Topic(BaseModel):

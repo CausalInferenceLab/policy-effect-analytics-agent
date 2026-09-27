@@ -1,0 +1,121 @@
+:root {
+  --paper: #f6f7f9; --surface: #fff; --sunk: #eef0f3; --ink: #14171c; --ink2: #3f4550; --muted: #6b7280; --hair: #dde0e5;
+  --accent: #1b5e9b; --accent-soft: #e3eef8;
+  --go: #1e6a4d; --go-bg: #e0f1e8; --warn: #8a5900; --warn-bg: #fbeed3; --stop: #9c2b33; --stop-bg: #f8e2e4;
+  --r-treat: #7a3e9d; --r-treat-bg: #f1e6f7; --r-out: #1b5e9b; --r-out-bg: #e3eef8; --r-cov: #5b6470; --r-cov-bg: #eceef1;
+  --sans: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --paper: #111317; --surface: #1a1d23; --sunk: #22262d; --ink: #eceef2; --ink2: #c2c7d0; --muted: #8e95a2; --hair: #2d323a;
+    --accent: #79b2e8; --accent-soft: #1a2b3c;
+    --go: #7fd3ab; --go-bg: #15302a; --warn: #e8b45c; --warn-bg: #33291a; --stop: #ee8f96; --stop-bg: #371e21;
+    --r-treat: #d3a6ee; --r-treat-bg: #2e2138; --r-out: #79b2e8; --r-out-bg: #1a2b3c; --r-cov: #b7bec9; --r-cov-bg: #262a31;
+  }
+}
+* { box-sizing: border-box }
+html { scroll-behavior: smooth }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.7 var(--sans); word-break: keep-all; overflow-wrap: break-word }
+a { color: var(--accent) }
+code { font-family: var(--mono); font-size: .88em; background: var(--sunk); padding: 1px 5px; border-radius: 4px }
+
+.nav { position: sticky; top: 0; z-index: 5; background: color-mix(in srgb, var(--paper) 90%, transparent); backdrop-filter: blur(8px); border-bottom: 1px solid var(--hair) }
+.nav .in { max-width: 1080px; margin: 0 auto; padding: 10px 16px; display: flex; gap: 8px 18px; align-items: center; justify-content: space-between; flex-wrap: wrap }
+.nav b a { color: var(--ink); text-decoration: none }
+.nav .links { display: flex; gap: 4px 14px; flex-wrap: wrap; font-size: 14px }
+.nav .links a { color: var(--ink2); text-decoration: none }
+.nav .links a:hover, .nav .links a[aria-current] { color: var(--accent) }
+.wrap { max-width: 1080px; margin: 0 auto; padding: 0 16px 80px }
+
+.hero { padding: 60px 0 24px }
+.eyebrow { font-size: 13px; font-weight: 700; letter-spacing: .06em; color: var(--accent) }
+h1 { font-size: clamp(30px, 5vw, 46px); line-height: 1.2; margin: 10px 0 14px; letter-spacing: -.02em }
+h2 { font-size: clamp(22px, 3vw, 28px); margin: 0 0 6px; letter-spacing: -.01em }
+h3 { font-size: 17px; margin: 0 0 6px }
+.lede { color: var(--ink2); font-size: 18px; max-width: 64ch; margin: 0 }
+.sub { color: var(--ink2); max-width: 68ch; margin: 0 0 18px }
+section { padding: 52px 0 6px; scroll-margin-top: 60px }
+.muted { color: var(--muted); font-size: 14px }
+.small { font-size: 13px }
+
+.cta { display: flex; gap: 10px; flex-wrap: wrap; margin: 20px 0 0 }
+.btn { display: inline-block; padding: 10px 18px; border-radius: 999px; font-weight: 600; text-decoration: none; font-size: 15px }
+.btn.primary { background: var(--accent); color: #fff }
+.btn.ghost { border: 1px solid var(--hair); color: var(--ink); background: var(--surface) }
+
+.card { background: var(--surface); border: 1px solid var(--hair); border-radius: 14px; padding: 20px }
+.grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)) }
+.grid3 { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)) }
+.split { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) }
+.icon { width: 36px; height: 36px; border-radius: 10px; background: var(--accent-soft); color: var(--accent); display: grid; place-items: center; font-weight: 800; margin-bottom: 10px }
+
+.stats { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); margin: 26px 0 0 }
+.stat { background: var(--surface); border: 1px solid var(--hair); border-radius: 14px; padding: 14px 16px; text-decoration: none; color: inherit }
+.stat .v { font-size: 30px; font-weight: 800; letter-spacing: -.02em; line-height: 1.1 }
+.stat .l { color: var(--muted); font-size: 14px }
+
+.badge { display: inline-block; font-size: 12.5px; font-weight: 600; padding: 2px 9px; border-radius: 999px; white-space: nowrap }
+.go { color: var(--go); background: var(--go-bg) } .warn { color: var(--warn); background: var(--warn-bg) }
+.stop { color: var(--stop); background: var(--stop-bg) } .info { color: var(--accent); background: var(--accent-soft) }
+.r-treatment { color: var(--r-treat); background: var(--r-treat-bg) } .r-outcome { color: var(--r-out); background: var(--r-out-bg) }
+.r-covariate { color: var(--r-cov); background: var(--r-cov-bg) }
+.gates, .tags { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0 4px }
+.dots { letter-spacing: 2px; color: var(--accent) }
+
+.ask { margin-top: 26px }
+.ask textarea, .search input { width: 100%; font: inherit; font-size: 17px; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--hair); background: var(--surface); color: var(--ink) }
+.ask textarea { min-height: 76px }
+.ask textarea:focus, .search input:focus, select:focus { outline: 2px solid var(--accent); border-color: transparent }
+.chips { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0 }
+.chip { border: 1px solid var(--hair); background: var(--surface); color: var(--ink2); border-radius: 999px; padding: 4px 12px; font: inherit; font-size: 13.5px; cursor: pointer }
+.chip[aria-pressed=true] { background: var(--ink); color: var(--paper); border-color: var(--ink) }
+select { font: inherit; font-size: 14px; padding: 6px 10px; border-radius: 10px; border: 1px solid var(--hair); background: var(--surface); color: var(--ink) }
+.filters { display: flex; gap: 8px; flex-wrap: wrap; margin: 12px 0; align-items: center }
+
+.hit { outline: 2px solid var(--accent); outline-offset: 2px }
+.topic { text-decoration: none; color: inherit; display: block }
+.topic:hover, .issue-card:hover { border-color: var(--accent) }
+.list { display: flex; flex-direction: column; gap: 8px }
+.list .topic { display: grid; grid-template-columns: minmax(0, 1.2fr) minmax(0, 2fr) auto; gap: 14px; align-items: center }
+.list .topic p { margin: 0 }
+.issue-card { text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 6px }
+.issue-card .date { font: 600 13px var(--mono); color: var(--muted) }
+
+table { width: 100%; border-collapse: collapse; font-size: 14px }
+th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--hair); vertical-align: top }
+th { color: var(--muted); font-weight: 600; white-space: nowrap }
+.tablewrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--hair); border-radius: 12px }
+.banner { border-radius: 12px; padding: 12px 16px; margin: 14px 0; font-weight: 600 }
+.figs { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)) }
+.figs img { width: 100%; background: #fff; border-radius: 10px; border: 1px solid var(--hair) }
+svg text { fill: var(--ink2); font: 12.5px var(--sans) }
+ul, ol { padding-left: 20px }
+details summary { cursor: pointer; color: var(--ink2) }
+
+.flow { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)) }
+.flow .card { padding: 14px }
+.flow .n { font: 700 12px var(--mono); color: var(--accent) }
+.flow b { display: block; margin: 2px 0 4px }
+.flow p { margin: 0; font-size: 14px; color: var(--ink2) }
+.flow .who { margin-top: 8px; font-size: 12.5px; color: var(--muted) }
+
+.onto { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); align-items: stretch }
+.onto .card { padding: 14px; position: relative }
+.onto .rel { font: 600 12px var(--mono); color: var(--accent) }
+.onto ul { margin: 6px 0 0; font-size: 14px; color: var(--ink2) }
+
+.issue { border-top: 1px solid var(--hair); padding-top: 28px; margin-top: 28px; scroll-margin-top: 70px }
+.kv { display: grid; grid-template-columns: minmax(90px, 140px) 1fr; gap: 6px 14px; margin: 12px 0 }
+.kv dt { color: var(--muted); font-size: 14px }
+.kv dd { margin: 0 }
+dl.terms { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)) }
+dl.terms div { background: var(--surface); border: 1px solid var(--hair); border-radius: 12px; padding: 12px 14px }
+dl.terms dt { font-weight: 700 } dl.terms dd { margin: 4px 0 0; color: var(--ink2); font-size: 14.5px }
+
+footer { margin-top: 64px; color: var(--muted); font-size: 13px; border-top: 1px solid var(--hair); padding-top: 16px }
+@media (max-width: 640px) {
+  .list .topic { grid-template-columns: minmax(0, 1fr) }
+  .hero { padding-top: 36px }
+  .kv { grid-template-columns: minmax(0, 1fr) }
+}
