@@ -1,126 +1,76 @@
-# policy-effect-analytics-agent
+# 정책 효과 분석 플랫폼 · policy-effect-analytics-agent
 
-> **에이전틱 AI × 데이터 — 문제 정의부터 효과 분석 자동화까지**
-> NIPA OpenUp 오픈소스 AI 특화형 2차 · Track 3 · 멘토 신진수 (가짜연구소 인과추론팀)
+**사람들이 묻는 정책, 정말 효과가 있었을까?**
+소셜 반응에서 출발해, 그 주제의 정책을 전부 모으고, 공공데이터로 효과를 추정하는 오픈소스입니다.
+결론을 낼 수 없으면 "식별 불가"라고 말하는 것까지가 이 프로젝트의 일입니다.
 
-**English summary.** An open-source toolkit and case library for estimating the effects of Korean public policies with open data. Each group writes a pre-registered `plan.yaml`, fetches public data, runs a causal estimator (DiD / event study / synthetic control …), and publishes a reproducible report. LLM agents (LangGraph + open LLMs) automate collect → metrics → estimate → report. Results are browsable in a Streamlit app.
+[대시보드 보기](https://causalinferencelab.github.io/policy-effect-analytics-agent/) · [어떻게 동작하나](https://causalinferencelab.github.io/policy-effect-analytics-agent/architecture.html) · [조별 운영 가이드](docs/ops/group-guide.md) · [GitHub 처음이라면](docs/ops/github-onboarding.md)
+
+> 가짜연구소 인과추론팀 × NIPA 오픈업 오픈소스 AI 특화형 2차 트랙3 「에이전틱 AI × 데이터」
 
 ---
 
-**대시보드**: https://causalinferencelab.github.io/policy-effect-analytics-agent/ (GitHub Pages, `main` 반영 시 자동 배포)
-
-## 왜 하나요?
-
-1. 공공·사회 문제를 **데이터로 정의**하고, 그 해법(정책)이 **실제로 어떤 효과를 냈는지 추정**합니다.
-2. 수집 → 지표 구조화 → 효과 추정 → 리포팅 전 과정을 **LLM 에이전트로 자동화**합니다.
-3. 같은 문제를 다루는 누구나 바로 쓸 수 있도록 **GitHub + 분석 플랫폼(Streamlit)** 으로 공개합니다.
-
-핵심 원칙: **결과를 보기 전에 `plan.yaml`을 먼저 커밋한다.** (사전 등록 → 사후 끼워맞추기 방지)
-
-## 저장소 구조
+## 한눈에 보기
 
 ```
-core/                 공통 엔진 (Data 담당) — 어댑터, schema/plan.py, estimators, report, agent
-cases/
-  _template/          새 케이스 시작용 템플릿 (복사해서 사용)
-  _example_*/         참고용 예시 케이스
-  <조-주제>/          조별 케이스 (plan.yaml, fetch.py, estimate.py, report.md, figures/)
-app/streamlit_app.py  케이스 브라우저 (API 키 없이 실행)
-docs/ops/             조별 운영 가이드, GitHub 온보딩, 모니터링
-catalog/              정책 × 데이터셋 카탈로그 (이슈 → 데이터 연결)
-docs/strategy/        문제 정의·전략 문서
-scripts/              운영 스크립트 (weekly_activity.py 등)
-tests/                테스트
-.github/              CI, PR/이슈 템플릿, CODEOWNERS
+소셜 신호 ─▶ 주제 ─▶ 정책 전부 모으기 ─▶ 세 관문 ─▶ 계획 먼저 ─▶ 효과 추정·판정
+(뉴스·SNS)   (신호는 여기까지만)  (법제처 조례·고시)   (언제·누가·무엇을)  (plan.yaml 커밋)   (식별됨·조건부·식별 불가)
 ```
 
-## 빠른 시작
+| 원칙 | 왜 |
+|---|---|
+| 소셜 신호는 **주제까지만** 정한다 | 화제가 된 정책 하나만 고르면 결과를 보고 사례를 고르는 셈이 된다 |
+| 계획을 **먼저 커밋**해야 추정이 실행된다 | 결과를 본 뒤 설계를 바꾸는 것을 막는다 |
+| 방법은 **규칙이** 고르고, 수치는 **라이브러리가** 계산한다 | LLM은 주제 매칭과 서술만 돕는다 |
+| 처치 지역이 적으면 **무작위화 추론** | 기존 표준오차는 처치 4/25곳에서 크게 과신한다 |
+| 한계는 **배지로 공개** | 시뮬레이션·키 대기·확인 필요 상태를 숨기지 않는다 |
+
+## 5분 만에 돌려 보기
 
 ```bash
 git clone https://github.com/CausalInferenceLab/policy-effect-analytics-agent.git
 cd policy-effect-analytics-agent
+python -m venv .venv && source .venv/bin/activate
+pip install -e ".[dev]"
 
-# uv 권장 (pip도 가능: python -m venv .venv && pip install -e ".[dev]")
-uv venv -p 3.11 && source .venv/bin/activate
-make install          # = uv pip install -e ".[dev]"
-cp .env.example .env  # API 키 입력 (공공데이터포털, KOSIS, LLM)
-
-make check            # ruff + pytest
-make app              # Streamlit 케이스 브라우저 (http://localhost:8501)
+make flow CASE=cases/t3-land-permit-2025   # 토허구역 예시를 6단계로 실행
+python site/build.py && python -m http.server -d _site   # 대시보드를 http://localhost:8000 에서
 ```
 
-에이전트/인과 추가 기능: `uv pip install -e ".[agent,causal]"`
+API 키 없이 돌아갑니다. 키가 필요한 데이터는 `.env.example`을 복사해 채우세요(`.env`는 커밋되지 않습니다).
 
-## 케이스 추가하기 (4단계)
+## 무엇이 들어 있나
 
-```bash
-git switch -c group3/plan
-cp -r cases/_template cases/group3-youth-rent   # 폴더명: <조>-<주제>, 소문자-하이픈
-```
-
-1. **질문 정의** — `plan.yaml` 작성 (질문·처치·대조·시점·지표·추정법·가정·중단조건·데이터 라이선스) → **먼저 PR**
-2. **수집** — `fetch.py`: 공공데이터 → `data/raw/`(커밋 금지) → 정제 결과만 `data/processed/`
-3. **추정** — `estimate.py`: `core.estimators`로 효과 추정 + 반증(placebo 등) → `figures/*.png`
-4. **리포트** — `report.md`: 결과·한계·정책 시사점. `make app`에서 바로 보입니다.
-
-자세한 절차: [`cases/_template/README.md`](cases/_template/README.md), 협업 규칙: [`CONTRIBUTING.md`](CONTRIBUTING.md), GitHub가 처음이라면: [`docs/ops/github-onboarding.md`](docs/ops/github-onboarding.md), 조별 운영: [`docs/ops/group-guide.md`](docs/ops/group-guide.md)
-
-## 7주 로드맵
-
-| 주차 | 목표 | 산출물 (커밋 기준) |
+| 폴더 | 하는 일 | 조원 역할 |
 |---|---|---|
-| 1 | 온보딩·조 편성·주제 후보 | 이슈 `케이스 제안` 등록, 첫 PR(자기소개/브랜치) |
-| 2 | 문제 정의·데이터 탐색 | `cases/<조>/plan.yaml` 초안 PR (결과 보기 전) |
-| 3 | 수집 자동화 | `fetch.py`, 데이터 출처·라이선스 명시 |
-| 4 | 지표 구조화·1차 추정 | `estimate.py`, 기본 그림 |
-| 5 | 강건성·반증 + 에이전트화 | placebo/민감도, LangGraph 노드 연결 |
-| 6 | 리포트·플랫폼 | `report.md`, Streamlit 반영 |
-| 7 | 발표·회고·공개 정리 | 최종 PR 머지, 릴리스 태그 |
+| [`catalog/`](catalog/) | 주제 6개 · 정책 8개 · 추천 데이터셋 | 문제 정의 |
+| [`core/discovery/`](core/discovery/) | 소셜 신호 → 주제 → 정책 목록 | 문제 정의 |
+| [`core/adapters/`](core/adapters/) | 국토부 실거래가 · KOSIS · 법제처 · 파일 수집 | 데이터 수집 |
+| [`core/estimators/`](core/estimators/) | DiD · 이벤트 스터디 · ITS · 무작위화 추론 · 판정 | 추정 |
+| [`core/agent/`](core/agent/) | 6단계 Flow, 사전 등록 게이트, 과잉해석 가드 | 리포트·에이전트 |
+| [`cases/`](cases/) | 조별 분석 케이스 (`_template`에서 시작) | 조 전체 |
+| [`site/`](site/) | 공개 대시보드 (GitHub Pages) | 리포트·에이전트 |
+| [`app/`](app/) | Streamlit 개발용 화면 | — |
+| [`docs/`](docs/) | 전략(국내 사례·주제 가이드·계획 작성법), 운영 가이드 | — |
 
-## 이슈 → 주제 → 정책 전체 → 효과
+## 조별로 참여하기
 
-소셜 반응(뉴스 제목·SNS 글)은 **어느 주제를 볼지까지만** 정합니다. 화제가 된 정책 하나만 골라 분석하면
-결과를 보고 사례를 고르는 셈이 되기 때문입니다(출발 키트 05). 주제가 정해지면 그 주제의 정책을
-전부 모으고(법제처 조례·고시), 세 관문(언제·누가·무엇을)을 통과한 것만 분석합니다.
-주제 목록: `catalog/topics.yaml` · 정적 대시보드: `python site/build.py` → `_site/`
+1. **주제 고르기**: [대시보드](https://causalinferencelab.github.io/policy-effect-analytics-agent/#topics)에서 주제를 고르거나 `catalog/topics.yaml`에 제안합니다.
+2. **계획 PR**: `cp -r cases/_template cases/group1-<주제>` → `plan.yaml` 작성 → PR로 사전 등록합니다. 작성법은 [plan-guide](docs/strategy/plan-guide.md)를 보세요.
+3. **실행·공개**: `make flow CASE=cases/group1-<주제>`를 돌리고 결과를 PR로 올리면, `main`에 반영될 때 대시보드에 자동으로 올라갑니다.
 
-1. **정책 식별**: `catalog/policies.yaml`(정책 × 데이터셋 카탈로그)에서 키워드로 찾습니다. LLM은 후보 중에서 고르는 보조 역할만 합니다.
-2. **데이터셋 추천**: 카탈로그에 검증해 둔 데이터셋과 공공데이터포털 실시간 검색 결과를 보여줍니다.
-3. **분석 설계**: 카탈로그의 설계(이중차분·합성통제·단절 시계열)로 정합니다. LLM이 고르지 않습니다.
-4. **효과 분석**: 사전 등록된 `plan.yaml`로 아래 Flow를 실행합니다.
+브랜치는 `group<N>/<설명>`, 수정은 자기 조 폴더만, 병합은 리뷰 1명 + CI 통과 후입니다. 자세한 규칙은 [CONTRIBUTING](CONTRIBUTING.md)에 있습니다.
 
-```bash
-make app        # 사이드바 '이슈 → 데이터 → 효과'
-python -c "from core.discovery import discover; r=discover('토허제 확대하고 집값 잡혔나'); print(r.top.name, r.next_step)"
-```
+## 지금 상태
 
-샘플: [`cases/t3-land-permit-2025`](cases/t3-land-permit-2025/) (현재 시뮬레이션 데이터, API 키 발급 후 실데이터로 전환)
-
-## Flow — 6단계 에이전트 흐름
-
-`core.agent`가 케이스 하나를 아래 6단계로 실행하고 `cases/<케이스>/flow_log.json`에 단계별 결과를 남깁니다. 앱의 **Flow** 페이지(`make app` → 사이드바 Flow)에서 실행하거나 저장된 로그를 볼 수 있습니다.
-
-| 단계 | 하는 일 | 주차 |
-|---|---|---|
-| ① 문제 정의 | `plan.yaml` 검증 + 사전 등록(커밋) 확인 — 추정 전에 확정 | W3 |
-| ② 데이터 수집 | 공공데이터 수집·출처/라이선스 기록 | W2 |
-| ③ 지표 구조화 | 패널 구성·품질 점검 | W3 |
-| ④ 효과 추정 | DiD/이벤트 스터디/ITS + 반증 → 식별됨·조건부·식별 불가 | W4–5 |
-| ⑤ 과잉해석 가드 | 결론 보류 규칙 + 인과 단정 표현 검사 | W6 |
-| ⑥ 리포트 | `report.md`·그림·재현 기록 | W7 |
-
-```bash
-make flow CASE=cases/_example_night_clinic   # = python -m core.agent <케이스> --allow-uncommitted
-```
-
-`--allow-uncommitted`는 데모용입니다. 실제 분석은 `plan.yaml`을 먼저 커밋한 뒤 플래그 없이 실행하세요. LLM 서술은 `.env`에 키를 넣고 `--llm`으로 켭니다(`uv pip install -e ".[agent]"`).
+- **구현됨**: 주제 매칭 · 6단계 Flow · 사전 등록 게이트 · DiD/이벤트 스터디/ITS · 무작위화 추론 · 과장 표현 가드 · 대시보드 자동 배포(매주 월요일 갱신)
+- **키 대기**: 국토부 실거래가(토허구역 예시는 지금 **시뮬레이션 데이터**) · 법제처 조례 자동 수집
+- **다음 단계**: 시차 도입 추정(Callaway–Sant'Anna) · 합성통제 · 검색량으로 선반영 점검
 
 ## 라이선스
 
-- **코드**: MIT ([LICENSE](LICENSE)) — © 가짜연구소 Causal Inference Team
-- **데이터**: 각 출처의 이용 조건을 따릅니다 (공공누리 제1~4유형, KOSIS 이용약관 등). 각 케이스의 `plan.yaml > data_sources[].license`에 반드시 명시하고, 재배포가 제한된 원자료는 커밋하지 않습니다.
-- 개인정보가 포함된 원자료는 어떤 경우에도 커밋하지 않습니다.
+코드는 [MIT](LICENSE)입니다. 데이터는 각 출처의 이용 조건(공공누리 유형 등)을 따르며, 케이스마다 `plan.yaml`의 `data_sources`에 적습니다.
 
-## 기여
+---
 
-[CONTRIBUTING.md](CONTRIBUTING.md) · [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)
+**English.** An open-source platform that starts from public conversation, picks a *topic* (never a single trending policy, to avoid selecting cases on outcomes), collects every policy in that topic from Korean public sources, checks three gates (when / who / what), requires a committed pre-analysis plan, and estimates effects with rule-selected designs (DiD, event study, ITS; randomization inference when few units are treated). Results are published as a static dashboard on GitHub Pages.
