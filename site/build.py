@@ -46,46 +46,65 @@ COLLECT_KO = {
 e = html.escape
 
 CSS = """
-:root{--paper:#f4f5f7;--surface:#fff;--ink:#16181d;--ink2:#454b57;--muted:#6f7683;--hair:#d9dce2;
---accent:#1d5b8f;--go:#1f6b4f;--go-bg:#e2f1ea;--warn:#8a5a00;--warn-bg:#fbefd7;--stop:#9b2c33;--stop-bg:#f8e3e4;
---sans:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif}
-@media (prefers-color-scheme:dark){:root{--paper:#121418;--surface:#1b1e24;--ink:#eceef2;--ink2:#c3c8d1;--muted:#8d94a1;
---hair:#2e333c;--accent:#7cb4e6;--go:#79d1a8;--go-bg:#16302a;--warn:#e7b35a;--warn-bg:#33291a;--stop:#ec8e95;--stop-bg:#361e21}}
-*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.7 var(--sans);word-break:keep-all}
-a{color:var(--accent)}.wrap{max-width:1040px;margin:0 auto;padding:40px 16px 80px}
-header.top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;border-bottom:2px solid var(--ink);padding-bottom:14px}
-header.top a{font-size:14px}h1{font-size:clamp(28px,4.4vw,40px);line-height:1.2;margin:22px 0 8px}
-h2{font-size:21px;margin:44px 0 12px}h3{font-size:17px;margin:0 0 6px}.lede{color:var(--ink2);max-width:66ch;margin:0}
-.muted{color:var(--muted);font-size:14px}.card{background:var(--surface);border:1px solid var(--hair);border-radius:10px;padding:18px}
-.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(290px,1fr))}
-.steps{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));margin-top:16px}
-.step{background:var(--surface);border:1px solid var(--hair);border-radius:10px;padding:12px 14px;font-size:14px}
-.step b{display:block;font-size:15px}.step .n{color:var(--accent);font-weight:700;font-size:13px}
+:root{--paper:#f6f7f9;--surface:#fff;--sunk:#eef0f3;--ink:#14171c;--ink2:#434954;--muted:#6b7280;--hair:#dde0e5;
+--accent:#1b5e9b;--accent-soft:#e3eef8;--go:#1e6a4d;--go-bg:#e0f1e8;--warn:#8a5900;--warn-bg:#fbeed3;--stop:#9c2b33;--stop-bg:#f8e2e4;
+--sans:"Pretendard","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;--mono:ui-monospace,SFMono-Regular,Menlo,monospace}
+@media (prefers-color-scheme:dark){:root{--paper:#111317;--surface:#1a1d23;--sunk:#22262d;--ink:#eceef2;--ink2:#c2c7d0;--muted:#8e95a2;
+--hair:#2d323a;--accent:#79b2e8;--accent-soft:#1a2b3c;--go:#7fd3ab;--go-bg:#15302a;--warn:#e8b45c;--warn-bg:#33291a;--stop:#ee8f96;--stop-bg:#371e21}}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.7 var(--sans);word-break:keep-all}
+a{color:var(--accent)}code{font-family:var(--mono);font-size:.9em;background:var(--sunk);padding:1px 5px;border-radius:4px}
+.nav{position:sticky;top:0;z-index:5;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--hair)}
+.nav .in{max-width:1080px;margin:0 auto;padding:10px 16px;display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.nav b a{color:var(--ink);text-decoration:none}.nav .links{display:flex;gap:14px;flex-wrap:wrap;font-size:14px}.nav .links a{color:var(--ink2);text-decoration:none}
+.nav .links a:hover{color:var(--accent)}.wrap{max-width:1080px;margin:0 auto;padding:0 16px 80px}
+.hero{padding:64px 0 28px}.eyebrow{font-size:13px;font-weight:700;letter-spacing:.06em;color:var(--accent)}
+h1{font-size:clamp(30px,5vw,48px);line-height:1.18;margin:10px 0 14px;letter-spacing:-.02em}
+h2{font-size:clamp(22px,3vw,28px);margin:0 0 6px;letter-spacing:-.01em}h3{font-size:17px;margin:0 0 6px}
+.lede{color:var(--ink2);font-size:18px;max-width:62ch;margin:0}.sub{color:var(--ink2);max-width:66ch;margin:0 0 20px}
+section{padding:56px 0 8px;scroll-margin-top:56px}.muted{color:var(--muted);font-size:14px}
+.cta{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0 0}.btn{display:inline-block;padding:10px 18px;border-radius:999px;font-weight:600;text-decoration:none;font-size:15px}
+.btn.primary{background:var(--accent);color:#fff}.btn.ghost{border:1px solid var(--hair);color:var(--ink);background:var(--surface)}
+.card{background:var(--surface);border:1px solid var(--hair);border-radius:14px;padding:20px}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(280px,1fr))}.grid3{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.icon{width:36px;height:36px;border-radius:10px;background:var(--accent-soft);color:var(--accent);display:grid;place-items:center;font-weight:800;margin-bottom:10px}
 .badge{display:inline-block;font-size:12.5px;font-weight:600;padding:2px 9px;border-radius:999px;white-space:nowrap}
-.go{color:var(--go);background:var(--go-bg)}.warn{color:var(--warn);background:var(--warn-bg)}.stop{color:var(--stop);background:var(--stop-bg)}
+.go{color:var(--go);background:var(--go-bg)}.warn{color:var(--warn);background:var(--warn-bg)}.stop{color:var(--stop);background:var(--stop-bg)}.info{color:var(--accent);background:var(--accent-soft)}
 .gates{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0 4px}
-textarea{width:100%;min-height:74px;font:inherit;padding:12px;border-radius:10px;border:1px solid var(--hair);background:var(--surface);color:var(--ink)}
-.hit{outline:2px solid var(--accent)}table{width:100%;border-collapse:collapse;font-size:14px}
-th,td{text-align:left;padding:8px 10px;border-bottom:1px solid var(--hair);vertical-align:top}th{color:var(--muted);font-weight:600}
-.tablewrap{overflow-x:auto;background:var(--surface);border:1px solid var(--hair);border-radius:10px}
-.banner{border-radius:10px;padding:12px 16px;margin:14px 0;font-weight:600}
-.kpi{display:flex;gap:28px;flex-wrap:wrap;margin:8px 0}.kpi div{min-width:120px}.kpi .v{font-size:26px;font-weight:700}
-.figs{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}.figs img{width:100%;background:#fff;border-radius:8px;border:1px solid var(--hair)}
-svg text{fill:var(--ink2);font:12px var(--sans)}ul{padding-left:20px}footer{margin-top:60px;color:var(--muted);font-size:13px;border-top:1px solid var(--hair);padding-top:14px}
+.ask{margin-top:26px}.ask textarea{width:100%;min-height:76px;font:inherit;font-size:17px;padding:14px 16px;border-radius:14px;border:1px solid var(--hair);background:var(--surface);color:var(--ink)}
+.ask textarea:focus{outline:2px solid var(--accent);border-color:transparent}.chips{display:flex;gap:6px;flex-wrap:wrap;margin:10px 0}
+.chip{border:1px solid var(--hair);background:var(--surface);color:var(--ink2);border-radius:999px;padding:4px 12px;font:inherit;font-size:13.5px;cursor:pointer}
+.chip[aria-pressed=true]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.hit{outline:2px solid var(--accent);outline-offset:2px}.topic{text-decoration:none;color:inherit;display:block}.topic:hover{border-color:var(--accent)}
+.list .topic{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,2fr) auto;gap:14px;align-items:center}
+.list{display:flex;flex-direction:column;gap:8px}.list .topic p{margin:0}
+table{width:100%;border-collapse:collapse;font-size:14px}th,td{text-align:left;padding:9px 10px;border-bottom:1px solid var(--hair);vertical-align:top}th{color:var(--muted);font-weight:600}
+.tablewrap{overflow-x:auto;background:var(--surface);border:1px solid var(--hair);border-radius:12px}
+.banner{border-radius:12px;padding:12px 16px;margin:14px 0;font-weight:600}
+.figs{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}.figs img{width:100%;background:#fff;border-radius:10px;border:1px solid var(--hair)}
+svg text{fill:var(--ink2);font:12.5px var(--sans)}svg .strong{fill:var(--ink);font-weight:700}ul,ol{padding-left:20px}
+.flow{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));counter-reset:s}
+.flow .card{padding:14px;position:relative}.flow .n{font:700 12px var(--mono);color:var(--accent)}.flow b{display:block;margin:2px 0 4px}.flow p{margin:0;font-size:14px;color:var(--ink2)}
+.flow .who{margin-top:8px;font-size:12.5px;color:var(--muted)}.split{display:grid;gap:14px;grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}
+.vs .card h3{display:flex;gap:8px;align-items:center}.stat{font-size:28px;font-weight:800;letter-spacing:-.02em}
+footer{margin-top:64px;color:var(--muted);font-size:13px;border-top:1px solid var(--hair);padding-top:16px}
+@media (max-width:640px){.list .topic{grid-template-columns:minmax(0,1fr)}.hero{padding-top:40px}}
 """
 
 
 def page(title: str, body: str, depth: int = 0) -> str:
     up = "../" * depth
+    home = f"{up}index.html"
     return f"""<!doctype html><html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>{e(title)}</title>
-<style>{CSS}</style></head><body><div class="wrap">
-<header class="top"><a href="{up}index.html"><b>정책 효과 분석 플랫폼</b></a>
-<span><a href="{REPO}">GitHub</a> · <span class="muted">가짜연구소 인과추론팀 × OpenUp</span></span></header>
-{body}
-<footer>모든 수치와 판정은 레포의 <code>catalog/</code>·<code>cases/</code>에서 GitHub Actions가 자동 생성합니다.
-시뮬레이션 데이터로 만든 결과에는 별도 표시가 붙습니다. · <a href="{REPO}">{REPO}</a></footer>
-</div></body></html>"""
+<meta name="description" content="소셜 반응에서 출발해 공공데이터로 정책 효과를 확인하는 오픈소스 플랫폼">
+<style>{CSS}</style></head><body>
+<nav class="nav"><div class="in"><b><a href="{home}">정책 효과 분석 플랫폼</a></b>
+<span class="links"><a href="{home}#why">왜</a><a href="{home}#flow">흐름</a><a href="{home}#topics">주제</a>
+<a href="{up}architecture.html">아키텍처</a><a href="{home}#trust">신뢰</a><a href="{home}#join">참여하기</a><a href="{REPO}">GitHub ↗</a></span></div></nav>
+<div class="wrap">{body}
+<footer>가짜연구소 인과추론팀 × 오픈업 오픈소스 AI 특화형 트랙3 · 모든 수치와 판정은 레포의 <code>catalog/</code>·<code>cases/</code>에서
+GitHub Actions가 자동 생성합니다(매주 월요일 갱신). 시뮬레이션 데이터로 만든 결과에는 별도 표시가 붙습니다.
+· <a href="{REPO}">소스 코드 (MIT)</a></footer></div></body></html>"""
 
 
 def gate_badges(t) -> str:
@@ -203,9 +222,10 @@ def topic_page(t, policies) -> str:
     by_id = {p.id: p for p in policies}
     ps = [by_id[i] for i in t.policies]
     body = [
-        f"<h1>{e(t.name)}</h1><p class='lede'>{e(t.question)}</p>",
+        f"<div class='hero' style='padding-bottom:0'><span class='eyebrow'>주제</span>"
+        f"<h1>{e(t.name)}</h1><p class='lede'>{e(t.question)}</p></div>",
         f'<div class="gates">{gate_badges(t)}</div>',
-        "<h2>1. 이 주제의 정책 전체</h2>",
+        "<section style='padding-top:32px'><h2>1. 이 주제의 정책 전체</h2>",
         f"<p class='muted'>수집 방법: {COLLECT_KO[t.collect.method]} — {e(t.collect.note)}</p>",
         timeline_svg(t.events),
     ]
@@ -271,14 +291,45 @@ def topic_page(t, policies) -> str:
     return page(t.name, "\n".join(body), depth=1)
 
 
+def readiness(t) -> tuple[str, str, str]:
+    """주제 전체 준비 상태 (필터용 키, 라벨, 색)."""
+    st = {g.status for g in t.gates.values()}
+    if "fail" in st:
+        return "fail", "관문 탈락", "stop"
+    if "check" in st:
+        return "check", "확인 필요", "warn"
+    if "key" in st:
+        return "key", "데이터 키 대기", "warn"
+    return "ready", "분석 가능", "go"
+
+
+def has_result(t, policies) -> bool:
+    by_id = {p.id: p for p in policies}
+    return any(
+        by_id[i].sample_case and (ROOT / by_id[i].sample_case / "flow_log.json").exists()
+        for i in t.policies
+    )
+
+
+FLOW_STEPS = [
+    ("소셜 신호", "뉴스 제목·SNS 글에서 사람들이 궁금해하는 것을 읽습니다", "누구나"),
+    (
+        "주제 고르기",
+        "신호는 <b>주제까지만</b> 정합니다. 화제가 된 정책 하나를 고르지 않습니다",
+        "플랫폼 자동",
+    ),
+    ("정책 전부 모으기", "법제처 조례·부처 고시로 '어느 지역이 언제부터'를 모읍니다", "수집 담당"),
+    ("세 관문", "언제 시작했나 · 누가 받았나 · 무엇으로 재나", "문제 정의 담당"),
+    ("계획 먼저", "데이터를 보기 전에 분석계획을 커밋합니다(사전 등록)", "문제 정의 담당"),
+    (
+        "효과 추정·판정",
+        "식별됨 · 조건부 · 식별 불가 — 과장 표현은 자동으로 막습니다",
+        "추정·리포트 담당",
+    ),
+]
+
+
 def index_page(topics, policies) -> str:
-    cards = []
-    for t in topics:
-        cards.append(
-            f'<a class="card" data-topic="{t.id}" href="topics/{t.id}.html" style="text-decoration:none;color:inherit">'
-            f"<h3>{e(t.name)}</h3><p class='muted' style='margin:0'>{e(t.question)}</p>"
-            f'<div class="gates">{gate_badges(t)}</div></a>'
-        )
     kw = {
         t.id: list(
             dict.fromkeys(
@@ -288,38 +339,102 @@ def index_page(topics, policies) -> str:
         )
         for t in topics
     }
-    steps = [
-        ("소셜 신호", "뉴스 제목·SNS 글"),
-        ("주제", "신호는 주제까지만 정함"),
-        ("정책 전체 수집", "법제처 조례·고시로 지역×시점"),
-        ("세 관문", "언제 · 누가 · 무엇을"),
-        ("사전 등록", "계획을 먼저 커밋"),
-        ("효과 추정", "판정: 식별됨·조건부·식별 불가"),
+    cards = []
+    for t in topics:
+        key, lab, cls = readiness(t)
+        res = has_result(t, policies)
+        cards.append(
+            f'<a class="card topic" data-topic="{t.id}" data-ready="{key}" data-result="{int(res)}" '
+            f'href="topics/{t.id}.html"><div><h3>{e(t.name)}</h3>'
+            f'<span class="badge {cls}">{lab}</span>'
+            + (' <span class="badge info">분석 결과 있음</span>' if res else "")
+            + f'</div><p class="muted">{e(t.question)}</p><div class="gates">{gate_badges(t)}</div></a>'
+        )
+    n_ready = sum(1 for t in topics if has_result(t, policies))
+    flow = "".join(
+        f'<div class="card"><span class="n">{i + 1:02d}</span><b>{a}</b><p>{b}</p><div class="who">{c}</div></div>'
+        for i, (a, b, c) in enumerate(FLOW_STEPS)
+    )
+    examples = [
+        "토허제 확대하고 강남 집값 잡혔나요?",
+        "지역화폐 쓰면 동네 가게 매출이 오르나요?",
+        "5030 속도 줄이고 사고 줄었나?",
+        "계절관리제 하면 미세먼지 줄어요?",
     ]
+    chips = "".join(f'<button class="chip ex" type="button">{e(x)}</button>' for x in examples)
     body = f"""
-<h1>소셜 반응에서 정책 효과까지</h1>
-<p class="lede">사람들이 이야기하는 정책이 실제로 효과가 있었는지, 공공데이터로 확인합니다.
-화제가 된 정책 하나만 골라 분석하지 않고, <b>그 주제의 정책을 전부 모아</b> 비교합니다.
-화제성으로 사례를 고르면 결과를 보고 사례를 고르는 셈이 되기 때문입니다.</p>
-<div class="steps">{"".join(f'<div class="step"><span class="n">{i + 1}</span><b>{a}</b>{b}</div>' for i, (a, b) in enumerate(steps))}</div>
-<h2>지금 어떤 이야기가 궁금하세요?</h2>
-<textarea id="q" placeholder="예: 토허제 확대하고 강남 집값 잡혔나요? / 지역화폐 쓰면 동네 가게 매출이 오르나요?"></textarea>
-<p id="ans" class="muted">글을 입력하면 해당하는 주제를 찾아 표시합니다. (브라우저 안에서만 동작, 서버로 보내지 않음)</p>
-<h2>주제</h2><div class="grid" id="cards">{"".join(cards)}</div>
+<div class="hero"><span class="eyebrow">OPEN SOURCE · 공공데이터 · 인과추론</span>
+<h1>사람들이 묻는 정책,<br>정말 효과가 있었을까?</h1>
+<p class="lede">소셜 반응에서 출발해, 그 주제의 정책을 전부 모으고, 공공데이터로 효과를 추정합니다.
+결론을 낼 수 없으면 <b>"식별 불가"라고 말하는 것</b>까지가 이 플랫폼의 일입니다.</p>
+<div class="ask"><textarea id="q" aria-label="궁금한 정책 이야기" placeholder="궁금한 정책 이야기를 적어 보세요"></textarea>
+<div class="chips" aria-label="예시">{chips}</div>
+<p id="ans" class="muted">입력한 글은 이 브라우저 안에서만 쓰입니다. 서버로 보내지 않습니다.</p></div>
+<div class="cta"><a class="btn primary" href="#topics">주제 둘러보기</a><a class="btn ghost" href="architecture.html">어떻게 동작하나</a></div>
+</div>
+
+<section id="why"><h2>왜 이렇게 만드나</h2><p class="sub">화제가 된 정책만 골라 분석하면 결과를 보고 사례를 고르는 셈이 됩니다.</p>
+<div class="split vs">
+<div class="card"><h3><span class="badge stop">A</span> 화제성으로 사례를 고르면</h3>
+<ul><li>조용했지만 효과가 컸던 정책이 빠집니다</li><li>화제가 되면 신청이 늘어 효과가 부풀려집니다</li>
+<li>시행 전부터 화제였다면 사람들이 미리 움직여 비교가 깨집니다</li></ul></div>
+<div class="card"><h3><span class="badge go">B</span> 화제성은 출발점으로만 쓰면</h3>
+<ul><li>신호는 <b>어느 주제를 볼지</b>만 정합니다</li><li>그 주제의 정책을 <b>전부</b> 모아 비교합니다</li>
+<li>신호는 나중에 '미리 반응했나' 점검용으로 다시 씁니다</li></ul></div></div></section>
+
+<section id="flow"><h2>여섯 단계 흐름</h2><p class="sub">각 단계는 조원 역할과 7주 일정에 그대로 대응합니다.</p>
+<div class="flow">{flow}</div></section>
+
+<section id="topics"><h2>주제</h2><p class="sub">주제마다 세 관문(언제·누가·무엇을)의 통과 여부를 보여줍니다.</p>
+<div class="chips" role="group" aria-label="필터">
+<button class="chip f" data-f="all" aria-pressed="true">전체 {len(topics)}</button>
+<button class="chip f" data-f="result" aria-pressed="false">분석 결과 있음 {n_ready}</button>
+<button class="chip f" data-f="key" aria-pressed="false">데이터 키 대기</button>
+<button class="chip f" data-f="check" aria-pressed="false">확인 필요</button>
+<span style="flex:1"></span>
+<button class="chip v" data-v="grid" aria-pressed="true">카드</button><button class="chip v" data-v="list" aria-pressed="false">목록</button></div>
+<div class="grid" id="cards">{"".join(cards)}</div></section>
+
+<section id="trust"><h2>무엇을 믿을 수 있나</h2><p class="sub">결과보다 과정을 먼저 공개합니다.</p>
+<div class="grid3">
+<div class="card"><div class="icon">1</div><h3>계획을 먼저 커밋</h3><p class="muted">분석계획(plan.yaml)이 git에 커밋되지 않으면 추정 단계가 실행되지 않습니다.</p></div>
+<div class="card"><div class="icon">2</div><h3>방법은 규칙이 정함</h3><p class="muted">LLM은 주제·서술을 돕고, 추정 방법은 데이터 모양을 보고 규칙이 고릅니다. 수치는 검증된 라이브러리가 계산합니다.</p></div>
+<div class="card"><div class="icon">3</div><h3>작은 표본에 맞는 추론</h3><p class="muted">처치 지역이 10곳 미만이면 무작위화 추론으로 바꿉니다. 시뮬레이션에서 95% 신뢰구간 포함률 95%를 확인했습니다.</p></div>
+<div class="card"><div class="icon">4</div><h3>과장 표현 차단</h3><p class="muted">판정이 '식별됨'이 아니면 "입증", "때문에" 같은 표현을 리포트에서 막습니다.</p></div>
+<div class="card"><div class="icon">5</div><h3>출처·라이선스 표시</h3><p class="muted">모든 데이터셋에 제공 기관, 공공누리 유형, 수집 시점을 붙입니다.</p></div>
+<div class="card"><div class="icon">6</div><h3>한계도 공개</h3><p class="muted">시뮬레이션 결과, 키 대기, 확인 필요 상태를 숨기지 않고 배지로 표시합니다.</p></div>
+</div></section>
+
+<section id="join"><h2>참여하기</h2><p class="sub">조별로 주제 하나를 맡아 <code>cases/</code>에 케이스를 추가합니다.</p>
+<div class="grid3">
+<div class="card"><div class="icon">①</div><h3>주제 고르기</h3><p class="muted">위 주제 중 하나를 고르거나 <code>catalog/topics.yaml</code>에 새 주제를 제안합니다.</p></div>
+<div class="card"><div class="icon">②</div><h3>계획 PR</h3><p class="muted"><code>cases/_template</code>을 복사해 plan.yaml을 쓰고 PR로 사전 등록합니다.</p></div>
+<div class="card"><div class="icon">③</div><h3>실행·공개</h3><p class="muted"><code>make flow</code>로 돌리면 이 사이트에 결과가 자동으로 올라옵니다.</p></div>
+</div><div class="cta"><a class="btn primary" href="{REPO}/blob/main/docs/ops/group-guide.md">조별 운영 가이드</a>
+<a class="btn ghost" href="{REPO}/blob/main/docs/ops/github-onboarding.md">GitHub 처음이라면</a></div></section>
+
 <script>
 const KW={json.dumps(kw, ensure_ascii=False)};
-const norm=s=>s.replace(/\\s+/g,'').toLowerCase();
-document.getElementById('q').addEventListener('input',ev=>{{
-  const t=norm(ev.target.value);let best=null,bs=0,hits=[];
+const norm=s=>s.replace(/\s+/g,'').toLowerCase();
+const q=document.getElementById('q'),ans=document.getElementById('ans');
+function match(){{
+  const t=norm(q.value);let best=null,bs=0,hits=[];
   for(const [id,ks] of Object.entries(KW)){{const h=ks.filter(k=>t.includes(norm(k)));
     const s=h.reduce((a,k)=>a+Math.min(norm(k).length,6),0);if(s>bs){{bs=s;best=id;hits=h;}}}}
-  document.querySelectorAll('#cards .card').forEach(c=>c.classList.toggle('hit',c.dataset.topic===best));
-  const a=document.getElementById('ans');
-  if(!t){{a.textContent='글을 입력하면 해당하는 주제를 찾아 표시합니다.';return;}}
-  if(!best){{a.textContent='맞는 주제를 찾지 못했습니다. 정책명이나 지역·시점을 넣어 보세요.';return;}}
+  document.querySelectorAll('#cards .topic').forEach(c=>c.classList.toggle('hit',c.dataset.topic===best));
+  if(!t){{ans.textContent='입력한 글은 이 브라우저 안에서만 쓰입니다. 서버로 보내지 않습니다.';return;}}
+  if(!best){{ans.textContent='맞는 주제를 찾지 못했습니다. 정책명이나 지역을 넣어 보세요.';return;}}
   const c=document.querySelector(`#cards [data-topic="${{best}}"]`);
-  a.innerHTML=`→ <a href="${{c.getAttribute('href')}}">${{c.querySelector('h3').textContent}}</a> (일치: ${{hits.join(', ')}})`;
-}});
+  ans.innerHTML=`→ 주제 <a href="${{c.getAttribute('href')}}"><b>${{c.querySelector('h3').textContent}}</b></a> · 일치한 말: ${{hits.join(', ')}} · 이 주제의 정책 전체를 봅니다`;
+}}
+q.addEventListener('input',match);
+document.querySelectorAll('.ex').forEach(b=>b.onclick=()=>{{q.value=b.textContent;match();}});
+document.querySelectorAll('.f').forEach(b=>b.onclick=()=>{{
+  document.querySelectorAll('.f').forEach(x=>x.setAttribute('aria-pressed',x===b));const f=b.dataset.f;
+  document.querySelectorAll('#cards .topic').forEach(c=>c.hidden=!(f==='all'||(f==='result'?c.dataset.result==='1':c.dataset.ready===f)));}});
+document.querySelectorAll('.v').forEach(b=>b.onclick=()=>{{
+  document.querySelectorAll('.v').forEach(x=>x.setAttribute('aria-pressed',x===b));
+  document.getElementById('cards').className=b.dataset.v==='list'?'list':'grid';}});
 </script>"""
     return page("정책 효과 분석 플랫폼", body)
 
@@ -332,6 +447,12 @@ def main() -> None:
     (OUT / "index.html").write_text(index_page(topics, policies), encoding="utf-8")
     for t in topics:
         (OUT / "topics" / f"{t.id}.html").write_text(topic_page(t, policies), encoding="utf-8")
+    sys.path.insert(0, str(Path(__file__).resolve().parent))
+    import architecture
+
+    (OUT / "architecture.html").write_text(
+        page("아키텍처 · 정책 효과 분석 플랫폼", architecture.body(e)), encoding="utf-8"
+    )
     (OUT / ".nojekyll").write_text("")
     print(f"_site/ 생성: 주제 {len(topics)}개")
 

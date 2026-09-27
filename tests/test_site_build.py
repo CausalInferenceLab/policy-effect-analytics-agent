@@ -14,7 +14,7 @@ def test_site_builds(tmp_path, monkeypatch):
     mod.main()
     out = tmp_path / "_site"
     topics = mod.load_topics()
-    assert (out / "index.html").exists()
+    assert (out / "index.html").exists() and (out / "architecture.html").exists()
     for t in topics:
         page = (out / "topics" / f"{t.id}.html").read_text(encoding="utf-8")
         assert t.name in page
