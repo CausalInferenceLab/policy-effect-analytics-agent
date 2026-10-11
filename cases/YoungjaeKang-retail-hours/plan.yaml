@@ -1,0 +1,168 @@
+# 작성자: 강영재
+# 프로젝트 범위·일정: plan.md / 실행 스키마: core/schema/plan.py
+# 실제 자료에 사용할 계획. 매출 원자료를 열기 전에 커밋하고 PR을 올린다.
+# fetch.py와 사례별 검사는 추후 구현한다.
+case_id: YoungjaeKang-retail-hours
+title: "대형마트 의무휴업 평일 전환과 골목상권 식품판매 매출"
+question: >-
+  동대문구의 대형마트 의무휴업 평일 전환 이후, 골목상권 식품판매 관련
+  업종의 분기 추정매출은 서울 내 비교 후보 자치구와 비교해 어떻게 달라졌는가?
+synthetic_data: false
+
+unit:
+  name: 서울특별시 자치구
+  id_col: gu_code
+time:
+  col: quarter_idx
+  freq: quarter
+  start: 0
+  end: 15
+# 2021Q1=0, 2024Q4=15. 모든 구에서 11(2023Q4), 12(2024Q1)을 제외한다.
+# 제외 후 재번호하지 않는다. 실제 관측 시점은 0~10, 13~15이다.
+# 위 제외 규칙은 time 필드가 자동 적용하지 않으므로 fetch.py에서 구현·검사한다.
+
+treatment:
+  definition: >-
+    동대문구를 처치집단으로 고정하고 도입 전후 treated=1을 유지한다.
+    2023-12-29 행정예고, 2024-01-29 효력 발생(일부 점포 2024-02-26)을
+    구분하며, 분석은 전환을 마친 뒤 첫 온전한 분기인 2024Q2(13)부터 시작한다.
+    2023Q4는 선반영 가능성, 2024Q1은 전환·유예 때문에 공통 제외한다.
+  group_col: treated
+  treat_time: 13
+control:
+  definition: >-
+    초기 분석의 비교 후보 20개 구는 종로구, 용산구, 광진구, 중랑구,
+    성북구, 강북구, 도봉구, 노원구, 은평구, 서대문구, 마포구, 양천구,
+    강서구, 구로구, 금천구, 영등포구, 동작구, 강남구, 송파구, 강동구이다.
+    이들 구는 전체 기간에 treated=0을 부여한다. 다만 분석 기간 전체의
+    미전환 여부는 추가 확인이 필요하다. 서초구·중구·관악구는 제외하며,
+    성동구는 점포별 예외와 전환 이력 확인 전까지 편입을 보류한다.
+  rationale: >-
+    같은 서울 안에서는 경기와 계절 변화의 영향을 함께 받는다고 본다.
+    다만 휴업일을 바꾼 구는 원래 상권 사정이 달랐을 수 있고, 소비자가 다른
+    구로 이동했을 수도 있다. 비교 후보의 정책 이력도 아직 모두 확인하지 못해
+    어느 구든 처치 지역을 대신할 수 있다고 가정하기 어렵다. 구별로 확인한
+    내용을 정책 목록에 적는다. 이력이 불분명한 후보를 포함하면 결과는
+    탐색적으로만 제시하고 정책 효과에 대한 판단은 보류한다.
+    비교 목록 변경은 결과 열람 전에 기록하고, 열람 후 바꾸면 별도 이력을 남긴다.
+
+outcomes:
+  - name: 골목상권 식품판매 관련 업종 추정매출 로그 합계
+    col: log_sales
+    definition: >-
+      골목상권에 해당하는 상권의 육류판매(CS300007), 수산물판매(CS300008),
+      청과상(CS300009), 반찬가게(CS300010) 분기 추정매출을 자치구별로 합산한
+      명목 원화 매출 sales_krw의 자연로그이다. 매출이 0이거나 빠진 이유를 확인하고,
+      로그 계산을 위해 상수를 더하거나 빠진 값을 0으로 채우지 않는다. 업종 대응표에 도매업이
+      포함되어 순수 소매업 지표로 해석하지 않으며 슈퍼마켓은 제외한다.
+    unit: 명목 원화 매출 합계의 자연로그
+    primary: true
+    expected_direction: unknown
+# sales_krw와 업종별 기술통계는 보조 출력이며 별도의 효과 추정 지표로 등록하지 않는다.
+
+estimator:
+  method: event_study
+  cluster_col: gu_code
+  covariates: []
+  ref_period: -3
+  window: [-13, 2]
+  alpha: 0.05
+# 자치구·분기 고정효과. 기준은 2023Q3(10), 사후 3분기 계수의 단순평균을 보고한다.
+
+assumptions:
+  - name: 평행추세
+    description: >-
+      정책이 없었다면 처치·비교집단의 결과 추세가 같았을 것이라는 가정이다.
+      사전 계수 결합검정을 하되, 통과하더라도 이 가정이 입증됐다고 보지 않는다.
+    check: pretrend_test
+  - name: 가짜 시행일에서 효과 부재
+    description: 실제 분석 시작 전 자료에서 2023Q1을 가짜 시행일로 설정해 점검한다.
+    check: placebo_time
+  - name: 정책 분류와 동시 정책
+    description: >-
+      비교 후보의 2021~2024 정책 이력·점포 예외, 동대문구 연계 지원사업의
+      집행일과 후속 정책을 검토한다. 아직 확인하지 못한 내용이 있어 정책 효과에 대한 판단은 보류한다.
+      요일 변경만의 순수 효과로 해석하지 않는다.
+    check: manual
+  - name: 공간 및 측정 기준의 일관성
+    description: >-
+      다시 제공된 2021년 이후 매출과 영역 자료가 같은 상권 경계·코드를
+      사용하는지 확인한다. 2023년 공간 파일의 코드가 연결되더라도 연도별로
+      같은 범위의 매출인지 따로 확인해야 한다. 확인 전에는 정책 효과를 판단하지 않는다.
+    check: manual
+  - name: 패널 구성과 관측 기간
+    description: >-
+      모든 구에 0~10, 13~15 분기 자료가 있어야 한다.
+      사전 최소 8분기, 사후 최소 3분기를 요구한다. 누락·중복·불명확한 자치구
+      연결·로그 변환 불가 등 입력 오류는 추정을 중단하고 원인을 기록한다.
+    check: manual
+  - name: 소수 처치와 지역 간 파급
+    description: >-
+      단일 처치 구의 한계와 인접 구 소비 이동 가능성을 기록한다.
+      공통 구현의 무작위화 추론 적용 조건인 균형 패널·동일 도입 시점을 확인한다.
+      계산을 반복해도 처치 지역은 하나이며, 다른 구가 처치 지역을 대신할 수 있다는 가정이 보장되지는 않는다.
+    check: manual
+# manual 항목은 자동 검사되지 않는다. 근거 미확인 시의 판정 보류, 사후 최소 기간,
+# 사례별 입력 검사는 수집·검증 코드와 보고 단계에서 구현한다.
+
+refutations:
+  - kind: placebo_time
+    params: {shift: 5}
+# 13-5=8(2023Q1). 실제 분석 시작 전 자료만 사용하며 유의수준은 pretrend_alpha이다.
+# 인접 구 제외 민감도 분석은 후속 확장 대상으로 자동 실행 목록에 포함하지 않는다.
+
+abstention:
+  - when: pretrend_rejected
+    verdict: not_identified
+    note: 사전추세 결합검정 기각 시 인과효과를 주장하지 않는다.
+  - when: staggered_adoption
+    verdict: not_identified
+    note: 시차 도입을 단순 동시 도입 모형에 혼합하지 않는다.
+  - when: short_pre_period
+    verdict: not_identified
+    note: 사전 8분기 미만이면 초기 효과 해석을 보류한다.
+  - when: few_treated_clusters
+    verdict: conditional
+    note: 처치 지역이 하나이므로 자동 판정은 좋아도 조건부까지만 허용한다.
+  - when: few_clusters
+    verdict: conditional
+    note: 군집 20개 미만이면 검정력 한계를 기록한다.
+  - when: placebo_significant
+    verdict: conditional
+    note: 가짜 시행일 검정이 유의하면 조건부로 낮춘다.
+  - when: ci_crosses_zero
+    verdict: conditional
+    note: 효과 없음이 아니라 효과 크기를 판별하기 어렵다고 해석한다.
+
+thresholds:
+  pretrend_alpha: 0.10
+  min_clusters: 20
+  min_pre_periods: 8
+
+data_sources:
+  - name: 서울시 상권분석서비스 추정매출-상권 (OA-15572)
+    provider: 서울특별시·서울신용보증재단
+    url: https://data.seoul.go.kr/dataList/OA-15572/S/1/datasetView.do
+    license: KOGL-1
+    path: data/panel.csv
+    notes: >-
+      제공 설명·API 명세·이용 조건을 확인했으며 매출 원자료는 아직 열람하지 않았다.
+      카드결제 자료를 보정해 추정한 매출이다. 계획 커밋·PR 후 fetch.py에서
+      2021~2024 자료 취득, 골목상권·4업종 선택, 자치구 연결·집계 및 분기 제외를
+      구현한다. 생성한 분석 패널은 path에 저장한다.
+      원본 식별 정보·수집 시점·해시·변환 규칙을 기록하고 원자료는 커밋하지 않는다.
+  - name: 서울시 상권분석서비스 영역-상권 (OA-15560)
+    provider: 서울특별시·서울신용보증재단
+    url: https://data.seoul.go.kr/dataList/OA-15560/S/1/datasetView.do
+    license: KOGL-1
+    path: data/panel.csv
+    notes: >-
+      골목상권 구분과 상권 코드의 자치구 연결에 사용하는 보조 자료이다.
+      2023-10-23 등록 공간 ZIP의 다운로드와 코드 구조를 확인했다.
+      최신 재제공 매출과의 경계·버전 호환성은 미확인이다.
+      두 자료를 합친 분석 파일을 같은 path에 저장한다. 각 원본의 경로와 버전은 수집 기록에 남긴다.
+# 정책 근거: 동대문구 고시 2024-16호
+# https://www.ddm.go.kr/www/selectEminwonWebView.do?key=3291&notAncmtMgtNo=16863
+# 업종 정의: https://golmok.seoul.go.kr/images/100_v3.pdf
+# 정책 목록·근거 링크와 확인 수준은 policy-verification.md에서 관리한다.
+# 시뮬레이션 실행은 별도 설정·입출력을 사용하고 synthetic_data: true, license: synthetic을 적용한다.
