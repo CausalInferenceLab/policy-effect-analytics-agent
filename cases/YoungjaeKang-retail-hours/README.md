@@ -16,6 +16,8 @@
 
 분석 범위와 일정은 [plan.md](plan.md), 실행 설정은 [plan.yaml](plan.yaml)에서 볼 수 있다. 자치구별로 찾아본 근거와 더 확인할 내용은 [정책 확인표](policy-verification.md)에 모았다.
 
+서울 25개 구의 [공통 조사표](comparison-survey.md)와 [자료원·지표 정의](data-notes.md)를 마련했다. 특성 값과 최종 비교군은 아직 확정하지 않았다. [구별 확인 공백과 자료 요청 초안](verification-gaps.md)에 다음에 확보할 문서를 특정했다.
+
 선행연구의 질문·방법·한계와 사례에 적용할 내용은 [연구 노트](research-notes.md)에 정리했다.
 
-초기 계획은 [PR #9](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/9)로 main에 병합됐고, 현재는 선행연구를 반영한 보완안을 작성한 상태다. 매출 원자료는 아직 수집하거나 분석하지 않았다. 비교군 정책 이력, 동시기 지원사업, 자료 기준을 확인하고 필요한 계획 보완을 커밋·PR에 반영한 뒤 수집 코드(`fetch.py`)와 이 사례에 필요한 검사를 작성할 예정이다. 비교 지역의 휴업일 변경 이력과 연도별 상권 자료를 같은 기준으로 비교할 수 있는지 확인하기 전에는 정책 효과를 판단하지 않는다.
+초기 계획은 [PR #9](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/9)로 main에 병합됐고, 선행연구·분기 처리 보완 [PR #10](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/10)은 2026-10-12 확인 시 열려 있다. 매출 원자료는 아직 수집하거나 분석하지 않았다. 비교군 정책 이력, 동시기 지원사업, 자료 기준을 확인하고 필요한 계획 보완을 커밋·PR에 반영한 뒤 수집 코드(`fetch.py`)와 이 사례에 필요한 검사를 작성할 예정이다. 비교 지역의 휴업일 변경 이력과 연도별 상권 자료를 같은 기준으로 비교할 수 있는지 확인하기 전에는 정책 효과를 판단하지 않는다.
