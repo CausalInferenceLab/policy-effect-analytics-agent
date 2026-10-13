@@ -56,7 +56,10 @@ control:
     마트 바로 주변의 효과로 해석하지 않는다.
     정책 전 공통 기준 시점의 인구·가구, 골목상권·4개 업종 점포 구성,
     대형마트·SSM·전통시장 분포, 공간 파급과 동시 변화를 동일한 표로 검토한다.
-    우선 2022년 기준의 자료 제공 가능성을 확인하며 기준 변경은 결과 열람 전에 기록한다.
+    특성자료의 목표 연도는 2022년이며 인구 12월 말, 가구 11월 1일,
+    점포 4분기, 면적 연간, 시장 상반기 파일의 실제 기준시점을 보존한다.
+    자료별 취득·집계의 보류 조건과 누락 처리는 collection-plan.md를 따른다.
+    다른 시점·정의로 대체하려면 대체 자료 수집 전에 계획 변경을 커밋·PR한다.
     인근 지역·인구 유사성·전통시장 존재 하나만으로 편입하지 않는다.
     임의의 유사도 점수나 매칭은 사용하지 않으며, 좁은 비교군을 만들려면
     선택 규칙을 별도 사전 계획으로 정한다. 상세 기준은 plan.md를 따른다.
@@ -189,6 +192,62 @@ data_sources:
       2023-10-23 등록 공간 ZIP의 다운로드와 코드 구조를 확인했다.
       최신 재제공 매출과의 경계·버전 호환성은 미확인이다.
       두 자료를 합친 분석 파일을 같은 path에 저장한다. 각 원본의 경로와 버전은 수집 기록에 남긴다.
+      특성자료의 골목상권 수와 2022Q4 점포의 자치구 연결에도 사용하되,
+      해당 시점 공간 버전의 호환성을 확인하기 전에는 특성 집계도 보류한다.
+  - name: 행정안전부 연령별 주민등록인구
+    provider: 행정안전부 주민과
+    url: https://jumin.mois.go.kr/ageStatMonth.do
+    license: other
+    path: data/characteristics/values.csv
+    notes: >-
+      정책 전 특성용. 2022-12 월말, 서울 25개 구, 등록구분 전체·남녀 합계,
+      외국인 제외 주민등록인구와 65세 이상 인구를 수집할 계획이다.
+      조회 조건·다운로드 메뉴만 확인했고 실제 파일은 미취득이다.
+      other는 이용허락 종류 미확인 상태이며 허락 확인을 뜻하지 않는다.
+      해당 통계 다운로드의 이용 조건 확인 전 실제 취득을 보류한다.
+      collection-plan.md의 연령 경계·합계·결측 검사를 후속 코드에서 구현한다.
+  - name: 서울시 가구원수별 가구 (DT201004B010004)
+    provider: 서울특별시 (인구주택총조사)
+    url: https://data.seoul.go.kr/dataList/DT201004B010004/S/2/datasetView.do
+    license: KOGL-1
+    path: data/characteristics/values.csv
+    notes: >-
+      정책 전 특성용. 2022년 11월 1일 0시, 서울 25개 구의 1인 일반가구와
+      전체 일반가구. 주민등록 세대수와 구분한다. 2022년 선택 항목 및 제공
+      설명·이용 조건 확인, 값·통계 파일 미수집. 5 미만 비공개 표기 x는 0으로
+      변환하지 않는다. 같은 모집단의 분자·분모로 비율을 계산한다.
+  - name: 서울시 행정구역 구별 면적 (DT201004O010001)
+    provider: 서울특별시
+    url: https://data.seoul.go.kr/dataList/DT201004O010001/S/2/datasetView.do
+    license: KOGL-1
+    path: data/characteristics/values.csv
+    notes: >-
+      정책 전 인구밀도 산출용. 2022년 서울 25개 구의 전체 행정면적을 km²로
+      사용한다. 연도 선택·이용 조건만 확인했고 값·기준일·단위는 취득 후 검증한다.
+      기준일 미확인 시 밀도 산출 보류. 면적 통계를 공식 경계 도형으로 간주하지 않는다.
+  - name: 서울시 상권분석서비스 점포-상권 (OA-15577)
+    provider: 서울특별시·서울신용보증재단
+    url: https://data.seoul.go.kr/dataList/OA-15577/A/1/datasetView.do
+    license: KOGL-1
+    path: data/characteristics/values.csv
+    notes: >-
+      정책 전 특성용. 2022년 ZIP 중 2022Q4 골목상권의 CS300007·CS300008·
+      CS300009·CS300010 전체 점포 수 SIMILR_INDUTY_STOR_CO를 구·업종별 집계한다.
+      목록·API 명세·이용 조건만 확인했고 실제 ZIP은 미취득이다.
+      전체=일반+프랜차이즈 검사, 분기×상권×업종 중복과 영역 연결·버전 확인 후 사용한다.
+      연간 분기 합산, 중복 합산, 누락의 0 처리 금지. 자세한 기준은 collection-plan.md.
+  - name: 서울시 전통시장 현황 2022년 상반기 파일 (OA-1176)
+    provider: 서울특별시
+    url: https://data.seoul.go.kr/dataList/OA-1176/F/1/datasetView.do
+    license: KOGL-1
+    path: data/characteristics/values.csv
+    notes: >-
+      정책 전 특성용. 2022년 상반기 XLSX의 목록·이용 조건만 확인했고 파일은 미취득이다.
+      내부 기준시점·시장 유형·중복·완전성을 확인한 뒤 구별 고유 시장 수와 존재 여부를 산출한다.
+      수정일을 기준일로 쓰거나 현재 OA-23058 API 값을 과거 값으로 대체하지 않는다.
+      정확한 일자를 알 수 없으면 상반기 표기를 보존한다. 유형이 불명확하면 집계 보류.
+# 특성자료는 collection-plan.md의 별도 수집·검사 계획이며 공통 collect가 자동 취득하지 않는다.
+# 첫 자료원과 data/panel.csv는 매출 추정 입력으로 유지한다. 특성값·원본은 Git 제외한다.
 # 정책 근거: 동대문구 고시 2024-16호
 # https://www.ddm.go.kr/www/selectEminwonWebView.do?key=3291&notAncmtMgtNo=16863
 # 업종 정의: https://golmok.seoul.go.kr/images/100_v3.pdf
