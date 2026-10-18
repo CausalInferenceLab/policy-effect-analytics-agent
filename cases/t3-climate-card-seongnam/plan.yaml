@@ -1,0 +1,87 @@
+# 분석 계획 — 기후동행카드 성남 편입(2025.5.3)
+# ⚠️ 탐색 분석(docs/strategy/climate-card.md 6절)으로 결과를 먼저 본 뒤 작성한 계획입니다 — 사전 등록이 아닙니다.
+#    파이프라인(make flow)으로 같은 설계를 재현하고 공개 API(api/results.json)에 올리려고 만든 멘토 예시입니다.
+#    사전 등록 연습은 다음 가설(H8 고양 GTX 제외 · H9 하남 이동 · H10 출퇴근 시간대)로 하세요.
+case_id: t3-climate-card-seongnam
+title: "기후동행카드 성남 편입(2025.5.3)이 성남 분당선·경강선 역 평일 승차에 미친 효과"
+question: >
+  2025년 5월 3일 기후동행카드가 성남 수인분당선·경강선 구간에 적용된 뒤,
+  같은 분당선·경부선의 아직 적용되지 않은 용인·수원 역과 비교해 성남 역의 평일 하루 평균 승차가 달라졌는가?
+synthetic_data: false
+
+unit: {name: 역(노선|역명), id_col: sid}
+time: {col: t, freq: week, start: 96, end: 147, datetime_col: week}   # t = 2023-01-02 주부터 센 주 번호. 96 = 2024-11-04 주, 147 = 2025-10-27 주
+
+treatment:
+  definition: >
+    성남 수인분당선 야탑~가천대 10역 · 경강선 판교·이매 (2025-05-03 토요일 적용).
+    적용일이 걸친 주(t=121, 2025-04-28 주)는 빼고 다음 주(t=122)를 첫 처치 주로 둔다.
+    성남 8호선 구간은 시범운영(2024-01-27)부터 적용이라 처치·대조 모두에서 뺀다.
+  group_col: treated
+  treat_time: 122
+control:
+  definition: "같은 분당선 용인(죽전~청명)·수원(영통~수원) 구간과 경부선 수원 구간 역 — 분석 기간(~2025-10) 동안 미적용"
+  rationale: >
+    같은 노선·같은 통근 축(분당선 → 강남·선릉)이라 노선 운행 변화와 수도권 공통 충격(요금 인상, 계절)을 함께 받는다.
+    성남 역과 가장 가까운 '카드가 없었다면'의 대리다. 역 목록: catalog/lineage/data/climate-card-stations.csv
+
+outcomes:
+  - name: 평일 하루 평균 승차(로그)
+    col: log_on
+    definition: "역 × 주, 평일(공휴일 제외) 승차 인원의 하루 평균에 로그. 평일이 3일 미만인 주는 뺀다"
+    unit: "log 명/일"
+    primary: true
+    expected_direction: increase
+  - name: 평일 하루 평균 하차(로그)
+    col: log_off
+    definition: "같은 방식의 하차 인원"
+    unit: "log 명/일"
+    expected_direction: unknown
+
+estimator:
+  method: event_study
+  cluster_col: sid
+  ref_period: -2          # -1 주(t=121)는 전환 주로 데이터에서 뺐으므로 -2 주를 기준으로
+  window: [-12, 12]
+  alpha: 0.05
+
+assumptions:
+  - name: 평행추세
+    description: "카드 적용이 없었다면 성남 역과 용인·수원 역의 평일 승차 추세는 같았을 것"
+    check: pretrend_test
+  - name: 선반영 없음
+    description: "적용 발표(2025-04) 직후 카드 구매 대기가 승차를 미리 바꾸지 않았을 것 → 8주 앞당긴 가짜 시점"
+    check: placebo_time
+  - name: 동시 충격의 균형
+    description: >
+      2025-06-28 기본요금 인상(1,400 → 1,550원)이 처치 8주 뒤에 있다. 카드 가격은 동결이라
+      성남 카드 이용자는 인상 충격을 덜 받는다 → 효과가 위쪽으로 치우칠 수 있다(한계에 기록)
+    check: manual
+  - name: 이용자 효과가 아니라 역 효과(ITT)
+    description: "공개 자료에 권종 구분이 없어, 카드 이용자의 통행 변화가 아니라 적용 역 전체 승차의 변화를 본다"
+    check: manual
+
+refutations:
+  - kind: placebo_time
+    params: {shift: 8}
+
+abstention:
+  - when: pretrend_rejected
+    verdict: not_identified
+    note: "사전추세 결합 검정이 기각되면 효과를 보고하지 않는다. 이때 사전 계수의 크기도 함께 적는다"
+  - when: placebo_significant
+    verdict: conditional
+  - when: ci_crosses_zero
+    verdict: conditional
+    note: "효과 없음이 아니라 '이 자료로 잡을 수 있는 크기 밖'으로 보고 — 신뢰구간 폭이 탐지 가능한 최소 효과"
+
+thresholds: {pretrend_alpha: 0.10, min_clusters: 20, min_pre_periods: 3}
+
+data_sources:
+  - name: "서울시 지하철호선별 역별 승하차 인원 정보 (OA-12914, 역 × 일)"
+    provider: "서울특별시 (서울 열린데이터광장)"
+    url: "https://data.seoul.go.kr/dataList/OA-12914/S/1/datasetView.do"
+    license: KOGL-1
+    adapter: seoul_subway
+    query: {start: "2024-11", end: "2025-11"}
+    notes: "키 불필요. fetch.py 가 월별 파일을 레포 루트 data/raw/subway/ 에 받아 역 × 주 패널을 만든다. 원자료·패널은 커밋하지 않는다"
