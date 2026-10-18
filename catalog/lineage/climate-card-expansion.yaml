@@ -1,0 +1,82 @@
+# 데이터 계보 예시 — 기후동행카드 경기 지역 단계적 편입 → 편입 지역 역의 지하철 승차
+# 트랙 A 예시. 이 계보의 지표를 트랙 B 분석(시차 도입 이중차분)이 이어받습니다. 가설: docs/strategy/climate-card.md
+id: climate-card-expansion
+owner: jsshin2022
+topic: public-transit
+title: "기후동행카드 경기 편입(2024.11 ~ 2025.8) → 편입 지역 역 승차"
+question: "기후동행카드가 적용된 경기 지역 역의 승차가, 아직 적용되지 않은 경기 역보다 늘었나? (적용 역 효과, ITT)"
+steps:
+  - id: issue
+    kind: issue
+    ref: climate-card-expansion-2024
+
+  - id: pilot
+    kind: policy
+    label: "기후동행카드 시범운영 시작 (서울)"
+    date: "2024-01-27"
+    source: "https://mediahub.seoul.go.kr/archives/2009830"
+
+  - id: goyang_gwacheon
+    kind: policy
+    label: "고양·과천 지하철 적용"
+    date: "2024-11-30"
+    source: "https://news.seoul.go.kr/traffic/archives/513130"
+
+  - id: seongnam
+    kind: policy
+    label: "성남 수인분당선·경강선 적용"
+    date: "2025-05-03"
+    source: "https://www.dailian.co.kr/news/view/1493107/"
+    note: "성남 8호선 구간은 시범운영(2024-01-27)부터 적용 — 같은 시 안에서도 노선마다 처치일이 다름"
+
+  - id: hanam
+    kind: policy
+    label: "하남 5호선 4개 역 승차 허용 (하차만 → 승하차)"
+    date: "2025-08-09"
+    source: "https://mediahub.seoul.go.kr/archives/2015277"
+
+  - id: kpass
+    kind: policy
+    label: "K-패스·The 경기패스 시행 (동시 정책)"
+    date: "2024-05-01"
+    source: "https://magazine.hankyung.com/business/article/202405018911b"
+    note: "대조 지역에도 적용 → 처치가 아니라 공통 충격. 편입 효과와 겹치는 정도를 한계에 기록"
+
+  - id: fare_hike
+    kind: policy
+    label: "지하철 기본요금 1,400 → 1,550원 (동시 정책)"
+    date: "2025-06-28"
+    source: "https://www.etoday.co.kr/news/view/2480312"
+    note: "성남·하남 코호트 사이에 낌. 기후동행카드 가격은 동결 → 적용 역이 요금 충격을 덜 받는 방향으로 편향 가능"
+
+  - id: subway_daily
+    kind: dataset
+    ref: OA-12914
+    note: "역 × 일 승하차. 경기 구간(코레일) 역 포함 여부는 파일을 받아 확인"
+
+  - id: station_city
+    kind: transform
+    label: "역 → 소재 지자체·노선"
+    inputs: [subway_daily]
+    how: "역명·호선을 소재 시군과 노선 구간으로 매핑하고 경기 구간 역만 남김. 분석 기간 중 신규 개통역(별내선 2024-08-10 등)은 사전 기간이 없어 제외"
+    keys: [station_id, line]
+
+  - id: cohort_table
+    kind: transform
+    label: "처치표 (시군·노선 → 첫 처치일)"
+    inputs: [goyang_gwacheon, seongnam, hanam, pilot]
+    how: "편입일을 첫 처치일로, 분석 기간 내 미편입 시군은 결측(대조). 하남 5호선은 승차 허용일, 성남 8호선은 시범운영일"
+    keys: [city, line]
+
+  - id: panel
+    kind: transform
+    label: "역 × 일 패널"
+    inputs: [station_city, cohort_table, kpass, fare_hike]
+    how: "역 × 일로 붙이고 first_treat = period_index(편입일, 'day', origin). 분석 창 2024-01-01 ~ 2025-12-31 (2026-01 모두의카드 이후 제외). K-패스·요금 인상은 시간 고정효과가 흡수하는 공통 충격으로 기록"
+    keys: [station_id, date]
+
+  - id: log_boardings
+    kind: metric
+    label: "역별 일 승차 인원(로그)"
+    inputs: [panel]
+    how: "log(1 + 일 승차 인원). 주말·공휴일 더미는 시간 고정효과로 처리"

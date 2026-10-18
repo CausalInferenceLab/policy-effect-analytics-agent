@@ -15,8 +15,8 @@
 ## 먼저 볼 것
 
 - [사이트 첫 화면](https://causalinferencelab.github.io/policy-effect-analytics-agent/): 궁금한 정책을 적으면 주제·관련 법령·데이터·분석 계획 초안을 대화로 정리해 줍니다.
-- [지금 이슈](https://causalinferencelab.github.io/policy-effect-analytics-agent/issues.html): 논쟁 중인 정책 6개의 분석 가이드
-- [데이터 지도](https://causalinferencelab.github.io/policy-effect-analytics-agent/data.html): 공공데이터 35개를 역할·단위·받는 법으로 정리
+- [지금 이슈](https://causalinferencelab.github.io/policy-effect-analytics-agent/issues.html): 논쟁 중인 정책 7개의 분석 가이드 (기후동행카드 예시: [climate-card.md](../strategy/climate-card.md))
+- [데이터 지도](https://causalinferencelab.github.io/policy-effect-analytics-agent/data.html): 공공데이터 40개를 역할·단위·받는 법으로 정리
 - [데이터 계보](https://causalinferencelab.github.io/policy-effect-analytics-agent/lineage.html): 이슈 → 정책 → 데이터 → 지표 → 분석의 연결과 주제별 빈칸 (트랙 A)
 - [서비스](https://causalinferencelab.github.io/policy-effect-analytics-agent/apps.html): 공개 API와 서비스 템플릿 (트랙 C)
 - 주제 페이지의 **관련 법령·행정규칙**: 법제처에서 근거 법률의 개정 이력, 지정·해제 공고, 관련 조례를 자동으로 모은 목록
