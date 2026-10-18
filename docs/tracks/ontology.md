@@ -19,7 +19,18 @@ issue     policy                   dataset          transform  metric   used_by
 | `transform` | `inputs`, `how`(무엇을 걸렀고 묶었나), `keys`(결합 키) | 입력이 앞 단계에 있는지 |
 | `metric` | `inputs`, `how`(계산식), `used_by`(쓰는 케이스) | 케이스 폴더가 있는지 |
 
-예시: [`catalog/lineage/t3-land-permit-2025.yaml`](../../catalog/lineage/t3-land-permit-2025.yaml) — 토허구역 지정 → 실거래가 → 자치구×월 집계 → 거래량 지표 → 분석
+모든 단계에 함께 쓸 수 있는 것:
+
+| 필드 | 뜻 | 확인하는 것 |
+|---|---|---|
+| `status` | `done`(기본) · `planned`(하려는 단계) · `missing`(필요하지만 아직 없는 데이터 = **빈칸**) | `missing`은 `dataset`에만, ref·url 없이 적을 수 있음 |
+| `artifact` | 이 단계를 만든 결과물 파일 (예: 역 → 시군 매핑표 CSV). `catalog/lineage/data/`에 둡니다 | 파일이 레포에 있는지 |
+
+빈칸(`missing`)은 사이트의 [데이터 계보](https://causalinferencelab.github.io/policy-effect-analytics-agent/lineage.html) "주제별 연결 상태"에 개수로 나옵니다. 빈칸을 찾아 채우는 것이 트랙 A의 가장 좋은 기여입니다.
+
+예시:
+- [`catalog/lineage/t3-land-permit-2025.yaml`](../../catalog/lineage/t3-land-permit-2025.yaml) — 토허구역 지정 → 실거래가 → 자치구×월 집계 → 거래량 지표 → 분석
+- [`catalog/lineage/climate-card-expansion.yaml`](../../catalog/lineage/climate-card-expansion.yaml) — 기후동행카드 편입 6회 + 교란 사건 3개 → 역×일 승하차 → 역 처치표(`artifact`) → 역×주 평일 패널 → 평일 승차 지표 → [성남 케이스](../../cases/t3-climate-card-seongnam/). 빈칸 2개(권종별 자료, 김포골드라인 역 자료), 계획 3개(시간대 패널·지표)
 
 ## 순서
 

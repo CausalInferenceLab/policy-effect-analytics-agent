@@ -1,6 +1,7 @@
 # 데이터 계보 템플릿 — 복사해서 catalog/lineage/<내ID>-<주제>.yaml 로 저장합니다 (id 도 같은 이름).
 # 순서: 이슈·정책 → 원천 데이터 → 가공 → 지표. inputs 에는 '앞에 적은' 단계의 id만 씁니다.
-# 검사: make lineage   ·   예시: catalog/lineage/t3-land-permit-2025.yaml
+# 검사: make lineage   ·   예시: catalog/lineage/t3-land-permit-2025.yaml, climate-card-expansion.yaml
+# 모든 단계에 쓸 수 있는 것: status(done 기본 · planned 하려는 단계 · missing 아직 없는 데이터), artifact(이 단계의 결과물 파일 경로), note
 id: gildong-topic
 owner: gildong                       # GitHub ID
 topic: housing-regulation            # catalog/topics.yaml 의 id
@@ -23,12 +24,19 @@ steps:
     ref: "15126468"                  # catalog/datasets.yaml 의 id
     # url: "https://..."             # 카탈로그에 없는 새 데이터면 ref 대신 url (+ datasets.yaml 추가 PR 권장)
 
+  - id: wanted
+    kind: dataset
+    status: missing                  # 필요하지만 아직 못 찾은 데이터 = 빈칸 (ref·url 없이 적을 수 있음)
+    label: "있으면 더 좋은 질문을 할 수 있는 데이터"
+    note: "무엇이 없어서 어떤 질문을 못 하는지"
+
   - id: panel
     kind: transform
     label: "단위 × 시점 집계"
     inputs: [raw]
     how: "무엇을 어떻게 걸렀고 묶었는지 (제외 조건 포함)"
     keys: [region_id, month]         # 다른 데이터와 붙일 때 쓰는 키
+    # artifact: catalog/lineage/data/<내ID>-<표>.csv   # 매핑표처럼 손으로 만든 결과물이 있으면 레포에 두고 경로를 적기
 
   - id: outcome
     kind: metric

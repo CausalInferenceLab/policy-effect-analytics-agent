@@ -10,6 +10,9 @@
     dataset   : catalog/datasets.yaml 의 id, 없으면 url 필수 → 카탈로그에 추가 권장
     transform : 가공 단계. inputs(앞 단계 id)와 how(무엇을 했나), keys(결합 키)
     metric    : 분석에 쓰는 지표. inputs, how(계산식), used_by(쓰는 케이스)
+- step.status   : done(기본) · planned(하려는 단계) · missing(필요하지만 아직 없는 데이터 = 빈칸)
+                 missing 데이터는 ref·url 없이 적을 수 있습니다 — 무엇이 없어서 어떤 질문을 못 하는지가 기여 거리
+- step.artifact : 이 단계를 만든 결과물 파일(레포 기준 경로, 예: 역 처치표 CSV). 없으면 오류
 - validate() 는 오류(틀린 참조)와 경고(카탈로그에 없음 등)를 나눠 돌려줍니다.
 - graph() 는 카탈로그(주제·이슈·데이터셋·근거 법률·케이스)에서 자동으로 만든 연결과
   계보 파일의 연결을 합친 그래프를 만들어, 사이트와 JSON API(api/lineage.json)에 씁니다.
@@ -34,6 +37,8 @@ SNAP_DIR = ROOT / "catalog" / "snapshots"
 CASES_DIR = ROOT / "cases"
 
 Kind = Literal["issue", "policy", "dataset", "transform", "metric"]
+Status = Literal["done", "planned", "missing"]
+STATUS_KO = {"done": "완료", "planned": "계획", "missing": "빈칸"}
 KIND_KO = {
     "issue": "이슈",
     "policy": "정책",
@@ -60,6 +65,8 @@ class Step(BaseModel):
     how: str = ""
     keys: list[str] = []
     used_by: list[str] = []  # cases/ 폴더 이름
+    status: Status = "done"
+    artifact: str | None = None  # 이 단계의 결과물 파일 (레포 기준 경로)
     note: str = ""
 
     @model_validator(mode="after")
@@ -76,8 +83,15 @@ class Step(BaseModel):
             raise ValueError(
                 f"{self.id}: policy 는 ref(법령 이름) 또는 source(발표 URL)가 필요합니다"
             )
-        if self.kind == "dataset" and not (self.ref or self.url):
-            raise ValueError(f"{self.id}: dataset 은 ref(datasets.yaml id) 또는 url 이 필요합니다")
+        if self.kind == "dataset" and self.status != "missing" and not (self.ref or self.url):
+            raise ValueError(
+                f"{self.id}: dataset 은 ref(datasets.yaml id) 또는 url 이 필요합니다 "
+                "(아직 없는 데이터면 status: missing 과 label·note 로 무엇이 없는지 적기)"
+            )
+        if self.status == "missing" and self.kind != "dataset":
+            raise ValueError(
+                f"{self.id}: status missing 은 dataset 에만 씁니다 (가공·지표는 planned)"
+            )
         if self.kind in {"transform", "metric"} and not self.inputs:
             raise ValueError(f"{self.id}: {self.kind} 는 inputs(앞 단계)가 필요합니다")
         if self.kind in {"transform", "metric"} and not self.how:
@@ -135,6 +149,7 @@ def validate(lin: Lineage, file_stem: str | None = None) -> tuple[list[str], lis
     issues = {i.id: i for i in load_issues()}
     datasets = {d.id for d in load_datasets()}
     legal = _legal_names(lin.topic)
+    by_id = {s.id: s for s in lin.steps}
     if lin.topic not in topics:
         errors.append(f"topic '{lin.topic}' 이 topics.yaml 에 없습니다")
     if file_stem and file_stem != lin.id:
@@ -147,7 +162,7 @@ def validate(lin: Lineage, file_stem: str | None = None) -> tuple[list[str], lis
                 errors.append(
                     f"{s.id}: dataset '{s.ref}' 가 datasets.yaml 에 없습니다 (새 데이터면 ref 대신 url)"
                 )
-            if not s.ref:
+            if not s.ref and s.status != "missing":
                 warns.append(
                     f"{s.id}: 카탈로그에 없는 데이터({s.url}) → datasets.yaml 에 추가하면 데이터 지도에 나옵니다"
                 )
@@ -155,6 +170,10 @@ def validate(lin: Lineage, file_stem: str | None = None) -> tuple[list[str], lis
             warns.append(
                 f"{s.id}: '{s.ref}' 는 법제처 스냅샷에 없습니다 → source(발표 URL)를 함께 적어 주세요"
             )
+        if s.artifact and not (ROOT / s.artifact).is_file():
+            errors.append(f"{s.id}: artifact '{s.artifact}' 파일이 레포에 없습니다")
+        if s.status == "done" and any(by_id[i].status != "done" for i in s.inputs):
+            warns.append(f"{s.id}: 입력 중 계획·빈칸 단계가 있는데 status 가 done 입니다")
         for c in s.used_by:
             if not (CASES_DIR / c).is_dir():
                 warns.append(f"{s.id}: used_by '{c}' 케이스 폴더가 아직 없습니다")
@@ -219,6 +238,8 @@ def graph(lineages: list[Lineage] | None = None) -> dict:
                     how=s.how,
                     date=s.date,
                     source=s.source or s.url,
+                    status=s.status,
+                    artifact=s.artifact,
                 )
             local[s.id] = nid
             if s.kind in {
