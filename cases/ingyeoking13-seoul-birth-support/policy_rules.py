@@ -9,18 +9,36 @@ from __future__ import annotations
 import hashlib
 import json
 from datetime import UTC, datetime
+from html.parser import HTMLParser
 from pathlib import Path
 
 import requests
 import yaml
-from lxml import html
+
+
+class _VisibleText(HTMLParser):
+    def __init__(self):
+        super().__init__(convert_charrefs=True)
+        self.parts = []
+        self.hidden = 0
+
+    def handle_starttag(self, tag, attrs):
+        if tag in {"script", "style"}:
+            self.hidden += 1
+
+    def handle_endtag(self, tag):
+        if tag in {"script", "style"}:
+            self.hidden = max(0, self.hidden - 1)
+
+    def handle_data(self, data):
+        if not self.hidden:
+            self.parts.append(data)
 
 
 def normalized_text(content: bytes) -> str:
-    doc = html.fromstring(content.decode("utf-8"))
-    return " ".join(
-        " ".join(doc.xpath("//text()[not(ancestor::script) and not(ancestor::style)]")).split()
-    )
+    parser = _VisibleText()
+    parser.feed(content.decode("utf-8"))
+    return " ".join(" ".join(parser.parts).split())
 
 
 def verify_source(content: bytes, source: dict) -> None:
