@@ -11,6 +11,12 @@
                                역할 · 단위 · 받는 법 · 이용 조건
 ```
 
+## 데이터 계보 (트랙 A, `lineage/`)
+
+이슈 하나에서 출발해 정책 → 원천 데이터 → 가공 → 지표 → 분석으로 이어지는 길을 한 파일에 적습니다.
+`lineage/_template.yaml`을 복사해 `lineage/<내ID>-<주제>.yaml`로 만들고 `make lineage`로 검사합니다.
+가이드: [docs/tracks/ontology.md](../docs/tracks/ontology.md) · 예시: [lineage/t3-land-permit-2025.yaml](lineage/t3-land-permit-2025.yaml)
+
 ## 법령·정책 온톨로지 (법제처 자동 수집)
 
 주제마다 `topics.yaml`의 `legal`에 **출발점만** 적습니다. 나머지는 수집기가 따라가 모읍니다.

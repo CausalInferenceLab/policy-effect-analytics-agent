@@ -10,7 +10,7 @@ GOALS = [
     ("누구나 바로 쓰는 오픈소스", "GitHub와 분석 사이트로 공유"),
 ]
 
-# 한 장 그림: 두 개의 고리. (이름, 설명, 코드 위치)
+# 한 장 그림: 대화 고리 + 세 트랙이 이어지는 기여 고리. (이름, 설명, 코드 위치)
 LOOP_TALK = [
     ("질문", "사이트 대화창에 궁금한 정책을 적는다", "site/ask.js"),
     ("정리", "주제·데이터·조심할 점·계획 초안을 함께 만든다", "catalog/ · 가이드/AI 모드"),
@@ -23,13 +23,21 @@ LOOP_TALK = [
 ]
 LOOP_ANALYZE = [
     (
-        "주제·법령",
-        "근거 법률에서 출발해 개정·지정·조례를 전부 모으고 세 가지를 확인한다",
-        "topics.yaml legal · core/adapters/legal.py",
+        "A. 계보",
+        "이슈 → 정책(법제처 자동 수집) → 원천 데이터 → 가공 → 지표를 잇는다",
+        "catalog/lineage/<내ID>-<주제>.yaml",
     ),
-    ("계획", "데이터를 보기 전에 plan.yaml을 커밋한다", "cases/<내ID>-<주제>/"),
-    ("계산", "규칙이 고른 방법으로 효과를 계산하고 점검한다", "core/estimators · core/agent"),
-    ("공개", "판정과 그림이 사이트에 자동으로 올라간다", "site/build.py · Actions"),
+    (
+        "B. 분석",
+        "가설과 계획을 먼저 커밋하고, 규칙이 고른 방법으로 효과를 추정·반증한다",
+        "cases/<내ID>-<주제>/ · core/estimators",
+    ),
+    (
+        "공개 API",
+        "주제·데이터·계보·판정·추정치가 매일 JSON으로 공개된다",
+        "site/api.py → api/*.json",
+    ),
+    ("C. 서비스", "공개 API를 읽는 웹·앱이 사이트의 /apps/ 에서 열린다", "apps/<내ID>-<서비스>/"),
 ]
 
 LAYERS = [
@@ -199,11 +207,21 @@ NEEDS = [
 
 # (폴더, 하는 일, 누가 고치나)
 CODE_MAP = [
-    ("cases/", "멘티별 분석 폴더 (<내ID>-<주제>, _template에서 시작)", "폴더 주인"),
+    ("catalog/lineage/", "트랙 A: 데이터 계보 (<내ID>-<주제>.yaml)", "파일 주인"),
+    ("cases/", "트랙 B: 분석 폴더 (<내ID>-<주제>, _template에서 시작)", "폴더 주인"),
+    ("apps/", "트랙 C: 서비스 (<내ID>-<서비스>, _template에서 시작)", "폴더 주인"),
     ("catalog/", "주제 · 이슈 · 데이터셋 목록 (데이터 지도)", "누구나 (PR)"),
-    ("site/", "이 사이트 · 대화창(ask.js)", "메인테이너"),
+    (
+        "site/",
+        "이 사이트 · 대화창(ask.js) · 공개 API(api.py) · 트랙 페이지(tracks.py)",
+        "메인테이너",
+    ),
     ("scripts/", "법령 · 조례 · 순위 갱신, 법령 변경 감지, 라이선스 · 활동 확인", "메인테이너"),
-    ("core/discovery/", "소셜 반응 → 주제 → 정책 · 데이터", "메인테이너"),
+    (
+        "core/discovery/",
+        "소셜 반응 → 주제 → 정책 · 데이터, 데이터 계보 검사·그래프(lineage.py)",
+        "메인테이너",
+    ),
     ("core/adapters/", "공공데이터 · 법제처(법령 온톨로지) 수집기", "메인테이너"),
     ("core/schema/", "분석 계획(plan.yaml) 규칙", "메인테이너"),
     ("core/estimators/", "효과 계산 · 점검 · 판정", "메인테이너"),
@@ -331,12 +349,12 @@ def body(e) -> str:
 <div class="hero" style="padding-bottom:0"><span class="eyebrow">구조</span>
 <h1>한 장으로 보는 구조</h1>
 <p class="lede">두 개의 고리로 움직입니다. 사람들의 질문이 <b>대화 고리</b>로 들어와 주제와 데이터가 쌓이고,
-멘티가 <b>분석 고리</b>로 그 주제의 효과를 확인해 다시 사이트에 올립니다.</p></div>
+멘티는 <b>기여 고리</b>의 세 트랙(A 데이터 온톨로지 · B 가설과 분석 · C 서비스 개발) 중 하나로 그 위에 쌓습니다.</p></div>
 
 <section style="padding-top:28px">
 {_loop("대화 고리 · 질문이 쌓이는 길", LOOP_TALK, e)}
 <div class="loop-join" aria-hidden="true">↓ 검토를 거친 주제·데이터가 분석의 출발점이 됩니다</div>
-{_loop("분석 고리 · 효과를 확인하는 길", LOOP_ANALYZE, e)}
+{_loop("기여 고리 · 세 트랙이 이어지는 길", LOOP_ANALYZE, e)}
 </section>
 
 <section><h2>네 개의 층</h2><p class="sub">위에서 아래로 부릅니다. AI는 화면(대화)과 에이전트(글쓰기)에서만 돕고, 분석 엔진에는 들어가지 않습니다.</p>

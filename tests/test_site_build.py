@@ -105,3 +105,42 @@ def test_issue_form_fields_match_chat():
         assert f"{field}:" in js or f"fields.{field}" in js, field
     assert "from-site" in form["labels"]
     assert "site-question.yml" in js
+
+
+def test_tracks_api_and_apps(tmp_path, monkeypatch):
+    """트랙 A·C: 공개 API, 데이터 계보 페이지, 서비스 호스팅."""
+    import json
+
+    mod = _load_build()
+    monkeypatch.setattr(mod, "OUT", tmp_path / "_site")
+    mod.main()
+    out = tmp_path / "_site"
+    for name in ("index", "topics", "issues", "datasets", "lineage", "results"):
+        assert (out / "api" / f"{name}.json").exists(), name
+    index = json.loads((out / "api" / "index.json").read_text(encoding="utf-8"))
+    assert "공식 평가" in index["terms"] and "results.json" in index["endpoints"]
+    results = json.loads((out / "api" / "results.json").read_text(encoding="utf-8"))
+    t3 = next(r for r in results if r["case"] == "t3-land-permit-2025")
+    assert t3["topic"] == "housing-regulation" and t3["synthetic"] is True and t3["outcomes"]
+    for f in t3["figures"]:
+        assert (out / f).exists()
+    assert (out / "lineage.html").exists() and (out / "apps.html").exists()
+    assert (out / "apps" / "_template" / "index.html").exists()
+    assert not (out / "apps" / "_template" / "app.yaml").exists()
+    nav = (out / "index.html").read_text(encoding="utf-8")
+    assert "데이터 계보" in nav and "서비스" in nav and "데이터 온톨로지" in nav
+
+
+def test_apps_have_meta_and_no_secrets():
+    import re
+
+    for d in (ROOT / "apps").iterdir():
+        if not d.is_dir():
+            continue
+        assert (d / "app.yaml").exists(), f"{d.name}: app.yaml 필요"
+        for f in d.rglob("*"):
+            if f.is_file() and f.suffix in {".js", ".html", ".json", ".yaml"}:
+                text = f.read_text(encoding="utf-8")
+                assert not re.search(r"sk-[A-Za-z0-9_-]{20,}|AKIA[0-9A-Z]{16}", text), (
+                    f"{f}: 비밀값처럼 보임"
+                )

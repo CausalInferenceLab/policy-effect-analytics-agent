@@ -64,18 +64,30 @@ python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\act
 pip install -e ".[dev]"                               # Python 3.11 이상
 
 make demo      # 토지거래허가구역 예시를 연습용 폴더(_demo/)에서 6단계로 실행. 레포 파일은 바뀌지 않음
-make site      # 사이트를 http://localhost:8000 에서 보기
+make site      # 사이트를 http://localhost:8000 에서 보기 (공개 API는 /api/, 서비스는 /apps/)
+make lineage   # 데이터 계보 검사
 ```
 
 API 키 없이 돌아갑니다. 실제 데이터를 받으려면 `.env.example`을 `.env`로 복사해 키를 넣으세요. `.env`는 커밋되지 않습니다.
 
 > 토지거래허가구역 예시는 지금 **시뮬레이션 데이터**입니다. 분석 과정을 보여주기 위한 것이고, 실제 정책 효과가 아닙니다.
 
-## 참여하기 (멘티 한 사람 = 주제 하나)
+## 참여하기 — 세 가지 방식
 
-1. **주제 고르기**: 사이트 대화창·순위·지금 이슈에서 고르고 "케이스 제안" 이슈를 엽니다.
-2. **계획 올리기**: `cp -r cases/_template cases/<내ID>-<주제>`로 내 폴더를 만들고 `plan.yaml`을 써서 PR을 올립니다. 대화창의 "분석 계획 초안"을 출발점으로 써도 됩니다. 쓰는 법: [계획 작성 가이드](docs/strategy/plan-guide.md)
-3. **실행하고 공개**: `fetch.py`로 `data/panel.csv`를 만들고 `make flow CASE=cases/<내ID>-<주제>`로 돌립니다. 해석은 `discussion.md`에 씁니다. 합쳐지면 사이트에 자동으로 올라옵니다.
+커리어 방향과 해 보고 싶은 시도에 따라 하나를 고릅니다. 세 트랙은 이어져 있습니다.
+
+| 트랙 | 이런 분께 | 하는 일 | 내 작업 공간 |
+|---|---|---|---|
+| **A. 데이터 온톨로지** | 데이터 온톨로지를 만들고 싶다 | 공공 이슈와 연결되는 데이터를 찾고 계보(Lineage) 구축 → [데이터 계보](https://causalinferencelab.github.io/policy-effect-analytics-agent/lineage.html) | `catalog/lineage/<내ID>-<주제>.yaml` |
+| **B. 가설과 분석** | 가설 설정과 분석을 익히고 싶다 | 실제 사례로 효과를 추정하는 Cycle 연습 → 주제 페이지·`api/results.json` | `cases/<내ID>-<주제>/` |
+| **C. 서비스 개발** | 서비스를 개발하고 싶다 | 분석 Cycle에서 나온 데이터(공개 API)로 웹·앱 개발 → [서비스](https://causalinferencelab.github.io/policy-effect-analytics-agent/apps.html) | `apps/<내ID>-<서비스>/` |
+
+```
+A. 이슈 → 정책 → 데이터 → 지표  ─▶  B. 가설 → 계획 → 추정 → 판정  ─▶  C. 공개 API로 서비스
+   catalog/lineage/                    cases/                              apps/
+```
+
+시작은 [작업 제안 이슈](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/issues/new?template=case-proposal.yml)에서 트랙과 주제를 적는 것입니다. 트랙별 가이드: [A](docs/tracks/ontology.md) · [B](docs/tracks/analysis.md) · [C](docs/tracks/service.md) · [전체](docs/tracks/README.md)
 
 `make flow`는 plan.yaml이 커밋되어 있지 않으면 계산하지 않습니다(사전 등록). 사이트 질문과 법령 변경 이슈는 담당자 없이 구성원 모두가 봅니다.
 
@@ -85,9 +97,11 @@ API 키 없이 돌아갑니다. 실제 데이터를 받으려면 `.env.example`�
 
 | 폴더 | 하는 일 | 누가 고치나 |
 |---|---|---|
-| [`cases/`](cases/) | 멘티별 분석 폴더 (`<내ID>-<주제>`, `_template`에서 시작) | 폴더 주인 |
+| [`catalog/lineage/`](catalog/lineage/) | 트랙 A: 데이터 계보 (`<내ID>-<주제>.yaml`, `_template.yaml`에서 시작) | 파일 주인 |
+| [`cases/`](cases/) | 트랙 B: 멘티별 분석 폴더 (`<내ID>-<주제>`, `_template`에서 시작) | 폴더 주인 |
+| [`apps/`](apps/) | 트랙 C: 서비스 (`<내ID>-<서비스>`, `_template`에서 시작). 합쳐지면 `/apps/<이름>/`에서 열림 | 폴더 주인 |
 | [`catalog/`](catalog/) | 주제 · 이슈 · 데이터셋 목록 (데이터 지도) | 누구나 (PR) |
-| [`site/`](site/) | 공개 사이트와 대화창(`ask.js`) | 메인테이너 |
+| [`site/`](site/) | 공개 사이트, 대화창(`ask.js`), 공개 API(`api.py` → `api/*.json`) | 메인테이너 |
 | [`scripts/`](scripts/) | 법령 · 조례 · 순위 갱신, 법령 변경 감지, 라이선스 · 활동 확인 | 메인테이너 |
 | [`core/`](core/) | 주제 찾기(`discovery`) · 수집기(`adapters`, 법령 온톨로지 포함) · 계산(`estimators`) · 6단계 실행(`agent`) | 메인테이너 |
 | `app/` | (선택) 개발용 Streamlit 화면. `pip install -e ".[app]"` 후 `make app` | 메인테이너 |

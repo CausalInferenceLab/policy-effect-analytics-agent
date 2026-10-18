@@ -2,9 +2,12 @@
 
 GitHub가 처음이라면 [GitHub 따라 하기](docs/ops/github-onboarding.md)부터 보세요. 전체 흐름은 [멘티 참여 가이드](docs/ops/mentee-guide.md)에 있습니다.
 
-## 1. 한 사람, 한 폴더, 한 브랜치
+## 1. 한 사람, 한 작업 공간, 한 브랜치
 
-- 분석은 한 사람이 주제 하나를 맡아 `cases/<내 GitHub ID>-<주제>/` 폴더에서 합니다. 예: `cases/gildong-local-currency/`
+- 세 가지 방식([docs/tracks](docs/tracks/README.md)) 중 하나를 고르고 내 작업 공간에서 합니다.
+  - A. 데이터 온톨로지: `catalog/lineage/<내ID>-<주제>.yaml` (+ `catalog/datasets.yaml` 추가)
+  - B. 가설과 분석: `cases/<내ID>-<주제>/` 예: `cases/gildong-local-currency/`
+  - C. 서비스 개발: `apps/<내ID>-<서비스>/` 예: `apps/gildong-policy-alarm/`
 - 브랜치 이름은 `<내 GitHub ID>/<작업>`입니다. 예: `gildong/plan`, `gildong/fetch`
 - `main`에는 직접 올릴 수 없습니다. 모든 변경은 PR로 합칩니다.
 - 조직 초대를 받기 전이거나 외부 기여자라면 fork 후 PR을 올려도 됩니다.
@@ -13,7 +16,9 @@ GitHub가 처음이라면 [GitHub 따라 하기](docs/ops/github-onboarding.md)�
 
 | 경로 | 누가 | 규칙 |
 |---|---|---|
+| `catalog/lineage/<내ID>-<주제>.yaml` | 파일 주인 | `make lineage` 통과. 남의 계보는 고치지 않고 이슈로 제안합니다 |
 | `cases/<내ID>-<주제>/` | 폴더 주인 | 자유롭게. 남의 폴더는 고치지 않습니다 |
+| `apps/<내ID>-<서비스>/` | 폴더 주인 | 정적 파일만, API 키 금지. `app.yaml` 필수 |
 | `catalog/` | 누구나 | 새 데이터셋·이슈·주제 제안. 원본 페이지에서 확인한 값만 적습니다 |
 | `core/`, `site/` | 멘토·메인테이너 | 먼저 이슈로 논의한 뒤 PR. 테스트 필수 |
 | `.github/`, `docs/` | 운영진 | 개선 제안은 이슈로 |

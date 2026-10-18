@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>주제별 정책 효과 카드</title>
+<style>
+  :root { --bg:#f6f7f9; --card:#fff; --ink:#14171c; --muted:#6b7280; --line:#dde0e5; --accent:#1b5e9b; --go:#1e6a4d; --warn:#8a5900; --stop:#9c2b33 }
+  @media (prefers-color-scheme: dark) { :root { --bg:#111317; --card:#1a1d23; --ink:#eceef2; --muted:#8e95a2; --line:#2d323a; --accent:#79b2e8; --go:#7fd3ab; --warn:#e8b45c; --stop:#ee8f96 } }
+  * { box-sizing: border-box }
+  body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.6 "Pretendard","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif; word-break:keep-all }
+  main { max-width:960px; margin:0 auto; padding:24px 16px 60px }
+  h1 { font-size:26px; margin:0 0 4px } h2 { font-size:18px; margin:24px 0 8px } p { margin:4px 0 }
+  .muted { color:var(--muted); font-size:13px }
+  select { font:inherit; padding:8px 12px; border-radius:10px; border:1px solid var(--line); background:var(--card); color:var(--ink); margin:12px 0 }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:14px 16px; margin:8px 0 }
+  .badge { display:inline-block; font-size:12px; font-weight:700; padding:1px 8px; border-radius:99px; border:1px solid currentColor }
+  .identified { color:var(--go) } .conditional { color:var(--warn) } .not_identified { color:var(--stop) }
+  .row { display:flex; gap:8px; align-items:center; flex-wrap:wrap }
+  .ci { position:relative; height:14px; background:var(--bg); border-radius:7px; margin:6px 0; overflow:hidden }
+  .ci i { position:absolute; top:3px; height:8px; background:var(--accent); border-radius:4px }
+  .ci b { position:absolute; top:0; bottom:0; width:2px; background:var(--muted) }
+  ol { padding-left:20px; margin:6px 0 } img { max-width:100%; border-radius:8px; border:1px solid var(--line); background:#fff }
+  a { color:var(--accent) }
+</style>
+</head>
+<body>
+<main>
+  <h1>주제별 정책 효과 카드</h1>
+  <p class="muted">정책 효과 분석 플랫폼의 공개 API(<code>../../api/</code>)만 읽어 만든 예시 서비스입니다. 이 폴더를 복사해 내 서비스를 시작하세요.</p>
+  <label>주제 <select id="topic"></select></label>
+  <div id="out"><p class="muted">불러오는 중…</p></div>
+  <p class="muted" id="terms"></p>
+</main>
+<script src="app.js"></script>
+</body>
+</html>

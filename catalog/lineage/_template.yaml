@@ -1,0 +1,38 @@
+# 데이터 계보 템플릿 — 복사해서 catalog/lineage/<내ID>-<주제>.yaml 로 저장합니다 (id 도 같은 이름).
+# 순서: 이슈·정책 → 원천 데이터 → 가공 → 지표. inputs 에는 '앞에 적은' 단계의 id만 씁니다.
+# 검사: make lineage   ·   예시: catalog/lineage/t3-land-permit-2025.yaml
+id: gildong-topic
+owner: gildong                       # GitHub ID
+topic: housing-regulation            # catalog/topics.yaml 의 id
+title: "어떤 이슈를 어떤 데이터로 잇는지 한 줄"
+question: "이 계보가 답하려는 질문 (선택)"
+steps:
+  - id: issue                        # 소문자·숫자·_
+    kind: issue                      # issue | policy | dataset | transform | metric
+    ref: seoul-ltp-1015-2025         # catalog/issues.yaml 의 id
+
+  - id: policy_start
+    kind: policy
+    label: "정책 이름"
+    date: "YYYY-MM-DD"
+    ref: "법령·행정규칙 이름"           # 주제 페이지 '관련 법령' 목록에 있으면 ref
+    source: "https://..."            # 없으면 발표문 URL (둘 중 하나는 필수)
+
+  - id: raw
+    kind: dataset
+    ref: "15126468"                  # catalog/datasets.yaml 의 id
+    # url: "https://..."             # 카탈로그에 없는 새 데이터면 ref 대신 url (+ datasets.yaml 추가 PR 권장)
+
+  - id: panel
+    kind: transform
+    label: "단위 × 시점 집계"
+    inputs: [raw]
+    how: "무엇을 어떻게 걸렀고 묶었는지 (제외 조건 포함)"
+    keys: [region_id, month]         # 다른 데이터와 붙일 때 쓰는 키
+
+  - id: outcome
+    kind: metric
+    label: "분석에 쓰는 지표"
+    inputs: [panel]
+    how: "계산식"
+    used_by: []                      # 이 지표를 쓰는 cases/ 폴더 이름
