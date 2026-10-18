@@ -1,0 +1,58 @@
+# 데이터 계보 예시 — 토지거래허가구역 확대 지정(2025.3.24) → 강남 4구 아파트 거래
+# 이슈에서 출발해 정책·원천 데이터·가공·지표를 거쳐 분석(cases/t3-land-permit-2025)까지 이어지는 길입니다.
+# 쓰는 법: catalog/lineage/README.md · 검사: make lineage
+id: t3-land-permit-2025
+owner: jsshin2022
+topic: housing-regulation
+title: "토허구역 확대 지정 → 강남 4구 아파트 거래량·가격"
+question: "2025.3.24 강남·서초·송파·용산 전역 지정 뒤 이 4개 구의 아파트 거래가 나머지 21개 구와 비교해 달라졌나?"
+steps:
+  - id: issue
+    kind: issue
+    ref: seoul-ltp-gangnam-2025
+
+  - id: designation
+    kind: policy
+    label: "강남·서초·송파·용산 토지거래허가구역 전역 지정"
+    date: "2025-03-24"
+    source: "https://www.korea.kr/news/policyNewsView.do?newsId=148940714"
+    note: "서울시·국토부 공고라 법제처 DB에는 없음 → 정부 발표로 날짜 확인"
+
+  - id: speculation_zone
+    kind: policy
+    ref: "투기과열지구 지정"
+    date: "2025-10-16"
+    note: "10·15 대책으로 서울 전역이 규제지역이 되어 대조군이 사라짐 → 분석 기간을 2025-09까지로 자른 이유"
+
+  - id: raw_trades
+    kind: dataset
+    ref: "15126468"
+    note: "아파트 매매 실거래 (계약일·법정동·거래금액·전용면적·해제여부)"
+
+  - id: gu_month
+    kind: transform
+    label: "자치구 × 계약월 집계"
+    inputs: [raw_trades]
+    how: "법정동코드 앞 5자리로 자치구 매핑 → 계약년월별 건수·㎡당 가격 중위값. 해제 거래(cdealType=O) 제외, 지정 효력일이 월 중간인 2025-03은 전환월로 제외"
+    keys: [gu_code, month_idx]
+
+  - id: treat_table
+    kind: transform
+    label: "처치표 (구 × 첫 처치 월)"
+    inputs: [designation, speculation_zone]
+    how: "지정 4개 구 treated=1, 첫 처치 월 2025-04(month_idx 15). 2025-10 전역 지정 이후 기간은 제외"
+    keys: [gu_code]
+
+  - id: log_trades
+    kind: metric
+    label: "아파트 매매 거래건수(로그)"
+    inputs: [gu_month, treat_table]
+    how: "log(1 + 자치구·계약월별 매매 건수)"
+    used_by: [t3-land-permit-2025]
+
+  - id: log_price_m2
+    kind: metric
+    label: "㎡당 거래가격 중위값(로그)"
+    inputs: [gu_month, treat_table]
+    how: "log(거래금액 ÷ 전용면적의 자치구·월별 중위값)"
+    used_by: [t3-land-permit-2025]

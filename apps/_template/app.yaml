@@ -1,0 +1,6 @@
+# 서비스 정보 — 사이트의 '서비스' 페이지에 이 내용으로 소개됩니다.
+title: "주제별 정책 효과 카드 (템플릿)"
+owner: jsshin2022                 # 내 GitHub ID
+description: "공개 API를 읽어 주제를 고르면 지금 이슈·최근 바뀐 법령·데이터 계보·분석 결과를 한 화면에 보여 주는 예시"
+uses: [topics.json, issues.json, results.json, lineage.json]
+# url: "https://..."             # 다른 곳(Vercel, Streamlit Cloud 등)에 배포했다면 그 주소

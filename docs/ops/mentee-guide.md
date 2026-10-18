@@ -1,12 +1,24 @@
 # 멘티 참여 가이드
 
-이 프로젝트는 **한 사람이 주제 하나**를 맡아 진행합니다. 각자 공용 저장소의 `cases/<내 GitHub ID>-<주제>/` 폴더에 분석을 쌓고, 합쳐지면 [사이트](https://causalinferencelab.github.io/policy-effect-analytics-agent/)에 자동으로 올라갑니다.
+커리어 방향과 해 보고 싶은 시도에 따라 **세 가지 방식** 중 하나로 기여합니다. 각자 공용 저장소의 내 폴더에 작업을 쌓고, 합쳐지면 [사이트](https://causalinferencelab.github.io/policy-effect-analytics-agent/)에 자동으로 올라갑니다.
+
+| 트랙 | 이런 분께 | 하는 일 | 내 작업 공간 | 가이드 |
+|---|---|---|---|---|
+| **A. 데이터 온톨로지** | 데이터 온톨로지를 만들고 싶다 | 공공 이슈와 연결되는 데이터를 찾고 계보(Lineage) 구축 | `catalog/lineage/<내ID>-<주제>.yaml` | [ontology.md](../tracks/ontology.md) |
+| **B. 가설과 분석** | 가설 설정과 분석을 익히고 싶다 | 실제 사례로 효과를 추정하는 Cycle 연습 | `cases/<내ID>-<주제>/` | [analysis.md](../tracks/analysis.md) |
+| **C. 서비스 개발** | 서비스를 개발하고 싶다 | 분석 Cycle에서 나온 데이터로 웹·앱 서비스 개발 | `apps/<내ID>-<서비스>/` | [service.md](../tracks/service.md) |
+
+세 트랙은 이어져 있습니다. A가 이슈와 데이터를 이으면 B가 그 데이터로 효과를 추정하고, B의 결과(공개 API)로 C가 서비스를 만듭니다. 전체 그림: [docs/tracks/README.md](../tracks/README.md)
+
+**시작은 모두 같습니다**: [작업 제안 이슈](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/issues/new?template=case-proposal.yml)에서 트랙과 주제를 적고, 내 ID로 브랜치를 만듭니다.
 
 ## 먼저 볼 것
 
 - [사이트 첫 화면](https://causalinferencelab.github.io/policy-effect-analytics-agent/): 궁금한 정책을 적으면 주제·관련 법령·데이터·분석 계획 초안을 대화로 정리해 줍니다.
 - [지금 이슈](https://causalinferencelab.github.io/policy-effect-analytics-agent/issues.html): 논쟁 중인 정책 6개의 분석 가이드
 - [데이터 지도](https://causalinferencelab.github.io/policy-effect-analytics-agent/data.html): 공공데이터 35개를 역할·단위·받는 법으로 정리
+- [데이터 계보](https://causalinferencelab.github.io/policy-effect-analytics-agent/lineage.html): 이슈 → 정책 → 데이터 → 지표 → 분석의 연결과 주제별 빈칸 (트랙 A)
+- [서비스](https://causalinferencelab.github.io/policy-effect-analytics-agent/apps.html): 공개 API와 서비스 템플릿 (트랙 C)
 - 주제 페이지의 **관련 법령·행정규칙**: 법제처에서 근거 법률의 개정 이력, 지정·해제 공고, 관련 조례를 자동으로 모은 목록
 - 분석 예시: [`cases/t3-land-permit-2025/`](../../cases/t3-land-permit-2025/) (토지거래허가구역, 지금은 시뮬레이션 데이터)
 - 계획 쓰는 법: [`docs/strategy/plan-guide.md`](../strategy/plan-guide.md)
@@ -22,7 +34,7 @@ cp .env.example .env                                  # 받은 키를 여기에 
 make demo                                             # 예시를 연습용 폴더에서 돌려 보기
 ```
 
-## 혼자서 끝까지 가는 6단계
+## 트랙 B: 효과를 추정하는 6단계
 
 | 단계 | 할 일 | 결과물 |
 |---|---|---|
@@ -37,28 +49,33 @@ make demo                                             # 예시를 연습용 폴�
 
 ## 주차별 목표
 
-| 모임 | 주차 | 끝낼 것 |
+| 모임 | 주차 | 공통 |
 |---|---|---|
 | OT 주간 | 1주 | 저장소 초대 수락, `make demo` 실행, 공공데이터포털·KOSIS 키 신청 |
 | 9.27(일) | 2주 | 주제 후보 2개 고르기, 주제 페이지의 법령 목록으로 시작일 후보 확인 |
-| 10.2(금) 오프라인 | — | 주제 1개 확정, `plan.yaml` 계획 PR |
-| 10.4(일) | 3주 | `fetch.py`로 `data/panel.csv` 만들기, ③ 품질 점검 통과 |
-| 10.11(일) | 4주 | 1차 추정과 추세 그림 (`make flow`) |
-| 10.18(일) | 5주 | 반증 테스트 추가, `discussion.md` 초안 |
-| 10.25(일) | 6주 | 과장 표현 점검 통과, 판정 문구 확정 |
-| 11.1(일) | 7주 | 다른 멘티가 README만 보고 다시 돌려 보기 → 공개 |
+| 10.2(금) 오프라인 | — | 주제 1개 확정 |
+| 10.18(일) | 5주 | **트랙 선택** — 작업 제안 이슈에 트랙(A·B·C)과 주제 적기 |
 
-지역마다 시작일이 다른 주제(시차 도입)는 전용 모듈이 4주차에, 정책 지역이 한두 곳뿐인 주제(합성통제)는 5주차에 들어옵니다. 그 전까지는 한 시점에 함께 시작한 지역만 골라 이중차분이나 단절 시계열로 1차 추정을 해 두세요.
+남은 2주는 트랙별로 갑니다.
+
+| 모임 | A. 데이터 온톨로지 | B. 가설과 분석 | C. 서비스 개발 |
+|---|---|---|---|
+| 10.25(일) | 이슈 하나의 계보 YAML PR (`make lineage` 통과) | `plan.yaml` PR + `fetch.py`로 `data/panel.csv` | `apps/<내ID>-<서비스>/` 첫 화면 PR (API 하나 이상) |
+| 11.1(일) 공개 | 새 데이터셋 1개 이상 추가, 계보가 사이트에 표시 | `make flow` 결과 + `discussion.md`, 다른 멘티가 재현 | 기능 1개 완성 + README, 사이트에서 열림 |
+
+트랙 B에서 지역마다 시작일이 다르거나(시차 도입) 정책 지역이 1~5곳(합성통제)이면 전용 모듈이 아직 준비 중입니다. 그 전까지는 같은 날 시작한 지역만 고르거나 무작위화 추론으로 1차 추정하고 한계에 적습니다.
 
 ## 폴더와 브랜치
 
 ```bash
-git switch -c <내ID>/plan                           # 브랜치: <내 GitHub ID>/<작업>
-cp -r cases/_template cases/<내ID>-<주제>           # 예: cases/gildong-local-currency
+git switch -c <내ID>/<작업>                               # 브랜치: <내 GitHub ID>/<작업>
+cp catalog/lineage/_template.yaml catalog/lineage/<내ID>-<주제>.yaml   # A
+cp -r cases/_template cases/<내ID>-<주제>                 # B (예: cases/gildong-local-currency)
+cp -r apps/_template apps/<내ID>-<서비스>                 # C (예: apps/gildong-policy-alarm)
 ```
 
-- `plan.yaml`의 `case_id`는 폴더 이름과 같아야 합니다.
-- 수정은 **내 폴더만** 합니다. `core/`를 고쳐야 하면 먼저 이슈를 엽니다.
+- 계보의 `id`, 케이스의 `case_id`는 파일·폴더 이름과 같아야 합니다.
+- 수정은 **내 파일·폴더만** 합니다. `catalog/datasets.yaml` 추가는 누구나 PR로 합니다. `core/`·`site/`를 고쳐야 하면 먼저 이슈를 열고 따로 PR을 올립니다.
 - `data/` 아래 파일은 git에 올라가지 않습니다. 데이터는 `fetch.py`로 각자 받게 합니다.
 - PR 하나에 한 단계만 담고, 멘토 또는 다른 멘티 1명 승인 + 자동 검사 통과 뒤 합칩니다.
 

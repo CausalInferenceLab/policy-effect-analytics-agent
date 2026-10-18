@@ -1,4 +1,4 @@
-.PHONY: install check lint test format app activity flow demo site
+.PHONY: install check lint test format app activity flow demo site lineage
 
 PY ?= python
 
@@ -30,7 +30,11 @@ demo:
 	rm -rf _demo && mkdir -p _demo && cp -r cases/t3-land-permit-2025 _demo/
 	$(PY) -m core.agent _demo/t3-land-permit-2025 --allow-uncommitted
 
-# 사이트 미리보기: http://localhost:8000
+# 트랙 A: 데이터 계보(catalog/lineage/*.yaml) 검사
+lineage:
+	$(PY) scripts/check_lineage.py
+
+# 사이트 미리보기: http://localhost:8000 (공개 API /api/, 서비스 /apps/)
 site:
 	$(PY) site/build.py && $(PY) -m http.server -d _site
 

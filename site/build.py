@@ -68,6 +68,8 @@ NAV = [
     ("issues.html", "지금 이슈"),
     ("index.html#topics", "주제"),
     ("data.html", "데이터 지도"),
+    ("lineage.html", "데이터 계보"),
+    ("apps.html", "서비스"),
     ("architecture.html", "구조"),
     ("index.html#join", "참여하기"),
 ]
@@ -275,19 +277,15 @@ document.querySelectorAll('.v').forEach(b=>b.onclick=()=>{
 """
 
 HOME_STEPS = [
-    ("찾기", "대화창이나 지금 이슈에서 사람들이 궁금해하는 <b>주제</b>를 고릅니다", "2주 · 9.27"),
-    ("모으기", "그 주제의 정책을 <b>전부</b> 모읍니다. 어느 지역이 언제 시작했는지", "2~3주"),
-    (
-        "거르기",
-        "세 가지를 확인합니다. 언제 시작했나 · 누가 받았나 · 무엇으로 재나",
-        "10.2 오프라인",
-    ),
-    ("계획하기", "데이터를 보기 전에 분석 계획을 먼저 적어 둡니다", "10.2 계획 PR"),
-    ("비교하기", "정책을 받은 곳과 안 받은 곳의 변화를 비교합니다", "3~5주"),
+    ("찾기", "대화창이나 지금 이슈에서 사람들이 궁금해하는 <b>주제</b>를 고릅니다", "트랙 A · B"),
+    ("모으기", "그 주제의 정책과 데이터를 <b>전부</b> 모으고 계보로 잇습니다", "트랙 A"),
+    ("거르기", "세 가지를 확인합니다. 언제 시작했나 · 누가 받았나 · 무엇으로 재나", "트랙 A · B"),
+    ("계획하기", "데이터를 보기 전에 가설과 분석 계획을 먼저 적어 둡니다", "트랙 B"),
+    ("비교하기", "정책을 받은 곳과 안 받은 곳의 변화를 비교합니다", "트랙 B"),
     (
         "말하기",
-        "효과 근거 있음 · 조건부 · 판단 불가 중 하나로 정직하게 씁니다",
-        "6~7주 · 11.1 공개",
+        "효과 근거 있음 · 조건부 · 판단 불가 중 하나로 쓰고, 결과는 API로 공개됩니다",
+        "트랙 B → C",
     ),
 ]
 HOME_EXAMPLES = [
@@ -533,7 +531,7 @@ AI도 결과를 계산하지 않습니다. 주제·데이터·계획을 함께 �
 <section id="reflect"><h2>대화가 오픈소스가 되는 길</h2><p class="sub">여기서 나눈 질문이 새 주제·새 데이터·새 분석으로 쌓입니다. 없던 공공데이터 정책 분석을 함께 만드는 방식입니다.</p>
 <div class="flow">{reflect}</div></section>
 
-<section id="how"><h2>이렇게 확인합니다</h2><p class="sub">여섯 단계는 7주 일정에 그대로 대응합니다. 멘티 한 사람이 주제 하나를 끝까지 갑니다.</p>
+<section id="how"><h2>이렇게 확인합니다</h2><p class="sub">효과를 추정하는 한 바퀴(트랙 B의 Cycle)입니다. 1~2단계의 재료는 트랙 A의 데이터 계보가, 6단계의 결과는 트랙 C의 서비스가 이어받습니다.</p>
 <div class="flow">{flow}</div></section>
 
 <section id="issues"><h2>지금 이슈인 정책</h2><p class="sub">요즘 논쟁 중인 정책을 어떻게 분석할 수 있는지, 어떤 데이터를 받을 수 있는지 정리했습니다.</p>
@@ -569,12 +567,23 @@ AI도 결과를 계산하지 않습니다. 주제·데이터·계획을 함께 �
 <div class="card"><div class="icon">6</div><h3>한계를 숨기지 않는다</h3><p class="muted">시뮬레이션, 키 대기, 확인 필요 상태를 배지로 그대로 보여줍니다.</p></div>
 </div></section>
 
-<section id="join"><h2>참여하기</h2><p class="sub">멘티 한 사람이 주제 하나를 맡아 <code>cases/&lt;내 GitHub ID&gt;-&lt;주제&gt;/</code> 폴더에 분석을 추가합니다.</p>
+<section id="join"><h2>참여하기 — 세 가지 방식</h2><p class="sub">커리어 방향과 해 보고 싶은 시도에 따라 하나를 고릅니다. 세 트랙은 이어져 있습니다:
+A가 이슈와 데이터를 이으면, B가 그 데이터로 효과를 추정하고, C가 그 결과로 서비스를 만듭니다.</p>
 <div class="grid3">
-<div class="card"><div class="icon">①</div><h3>주제 고르기</h3><p class="muted">위 대화창·순위·<a href="issues.html">지금 이슈</a>에서 고르고, GitHub에 "케이스 제안" 이슈를 엽니다.</p></div>
-<div class="card"><div class="icon">②</div><h3>계획 올리기</h3><p class="muted"><code>cases/_template</code>을 내 폴더로 복사해 plan.yaml을 쓰고 PR로 올립니다. 대화창의 "분석 계획 초안"을 출발점으로 써도 됩니다.</p></div>
-<div class="card"><div class="icon">③</div><h3>실행하고 공개</h3><p class="muted"><code>make flow</code>로 돌리고 PR이 합쳐지면 이 사이트에 자동으로 올라옵니다.</p></div>
+<div class="card"><div class="icon">A</div><h3>데이터 온톨로지</h3><p><b>데이터 온톨로지를 만들고 싶다</b></p>
+<p class="muted">공공 이슈와 연결되는 데이터를 찾고 이슈 → 정책 → 원천 데이터 → 가공 → 지표로 이어지는 계보(Lineage)를 만듭니다.</p>
+<p class="small">내 작업: <code>catalog/lineage/&lt;내ID&gt;-&lt;주제&gt;.yaml</code>, <code>catalog/datasets.yaml</code></p>
+<p class="small"><a href="lineage.html">데이터 계보 보기</a> · <a href="{REPO}/blob/main/docs/tracks/ontology.md">트랙 A 가이드</a></p></div>
+<div class="card"><div class="icon">B</div><h3>가설과 분석</h3><p><b>가설 설정과 분석을 익히고 싶다</b></p>
+<p class="muted">실제 사례로 가설 → 계획 → 수집 → 추정 → 반증 → 해석의 한 바퀴(Cycle)를 돌며 효과를 추정합니다.</p>
+<p class="small">내 작업: <code>cases/&lt;내ID&gt;-&lt;주제&gt;/</code></p>
+<p class="small"><a href="#how">여섯 단계 보기</a> · <a href="{REPO}/blob/main/docs/tracks/analysis.md">트랙 B 가이드</a></p></div>
+<div class="card"><div class="icon">C</div><h3>서비스 개발</h3><p><b>서비스를 개발하고 싶다</b></p>
+<p class="muted">분석 Cycle에서 나온 데이터(공개 API)로 웹·앱 서비스를 만듭니다. 합쳐지면 이 사이트에서 바로 열립니다.</p>
+<p class="small">내 작업: <code>apps/&lt;내ID&gt;-&lt;서비스&gt;/</code></p>
+<p class="small"><a href="apps.html">서비스와 API 보기</a> · <a href="{REPO}/blob/main/docs/tracks/service.md">트랙 C 가이드</a></p></div>
 </div><div class="cta"><a class="btn primary" href="{REPO}/blob/main/docs/ops/mentee-guide.md">멘티 참여 가이드</a>
+<a class="btn ghost" href="{REPO}/issues/new?template=case-proposal.yml">작업 제안 올리기</a>
 <a class="btn ghost" href="{REPO}/blob/main/docs/ops/github-onboarding.md">GitHub가 처음이라면</a>
 <a class="btn ghost" href="{REPO}/issues?q=label%3Afrom-site">올라온 질문 보기</a></div></section>
 <script type="application/json" id="catalog">{catalog_json(topics, policies, issues, datasets)}</script>
@@ -939,6 +948,27 @@ def main() -> None:
         (OUT / "topics" / f"{t.id}.html").write_text(
             topic_page(t, policies, issues, datasets), encoding="utf-8"
         )
+    # 트랙 A·C: 공개 API, 데이터 계보, 서비스
+    import api
+    import tracks
+
+    from core.discovery.lineage import load_lineages
+
+    index = api.write_api(OUT, topics, issues, datasets, legal_summary)
+    results = json.loads((OUT / "api" / "results.json").read_text(encoding="utf-8"))
+    apps = api.copy_apps(OUT)
+    (OUT / "lineage.html").write_text(
+        page(
+            "데이터 계보 · 정책 효과 분석 플랫폼",
+            tracks.lineage_body(e, topics, issues, datasets, load_lineages(), results),
+            "lineage.html",
+        ),
+        encoding="utf-8",
+    )
+    (OUT / "apps.html").write_text(
+        page("서비스 · 정책 효과 분석 플랫폼", tracks.apps_body(e, apps, index), "apps.html"),
+        encoding="utf-8",
+    )
     shutil.copy(HERE / "ask.js", OUT / "ask.js")
     (OUT / ".nojekyll").write_text("")
     print(f"_site/ 생성: 주제 {len(topics)} · 이슈 {len(issues)} · 데이터셋 {len(datasets)}")
