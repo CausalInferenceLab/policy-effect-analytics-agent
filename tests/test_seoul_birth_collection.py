@@ -6,6 +6,7 @@ import importlib.util
 import io
 from pathlib import Path
 
+import pandas as pd
 import pytest
 
 CASE = Path(__file__).resolve().parents[1] / "cases" / "ingyeoking13-seoul-birth-support"
@@ -99,3 +100,17 @@ def test_offline_missing_files_do_not_call_network(tmp_path, monkeypatch):
     )
     with pytest.raises(ValueError, match="오프라인"):
         births.collect_births(tmp_path, offline=True)
+
+
+def test_assignment_diagnostic_includes_observed_assignment_and_ties():
+    describe = module("describe")
+    panel = pd.DataFrame(
+        [(unit, year, int(unit < 2), 1.0) for unit in range(5) for year in (2022, 2023, 2024)],
+        columns=["district", "year", "treated", "log_births"],
+    )
+    result = describe.assignment_diagnostic(panel)
+    assert result == {"observed": 0.0, "assignments": 10, "tail_fraction": 1.0}
+    panel.loc[(panel.treated == 1) & (panel.year > 2022), "log_births"] = 2.0
+    result = describe.assignment_diagnostic(panel)
+    assert result["observed"] == 1.0
+    assert result["tail_fraction"] >= 1 / result["assignments"]

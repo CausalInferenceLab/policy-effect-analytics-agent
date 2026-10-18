@@ -235,6 +235,9 @@ def main() -> int:
             return 0
         collect_inputs(offline=args.offline)
         meta = prepare()
+        from describe import write_description
+
+        write_description(HERE, DISTRICTS)
     except (ValueError, OSError, yaml.YAMLError) as exc:
         print(f"[중단] {exc}", file=sys.stderr)
         return 1
