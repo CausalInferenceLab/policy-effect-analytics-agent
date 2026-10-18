@@ -1,0 +1,176 @@
+[
+  {
+    "id": "mohw-2022",
+    "filename": "mohw-2022.pdf",
+    "url": "https://www.mohw.go.kr/board.es?mid=a10411010100&bid=0019&act=view&list_no=375311",
+    "download_url": "https://www.mohw.go.kr/boardDownload.es?bid=0019&list_no=375311&seq=1",
+    "license": "KOGL-4",
+    "retrieved_at": "2026-10-18T16:59:34.432581+00:00",
+    "sha256": "63c12f9a78c986c2ce9d26d548f193f6f7d589b5f0e707f06a1d030ec5762879"
+  },
+  {
+    "id": "mohw-2023",
+    "filename": "mohw-2023.pdf",
+    "url": "https://www.mohw.go.kr/board.es?mid=a10411010100&bid=0019&act=view&list_no=1480319",
+    "download_url": "https://www.mohw.go.kr/boardDownload.es?bid=0019&list_no=1480319&seq=1",
+    "license": "KOGL-4",
+    "retrieved_at": "2026-10-18T16:59:35.127900+00:00",
+    "sha256": "55351131f26d2a3357eec2fa4269b2781e83a932f3a73641ceb5ef37ade5402d"
+  },
+  {
+    "id": "mohw-2024",
+    "filename": "mohw-2024.pdf",
+    "url": "https://www.mohw.go.kr/board.es?mid=a10411010100&bid=0019&act=view&list_no=1484766",
+    "download_url": "https://www.mohw.go.kr/boardDownload.es?bid=0019&list_no=1484766&seq=1",
+    "license": "KOGL-4",
+    "retrieved_at": "2026-10-18T16:59:38.394415+00:00",
+    "sha256": "371e0193aeb972a6970e58aedeb3bef282967944f95c07210eb7e0b6962a543a"
+  },
+  {
+    "id": "gangnam-old",
+    "filename": "gangnam-old-1549839.html",
+    "url": "https://www.law.go.kr/ordinInfoP.do?ordinSeq=1549839",
+    "download_url": "https://www.law.go.kr/LSW/ordinInfoR.do?ordinSeq=1549839&chrClsCd=010202&gubun=ELIS",
+    "license": "other",
+    "text_sha256": "f693ab7e8166dbbd2422eceb4148baec7f07e4cf77f5facbf983572175a71691",
+    "checked_on": "2026-10-19"
+  },
+  {
+    "id": "gangnam-2022",
+    "filename": "gangnam-2022-1707031.html",
+    "url": "https://www.law.go.kr/ordinInfoP.do?ordinSeq=1707031",
+    "download_url": "https://www.law.go.kr/LSW/ordinInfoR.do?ordinSeq=1707031&chrClsCd=010202&gubun=ELIS",
+    "license": "other",
+    "text_sha256": "ce6fa84c848f1de187a8326d2b9833c3687f615db4db534e6baef1a12eeba31b",
+    "checked_on": "2026-10-19"
+  },
+  {
+    "id": "gangnam-2023",
+    "filename": "gangnam-2023-1743435.html",
+    "url": "https://www.law.go.kr/ordinInfoP.do?ordinSeq=1743435",
+    "download_url": "https://www.law.go.kr/LSW/ordinInfoR.do?ordinSeq=1743435&chrClsCd=010202&gubun=ELIS",
+    "license": "other",
+    "text_sha256": "359079f65d6546c8a82df5094da491360426b6d9731102a779850a761297a84f",
+    "checked_on": "2026-10-19"
+  },
+  {
+    "id": "gangnam",
+    "filename": "gangnam-1856235.html",
+    "url": "https://www.law.go.kr/ordinInfoP.do?ordinSeq=1856235",
+    "download_url": "https://www.law.go.kr/LSW/ordinInfoR.do?ordinSeq=1856235&chrClsCd=010202&gubun=ELIS",
+    "license": "other",
+    "text_sha256": "99f809dad331e93eb2e036b16a566b10829db06e9b33d72a0029fd3aa36d5ec9",
+    "checked_on": "2026-10-19"
+  },
+  {
+    "id": "junggu-old",
+    "filename": "junggu-old-1586309.html",
+    "url": "https://www.law.go.kr/ordinInfoP.do?ordinSeq=1586309",
+    "download_url": "https://www.law.go.kr/LSW/ordinInfoR.do?ordinSeq=1586309&chrClsCd=010202&gubun=ELIS",
+    "license": "other",
+    "text_sha256": "8d08cdcb50e0d1ccc9d80d43b04dcb633481258a152988ce70e3724ca7638670",
+    "checked_on": "2026-10-19"
+  },
+  {
+    "id": "junggu",
+    "filename": "junggu-1793155.html",
+    "url": "https://www.law.go.kr/ordinInfoP.do?ordinSeq=1793155",
+    "download_url": "https://www.law.go.kr/LSW/ordinInfoR.do?ordinSeq=1793155&chrClsCd=010202&gubun=ELIS",
+    "license": "other",
+    "text_sha256": "116c56671cced98c2ad937452d96ef9a6956e1fb20e70c8bfe8089fbd4cc3891",
+    "checked_on": "2026-10-19"
+  },
+  {
+    "id": "yongsan-2022",
+    "filename": "yongsan-2022-1715313.html",
+    "url": "https://www.law.go.kr/ordinInfoP.do?ordinSeq=1715313",
+    "download_url": "https://www.law.go.kr/LSW/ordinInfoR.do?ordinSeq=1715313&chrClsCd=010202&gubun=ELIS",
+    "license": "other",
+    "text_sha256": "6ba2a8b36663ab3c2406cd9a1aef379dfa8e6f005a01a58328a810f37c356982",
+    "checked_on": "2026-10-19"
+  },
+  {
+    "id": "yongsan",
+    "filename": "yongsan-1985773.html",
+    "url": "https://www.law.go.kr/ordinInfoP.do?ordinSeq=1985773",
+    "download_url": "https://www.law.go.kr/LSW/ordinInfoR.do?ordinSeq=1985773&chrClsCd=010202&gubun=ELIS",
+    "license": "other",
+    "text_sha256": "bcab839f99dc6829019451a4dd4e4d2750f97164e5502ef839164ec7832a6864",
+    "checked_on": "2026-10-19"
+  },
+  {
+    "id": "seongdong",
+    "filename": "seongdong-1852983.html",
+    "url": "https://www.law.go.kr/ordinInfoP.do?ordinSeq=1852983",
+    "download_url": "https://www.law.go.kr/LSW/ordinInfoR.do?ordinSeq=1852983&chrClsCd=010202&gubun=ELIS",
+    "license": "other",
+    "text_sha256": "b53eb2254abf539cf65562caa538d0d3fb07a9e8e42317bf25ed02958b0a56b5",
+    "checked_on": "2026-10-19"
+  },
+  {
+    "id": "geumcheon",
+    "filename": "geumcheon-2018091.html",
+    "url": "https://www.law.go.kr/ordinInfoP.do?ordinSeq=2018091",
+    "download_url": "https://www.law.go.kr/LSW/ordinInfoR.do?ordinSeq=2018091&chrClsCd=010202&gubun=ELIS",
+    "license": "other",
+    "text_sha256": "7fbdbefdb0ec027d333cc2fa5260256a6c122b778684b887ee358f002f297763",
+    "checked_on": "2026-10-19"
+  },
+  {
+    "id": "gwangjin",
+    "filename": "gwangjin-2001319.html",
+    "url": "https://www.law.go.kr/ordinInfoP.do?ordinSeq=2001319",
+    "download_url": "https://www.law.go.kr/LSW/ordinInfoR.do?ordinSeq=2001319&chrClsCd=010202&gubun=ELIS",
+    "license": "other",
+    "text_sha256": "c4678cc2f7e982ca5bdd2b9c18d726db893fd7cfb4152ab2651217f8e0f192d7",
+    "checked_on": "2026-10-19"
+  },
+  {
+    "id": "dongjak",
+    "filename": "dongjak-1746909.html",
+    "url": "https://www.law.go.kr/ordinInfoP.do?ordinSeq=1746909",
+    "download_url": "https://www.law.go.kr/LSW/ordinInfoR.do?ordinSeq=1746909&chrClsCd=010202&gubun=ELIS",
+    "license": "other",
+    "text_sha256": "2312ac15d4a981582d5203b7d85d63d8b34ee60fa414f74e6c5f22c1bd165653",
+    "checked_on": "2026-10-19"
+  },
+  {
+    "id": "gangnam-history",
+    "filename": "gangnam-history.html",
+    "url": "https://www.law.go.kr/LSW/ordinHstListR.do?ordinSeq=1856235&ordinId=2072574&gubun=ELIS",
+    "download_url": "https://www.law.go.kr/LSW/ordinHstListR.do?ordinSeq=1856235&ordinId=2072574&gubun=ELIS",
+    "license": "other",
+    "text_sha256": "ccfeea9677b54cee3572277868226a4bfa96d586d7de791487a1f2a7d47e587a",
+    "checked_on": "2026-10-19"
+  },
+  {
+    "id": "junggu-history",
+    "filename": "junggu-history.html",
+    "url": "https://www.law.go.kr/LSW/ordinHstListR.do?ordinSeq=1793155&ordinId=2080553&gubun=ELIS",
+    "download_url": "https://www.law.go.kr/LSW/ordinHstListR.do?ordinSeq=1793155&ordinId=2080553&gubun=ELIS",
+    "license": "other",
+    "text_sha256": "8471b38f0082418dafa59020cc1747cbd84954f67018f290d074fd5b195861cb",
+    "checked_on": "2026-10-19"
+  },
+  {
+    "id": "yongsan-history",
+    "filename": "yongsan-history.html",
+    "url": "https://www.law.go.kr/LSW/ordinHstListR.do?ordinSeq=1985773&ordinId=2079260&gubun=ELIS",
+    "download_url": "https://www.law.go.kr/LSW/ordinHstListR.do?ordinSeq=1985773&ordinId=2079260&gubun=ELIS",
+    "license": "other",
+    "text_sha256": "af325776d2a49a76d413da4dd076e27e873615e18ae5fce960a1a0b718d44fb8",
+    "checked_on": "2026-10-19"
+  },
+  {
+    "id": "songpa",
+    "filename": "songpa.html",
+    "url": "https://www.songpa.go.kr/www/contents.do?key=2953",
+    "download_url": "https://www.songpa.go.kr/www/contents.do?key=2953",
+    "license": "other",
+    "checked_on": "2026-10-19",
+    "required_text": [
+      "2021.12.31. 이전 출생",
+      "2022.1.1. 이후 출생아에게는"
+    ]
+  }
+]
