@@ -1,0 +1,298 @@
+{
+  "schema_version": "1",
+  "case_dir": "cases/ingyeoking13-seoul-birth-support",
+  "question": "서울 25개 자치구를 조사 모집단으로 하여, 2023년 1월 1일 첫째아 자체 출산지원금을 증액한 구와 2022~2024년 해당 지원금의 금액·수급 조건을 유지한 구 사이에서 연간 출생등록 건수의 변화가 달랐는가?\n",
+  "status": "warn",
+  "verdict": "not_identified",
+  "started_at": "2026-10-18T17:20:19+00:00",
+  "ended_at": "2026-10-18T17:20:20+00:00",
+  "steps": [
+    {
+      "index": 1,
+      "step": "define_problem",
+      "title": "① 문제 정의",
+      "status": "ok",
+      "started_at": "2026-10-18T17:20:19+00:00",
+      "ended_at": "2026-10-18T17:20:19+00:00",
+      "duration_s": 0.041,
+      "message": "분석계획 검증 완료, 사전 등록(git 커밋) 확인: ingyeoking13-seoul-birth-support",
+      "artifacts": {
+        "plan": "plan.yaml",
+        "plan_sha256": "fa1d1b837f2c4446a86d58d4f3b48a324e723e4b396e8d9b4b5c475c74f16ff6",
+        "committed": true
+      }
+    },
+    {
+      "index": 2,
+      "step": "collect",
+      "title": "② 데이터 수집",
+      "status": "warn",
+      "started_at": "2026-10-18T17:20:19+00:00",
+      "ended_at": "2026-10-18T17:20:19+00:00",
+      "duration_s": 0.0,
+      "message": "기존 스냅샷 재사용 (새로 받으려면 파일 삭제 후 재실행) / 공공누리 3·4유형(변경금지) 포함 — 가공 데이터 재배포 불가",
+      "artifacts": {
+        "data": "data/panel.csv",
+        "data_sha256": "620969ed38217eefcda2acce51f08e65ff9dff9c963a90cfb00a9fe121d8f2eb",
+        "licenses": [
+          "KOGL-1",
+          "KOGL-2",
+          "KOGL-4",
+          "other"
+        ],
+        "method": "기존 스냅샷 재사용 (새로 받으려면 파일 삭제 후 재실행)",
+        "source_meta": "data/panel.source.json"
+      }
+    },
+    {
+      "index": 3,
+      "step": "structure_metrics",
+      "title": "③ 지표 구조화·품질 점검",
+      "status": "ok",
+      "started_at": "2026-10-18T17:20:19+00:00",
+      "ended_at": "2026-10-18T17:20:19+00:00",
+      "duration_s": 0.003,
+      "message": "11개 점검 모두 통과",
+      "artifacts": {
+        "rows": 35,
+        "units": 5
+      }
+    },
+    {
+      "index": 4,
+      "step": "estimate",
+      "title": "④ 효과 추정",
+      "status": "warn",
+      "started_at": "2026-10-18T17:20:19+00:00",
+      "ended_at": "2026-10-18T17:20:19+00:00",
+      "duration_s": 0.626,
+      "message": "event_study: +0.151 [0.091, 0.185] → not_identified",
+      "artifacts": {
+        "log_births": {
+          "estimate": 0.1512,
+          "ci": [
+            0.0907,
+            0.1852
+          ],
+          "verdict": "not_identified"
+        }
+      }
+    },
+    {
+      "index": 5,
+      "step": "guard",
+      "title": "⑤ 과잉해석 가드",
+      "status": "warn",
+      "started_at": "2026-10-18T17:20:19+00:00",
+      "ended_at": "2026-10-18T17:20:19+00:00",
+      "duration_s": 0.0,
+      "message": "1차 지표 판정 판단 불가, 서술=template",
+      "artifacts": {
+        "triggers": [
+          "few_treated_clusters",
+          "few_clusters"
+        ]
+      }
+    },
+    {
+      "index": 6,
+      "step": "report",
+      "title": "⑥ 리포트·재현 기록",
+      "status": "ok",
+      "started_at": "2026-10-18T17:20:19+00:00",
+      "ended_at": "2026-10-18T17:20:20+00:00",
+      "duration_s": 0.134,
+      "message": "리포트 2개 그림 포함 작성",
+      "artifacts": {
+        "report": "report.md",
+        "manifest": "run_manifest.json",
+        "figures": [
+          "figures/raw_trends.png",
+          "figures/event_study.png"
+        ]
+      }
+    }
+  ],
+  "quality": [
+    {
+      "check": "필수 컬럼",
+      "value": 4,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "시간 컬럼 정수형",
+      "value": "int64",
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "결측률 district",
+      "value": 0.0,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "결측률 year",
+      "value": 0.0,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "결측률 treated",
+      "value": 0.0,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "결측률 log_births",
+      "value": 0.0,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "사전 기간 수(기)",
+      "value": 5,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "사후 기간 수(기)",
+      "value": 2,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "처치 단위 수",
+      "value": 2,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "통제 단위 수",
+      "value": 3,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "단위×시점 중복",
+      "value": 0,
+      "status": "ok",
+      "message": ""
+    }
+  ],
+  "results": [
+    {
+      "method": "event_study",
+      "outcome": "log_births",
+      "estimate": 0.15119875656864917,
+      "se": 0.1161409770769976,
+      "ci_low": 0.09071925394118951,
+      "ci_high": 0.1852184767965952,
+      "p_value": 0.001,
+      "n_obs": 35,
+      "n_clusters": 5,
+      "assumptions_checked": {
+        "inference": "randomization inference (처치 단위 2개를 무작위 재배정, 999회)",
+        "parallel_pretrends": {
+          "test": "randomization inference (사전 계수 제곱합)",
+          "p_value": 0.312,
+          "passed": true
+        },
+        "pre_periods": 5,
+        "n_adoption_cohorts": 1,
+        "placebo_time": {
+          "fake_treat_time": 2021,
+          "estimate": -0.05402073239546088,
+          "p_value": 0.677,
+          "passed": true
+        }
+      },
+      "warnings": [
+        "처치 단위가 2개뿐이라 군집-강건 표준오차를 믿을 수 없습니다. 무작위화 추론(처치 단위를 무작위로 바꿔 반복)으로 p값과 신뢰구간을 계산했습니다.",
+        "클러스터 수 5개 < 20: 군집-강건 표준오차가 과소추정될 수 있습니다. wild cluster bootstrap(pyfixest `wildboottest`) 또는 randomization inference 를 병행하세요."
+      ],
+      "triggers": [
+        "few_treated_clusters",
+        "few_clusters"
+      ],
+      "verdict": "not_identified",
+      "extra": {
+        "coefs": [
+          {
+            "rel_time": -5,
+            "coef": 0.034626134106805664,
+            "se": 0.1029312003329677,
+            "ci_low": -0.25115669322979606,
+            "ci_high": 0.32040896144340736
+          },
+          {
+            "rel_time": -4,
+            "coef": 0.06527882768258532,
+            "se": 0.04880130054997049,
+            "ci_low": -0.07021530435666669,
+            "ci_high": 0.20077295972183734
+          },
+          {
+            "rel_time": -3,
+            "coef": 0.06402226424558281,
+            "se": 0.03708473247217385,
+            "ci_low": -0.038941459704353976,
+            "ci_high": 0.1669859881955196
+          },
+          {
+            "rel_time": -2,
+            "coef": 0.0012433525657274372,
+            "se": 0.030313721146714726,
+            "ci_low": -0.08292103013239953,
+            "ci_high": 0.08540773526385441
+          },
+          {
+            "rel_time": -1,
+            "coef": 0.0,
+            "se": 0.0,
+            "ci_low": 0.0,
+            "ci_high": 0.0
+          },
+          {
+            "rel_time": 0,
+            "coef": 0.12125296646645893,
+            "se": 0.11053608880202467,
+            "ci_low": -0.18564441623563116,
+            "ci_high": 0.42815034916854905
+          },
+          {
+            "rel_time": 1,
+            "coef": 0.1811445466708394,
+            "se": 0.12377729673761372,
+            "ci_low": -0.1625163229909231,
+            "ci_high": 0.5248054163326019
+          }
+        ],
+        "crv1": {
+          "ci": [
+            -0.07643337563155811,
+            0.37883088876885646
+          ],
+          "p_value": 0.1929658259783621,
+          "pretrend": {
+            "test": "joint Wald (chi2, CRV1)",
+            "stat": 4.117068120519676,
+            "df": 4,
+            "p_value": 0.39039418311638585
+          }
+        }
+      },
+      "identified": false
+    }
+  ],
+  "guard": {
+    "verdict": "not_identified",
+    "narrative_source": "template",
+    "passed": true,
+    "violations": [],
+    "rejected_llm_violations": [],
+    "narrative": "**요약(식별 불가)**: 다음 사유로 이 설계에서는 정책 효과를 추정치로 보고하지 않습니다: 처치 단위 수 부족(무작위화 추론 사용), 클러스터 수 부족(표준오차 과소추정 위험). 표의 수치(+0.15 log 건/년)는 진단용이며 정책 효과로 해석하면 안 됩니다."
+  },
+  "report_path": "report.md"
+}
