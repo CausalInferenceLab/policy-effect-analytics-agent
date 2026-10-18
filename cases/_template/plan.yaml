@@ -10,7 +10,9 @@ synthetic_data: false                # 합성 데이터면 true (라이선스도
 
 # 분석 단위와 시간축: 한 행 = 단위 x 시점
 unit: {name: 시군구, id_col: region_id}
-time: {col: year, freq: year, start: 2015, end: 2019}   # freq: year|quarter|month|week|day
+time: {col: year, freq: year, start: 2015, end: 2019}   # freq: year|quarter|month|week|day|hour
+# 시간 자료면: time: {col: t, freq: hour, start: "2019-01-01 00:00", end: "2021-12-31 23:00", hour_col: hour, active_hours: [6, 21]}
+#            그리고 estimator.event_bin: 24 (상대시점을 일 단위로 묶기). 정수 시점은 core.schema.timeindex 로 만든다
 
 # 처치 / 대조
 treatment:
@@ -48,13 +50,13 @@ assumptions:
     description: "같은 시점에 결과에 영향을 준 다른 정책이 없음"
     check: manual
 
-# 반박 검정 (kind: placebo_time | placebo_outcome | drop_unit)
+# 반박 검정 (kind: placebo_time | placebo_outcome | drop_unit | placebo_window[적용 외 시간대])
 refutations:
   - kind: placebo_time
     params: {shift: 2}
 
 # 결론 보류 규칙 — 해당하면 효과를 '주장하지 않는다'
-# when: pretrend_rejected | few_clusters | staggered_adoption | placebo_significant | ci_crosses_zero | short_pre_period
+# when: pretrend_rejected | few_clusters | staggered_adoption | placebo_significant | ci_crosses_zero | short_pre_period | placebo_window_significant
 abstention:
   - when: pretrend_rejected
     verdict: not_identified

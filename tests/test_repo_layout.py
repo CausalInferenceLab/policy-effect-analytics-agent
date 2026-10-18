@@ -110,7 +110,7 @@ def test_plan_guide_example_validates(tmp_path):
     from core.schema.plan import load_plan
 
     text = (ROOT / "docs" / "strategy" / "plan-guide.md").read_text(encoding="utf-8")
-    block = re.search(r"```yaml\n(.*?)```", text, re.S).group(1)
+    block = next(b for b in re.findall(r"```yaml\n(.*?)```", text, re.S) if "case_id:" in b)
     path = tmp_path / "plan.yaml"
     path.write_text(block, encoding="utf-8")
     assert load_plan(path).case_id == "t3-land-permit-2025"

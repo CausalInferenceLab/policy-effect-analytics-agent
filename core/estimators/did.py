@@ -105,8 +105,12 @@ def event_study(
     alpha: float = 0.05,
     min_clusters: int = 20,
     min_treated_clusters: int = 10,
+    bin: int = 1,
 ) -> EffectResult:
     """상대시점 더미 TWFE. 창 밖 상대시점은 양끝으로 binning.
+
+    bin: 상대시점을 몇 기간씩 묶을지. 시간 자료(freq=hour)에서 24 면 상대시점이 '일', 168 이면 '주'.
+    window·ref_period 는 묶은 단위로 읽는다. 고정효과는 원래 시점(시간) 그대로 쓴다.
 
     처치 단위가 min_treated_clusters 개 미만이고 균형 패널·동시 도입이면, 군집-강건 SE 대신
     무작위화 추론(ri.py)으로 p값·신뢰구간·사전추세 검정을 계산한다.
@@ -118,7 +122,7 @@ def event_study(
     lo, hi = window
     d = df.copy()
     d["_ft"] = _first_treat(d, unit, time, group_col, first_treat_col, treat_time)
-    rel = (d[time] - d["_ft"]).clip(lo, hi)
+    rel = np.floor((d[time] - d["_ft"]) / bin).clip(lo, hi)
     names = {}
     for k in range(lo, hi + 1):
         if k == ref_period:
@@ -182,7 +186,7 @@ def event_study(
     if len(treated_units) < min_treated_clusters and balanced and simultaneous:
         ri = event_study_ri(
             d, y, unit, time, treated_units, int(d["_ft"].dropna().iloc[0]),
-            list(names.values()), lo, hi, alpha=alpha,
+            list(names.values()), lo, hi, alpha=alpha, bin=bin,
         )  # fmt: skip
         res.extra["crv1"] = {
             "ci": [res.ci_low, res.ci_high],
@@ -209,13 +213,10 @@ def event_study(
             "효과를 인과적으로 해석하지 마세요.",
             "pretrend_rejected",
         )
-    n_pre = int(
-        d.loc[d["_ft"].notna(), time]
-        .lt(d.loc[d["_ft"].notna(), "_ft"])
-        .groupby(d.loc[d["_ft"].notna(), unit])
-        .sum()
-        .min()
-    )
+    tr = d.loc[d["_ft"].notna()]
+    pre_bins = np.floor((tr[time] - tr["_ft"]) / bin)
+    n_pre_s = pre_bins[pre_bins < 0].groupby(tr.loc[pre_bins < 0, unit]).nunique().min()
+    n_pre = int(n_pre_s) if pd.notna(n_pre_s) else 0
     res.assumptions_checked["pre_periods"] = n_pre
     check_clusters(res, n_cl, min_clusters)
     check_staggered(res, d.groupby(unit)["_ft"].first())

@@ -59,6 +59,14 @@ def apply_abstention(res: EffectResult, rules, thresholds=None) -> EffectResult:
             "placebo_significant",
         )
 
+    window = res.assumptions_checked.get("placebo_window")
+    if window and not window["passed"]:
+        res.warn(
+            f"정책이 적용되지 않는 시간대에서도 효과가 유의(p={window['p_value']:.3f}): "
+            "정책 말고 다른 요인이 함께 움직였을 가능성.",
+            "placebo_window_significant",
+        )
+
     verdict = "identified"
     for r in rules:
         r = r if isinstance(r, dict) else r.model_dump()
