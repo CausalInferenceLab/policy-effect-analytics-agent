@@ -11,6 +11,38 @@
 # 스키마: core/discovery/ontology.py · 설명: catalog/README.md
 version: 1
 datasets:
+- id: '15108347'
+  name: 한국사회보장정보원_지자체복지서비스
+  provider: 한국사회보장정보원
+  portal: data.go.kr
+  url: https://www.data.go.kr/data/15108347/openapi.do
+  access: open_api
+  approval: 자동승인
+  license: other
+  license_note: '포털 표기: 이용허락범위 제한 없음 / 무료 / 개발·운영단계 자동승인'
+  space: 개별
+  time: 수시
+  period: 페이지 시간범위 미기재; 과거 연도별 이력 제공 여부 확인필요
+  measures:
+  - 복지서비스 목록
+  - 지원대상
+  - 선정기준
+  - 지원내용
+  - 신청방법
+  roles:
+  - treatment
+  topics:
+  - birth-marriage
+  notes: >-
+    복지로 기반 REST/XML API로 목록조회·상세조회를 제공한다. 개별 단위는 사람이 아닌 복지사업이다.
+    서울 관련 재제공 경로는 서울 열린데이터광장 OA-23013(목록), OA-23014(상세)이며 같은 원천이다.
+    서울시 자치구별 자체 출산지원금 사업을 선별하는 출발 자료로 사용한다.
+    treatment는 정책 정보 구축용 역할이며 실제 수급자·지급액 또는 검증된 처치 이력을 뜻하지 않는다.
+    지원금액·자녀 순위·거주요건은 상세 내용과 자치구 공식 안내를 대조하고,
+    적용 시작일·종료일은 조례 부칙·공고·보도자료로 별도 확인한다.
+    API 실호출, 대상 사업 수, 25개 자치구 포괄 여부는 확인필요.
+    작업 범위와 출처 연결은 cases/ingyeoking13-seoul-birth-support/README.md 참고.
+  verified: 2026-10-13 공공데이터포털 및 서울 열린데이터광장 목록·상세 설명 확인; API 실호출 미실시
 - id: '15126468'
   name: 국토교통부_아파트 매매 실거래가 상세 자료
   provider: 국토교통부
