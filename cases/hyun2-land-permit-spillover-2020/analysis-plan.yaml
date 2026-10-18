@@ -251,6 +251,19 @@ amendments:   # added after fixing; the fields above stay as fixed, each additio
     guard: >-
       The pre-period results record the sha256 of the plan, the collection and estimation code and
       the collected data; the post-period stage stops before reading any price if any differs.
+  - id: make-flow-comparison
+    date: "2026-10-18"
+    seen_before: Everything the supplement above had seen plus its pre-period results. No post-period price and no post contrast.
+    adds: >-
+      A supplementary `make flow` run on this folder's plan.yaml: ring1 (10 동) vs far (10 동) only,
+      cell log median price per m², event study with relative-time window [-4, 8], reference 2020-05,
+      CRV1 by 동, placebo onset shifted to 2019-12, and that plan's abstention rules. Reported next to
+      the main estimate; it replaces neither the main estimate nor the conclusion rule.
+    why_window: >-
+      With 11 pre-period coefficients and 20 clusters the joint pre-trend Wald test rejected in
+      63–73 % of simulated datasets without any pre-trend (α = 0.10, 1,000 datasets per scenario);
+      with window [-4, 8] (2 coefficients) it rejected in 13–16 %. The judgement rests on simulated
+      data, not on this case's prices.
 
 changes_that_make_a_new_hypothesis:
   - Any change to the unit lists other than a same-rule correction of a misread boundary.
