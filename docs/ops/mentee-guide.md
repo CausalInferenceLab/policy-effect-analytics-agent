@@ -20,7 +20,7 @@
 - [데이터 계보](https://causalinferencelab.github.io/policy-effect-analytics-agent/lineage.html): 이슈 → 정책 → 데이터 → 지표 → 분석의 연결과 주제별 빈칸 (트랙 A)
 - [서비스](https://causalinferencelab.github.io/policy-effect-analytics-agent/apps.html): 공개 API와 서비스 템플릿 (트랙 C)
 - 주제 페이지의 **관련 법령·행정규칙**: 법제처에서 근거 법률의 개정 이력, 지정·해제 공고, 관련 조례를 자동으로 모은 목록
-- 분석 예시: [`cases/t3-land-permit-2025/`](../../cases/t3-land-permit-2025/) (토지거래허가구역, 지금은 시뮬레이션 데이터)
+- 분석 예시: [`cases/t3-climate-card-seongnam/`](../../cases/t3-climate-card-seongnam/) (기후동행카드 성남 편입, **실데이터 · 키 불필요**), [`cases/t3-land-permit-2025/`](../../cases/t3-land-permit-2025/) (토지거래허가구역, 지금은 시뮬레이션 데이터)
 - 계획 쓰는 법: [`docs/strategy/plan-guide.md`](../strategy/plan-guide.md)
 
 ## 처음 한 번

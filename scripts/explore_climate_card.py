@@ -26,32 +26,10 @@ from core.adapters.seoul_subway import SeoulSubwayDailyAdapter  # noqa: E402
 from core.estimators import did, event_study  # noqa: E402
 
 W0 = pd.Timestamp("2023-01-02")
-# (노선, 역들, 시군, 첫 처치일 또는 None=대조). 대조는 분석 창(~2025-12)에 편입되지 않은 경기 출퇴근 노선 역.
-# 군포·의정부·인천·구리·남양주·부천은 적용일 미확인이라 제외. 양평·가평·여주(나들이 노선)도 대조에서 제외.
-STATIONS = [
-    ("일산선", "대곡 대화 마두 백석 삼송 원당 원흥 정발산 주엽 화정", "고양", "2024-11-30"),
-    ("3호선", "지축", "고양", "2024-11-30"),
-    ("경의선", "행신 강매 화전 능곡 곡산 백마 풍산 일산 탄현", "고양", "2024-11-30"),
-    ("과천선", "선바위 경마공원 대공원 과천 정부과천청사", "과천", "2024-11-30"),
-    ("분당선", "야탑 이매 서현 수내 정자 미금 오리 모란 태평 가천대", "성남", "2025-05-03"),
-    ("경강선", "판교 이매", "성남", "2025-05-03"),
-    ("5호선", "미사 하남풍산 하남시청(덕풍·신장) 하남검단산", "하남", "2025-08-09"),
-    ("과천선", "인덕원 평촌 범계", "안양", None),
-    ("경부선", "안양 명학 석수 관악", "안양", None),
-    ("경부선", "의왕 성균관대", "의왕", None),
-    ("경부선", "화서 수원 세류", "수원", None),
-    ("경부선", "병점 세마 서동탄", "화성", None),
-    ("경부선", "오산대 오산 진위", "오산", None),
-    ("경부선", "송탄 서정리 평택지제 평택", "평택", None),
-    ("분당선", "죽전 보정 구성 신갈 기흥 상갈 청명", "용인", None),
-    ("분당선", "영통 망포 매탄권선 수원시청 매교 수원", "수원", None),
-    ("경강선", "삼동 경기광주 초월 곤지암", "광주", None),
-    ("경강선", "신둔도예촌 이천 부발", "이천", None),
-    ("경의선", "야당 운정 금릉 금촌 월롱 파주 문산", "파주", None),
-    ("경원선", "양주 덕계 덕정 지행 동두천중앙 보산 동두천 소요산", "양주·동두천", None),
-    ("안산선", "반월 상록수 한대앞 중앙 고잔 초지 안산 신길온천 정왕 오이도", "안산·시흥", None),
-    ("수인선", "월곶 달월 사리 야목 어천 오목천 고색", "시흥·화성·수원", None),
-]
+# 역 처치표(노선·역·시군·첫 처치일)는 계보의 결과물 파일 하나에서 읽습니다 — 케이스 fetch.py 와 같은 원천.
+# 대조는 분석 창(~2025-12)에 편입되지 않은 경기 출퇴근 노선 역. 군포·의정부·인천·구리·남양주·부천은
+# 적용일 미확인이라 제외, 양평·가평·여주(나들이 노선)도 제외. 근거: catalog/lineage/climate-card-expansion.yaml
+STATIONS_CSV = ROOT / "catalog" / "lineage" / "data" / "climate-card-stations.csv"
 SAME_LINE = {
     "고양": ["파주", "양주·동두천"],
     "과천": ["안양"],
@@ -61,8 +39,9 @@ SAME_LINE = {
 
 
 def station_table() -> pd.DataFrame:
-    rows = [(line, s, city, ft) for line, sts, city, ft in STATIONS for s in sts.split()]
-    return pd.DataFrame(rows, columns=["line", "station", "city", "first_treat"])
+    t = pd.read_csv(STATIONS_CSV, dtype=str)
+    t["first_treat"] = t["first_treat"].where(t["group"] == "treated")
+    return t[["line", "station", "city", "first_treat"]]
 
 
 def weekday_panel(daily: pd.DataFrame) -> pd.DataFrame:

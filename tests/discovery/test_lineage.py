@@ -81,3 +81,45 @@ def test_depth_orders_columns():
     lin = next(lin for lin in load_lineages() if lin.id == "t3-land-permit-2025")
     d = depth(lin)
     assert d["issue"] == 0 and d["raw_trades"] == 1 and d["gu_month"] == 2 and d["log_trades"] == 3
+
+
+def test_missing_dataset_is_a_gap_not_an_error():
+    lin = _lin(
+        [
+            {"id": "raw", "kind": "dataset", "ref": "15126468"},
+            {"id": "gap", "kind": "dataset", "status": "missing", "label": "권종별 자료"},
+            {"id": "m", "kind": "metric", "inputs": ["raw"], "how": "x"},
+            {"id": "later", "kind": "metric", "inputs": ["gap"], "how": "x"},
+        ]
+    )
+    errors, warns = validate(lin, lin.id)
+    assert not errors
+    assert not any("카탈로그에 없는 데이터" in m for m in warns)
+    assert any("later" in m and "done" in m for m in warns)  # 빈칸을 쓰는 단계가 done 이면 경고
+    with pytest.raises(ValidationError):  # missing 은 데이터에만
+        _lin([{"id": "t", "kind": "metric", "inputs": [], "how": "x", "status": "missing"}])
+    with pytest.raises(ValidationError):  # 빈칸이 아니면 데이터는 ref·url 필요
+        _lin([{"id": "d", "kind": "dataset", "status": "planned"}])
+
+
+def test_artifact_must_exist_in_repo():
+    ok = _lin(
+        [
+            {
+                "id": "raw",
+                "kind": "dataset",
+                "ref": "15126468",
+                "artifact": "catalog/lineage/data/climate-card-stations.csv",
+            }
+        ]
+    )
+    assert not validate(ok, ok.id)[0]
+    bad = _lin([{"id": "raw", "kind": "dataset", "ref": "15126468", "artifact": "nope.csv"}])
+    assert any("artifact" in m for m in validate(bad, bad.id)[0])
+
+
+def test_climate_card_lineage_feeds_real_case():
+    g = graph()
+    assert any(e["to"] == "case:t3-climate-card-seongnam" for e in g["edges"])
+    gaps = [n for n in g["nodes"] if n.get("status") == "missing"]
+    assert gaps, "기후동행카드 계보는 빈칸(권종별 자료 등)을 적어 둡니다"

@@ -1,20 +1,37 @@
-# 데이터 계보 예시 — 기후동행카드 경기 지역 단계적 편입 → 편입 지역 역의 지하철 승차
-# 트랙 A 예시. 이 계보의 지표를 트랙 B 분석(시차 도입 이중차분)이 이어받습니다. 가설: docs/strategy/climate-card.md
+# 데이터 계보 예시 — 기후동행카드 경기 지역 단계적 편입 → 편입 지역 역의 평일 승차
+# 트랙 A 예시. 이 계보의 지표를 트랙 B 케이스(cases/t3-climate-card-seongnam)가 이어받습니다. 해설: docs/strategy/climate-card.md
+# status: planned(다음 가설이 쓸 단계) · missing(필요하지만 아직 없는 데이터 = 트랙 A가 채울 빈칸)
 id: climate-card-expansion
 owner: jsshin2022
 topic: public-transit
-title: "기후동행카드 경기 편입(2024.3 ~ 2025.8) → 편입 지역 역 승차"
-question: "기후동행카드가 적용된 경기 지역 역의 승차가, 아직 적용되지 않은 경기 역보다 늘었나? (적용 역 효과, ITT)"
+title: "기후동행카드 경기 편입(2024.3 ~ 2025.8) → 편입 지역 역 평일 승차"
+question: "기후동행카드가 적용된 경기 지역 역의 평일 승차가, 아직 적용되지 않은 같은 노선 경기 역보다 늘었나? (적용 역 효과, ITT)"
 steps:
   - id: issue
     kind: issue
     ref: climate-card-expansion-2024
 
+  # ── 처치: 카드가 닿는 범위가 바뀐 날 ───────────────────────────────
   - id: pilot
     kind: policy
     label: "기후동행카드 시범운영 시작 (서울)"
     date: "2024-01-27"
     source: "https://mediahub.seoul.go.kr/archives/2009830"
+    note: "성남 8호선 구간은 이날부터 적용 → 성남 처치·대조에서 모두 제외"
+
+  - id: gimpo
+    kind: policy
+    label: "김포골드라인 적용 (첫 경기 편입)"
+    date: "2024-03-30"
+    source: "https://mediahub.seoul.go.kr/archives/2015277"
+    note: "김포골드라인 역은 서울 승하차 자료(OA-12914)에 없음 → 아래 빈칸(gimpo_gold) 참고"
+
+  - id: jinjeop
+    kind: policy
+    label: "진접선(남양주) 적용 · 별내선 개통"
+    date: "2024-08-10"
+    source: "https://mediahub.seoul.go.kr/archives/2015277"
+    note: "별내선은 같은 날 신규 개통이라 사전 기간이 없어 제외. 진접선 역은 OA-12914 수록 여부 미확인"
 
   - id: goyang_gwacheon
     kind: policy
@@ -22,26 +39,11 @@ steps:
     date: "2024-11-30"
     source: "https://news.seoul.go.kr/traffic/archives/513130"
 
-  - id: gimpo
-    kind: policy
-    label: "김포골드라인 적용 (첫 경기 편입)"
-    date: "2024-03-30"
-    source: "https://mediahub.seoul.go.kr/archives/2015277"
-    note: "김포골드라인 역은 서울 승하차 자료(OA-12914)에 없음 → 김포시 자료 필요"
-
-  - id: jinjeop
-    kind: policy
-    label: "진접선(남양주) 적용 · 별내선 개통"
-    date: "2024-08-10"
-    source: "https://mediahub.seoul.go.kr/archives/2015277"
-    note: "진접선은 2022년 개통한 기존 역이라 처치군. 별내선은 같은 날 신규 개통이라 사전 기간이 없어 제외"
-
   - id: seongnam
     kind: policy
     label: "성남 수인분당선·경강선 적용"
     date: "2025-05-03"
     source: "https://www.dailian.co.kr/news/view/1493107/"
-    note: "성남 8호선 구간은 시범운영(2024-01-27)부터 적용 — 같은 시 안에서도 노선마다 처치일이 다름"
 
   - id: hanam
     kind: policy
@@ -49,48 +51,99 @@ steps:
     date: "2025-08-09"
     source: "https://mediahub.seoul.go.kr/archives/2015277"
 
+  # ── 같은 시기에 함께 움직인 정책·사건 (처치가 아니라 공통 충격 또는 교란) ──
   - id: kpass
     kind: policy
     label: "K-패스·The 경기패스 시행 (동시 정책)"
     date: "2024-05-01"
     source: "https://magazine.hankyung.com/business/article/202405018911b"
-    note: "대조 지역에도 적용 → 처치가 아니라 공통 충격. 편입 효과와 겹치는 정도를 한계에 기록"
+    note: "대조 지역에도 적용 → 처치가 아니라 공통 충격. 주 고정효과가 흡수"
+
+  - id: gtx_a
+    kind: policy
+    label: "GTX-A 운정중앙~서울역 개통 (교란 사건)"
+    date: "2024-12-28"
+    source: "https://www.etoday.co.kr/news/view/2432820"
+    note: "고양 편입 4주 뒤. 대곡(환승역) 평일 승차 +131%, 대화 -25%, 대조 운정 -23% → 고양 편입 효과는 판단 불가"
 
   - id: fare_hike
     kind: policy
     label: "지하철 기본요금 1,400 → 1,550원 (동시 정책)"
     date: "2025-06-28"
     source: "https://www.etoday.co.kr/news/view/2480312"
-    note: "성남·하남 코호트 사이에 낌. 기후동행카드 가격은 동결 → 적용 역이 요금 충격을 덜 받는 방향으로 편향 가능"
+    note: "카드 가격은 동결 → 적용 역이 요금 충격을 덜 받는 방향으로 편향 가능. 성남 처치 7주 뒤"
 
+  # ── 원천 데이터 ───────────────────────────────────────────────────
   - id: subway_daily
     kind: dataset
     ref: OA-12914
-    note: "역 × 일 승하차. 경기 코레일 구간 역 포함 확인(2026-10-18). 수집기: core/adapters/seoul_subway.py"
+    note: "역 × 일 승하차. 경기 코레일 구간 역(경부·분당·경의·과천·경원·안산·수인선) 포함 확인(2026-10-18). 수집기: core/adapters/seoul_subway.py (키 불필요)"
 
-  - id: station_city
-    kind: transform
-    label: "역 → 소재 지자체·노선"
-    inputs: [subway_daily]
-    how: "역명·호선을 소재 시군과 노선 구간으로 매핑하고 경기 구간 역만 남김. 분석 기간 중 신규 개통역(별내선 2024-08-10 등)은 사전 기간이 없어 제외"
-    keys: [station_id, line]
+  - id: holidays_kr
+    kind: dataset
+    url: "https://pypi.org/project/holidays/"
+    label: "한국 공휴일 달력 (holidays 패키지)"
+    note: "평일 판정용. 대체공휴일 포함. pip install -e '.[analysis]'"
 
+  - id: subway_hourly
+    kind: dataset
+    ref: OA-12252
+    status: planned
+    note: "역 × 월 × 시간대. 서울 관할 역만이라 경기 편입 역은 일부만 — H10(출퇴근 시간대 비중)에 사용 예정"
+
+  - id: fare_type
+    kind: dataset
+    status: missing
+    label: "권종별(기후동행카드·K-패스·일반) 역 승하차"
+    note: "공개 자료에 없음 — 서울시·티머니 협조 자료 필요. 없으면 '카드 이용자' 효과(H7)를 볼 수 없고 적용 역 효과(ITT)만 가능"
+
+  - id: gimpo_gold
+    kind: dataset
+    status: missing
+    label: "김포골드라인 역별 일 승하차"
+    note: "OA-12914에 없음. 김포시·김포골드라인 운영사 자료를 찾으면 첫 경기 편입(2024-03-30) 코호트를 추가할 수 있음"
+
+  # ── 가공 ─────────────────────────────────────────────────────────
   - id: cohort_table
     kind: transform
-    label: "처치표 (시군·노선 → 첫 처치일)"
-    inputs: [gimpo, jinjeop, goyang_gwacheon, seongnam, hanam, pilot]
-    how: "편입일을 첫 처치일로, 분석 기간 내 미편입 시군은 결측(대조). 하남 5호선은 승차 허용일, 성남 8호선은 시범운영일. 군포·인천·의정부·구리·남양주(진접선 외)는 적용일 미확인이라 대조에서도 제외"
-    keys: [city, line]
+    label: "역 처치표 (노선·역 → 시군 · 첫 처치일)"
+    inputs: [subway_daily, goyang_gwacheon, seongnam, hanam, pilot]
+    how: >
+      OA-12914의 노선·역명을 소재 시군과 묶고, 편입일을 첫 처치일로 적는다(하남은 승차 허용일).
+      대조는 분석 창(~2025-12)에 편입되지 않은 경기 출퇴근 노선 역. 군포·의정부·인천·구리·남양주·부천은
+      적용일 미확인이라 제외, 양평·가평·여주(나들이 노선)도 대조에서 제외. 성남 8호선은 시범운영부터라 제외
+    keys: [line, station]
+    artifact: catalog/lineage/data/climate-card-stations.csv
 
-  - id: panel
+  - id: weekday_panel
     kind: transform
-    label: "역 × 일 패널"
-    inputs: [station_city, cohort_table, kpass, fare_hike]
-    how: "역 × 일로 붙이고 first_treat = period_index(편입일, 'day', origin). 분석 창 2024-01-01 ~ 2025-12-31 (2026-01 모두의카드 이후 제외). K-패스·요금 인상은 시간 고정효과가 흡수하는 공통 충격으로 기록"
-    keys: [station_id, date]
+    label: "역 × 주 평일 패널"
+    inputs: [subway_daily, holidays_kr, cohort_table, kpass, fare_hike]
+    how: >
+      월~금 중 공휴일을 빼고 역 × 주(월요일 시작)로 하루 평균 승차·하차를 낸다. 평일이 3일 미만인 주와
+      분석 창 전체에 관측되지 않는 역은 뺀다. 코호트마다 적용 전 26주 · 후 26주, 적용일(토)이 걸친 주는 전환 주로 제외.
+      K-패스·요금 인상은 주 고정효과가 흡수하는 공통 충격으로 기록
+    keys: [line, station, week]
 
-  - id: log_boardings
+  - id: hourly_panel
+    kind: transform
+    status: planned
+    label: "역 × 월 × 시간대 패널"
+    inputs: [subway_hourly, cohort_table]
+    how: "출퇴근(07~09시, 18~20시) 승차 비중을 역 × 월로 계산. 시간 단위 기능(time.freq, active_hours) 사용 — H10"
+    keys: [line, station, month, hour]
+
+  # ── 지표 ─────────────────────────────────────────────────────────
+  - id: log_weekday_boardings
     kind: metric
-    label: "역별 일 승차 인원(로그)"
-    inputs: [panel]
-    how: "log(1 + 일 승차 인원). 주말·공휴일 더미는 시간 고정효과로 처리"
+    label: "평일 하루 평균 승차(로그)"
+    inputs: [weekday_panel]
+    how: "log(역 × 주 평일 하루 평균 승차). 주말·연휴 나들이 변동을 줄이려고 평일만 쓴다"
+    used_by: [t3-climate-card-seongnam]
+
+  - id: commute_share
+    kind: metric
+    status: planned
+    label: "출퇴근 시간대 승차 비중"
+    inputs: [hourly_panel]
+    how: "(07~09시 + 18~20시 승차) ÷ 하루 승차, 역 × 월"

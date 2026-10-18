@@ -25,16 +25,18 @@ API_DOC = [
 ]
 
 
-def _lineage_card(lin, e, issues_by_id, ds_by_id) -> str:
+def _lineage_card(lin, e, issues_by_id, ds_by_id, verdicts=None) -> str:
     from core.discovery.lineage import depth
 
+    # 열은 단계 종류로 정한다 (가공이 여러 번 이어져도 가공 열에 모인다). 깊이는 같은 열 안의 순서에만 쓴다
+    col = {"issue": 0, "policy": 0, "dataset": 1, "transform": 2, "metric": 3}
     d = depth(lin)
     cases = sorted({c for s in lin.steps for c in s.used_by})
     cols = []
     for title, k in COLS:
         cards = []
-        for s in lin.steps:
-            if d[s.id] != k and not (k == 3 and d[s.id] > 3):
+        for s in sorted(lin.steps, key=lambda x: d[x.id]):
+            if col[s.kind] != k:
                 continue
             if s.kind == "issue":
                 name = issues_by_id.get(s.ref, s.ref)
@@ -46,6 +48,10 @@ def _lineage_card(lin, e, issues_by_id, ds_by_id) -> str:
                 name, link = s.title, s.source or s.url
             title_html = f'<a href="{e(link)}">{e(name)}</a>' if link else e(name)
             meta = [KIND_KO[s.kind]] + ([e(s.date)] if s.date else [])
+            badge = {
+                "planned": ' <span class="badge info">계획</span>',
+                "missing": ' <span class="badge warn">빈칸</span>',
+            }.get(s.status, "")
             body = f"<p class='small' style='margin:4px 0 0'>{e(s.how)}</p>" if s.how else ""
             body += (
                 f"<p class='muted small' style='margin:4px 0 0'>{e(s.note)}</p>" if s.note else ""
@@ -60,15 +66,24 @@ def _lineage_card(lin, e, issues_by_id, ds_by_id) -> str:
                 if s.keys
                 else ""
             )
+            art = (
+                f"<p class='small' style='margin:4px 0 0'>결과물: <a href='{REPO}/blob/main/{e(s.artifact)}'>"
+                f"{e(s.artifact.rsplit('/', 1)[-1])}</a></p>"
+                if s.artifact
+                else ""
+            )
             cards.append(
-                f'<div class="lin-step k-{s.kind}"><span class="muted small">{" · ".join(meta)} · <code>{e(s.id)}</code></span>'
-                f"<div><b>{title_html}</b></div>{body}{keys}{ins}</div>"
+                f'<div class="lin-step k-{s.kind} s-{s.status}"><span class="muted small">{" · ".join(meta)} · <code>{e(s.id)}</code></span>{badge}'
+                f"<div><b>{title_html}</b></div>{body}{art}{keys}{ins}</div>"
             )
         cols.append(
             f'<div class="lin-col"><div class="lin-head">{title}</div>{"".join(cards)}</div>'
         )
+    verdicts = verdicts or {}
     case_links = "".join(
-        f'<div class="lin-step k-case"><b><a href="{REPO}/tree/main/cases/{e(c)}">{e(c)}</a></b></div>'
+        f'<div class="lin-step k-case"><b><a href="{REPO}/tree/main/cases/{e(c)}">{e(c)}</a></b>'
+        + (f"<div class='small'>판정: {e(verdicts[c])}</div>" if c in verdicts else "")
+        + "</div>"
         for c in cases
     )
     cols.append(f'<div class="lin-col"><div class="lin-head">분석</div>{case_links or EMPTY}</div>')
@@ -90,6 +105,9 @@ def lineage_body(e, topics, issues, datasets, lineages, results) -> str:
         ds = [d for d in datasets if t.id in d.topics]
         roles = Counter(r for d in ds for r in d.roles)
         n_lin = sum(lin.topic == t.id for lin in lineages)
+        n_missing = sum(
+            st.status == "missing" for lin in lineages if lin.topic == t.id for st in lin.steps
+        )
         n_res = sum(r["topic"] == t.id for r in results)
         laws = len(t.legal.laws) if t.legal else 0
         gaps = [
@@ -102,6 +120,8 @@ def lineage_body(e, topics, issues, datasets, lineages, results) -> str:
             )
             if not ok
         ]
+        if n_missing:
+            gaps.append(f"계보의 데이터 빈칸 {n_missing}")
         gap = f'<span class="badge warn">{", ".join(gaps)}</span>' if gaps else "—"
         rows.append(
             f"<tr><td><a href='topics/{t.id}.html'>{e(t.name)}</a></td>"
@@ -109,7 +129,9 @@ def lineage_body(e, topics, issues, datasets, lineages, results) -> str:
             f"<td>{roles['treatment']} · {roles['outcome']} · {roles['covariate']}</td>"
             f"<td>{n_lin}</td><td>{n_res}</td><td>{gap}</td></tr>"
         )
-    cards = "".join(_lineage_card(lin, e, issues_by_id, ds_by_id) for lin in lineages)
+    ko = {"identified": "효과 근거 있음", "conditional": "조건부", "not_identified": "판단 불가"}
+    verdicts = {r["case"]: ko.get(r.get("verdict"), r.get("verdict") or "") for r in results}
+    cards = "".join(_lineage_card(lin, e, issues_by_id, ds_by_id, verdicts) for lin in lineages)
     return f"""
 <div class="hero" style="padding-bottom:0"><span class="eyebrow">트랙 A · 데이터 온톨로지</span>
 <h1>데이터 계보</h1>
@@ -119,7 +141,7 @@ def lineage_body(e, topics, issues, datasets, lineages, results) -> str:
 <section style="padding-top:28px"><h2>주제별 연결 상태</h2><p class="sub">빈칸이 트랙 A가 채울 곳입니다. 데이터는 처치 · 결과 · 통제 개수입니다.</p>
 <div class="tablewrap"><table><tr><th>주제</th><th>이슈</th><th>근거 법률</th><th>데이터 (처치·결과·통제)</th><th>계보</th><th>분석 결과</th><th>비어 있는 것</th></tr>{"".join(rows)}</table></div></section>
 
-<section><h2>계보 {len(lineages)}개</h2><p class="sub">한 파일이 한 길입니다. 왼쪽에서 오른쪽으로 읽고, ← 는 그 단계의 입력입니다.</p>
+<section><h2>계보 {len(lineages)}개</h2><p class="sub">한 파일이 한 길입니다. 왼쪽에서 오른쪽으로 읽고, ← 는 그 단계의 입력입니다. 점선은 <b>계획</b>(하려는 단계)과 <b>빈칸</b>(필요하지만 아직 없는 데이터)입니다 — 빈칸을 채우는 것이 트랙 A의 기여입니다.</p>
 {cards or "<p class='card'>아직 없습니다. 트랙 A에서 첫 계보를 만들어 주세요.</p>"}</section>
 
 <section><h2>계보 만들기</h2>
