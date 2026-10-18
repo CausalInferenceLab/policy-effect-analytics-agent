@@ -88,6 +88,21 @@ def test_timeindex_helpers():
         0,
     ]
     assert in_window(pd.Series([5, 6, 20, 21]), (6, 21)).tolist() == [False, True, True, False]
+    assert in_window(pd.Series([21, 23, 0, 5, 6]), (22, 6)).tolist() == [
+        False,
+        True,
+        True,
+        True,
+        False,
+    ]
+    assert in_window(pd.Series([6, None, "7", "x"]), (6, 21)).tolist() == [True, False, True, False]
+    # 에어코리아 형식(YYYYMMDDHH, 24시)과 '24:00:00', 분이 24인 경우
+    assert period_index(
+        ["2019110124", "2019-11-01 24:00:00", "2019-11-01 05:24:00"], "hour", ORIGIN
+    ).tolist() == [24, 24, 5]
+    assert hour_of_day(["2019110124", "2019-11-01 05:24:00", "모름"]).tolist()[:2] == [0, 5]
+    with pytest.raises(ValueError, match="읽을 수 없는"):
+        period_index(["2019-11-01", "모름"], "day", ORIGIN)
     with pytest.raises(ValueError):
         index_of("2019-12-01", "minute", ORIGIN)
 
@@ -106,9 +121,9 @@ def test_schema_rules_for_hourly():
     d["time"].pop("active_hours")
     with pytest.raises(ValidationError, match="active_hours"):
         Plan.model_validate(d)
-    d = plan_dict(time={"active_hours": [21, 6]})
+    Plan.model_validate(plan_dict(time={"active_hours": [22, 6]}))  # 자정을 넘는 시간대
     with pytest.raises(ValidationError):
-        Plan.model_validate(d)
+        Plan.model_validate(plan_dict(time={"active_hours": [6, 6]}))
 
 
 def test_hourly_event_study_with_day_bins_and_placebo_window():
@@ -129,6 +144,16 @@ def test_placebo_window_catches_all_day_shift():
     df.loc[(df.treated == 1) & (df.t >= index_of(START, "hour", ORIGIN)), "no2"] -= 0.3
     (r,) = run_plan(Plan.model_validate(plan_dict()), df)
     assert "placebo_window_significant" in r.triggers and r.verdict == "conditional"
+
+
+def test_missing_hours_go_to_neither_window():
+    from core.pipeline import split_hours
+
+    df = panel(days=34)
+    df.loc[df.index[::20], "hour"] = None
+    plan = Plan.model_validate(plan_dict())
+    on, off = split_hours(plan, df)
+    assert len(on) + len(off) == df.hour.notna().sum()
 
 
 def test_flow_end_to_end_hourly(tmp_path):

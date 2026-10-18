@@ -3,7 +3,7 @@
 id: climate-card-expansion
 owner: jsshin2022
 topic: public-transit
-title: "기후동행카드 경기 편입(2024.11 ~ 2025.8) → 편입 지역 역 승차"
+title: "기후동행카드 경기 편입(2024.3 ~ 2025.8) → 편입 지역 역 승차"
 question: "기후동행카드가 적용된 경기 지역 역의 승차가, 아직 적용되지 않은 경기 역보다 늘었나? (적용 역 효과, ITT)"
 steps:
   - id: issue
@@ -21,6 +21,20 @@ steps:
     label: "고양·과천 지하철 적용"
     date: "2024-11-30"
     source: "https://news.seoul.go.kr/traffic/archives/513130"
+
+  - id: gimpo
+    kind: policy
+    label: "김포골드라인 적용 (첫 경기 편입)"
+    date: "2024-03-30"
+    source: "https://mediahub.seoul.go.kr/archives/2015277"
+    note: "김포골드라인 역은 서울 승하차 자료(OA-12914)에 없음 → 김포시 자료 필요"
+
+  - id: jinjeop
+    kind: policy
+    label: "진접선(남양주) 적용 · 별내선 개통"
+    date: "2024-08-10"
+    source: "https://mediahub.seoul.go.kr/archives/2015277"
+    note: "진접선은 2022년 개통한 기존 역이라 처치군. 별내선은 같은 날 신규 개통이라 사전 기간이 없어 제외"
 
   - id: seongnam
     kind: policy
@@ -52,7 +66,7 @@ steps:
   - id: subway_daily
     kind: dataset
     ref: OA-12914
-    note: "역 × 일 승하차. 경기 구간(코레일) 역 포함 여부는 파일을 받아 확인"
+    note: "역 × 일 승하차. 경기 코레일 구간 역 포함 확인(2026-10-18). 수집기: core/adapters/seoul_subway.py"
 
   - id: station_city
     kind: transform
@@ -64,8 +78,8 @@ steps:
   - id: cohort_table
     kind: transform
     label: "처치표 (시군·노선 → 첫 처치일)"
-    inputs: [goyang_gwacheon, seongnam, hanam, pilot]
-    how: "편입일을 첫 처치일로, 분석 기간 내 미편입 시군은 결측(대조). 하남 5호선은 승차 허용일, 성남 8호선은 시범운영일"
+    inputs: [gimpo, jinjeop, goyang_gwacheon, seongnam, hanam, pilot]
+    how: "편입일을 첫 처치일로, 분석 기간 내 미편입 시군은 결측(대조). 하남 5호선은 승차 허용일, 성남 8호선은 시범운영일. 군포·인천·의정부·구리·남양주(진접선 외)는 적용일 미확인이라 대조에서도 제외"
     keys: [city, line]
 
   - id: panel

@@ -114,3 +114,9 @@ def test_plan_guide_example_validates(tmp_path):
     path = tmp_path / "plan.yaml"
     path.write_text(block, encoding="utf-8")
     assert load_plan(path).case_id == "t3-land-permit-2025"
+
+
+def test_github_yaml_files_parse():
+    """이슈 양식·워크플로가 YAML 문법 오류로 깨지지 않게 (깨지면 GitHub가 양식을 띄우지 못함)."""
+    for f in (ROOT / ".github").rglob("*.yml"):
+        yaml.safe_load(f.read_text(encoding="utf-8"))

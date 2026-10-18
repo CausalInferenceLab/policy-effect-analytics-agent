@@ -43,6 +43,7 @@ KIND_KO = {
     "case": "분석",
 }
 ID = re.compile(r"^[a-z0-9][a-z0-9_]*$")
+DATE = re.compile(r"^\d{4}-(0[1-9]|1[0-2])(-(0[1-9]|[12]\d|3[01]))?$")
 
 
 class Step(BaseModel):
@@ -65,6 +66,10 @@ class Step(BaseModel):
     def _check(self):
         if not ID.match(self.id):
             raise ValueError(f"step id '{self.id}' 는 소문자·숫자·_ 만 씁니다")
+        if self.date and not DATE.match(self.date):
+            raise ValueError(
+                f"{self.id}: date '{self.date}' 는 YYYY-MM-DD 또는 YYYY-MM 로 적습니다"
+            )
         if self.kind in {"issue"} and not self.ref:
             raise ValueError(f"{self.id}: issue 는 ref(issues.yaml id)가 필요합니다")
         if self.kind == "policy" and not (self.ref or self.source):
@@ -216,6 +221,13 @@ def graph(lineages: list[Lineage] | None = None) -> dict:
                     source=s.source or s.url,
                 )
             local[s.id] = nid
+            if s.kind in {
+                "issue",
+                "policy",
+            }:  # 이슈·정책은 주제에 붙여 그래프에서 고립되지 않게 한다
+                edges.append(
+                    {"from": nid, "to": f"topic:{lin.topic}", "rel": "근거", "lineage": lin.id}
+                )
             for i in s.inputs:
                 edges.append(
                     {
@@ -228,7 +240,6 @@ def graph(lineages: list[Lineage] | None = None) -> dict:
             for c in s.used_by:
                 node(f"case:{c}", "case", c)
                 edges.append({"from": nid, "to": f"case:{c}", "rel": "씀", "lineage": lin.id})
-        # 정책·이슈 단계는 다음 단계와 명시적 입력이 없으면 주제에 붙인다
         node(f"topic:{lin.topic}", "topic", lin.topic)
     return {
         "nodes": list(nodes.values()),

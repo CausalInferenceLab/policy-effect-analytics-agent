@@ -77,15 +77,18 @@ class TimeSpec(_Base):
         None, description="하루 중 시각 0~23 컬럼. active_hours 를 쓸 때 필요"
     )
     active_hours: tuple[int, int] | None = Field(
-        None, description="정책이 적용되는 시간대 [시작, 끝) — 예: [6, 21] 은 06:00~20:59"
+        None,
+        description="정책이 적용되는 시간대 [시작, 끝) — 예: [6, 21] 은 06:00~20:59, [22, 6] 은 자정을 넘는 22:00~05:59",
     )
 
     @model_validator(mode="after")
     def _hours(self):
         if self.active_hours is not None:
             a, b = self.active_hours
-            if not (0 <= a < b <= 24):
-                raise ValueError("active_hours 는 0 ≤ 시작 < 끝 ≤ 24 입니다 (예: [6, 21])")
+            if not (0 <= a <= 24 and 0 <= b <= 24) or a == b:
+                raise ValueError(
+                    "active_hours 는 [시작, 끝) 0~24시입니다 (예: [6, 21]). 시작 > 끝이면 자정을 넘는 시간대([22, 6])"
+                )
             if not self.hour_col:
                 raise ValueError(
                     "active_hours 를 쓰려면 hour_col(하루 중 시각 0~23 컬럼)이 필요합니다"

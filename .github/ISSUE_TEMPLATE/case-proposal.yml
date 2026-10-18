@@ -70,7 +70,7 @@ body:
     id: link
     attributes:
       label: 함께할 사람·작업
-      description: 같은 주제의 다른 트랙 작업이 있으면 이슈 번호나 ID (예: B 분석 #12와 C 서비스 연결)
+      description: "같은 주제의 다른 트랙 작업이 있으면 이슈 번호나 ID (예: B 분석 #12와 C 서비스 연결)"
   - type: textarea
     id: risks
     attributes:
