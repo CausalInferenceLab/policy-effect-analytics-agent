@@ -8,7 +8,7 @@ from __future__ import annotations
 
 import hashlib
 import json
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from pathlib import Path
 
 import requests
@@ -36,13 +36,17 @@ def verify_source(content: bytes, source: dict) -> None:
         raise ValueError(f"정책 원문 변경/불일치: {source['id']}. policy-review.md 재검토 필요")
 
 
-def collect_policy(case_dir: Path, districts: tuple[str, ...]) -> list[dict]:
+def collect_policy(
+    case_dir: Path, districts: tuple[str, ...], *, offline: bool = False
+) -> list[dict]:
     sources = json.loads((case_dir / "policy-sources.json").read_text())
     target = case_dir / "data" / "raw" / "policy_sources"
     target.mkdir(parents=True, exist_ok=True)
     for source in sources:
         path = target / source["filename"]
         if not path.exists():
+            if offline:
+                raise ValueError(f"오프라인 재현용 정책 원문 없음: {source['id']}")
             try:
                 response = requests.get(source["download_url"], timeout=(10, 60))
                 response.raise_for_status()
@@ -52,7 +56,7 @@ def collect_policy(case_dir: Path, districts: tuple[str, ...]) -> list[dict]:
             path.write_bytes(response.content)
             path.with_suffix(".source.json").write_text(
                 json.dumps(
-                    {**source, "retrieved_at": datetime.now(timezone.utc).isoformat()},
+                    {**source, "retrieved_at": datetime.now(UTC).isoformat()},
                     ensure_ascii=False,
                     indent=2,
                 )

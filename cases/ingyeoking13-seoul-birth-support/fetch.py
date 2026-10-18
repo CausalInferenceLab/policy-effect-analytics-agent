@@ -1,7 +1,7 @@
 """검증된 정책 검토표와 공개 통계 CSV로 분석 패널을 만든다.
 
 --collect-welfare: 현행 복지사업 목록·상세를 API로 수집한다.
-기본 실행: 검증된 정책 검토표와 수동 다운로드 출생 CSV를 분석 패널로 가공한다.
+기본 실행: 사전 확정한 정책 근거와 공식 출생 CSV를 수집해 분석 패널로 가공한다.
 입력 형식·출처 기록: collection-plan.md. 미확인 정책을 0원으로 대체하지 않는다.
 """
 
@@ -124,21 +124,48 @@ def sha256(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
-def prepare(case_dir: Path = HERE) -> dict:
-    plan_path = case_dir / "plan.yaml"
+def require_committed(path: Path) -> None:
     tracked = subprocess.run(
-        ["git", "ls-files", "--error-unmatch", str(plan_path)],
+        ["git", "ls-files", "--error-unmatch", str(path)],
         cwd=ROOT,
         capture_output=True,
         check=False,
     )
     clean = subprocess.run(
-        ["git", "diff", "--quiet", "HEAD", "--", str(plan_path)],
+        ["git", "diff", "--quiet", "HEAD", "--", str(path)],
         cwd=ROOT,
         check=False,
     )
     if tracked.returncode or clean.returncode:
-        raise ValueError("plan.yaml을 결과 조회 전에 먼저 커밋하세요")
+        raise ValueError(f"{path.name}을 결과 조회 전에 먼저 커밋하세요")
+
+
+def validate_policy_sources(review: list[dict], plan: dict) -> None:
+    declared = {source["url"]: source["license"] for source in plan["data_sources"]}
+    for row in review:
+        if row.get("status") == "verified":
+            for source in row["sources"]:
+                if declared.get(source["url"]) != source["license"]:
+                    raise ValueError(
+                        "정책 근거의 URL·라이선스를 plan.yaml data_sources에 추가하고 먼저 커밋하세요"
+                    )
+
+
+def collect_inputs(case_dir: Path = HERE, *, offline: bool = False) -> None:
+    from collect_births import collect_births
+    from policy_rules import collect_policy
+
+    for name in ("plan.yaml", "policy-review.md", "policy-sources.json", "policy_rules.py"):
+        require_committed(case_dir / name)
+    review = collect_policy(case_dir, DISTRICTS, offline=offline)
+    policy_groups(review)
+    validate_policy_sources(review, yaml.safe_load((case_dir / "plan.yaml").read_text()))
+    collect_births(case_dir, offline=offline)
+
+
+def prepare(case_dir: Path = HERE) -> dict:
+    plan_path = case_dir / "plan.yaml"
+    require_committed(plan_path)
     plan = yaml.safe_load(plan_path.read_text())
     raw = case_dir / "data" / "raw"
     review_path = raw / "policy_review.yaml"
@@ -148,14 +175,7 @@ def prepare(case_dir: Path = HERE) -> dict:
         )
     review = yaml.safe_load(review_path.read_text())
     groups, excluded = policy_groups(review)
-    declared = {source["url"]: source["license"] for source in plan["data_sources"]}
-    for row in review:
-        if row.get("status") == "verified":
-            for source in row["sources"]:
-                if declared.get(source["url"]) != source["license"]:
-                    raise ValueError(
-                        "정책 근거의 URL·라이선스를 plan.yaml data_sources에 추가하고 먼저 커밋하세요"
-                    )
+    validate_policy_sources(review, plan)
     births_path, source_path = raw / "births.csv", raw / "births.source.json"
     if not births_path.exists() or not source_path.exists():
         raise ValueError(
@@ -197,6 +217,7 @@ def main() -> int:
     parser.add_argument(
         "--collect-welfare", action="store_true", help="현행 복지사업 API 수집만 실행"
     )
+    parser.add_argument("--offline", action="store_true", help="검증된 로컬 원본으로만 재현")
     args = parser.parse_args()
     try:
         if args.collect_welfare:
@@ -212,6 +233,7 @@ def main() -> int:
                 f"출산 관련 후보 상세 {meta['detail_services']}건 → {meta['directory']}"
             )
             return 0
+        collect_inputs(offline=args.offline)
         meta = prepare()
     except (ValueError, OSError, yaml.YAMLError) as exc:
         print(f"[중단] {exc}", file=sys.stderr)
