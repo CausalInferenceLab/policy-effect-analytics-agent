@@ -1,0 +1,127 @@
+# 사전 분석 계획: 출생 통계의 값·추세·추정 결과를 조회하기 전에 커밋한다.
+# 정책 안내와 통계 메타데이터만 확인한 상태에서 작성했다.
+case_id: ingyeoking13-seoul-birth-support
+title: "서울 25개 자치구 출산지원금 변경과 출생등록 변화 비교"
+question: >
+  서울 25개 자치구를 조사 모집단으로 하여, 2023년 1월 1일 첫째아 자체 출산지원금을
+  증액한 구와 2022~2024년 해당 지원금의 금액·수급 조건을 유지한 구 사이에서
+  연간 출생등록 건수의 변화가 달랐는가?
+synthetic_data: false
+
+unit: {name: 서울 자치구, id_col: district}
+time: {col: year, freq: year, start: 2018, end: 2024}
+
+treatment:
+  definition: >
+    공식 근거에서 2023-01-01을 적용일로 확인하고, 2022년 말 대비 첫째아에게 지급하는
+    자치구 자체 일시금이 증가한 구. 국가 첫만남이용권·부모급여, 서울시 공통 지원,
+    산후조리 실비·다자녀 전용 지원은 금액에 합산하지 않는다.
+    2022~2024년 정책 이력이 확인된 구만 분류한다. 다른 시점의 변경·감액·폐지,
+    지급조건 변경, 이력 미확인은 처치나 대조에 억지로 넣지 않고 제외 이유를 남긴다.
+    전수 조사 대상이 25개라는 뜻이며 최종 추정 표본이 25개라는 뜻은 아니다.
+  group_col: treated
+  treat_time: 2023
+control:
+  definition: >
+    공식 근거로 2022-01-01~2024-12-31 동안 첫째아 자체 일시금과 지급조건이
+    유지되었음을 확인한 서울 자치구. 미지원도 공식 근거로 확인된 경우만 0원으로 기록한다.
+    검색 결과 없음·현행 안내만 존재하는 경우는 대조군으로 분류하지 않는다.
+  rationale: >
+    같은 서울시의 자치구로서 국가·서울시 공통 정책과 경기 충격을 공유한다.
+    자치구 및 연도 고정효과로 고정적인 지역 차이와 공통 연도 충격을 조정한다.
+    이 조건만으로 비교 가능성이 보장되지는 않으며, 사전 추세와 동시 정책을 별도 점검한다.
+
+outcomes:
+  - name: 연간 출생등록 건수의 로그
+    col: log_births
+    definition: >
+      서울 열린데이터광장 OA-12408의 신고기준 출생자수 중 자치구별 남녀 합계.
+      월별 12개 값의 합계에 자연로그를 취한다. 자치구 합계 행과 동별 행을 중복 합산하지 않는다.
+      12개월 중 하나라도 누락·비공개·비수치이면 해당 연도를 완성하지 않는다.
+      주민등록 신고기준 지표이므로 발생기준 출생아 수·출산율·지원금 수급자 수로 해석하지 않는다.
+    unit: log 건/년
+    primary: true
+    expected_direction: increase
+
+estimator:
+  method: event_study
+  cluster_col: district
+  ref_period: -1
+  window: [-5, 1]
+  alpha: 0.05
+
+assumptions:
+  - name: 평행추세
+    description: >
+      증액이 없었다면 두 집단의 출생등록 추세는 유사했을 것이다.
+      2018~2021년 상대시점 계수의 결합 검정과 그림을 확인한다. 기준 연도는 2022년이다.
+    check: pretrend_test
+  - name: 선반영과 임신부터 출생까지의 시차
+    description: >
+      2023년 수치는 정책 발표 전에 이루어진 임신을 포함한다. 주 추정치는 2023~2024년
+      사후 계수의 평균이며 2024년 계수도 함께 제시한다. 결과를 본 뒤 시작 연도를 이동하지 않는다.
+    check: manual
+  - name: 동시 정책과 인구 이동
+    description: >
+      2023년 부모급여, 자치구별 산후조리 지원, 주택 입주·전출입을 기록한다.
+      강남구는 2023년 산후건강관리 지원도 동시에 확대했으므로 출산지원금만의 효과를 분리할 수 없다.
+      관찰된 변화는 지원 확대를 동반한 지역 변화이며 지원금 단독 인과효과로 단정하지 않는다.
+    check: manual
+  - name: 결과를 보지 않고 정책 집단 확정
+    description: >
+      25개 구 모두의 정책 검증 상태와 제외 사유를 확정한 뒤 출생 통계를 수집한다.
+      출생 변화가 크거나 작은 구를 골라 집단을 바꾸지 않는다. 변경 시 사유를 별도 커밋에 기록한다.
+    check: manual
+
+refutations:
+  - kind: placebo_time
+    params: {shift: 2}
+
+abstention:
+  - when: pretrend_rejected
+    verdict: not_identified
+  - when: placebo_significant
+    verdict: not_identified
+  - when: few_treated_clusters
+    verdict: not_identified
+    note: "처치 구가 적을 때 무작위화 추론은 진단용이다. 무작위 배정이 아니므로 인과 식별을 주장하지 않는다."
+  - when: few_clusters
+    verdict: not_identified
+  - when: short_pre_period
+    verdict: not_identified
+  - when: staggered_adoption
+    verdict: not_identified
+  - when: ci_crosses_zero
+    verdict: conditional
+    note: "효과가 없다는 결론이 아니라 이 자료에서 방향·크기를 판별하기 어렵다는 뜻이다."
+
+thresholds: {pretrend_alpha: 0.10, min_clusters: 20, min_pre_periods: 5}
+
+data_sources:
+  - name: 서울시 출생·사망(신고기준)(동별) 통계 (OA-12408)
+    provider: 서울특별시 / 원천 행정안전부
+    url: https://data.seoul.go.kr/dataList/OA-12408/S/1/datasetView.do
+    license: KOGL-1
+    path: data/panel.csv
+    notes: >
+      2026-10-19 공식 메타데이터에서 월별 갱신, 원천·저작권자 행정안전부,
+      공공누리 1유형을 확인했다. 통계 값은 아직 조회하지 않았다.
+      원자료·가공 패널은 로컬 data/에만 저장한다. 다운로드 경로와 2018~2024년 범위는 수집 시 검증한다.
+  - name: 한국사회보장정보원 지자체복지서비스 (15108347)
+    provider: 한국사회보장정보원
+    url: https://www.data.go.kr/data/15108347/openapi.do
+    license: other
+    notes: >
+      2026-10-19 공식 페이지에서 이용허락범위 제한 없음, 무료, 자동승인을 확인했다.
+      현재 사업을 찾는 보조 자료이며 2022~2024년 정책 이력을 대신하지 않는다.
+      API 키는 환경변수로만 사용한다. 현재 API 실호출은 미실시다.
+  - name: 강남구 2023년 출산양육지원금·산후건강관리 확대 발표
+    provider: 서울특별시 강남구
+    url: https://gangnam.go.kr/board/B_000031/1072842/view.do?mid=ID01_0313
+    license: KOGL-2
+    notes: >
+      2026-10-19 본문과 하단 공공누리 2유형 표시를 확인했다.
+      발표일 2022-12-20, 적용일 2023-01-01. 첫째 30만원에서 200만원,
+      둘째 100만원에서 200만원으로 확대, 산후건강관리 동시 확대.
+      이 발표만으로 2022~2024년 전체 이력이나 다른 24개 구의 정책을 확정하지 않는다.
+      추가 사용하는 구별 공식 근거의 URL·발표일·적용일·이용 조건은 검증표와 이 목록에 기록한 뒤 수집한다.
