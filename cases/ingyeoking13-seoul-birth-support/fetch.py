@@ -1,13 +1,16 @@
 """검증된 정책 검토표와 공개 통계 CSV로 분석 패널을 만든다.
 
-현재는 수동 다운로드 입력 방식이다. 자동 다운로드와 실데이터 재현은 미완료다.
+--collect-welfare: 현행 복지사업 목록·상세를 API로 수집한다.
+기본 실행: 검증된 정책 검토표와 수동 다운로드 출생 CSV를 분석 패널로 가공한다.
 입력 형식·출처 기록: collection-plan.md. 미확인 정책을 0원으로 대체하지 않는다.
 """
 
 from __future__ import annotations
 
+import argparse
 import hashlib
 import json
+import os
 import subprocess
 import sys
 from pathlib import Path
@@ -190,7 +193,25 @@ def prepare(case_dir: Path = HERE) -> dict:
 
 
 def main() -> int:
+    parser = argparse.ArgumentParser(description=__doc__)
+    parser.add_argument(
+        "--collect-welfare", action="store_true", help="현행 복지사업 API 수집만 실행"
+    )
+    args = parser.parse_args()
     try:
+        if args.collect_welfare:
+            from collect_welfare import collect
+
+            sys.path.insert(0, str(ROOT))
+            from core.adapters.base import load_env
+
+            load_env(ROOT / ".env")
+            meta = collect(HERE, os.getenv("DATA_GO_KR_API_KEY", ""), DISTRICTS)
+            print(
+                f"[완료] 서울 복지사업 {meta['total_services']}건, "
+                f"출산 관련 후보 상세 {meta['detail_services']}건 → {meta['directory']}"
+            )
+            return 0
         meta = prepare()
     except (ValueError, OSError, yaml.YAMLError) as exc:
         print(f"[중단] {exc}", file=sys.stderr)
