@@ -761,3 +761,101 @@ datasets:
   - public-transit
   notes: 갱신주기 매일, 원본 교통카드 정산시스템. 시간대별은 OA-12252(매월 5일 갱신).
   verified: 2026-09-27 페이지 확인
+
+# ── 기후동행카드(public-transit) 분석용 — 2026-10-18 추가. 설명 페이지만 열어 확인한 값은 notes 에 적음
+- id: OA-12252
+  name: 서울시 지하철 호선별 역별 시간대별 승하차 인원 정보
+  provider: 서울특별시
+  portal: seoul
+  url: https://data.seoul.go.kr/dataList/OA-12252/S/1/datasetView.do
+  access: open_api
+  approval: 즉시
+  license: 확인필요
+  space: 지점
+  time: 월
+  period: 미기재
+  measures:
+  - 역별 월·시간대별 승차·하차 인원
+  roles:
+  - outcome
+  topics:
+  - public-transit
+  notes: 역 × 월 × 시간대. 서울 관할 1~9호선만이라 경기 구간 역은 일별(OA-12914)로 확인. 출퇴근 시간대 비교에 씀
+  verified: 2026-10-18 데이터 설명 페이지 확인 (원본 페이지 열람 차단)
+- id: OA-12912
+  name: 서울시 버스노선별 정류장별 승하차 인원 정보
+  provider: 서울특별시
+  portal: seoul
+  url: https://data.seoul.go.kr/dataList/OA-12912/S/1/datasetView.do
+  access: open_api
+  approval: 즉시
+  license: KOGL-1
+  space: 지점
+  time: 일
+  period: 2015 ~ 2026-09
+  measures:
+  - 노선·정류장별 일 승차·하차 인원
+  roles:
+  - outcome
+  topics:
+  - public-transit
+  notes: 노선 × 정류장 × 일. 서울 버스만이라 경기 정류장 비교는 경기도 자료(15144886)와 함께 씀
+  verified: 2026-10-18 페이지 확인
+- id: OA-12913
+  name: 서울시 버스노선별 정류장별 시간대별 승하차 인원 정보
+  provider: 서울특별시
+  portal: seoul
+  url: https://data.seoul.go.kr/dataList/OA-12913/S/1/datasetView.do
+  access: open_api
+  approval: 즉시
+  license: 확인필요
+  space: 지점
+  time: 월
+  period: 미기재
+  measures:
+  - 노선·정류장별 월·시간대별 승차·하차 인원
+  roles:
+  - outcome
+  topics:
+  - public-transit
+  notes: 노선 × 정류장 × 월 × 시간대, 서울 버스만
+  verified: 2026-10-18 페이지 확인
+- id: OA-15182
+  name: 서울시 공공자전거(따릉이) 대여이력 정보
+  provider: 서울특별시
+  portal: seoul
+  url: https://data.seoul.go.kr/dataList/OA-15182/F/1/datasetView.do
+  access: file
+  approval: 없음
+  license: 확인필요
+  space: 개별
+  time: 일
+  period: 2015 ~ 2026-06
+  measures:
+  - 대여소·시각별 대여·반납 건
+  roles:
+  - outcome
+  topics:
+  - public-transit
+  notes: 반기 갱신 파일. 기후동행카드 따릉이 포함권(65,000원) 연계 효과를 볼 때 지하철역 인근·원거리 대여소 비교
+  verified: 2026-10-18 페이지 확인
+- id: '15144886'
+  name: 경기도_정류소별 승하차 인원 집계
+  provider: 경기도
+  portal: data.go.kr
+  url: https://www.data.go.kr/biz/dcat/metadata/15144886.do
+  access: file
+  approval: 확인필요
+  license: 확인필요
+  space: 지점
+  time: 일
+  period: 미기재
+  measures:
+  - 정류소별 일 승차(최초·환승 구분)·하차 인원
+  roles:
+  - outcome
+  - covariate
+  topics:
+  - public-transit
+  notes: 경기 정류소 × 일, 최초 승차와 환승 승차 구분. 기후동행카드 미참여 경기 지역을 대조로 쓸 때. 제공 형태(파일/API) 확인필요
+  verified: 2026-10-18 메타데이터 페이지 확인
