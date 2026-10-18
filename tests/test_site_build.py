@@ -117,6 +117,11 @@ def test_tracks_api_and_apps(tmp_path, monkeypatch):
     out = tmp_path / "_site"
     for name in ("index", "topics", "issues", "datasets", "lineage", "results"):
         assert (out / "api" / f"{name}.json").exists(), name
+    for f in (out / "api").rglob("*.json"):  # 브라우저 JSON.parse 처럼 NaN 을 허용하지 않고 읽기
+        json.loads(
+            f.read_text(encoding="utf-8"),
+            parse_constant=lambda c: (_ for _ in ()).throw(ValueError(c)),
+        )
     index = json.loads((out / "api" / "index.json").read_text(encoding="utf-8"))
     assert "공식 평가" in index["terms"] and "results.json" in index["endpoints"]
     results = json.loads((out / "api" / "results.json").read_text(encoding="utf-8"))

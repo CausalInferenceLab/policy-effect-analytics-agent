@@ -4,12 +4,14 @@ from .base import BaseAdapter, MissingAPIKey, SourceMeta
 from .kosis import KosisAdapter
 from .local import LocalFileAdapter
 from .molit import MolitAptTradeAdapter
+from .seoul_subway import SeoulSubwayDailyAdapter
 from .synthetic import SyntheticAdapter, simulate_panel
 
 REGISTRY = {
     "kosis": KosisAdapter,
     "local": LocalFileAdapter,
     "molit": MolitAptTradeAdapter,
+    "seoul_subway": SeoulSubwayDailyAdapter,
     "synthetic": SyntheticAdapter,
 }
 
@@ -20,6 +22,7 @@ __all__ = [
     "KosisAdapter",
     "LocalFileAdapter",
     "MolitAptTradeAdapter",
+    "SeoulSubwayDailyAdapter",
     "SyntheticAdapter",
     "simulate_panel",
     "REGISTRY",

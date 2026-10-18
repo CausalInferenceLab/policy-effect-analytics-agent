@@ -27,6 +27,7 @@ from ..adapters import REGISTRY, LocalFileAdapter, SourceMeta
 from ..pipeline import run_plan, split_hours
 from ..report import event_study_plot, its_plot, raw_trends, render_report
 from ..schema.plan import Plan, load_plan
+from ..schema.timeindex import hours_numeric
 from . import guard as G
 from . import llm
 from .state import STEPS, FlowState, StepLog, now
@@ -212,13 +213,17 @@ def quality_checks(p: Plan, df: pd.DataFrame) -> list[dict]:
         if hc not in df.columns:
             add("시각 컬럼", hc, True, msg=f"time.hour_col '{hc}' 가 없습니다")
         else:
-            bad = int((~df[hc].between(0, 23)).sum())
+            h = hours_numeric(df[hc])
+            miss, bad = int(h.isna().sum()), int((h.notna() & ~h.between(0, 23)).sum())
             add(
-                "시각 컬럼 0~23",
-                bad,
-                bad > 0,
-                msg=f"0~23 밖의 값 {bad}개 (24시 표기는 timeindex.hour_of_day 로 변환)",
+                "시각 컬럼 결측",
+                miss,
+                miss / max(len(df), 1) > 0.2,
+                miss > 0,
+                msg=f"시각이 비었거나 숫자가 아닌 행 {miss}개 — 적용·비적용 시간대 어디에도 넣지 않습니다",
             )
+            add("시각 컬럼 0~23", bad, bad > 0,
+                msg=f"0~23 밖의 값 {bad}개 ('24시' 표기는 timeindex.hour_of_day 로 변환)")  # fmt: skip
     if (tt := p.treatment.treat_time) is not None:
         b = p.estimator.bin  # 시간 자료는 묶음(예: 일) 단위로 센다
         rel = np.floor_divide(df[t].dropna().unique() - tt, b)
@@ -362,10 +367,12 @@ def report(s: FlowState):
         figs["ITS"] = "figures/its.png"
     else:
         tt = p.treatment.treat_time or df[p.treatment.first_treat_col].min()
-        if (b := p.estimator.bin) > 1:  # 시간 자료는 묶음(예: 일) 평균으로 그려야 읽힌다
-            df = df.assign(**{p.time.col: df[p.time.col] // b})
+        if (
+            b := p.estimator.bin
+        ) > 1:  # 시간 자료는 추정과 같은 묶음(처치 시점 기준)으로 평균해 그린다
+            df = df.assign(**{p.time.col: (df[p.time.col] - int(tt)) // b})
             df = df.groupby([p.unit.id_col, p.time.col], as_index=False).mean(numeric_only=True)
-            tt = int(tt) // b
+            tt = 0
         raw_trends(df, r.outcome, p.time.col, p.treatment.group_col, tt, figdir / "raw_trends.png")
         figs["Raw trends"] = "figures/raw_trends.png"
         if "coefs" in r.extra:

@@ -78,5 +78,5 @@ python site/build.py && python -m http.server -d _site   # 사이트 미리보�
 
 
 - 사이트 대화창에서 정리한 질문은 "이 대화를 제안으로 올리기" 버튼으로 이슈가 됩니다.
-- 버그는 "버그 리포트", 새 분석 주제는 "케이스 제안" 이슈로 올립니다.
+- 버그는 "버그 리포트", 새 분석 주제는 "작업 제안" 이슈로 올립니다.
 - 행동 강령: [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md)

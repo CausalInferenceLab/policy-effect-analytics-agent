@@ -14,7 +14,7 @@ steps:
   - id: policy_start
     kind: policy
     label: "정책 이름"
-    date: "YYYY-MM-DD"
+    date: "2025-10-20"               # YYYY-MM-DD 또는 YYYY-MM
     ref: "법령·행정규칙 이름"           # 주제 페이지 '관련 법령' 목록에 있으면 ref
     source: "https://..."            # 없으면 발표문 URL (둘 중 하나는 필수)
 

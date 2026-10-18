@@ -17,6 +17,7 @@ https://causalinferencelab.github.io/policy-effect-analytics-agent/apps/<이름>
 from __future__ import annotations
 
 import json
+import math
 import shutil
 from datetime import UTC, datetime
 from pathlib import Path
@@ -49,9 +50,21 @@ TERMS = (
 )
 
 
+def _clean(obj):
+    """NaN·무한대는 브라우저 JSON.parse 가 읽지 못하므로 null 로 바꾼다."""
+    if isinstance(obj, float) and not math.isfinite(obj):
+        return None
+    if isinstance(obj, dict):
+        return {k: _clean(v) for k, v in obj.items()}
+    if isinstance(obj, (list, tuple)):
+        return [_clean(v) for v in obj]
+    return obj
+
+
 def _dump(path: Path, obj) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(json.dumps(obj, ensure_ascii=False, indent=1, default=str), encoding="utf-8")
+    text = json.dumps(_clean(obj), ensure_ascii=False, indent=1, default=str, allow_nan=False)
+    path.write_text(text, encoding="utf-8")
 
 
 # ─── 분석 결과 ────────────────────────────────────────────────────────────────
@@ -68,7 +81,11 @@ def case_results(out: Path) -> list[dict]:
         case = log_path.parent
         if case.name.startswith("_"):
             continue
-        log = json.loads(log_path.read_text(encoding="utf-8"))
+        try:
+            log = json.loads(log_path.read_text(encoding="utf-8"))
+        except ValueError:  # 기록 하나가 깨져도 사이트 빌드는 계속한다
+            print(f"건너뜀: {log_path} 를 읽을 수 없습니다")
+            continue
         try:
             plan = load_plan(case / "plan.yaml")
             meta = {
@@ -79,7 +96,11 @@ def case_results(out: Path) -> list[dict]:
             names = {o.col: o.name for o in plan.outcomes}
         except Exception:  # 계획이 바뀌는 중이어도 결과 목록은 만든다
             meta, names = (
-                {"title": case.name, "question": log.get("question"), "synthetic": None},
+                {
+                    "title": case.name,
+                    "question": log.get("question"),
+                    "synthetic": _raw_synthetic(case),
+                },
                 {},
             )
         figs = []
@@ -115,6 +136,18 @@ def case_results(out: Path) -> list[dict]:
             }
         )
     return rows
+
+
+def _raw_synthetic(case: Path) -> bool | None:
+    """검증에 실패한 계획이라도 synthetic_data 표시는 살린다 (시뮬레이션 배지가 빠지지 않게)."""
+    try:
+        return bool(
+            (yaml.safe_load((case / "plan.yaml").read_text(encoding="utf-8")) or {}).get(
+                "synthetic_data"
+            )
+        )
+    except (OSError, yaml.YAMLError):
+        return None
 
 
 def _sample_cases() -> dict[str, str]:
@@ -159,7 +192,8 @@ def write_api(out: Path, topics, issues, datasets, legal_summary) -> dict:
         "terms": TERMS,
         "endpoints": sorted(files) + legal,
         "counts": {
-            k: len(v) if isinstance(v, list) else len(v.get("nodes", [])) for k, v in files.items()
+            k: len(v) if isinstance(v, list) else len(v.get("lineages", []))
+            for k, v in files.items()
         },
     }
     _dump(api / "index.json", index)

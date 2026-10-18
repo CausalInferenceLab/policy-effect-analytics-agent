@@ -26,7 +26,8 @@ dependencies = [
 agent = ["langgraph>=0.2", "langchain-core>=0.3"]
 causal = ["dowhy>=0.12"]
 dev = ["pytest>=8", "ruff>=0.6", "pre-commit>=3.7"]
-app = ["streamlit>=1.35"]   # 개발용 화면(선택). 공개 사이트는 site/ 의 정적 페이지
+app = ["streamlit>=1.35"]
+analysis = ["holidays>=0.50"]   # 탐색 분석(공휴일 달력): scripts/explore_climate_card.py   # 개발용 화면(선택). 공개 사이트는 site/ 의 정적 페이지
 
 [project.urls]
 Repository = "https://github.com/CausalInferenceLab/policy-effect-analytics-agent"

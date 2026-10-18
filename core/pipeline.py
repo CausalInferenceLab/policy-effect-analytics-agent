@@ -15,7 +15,7 @@ import pandas as pd
 
 from .estimators import EffectResult, apply_abstention, did, event_study, its, placebo_time
 from .schema.plan import Plan
-from .schema.timeindex import in_window
+from .schema.timeindex import hours_numeric, in_window
 
 
 def _estimate(plan: Plan, df: pd.DataFrame, col: str, common: dict) -> EffectResult:
@@ -40,8 +40,9 @@ def split_hours(plan: Plan, df: pd.DataFrame) -> tuple[pd.DataFrame, pd.DataFram
     t = plan.time
     if not t.active_hours:
         return df, None
-    mask = in_window(df[t.hour_col], t.active_hours)
-    return df[mask], df[~mask]
+    h = hours_numeric(df[t.hour_col])
+    mask = in_window(h, t.active_hours)
+    return df[mask], df[~mask & h.notna()]  # 시각이 빈 행은 어느 쪽에도 넣지 않는다
 
 
 def run_plan(plan: Plan, df: pd.DataFrame) -> list[EffectResult]:

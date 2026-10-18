@@ -759,7 +759,7 @@ datasets:
   - outcome
   topics:
   - public-transit
-  notes: 갱신주기 매일, 원본 교통카드 정산시스템. 시간대별은 OA-12252(매월 5일 갱신).
+  notes: 갱신주기 매일, 원본 교통카드 정산시스템. 시간대별은 OA-12252(매월 5일 갱신). 월별 CSV는 키 없이 core/adapters/seoul_subway.py 로 받음. 코레일 수도권 구간 역(경부선·분당선·경의선 등) 포함 확인(2026-10-18)
   verified: 2026-09-27 페이지 확인
 
 # ── 기후동행카드(public-transit) 분석용 — 2026-10-18 추가. 설명 페이지만 열어 확인한 값은 notes 에 적음

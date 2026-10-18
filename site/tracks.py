@@ -4,6 +4,7 @@ from __future__ import annotations
 
 from collections import Counter
 
+EMPTY = '<p class="muted small">아직 없음</p>'
 REPO = "https://github.com/CausalInferenceLab/policy-effect-analytics-agent"
 COLS = [("이슈 · 정책", 0), ("원천 데이터", 1), ("가공", 2), ("지표", 3)]
 KIND_KO = {
@@ -19,7 +20,7 @@ API_DOC = [
     ("issues.json", "지금 이슈인 정책 (시작일, 비교 대상, 설계, 쓰는 데이터)"),
     ("datasets.json", "데이터 지도 (역할 · 단위 · 받는 법 · 이용 조건)"),
     ("legal/housing-regulation.json", "법제처에서 모은 법령·행정규칙·조례 목록 (주제마다 하나)"),
-    ("lineage.json", "데이터 계보 그래프 — 트랙 A 산출물"),
+    ("lineage.json", "데이터 계보 (개수 = 계보 파일 수) — 트랙 A 산출물"),
     ("results.json", "분석 결과: 판정 · 추정치 · 신뢰구간 · 그림 — 트랙 B 산출물"),
 ]
 
@@ -70,9 +71,7 @@ def _lineage_card(lin, e, issues_by_id, ds_by_id) -> str:
         f'<div class="lin-step k-case"><b><a href="{REPO}/tree/main/cases/{e(c)}">{e(c)}</a></b></div>'
         for c in cases
     )
-    cols.append(
-        f'<div class="lin-col"><div class="lin-head">분석</div>{case_links or "<p class=muted small>아직 없음</p>"}</div>'
-    )
+    cols.append(f'<div class="lin-col"><div class="lin-head">분석</div>{case_links or EMPTY}</div>')
     return (
         f'<div class="card" style="margin-bottom:14px" id="{e(lin.id)}"><h3>{e(lin.title)}</h3>'
         f"<p class='muted small'>작성 {e(lin.owner)} · 주제 <a href='topics/{e(lin.topic)}.html'>{e(lin.topic)}</a> · "

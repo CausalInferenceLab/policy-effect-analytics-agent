@@ -156,6 +156,7 @@ topics:
     events:
       - {date: 2024-01-27, what: "서울 기후동행카드 시범운영 시작 (62,000원 / 따릉이 포함 65,000원)", source: "https://mediahub.seoul.go.kr/archives/2009830"}
       - {date: 2024-03-30, what: "기후동행카드 김포골드라인 적용 (첫 경기 편입)", source: "https://mediahub.seoul.go.kr/archives/2015277"}
+      - {date: 2024-08-10, what: "기후동행카드 별내선(구리·남양주, 같은 날 신규 개통)·진접선(남양주) 적용", source: "https://mediahub.seoul.go.kr/archives/2015277"}
       - {date: 2024-05-01, what: "K-패스·The 경기패스·인천 I-패스 시행 (경쟁 정책)", source: "https://magazine.hankyung.com/business/article/202405018911b"}
       - {date: 2024-07-01, what: "기후동행카드 본사업 전환, 청년권 즉시 할인·단기권 출시", source: "https://mediahub.seoul.go.kr/archives/2011569"}
       - {date: 2024-11-30, what: "기후동행카드 고양·과천 지하철 적용", source: "https://news.seoul.go.kr/traffic/archives/513130"}
@@ -163,6 +164,7 @@ topics:
       - {date: 2025-06-28, what: "수도권 지하철 기본요금 1,400원 → 1,550원 (기후동행카드 가격 동결)", source: "https://www.etoday.co.kr/news/view/2480312"}
       - {date: 2025-08-09, what: "기후동행카드 하남 5호선 4개 역 승차 가능 (하차만 → 승하차)", source: "https://mediahub.seoul.go.kr/archives/2015277"}
       - {date: 2026-01-01, display: "2026.01", what: "K-패스 '모두의 카드' 시행 (공식 자료에 '1월부터'로만 표기)", source: "https://www.korea.kr/news/policyFocusView.do?newsId=148957978&pkgId=49500831"}
+      - {date: 2026-04-01, what: "모두의카드 기준금액 50% 한시 인하 (고유가 대응, 2026-09-30까지)", source: "https://mediahub.seoul.go.kr/archives/2019060"}
       - {date: 2026-09-01, what: "기후동행카드 종료 → 모두의카드 서울형 '기후동행패스'로 전환", source: "https://mediahub.seoul.go.kr/archives/2019060"}
     gates:
       when: {status: check, note: "시행 '월'만 확인, 정확한 날짜 확인 필요"}
