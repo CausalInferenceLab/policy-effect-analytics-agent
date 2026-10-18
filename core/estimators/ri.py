@@ -44,10 +44,11 @@ def event_study_ri(
     alpha: float = 0.05,
     n_perm: int = 999,
     seed: int = 0,
+    bin: int = 1,
 ) -> dict:
     u = df[unit].to_numpy()
     t = df[time].to_numpy()
-    rel = np.clip(t - treat_time, lo, hi)
+    rel = np.clip(np.floor_divide(t - treat_time, bin), lo, hi)
     pool = np.array([x for x in np.unique(u) if x not in treated_units])
     k_tr = len(treated_units)
     pre = np.array([k < 0 for k in ks])

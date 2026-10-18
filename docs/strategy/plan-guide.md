@@ -18,7 +18,7 @@
 | `outcomes` | 1차 결과 1개(`primary: true`) + 2차 몇 개 | 분자·분모·기간까지. 예상 방향(`expected_direction`) |
 | `estimator` | 방법 | `did` · `event_study` · `its` 중 하나. 시차 도입은 4주차, 합성통제는 5주차에 모듈이 추가됩니다 |
 | `assumptions` | 식별 가정 | 가정마다 확인 방법(`check`: `pretrend_test` · `placebo_time` · `manual`) |
-| `refutations` | 반증 테스트 | `placebo_time`(가짜 시작일), `placebo_outcome`, `drop_unit` 중 하나 이상 |
+| `refutations` | 반증 테스트 | `placebo_time`(가짜 시작일), `placebo_outcome`, `drop_unit`, `placebo_window`(정책이 적용되지 않는 시간대) 중 하나 이상 |
 | `abstention` | 판정을 낮출 조건 | 기계가 판정할 수 있는 조건만(아래 표). 걸리면 효과 수치 대신 "조건부" 또는 "판단 불가" |
 | `thresholds` | 기준값 | 사전추세 유의수준, 최소 클러스터 수, 최소 사전 기간 |
 | `data_sources` | 데이터 출처 | 기관, URL, **라이선스**(공공누리 유형), 어댑터 |
@@ -34,6 +34,7 @@
 | `few_treated_clusters` | 정책 받은 곳이 10곳 미만 → 무작위화 추론으로 자동 전환 | `conditional` |
 | `staggered_adoption` | 시작일이 여러 개인데 단순 이중차분 사용 | `not_identified` |
 | `short_pre_period` | 사전 기간이 짧음 | `conditional` |
+| `placebo_window_significant` | 정책이 적용되지 않는 시간대에서도 효과가 보임 | `conditional` |
 
 판단 불가는 실패가 아닙니다. `discussion.md`에 무엇 때문에 판단할 수 없었고, 어떤 데이터가 있으면 판단할 수 있는지 적습니다.
 
@@ -47,6 +48,32 @@
 | 같은 시기 다른 정책 없음 | 주제 페이지의 "관련 법령·행정규칙" 목록에서 같은 시기 개정 확인 | 있으면 기간을 빼거나 한계로 기록 |
 
 ---
+
+### 시간 단위 자료 (예: 측정소 × 시간)
+
+정책이 하루 중 특정 시간대에만 적용될 때(예: 녹색교통지역 06~21시 운행제한) 시간 자료를 그대로 씁니다.
+
+```yaml
+time:
+  col: t                      # 정수 시점: core.schema.timeindex.period_index(측정일시, "hour", origin)
+  freq: hour
+  start: "2019-01-01 00:00"
+  end: "2021-12-31 23:00"
+  hour_col: hour              # 하루 중 시각 0~23 (hour_of_day 로 만들면 '24시' 표기도 처리)
+  active_hours: [6, 21]       # 정책 적용 시간대 [시작, 끝) — 주 추정은 이 시간대 자료로만
+treatment: {group_col: treated, treat_time: 8022}   # index_of("2019-12-01 06:00", "hour", origin)
+estimator: {method: event_study, cluster_col: station, event_bin: 24, window: [-30, 30], ref_period: -1}
+refutations:
+  - {kind: placebo_window}    # 적용 외 시간대(21~06시)로 같은 추정 → 효과가 없어야 통과
+  - {kind: placebo_time, params: {shift: 30}}   # shift 도 event_bin 단위(여기선 30일)
+abstention:
+  - {when: placebo_window_significant, verdict: conditional}
+```
+
+- `event_bin`: 상대시점을 몇 시간씩 묶을지. 24면 일, 168이면 주 단위로 계수를 냅니다. 시간 단위 이벤트 스터디에서는 반드시 정합니다(1 = 시간 그대로).
+- 고정효과는 원래 시점(시간)으로 들어가 시간대·요일·날씨 같은 공통 충격을 지웁니다.
+- 자료가 커지면(측정소 수 × 수만 시간) 계산이 오래 걸립니다. 정책 지역이 10곳 미만이면 무작위화 추론이 999번 반복되므로 먼저 짧은 기간으로 돌려 보세요.
+- 그림은 `event_bin` 단위 평균으로 그립니다.
 
 ## 2. 예시: 토지거래허가구역 확대 지정 (검증을 통과하는 실제 파일)
 

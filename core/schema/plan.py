@@ -41,7 +41,19 @@ AbstainTrigger = Literal[
     "placebo_significant",  # 가짜 도입시점 검정이 유의
     "ci_crosses_zero",  # 신뢰구간이 0을 포함 (효과 '없음'이 아니라 '불확실')
     "short_pre_period",  # 사전 기간 관측치 부족
+    "placebo_window_significant",  # 정책이 적용되지 않는 시간대에서도 효과가 유의
 ]
+
+# 시간 단위. 새 단위를 넣을 때는 여기와 core/schema/timeindex.py 의 PANDAS_FREQ 만 늘리면 된다.
+Freq = Literal["year", "quarter", "month", "week", "day", "hour"]
+FREQ_KO = {
+    "year": "연",
+    "quarter": "분기",
+    "month": "월",
+    "week": "주",
+    "day": "일",
+    "hour": "시간",
+}
 
 
 class _Base(BaseModel):
@@ -54,10 +66,31 @@ class Unit(_Base):
 
 
 class TimeSpec(_Base):
-    col: str
-    freq: Literal["year", "quarter", "month", "week", "day"] = "year"
+    col: str = Field(
+        ..., description="정수 시점 인덱스 컬럼 (core.schema.timeindex.period_index 로 만든다)"
+    )
+    freq: Freq = "year"
     start: int | str
     end: int | str
+    datetime_col: str | None = Field(None, description="원래 날짜·시각 컬럼 (기록용, 선택)")
+    hour_col: str | None = Field(
+        None, description="하루 중 시각 0~23 컬럼. active_hours 를 쓸 때 필요"
+    )
+    active_hours: tuple[int, int] | None = Field(
+        None, description="정책이 적용되는 시간대 [시작, 끝) — 예: [6, 21] 은 06:00~20:59"
+    )
+
+    @model_validator(mode="after")
+    def _hours(self):
+        if self.active_hours is not None:
+            a, b = self.active_hours
+            if not (0 <= a < b <= 24):
+                raise ValueError("active_hours 는 0 ≤ 시작 < 끝 ≤ 24 입니다 (예: [6, 21])")
+            if not self.hour_col:
+                raise ValueError(
+                    "active_hours 를 쓰려면 hour_col(하루 중 시각 0~23 컬럼)이 필요합니다"
+                )
+        return self
 
 
 class Treatment(_Base):
@@ -95,7 +128,16 @@ class EstimatorSpec(_Base):
     covariates: list[str] = []
     ref_period: int = Field(-1, description="event study 기준 상대시점")
     window: tuple[int, int] = Field((-4, 4), description="event study 상대시점 범위 (양끝 binning)")
+    event_bin: int | None = Field(
+        None,
+        ge=1,
+        description="상대시점을 몇 기간씩 묶을지. 시간 자료에서 24=일, 168=주. window·ref_period 는 묶은 단위",
+    )
     alpha: float = 0.05
+
+    @property
+    def bin(self) -> int:
+        return self.event_bin or 1
 
 
 class Assumption(_Base):
@@ -105,7 +147,7 @@ class Assumption(_Base):
 
 
 class Refutation(_Base):
-    kind: Literal["placebo_time", "placebo_outcome", "drop_unit"]
+    kind: Literal["placebo_time", "placebo_outcome", "drop_unit", "placebo_window"]
     params: dict = {}
 
 
@@ -157,6 +199,19 @@ class Plan(_Base):
             raise ValueError("synthetic_data 플래그와 data_sources.license='synthetic' 이 불일치")
         if self.estimator.method == "its" and self.treatment.treat_time is None:
             raise ValueError("ITS 는 단일 treat_time 이 필요합니다")
+        if (
+            self.time.freq == "hour"
+            and self.estimator.method == "event_study"
+            and self.estimator.event_bin is None
+        ):
+            raise ValueError(
+                "시간 단위 이벤트 스터디는 estimator.event_bin 을 정해 주세요 "
+                "(24 = 상대시점을 일 단위로 묶기, 168 = 주 단위, 1 = 시간 그대로)"
+            )
+        if any(r.kind == "placebo_window" for r in self.refutations) and not self.time.active_hours:
+            raise ValueError(
+                "placebo_window 반증은 time.active_hours(정책 적용 시간대)가 필요합니다"
+            )
         return self
 
     @property

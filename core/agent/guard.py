@@ -44,6 +44,7 @@ TRIGGER_KO = {
     "few_treated_clusters": "처치 단위 수 부족(무작위화 추론 사용)",
     "staggered_adoption": "시차 도입에서 TWFE 편향 위험",
     "placebo_significant": "가짜 도입시점 검정 유의",
+    "placebo_window_significant": "적용 안 되는 시간대에서도 효과 유의",
     "ci_crosses_zero": "신뢰구간이 0을 포함",
     "short_pre_period": "사전 기간 부족",
 }

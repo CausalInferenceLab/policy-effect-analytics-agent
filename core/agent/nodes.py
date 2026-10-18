@@ -18,12 +18,13 @@ from functools import wraps
 from importlib import metadata
 from pathlib import Path
 
+import numpy as np
 import pandas as pd
 import yaml
 from pydantic import ValidationError
 
 from ..adapters import REGISTRY, LocalFileAdapter, SourceMeta
-from ..pipeline import run_plan
+from ..pipeline import run_plan, split_hours
 from ..report import event_study_plot, its_plot, raw_trends, render_report
 from ..schema.plan import Plan, load_plan
 from . import guard as G
@@ -207,12 +208,25 @@ def quality_checks(p: Plan, df: pd.DataFrame) -> list[dict]:
         rate, key = float(df[c].isna().mean()), c in (u, t, g)
         add(f"결측률 {c}", round(rate, 4), (key and rate > 0) or rate > 0.2, rate > 0,
             msg=f"결측 {rate:.1%}" + (" — 식별 컬럼은 결측 불가" if key else ""))  # fmt: skip
+    if (hc := p.time.hour_col) is not None:
+        if hc not in df.columns:
+            add("시각 컬럼", hc, True, msg=f"time.hour_col '{hc}' 가 없습니다")
+        else:
+            bad = int((~df[hc].between(0, 23)).sum())
+            add(
+                "시각 컬럼 0~23",
+                bad,
+                bad > 0,
+                msg=f"0~23 밖의 값 {bad}개 (24시 표기는 timeindex.hour_of_day 로 변환)",
+            )
     if (tt := p.treatment.treat_time) is not None:
-        periods = df[t].dropna().unique()
-        n_pre, n_post = int((periods < tt).sum()), int((periods >= tt).sum())
+        b = p.estimator.bin  # 시간 자료는 묶음(예: 일) 단위로 센다
+        rel = np.floor_divide(df[t].dropna().unique() - tt, b)
+        n_pre, n_post = len(set(rel[rel < 0])), len(set(rel[rel >= 0]))
+        unit_ko = "기" if b == 1 else f"묶음({b}기씩)"
         min_pre = p.thresholds.min_pre_periods
-        add("사전 기간 수", n_pre, n_pre == 0, n_pre < min_pre, f"최소 {min_pre}기 권장")
-        add("사후 기간 수", n_post, n_post == 0, msg="사후 기간이 없습니다")
+        add(f"사전 기간 수({unit_ko})", n_pre, n_pre == 0, n_pre < min_pre, f"최소 {min_pre} 권장")
+        add(f"사후 기간 수({unit_ko})", n_post, n_post == 0, msg="사후 기간이 없습니다")
     if p.estimator.method != "its":
         by = df.groupby(u)[g].max()
         n_t, n_c, dup = int((by == 1).sum()), int((by == 0).sum()), int(df.duplicated([u, t]).sum())
@@ -330,6 +344,7 @@ def _versions() -> dict:
 @step
 def report(s: FlowState):
     p, df = s.plan, pd.read_csv(s.data_path)
+    df, _ = split_hours(p, df)  # 정책 적용 시간대만 그린다
     r = next(x for x in s.results if x.outcome == p.primary_outcome.col)
     figdir = s.case_dir / "figures"
     figdir.mkdir(exist_ok=True)
@@ -347,6 +362,10 @@ def report(s: FlowState):
         figs["ITS"] = "figures/its.png"
     else:
         tt = p.treatment.treat_time or df[p.treatment.first_treat_col].min()
+        if (b := p.estimator.bin) > 1:  # 시간 자료는 묶음(예: 일) 평균으로 그려야 읽힌다
+            df = df.assign(**{p.time.col: df[p.time.col] // b})
+            df = df.groupby([p.unit.id_col, p.time.col], as_index=False).mean(numeric_only=True)
+            tt = int(tt) // b
         raw_trends(df, r.outcome, p.time.col, p.treatment.group_col, tt, figdir / "raw_trends.png")
         figs["Raw trends"] = "figures/raw_trends.png"
         if "coefs" in r.extra:
