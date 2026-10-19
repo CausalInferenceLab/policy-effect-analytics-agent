@@ -43,6 +43,36 @@ policies:
       - "표본 선택: 거래가 줄면 '거래된 집'만 관측 → 가격보다 거래량을 1차 결과로."
     sample_case: cases/t3-land-permit-2025
 
+  - id: T3-2020
+    name: 토지거래허가구역 지정 (잠실·삼성·대치·청담, 2020)
+    keywords: [토지거래허가, 토허제, 토허구역, 잠삼대청, 풍선효과, 아파트, 집값, 실거래가]
+    summary: 2020.6.17 발표, 6.23부터 송파 잠실동과 강남 삼성·대치·청담동(법정동 4곳)을 토지거래허가구역으로 지정(지정권자 서울시).
+    announced: 2020-06-17
+    effective: 2020-06-23
+    sources:
+      - https://www.korea.kr/news/policyNewsView.do?newsId=148873757
+    unit: 강남·서초·송파 법정동 × 월
+    treated_units: [잠실동, 삼성동, 대치동, 청담동]
+    control_units: 강남·서초·송파에서 지정 동과 경계를 맞대지 않는 법정동 (경계를 맞댄 동은 풍선효과 비교 대상)
+    outcomes: [아파트 ㎡당 거래가격 중위값]
+    design: did_simultaneous
+    datasets:
+      - id: "15126469"
+        name: 국토교통부_아파트 매매 실거래가 자료
+        provider: 국토교통부
+        url: https://www.data.go.kr/data/15126469/openapi.do
+        access: api_key
+        license: other
+        granularity: 시군구(5자리) × 계약년월, 거래 단위
+        role: outcome
+    search_terms: [아파트 매매 실거래가, 토지거래허가]
+    pitfalls:
+      - "같은 달 2019-12-16 대책(15억 원 넘는 아파트 담보대출 금지)이 고가 거래가 많은 지정 동·옆 동에 더 세게 걸림 → 지정 전부터 흐름 차이."
+      - "같은 발표에서 실거래 기획조사도 대치·청담으로 넓어짐 → 추정 대상은 «허가구역 + 기획조사»."
+      - "허가 대상이 줄면 거래되는 단지·면적 구성이 바뀌어 중위값이 움직임 → 같은 단지 안 비교로 보완."
+      - "2020-06은 발표와 시행이 겹쳐 분석에서 뺌."
+    sample_case: cases/hyun2-land-permit-spillover-2020
+
   - id: T1
     name: 녹색교통지역 5등급 차량 운행제한
     keywords: [녹색교통, 5등급, 운행제한, 사대문, 도심, 대기질, 미세먼지, NO2, 이산화질소, 배출가스]
