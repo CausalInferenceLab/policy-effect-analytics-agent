@@ -1,0 +1,317 @@
+{
+  "schema_version": "1",
+  "case_dir": "cases/hyun2-land-permit-spillover-2020",
+  "question": "2020년 6월 23일 송파구 잠실동과 강남구 삼성·대치·청담동을 토지거래허가구역으로 지정한 뒤, 이 4개 동과 경계를 맞댄 법정동 10곳의 아파트 ㎡당 거래가격 중위값이 강남·서초·송파구의 떨어진 법정동 10곳과 비교해 달라졌는가?\n",
+  "status": "warn",
+  "verdict": "conditional",
+  "started_at": "2026-10-19T08:02:23+00:00",
+  "ended_at": "2026-10-19T08:02:23+00:00",
+  "steps": [
+    {
+      "index": 1,
+      "step": "define_problem",
+      "title": "① 문제 정의",
+      "status": "ok",
+      "started_at": "2026-10-19T08:02:23+00:00",
+      "ended_at": "2026-10-19T08:02:23+00:00",
+      "duration_s": 0.009,
+      "message": "분석계획 검증 완료, 사전 등록(git 커밋) 확인: hyun2-land-permit-spillover-2020",
+      "artifacts": {
+        "plan": "plan.yaml",
+        "plan_sha256": "cad5eb9f0f974be25a2bd3e7aa840fb9917427600d0bb0af3a6093ff16ab3bb8",
+        "committed": true
+      }
+    },
+    {
+      "index": 2,
+      "step": "collect",
+      "title": "② 데이터 수집",
+      "status": "ok",
+      "started_at": "2026-10-19T08:02:23+00:00",
+      "ended_at": "2026-10-19T08:02:23+00:00",
+      "duration_s": 0.0,
+      "message": "기존 스냅샷 재사용 (새로 받으려면 파일 삭제 후 재실행)",
+      "artifacts": {
+        "data": "data/panel.csv",
+        "data_sha256": "853733936218659387459cea38a0a36c60360b62821d8bd127c8637687ca1bce",
+        "licenses": [
+          "other"
+        ],
+        "method": "기존 스냅샷 재사용 (새로 받으려면 파일 삭제 후 재실행)"
+      }
+    },
+    {
+      "index": 3,
+      "step": "structure_metrics",
+      "title": "③ 지표 구조화·품질 점검",
+      "status": "ok",
+      "started_at": "2026-10-19T08:02:23+00:00",
+      "ended_at": "2026-10-19T08:02:23+00:00",
+      "duration_s": 0.003,
+      "message": "11개 점검 모두 통과",
+      "artifacts": {
+        "rows": 397,
+        "units": 20
+      }
+    },
+    {
+      "index": 4,
+      "step": "estimate",
+      "title": "④ 효과 추정",
+      "status": "warn",
+      "started_at": "2026-10-19T08:02:23+00:00",
+      "ended_at": "2026-10-19T08:02:23+00:00",
+      "duration_s": 0.332,
+      "message": "event_study: -0.004 [-0.152, 0.143] → conditional",
+      "artifacts": {
+        "log_price_m2": {
+          "estimate": -0.0042,
+          "ci": [
+            -0.1515,
+            0.1432
+          ],
+          "verdict": "conditional"
+        }
+      }
+    },
+    {
+      "index": 5,
+      "step": "guard",
+      "title": "⑤ 과잉해석 가드",
+      "status": "warn",
+      "started_at": "2026-10-19T08:02:23+00:00",
+      "ended_at": "2026-10-19T08:02:23+00:00",
+      "duration_s": 0.001,
+      "message": "1차 지표 판정 조건부, 서술=template",
+      "artifacts": {
+        "triggers": [
+          "ci_crosses_zero",
+          "placebo_significant"
+        ]
+      }
+    },
+    {
+      "index": 6,
+      "step": "report",
+      "title": "⑥ 리포트·재현 기록",
+      "status": "ok",
+      "started_at": "2026-10-19T08:02:23+00:00",
+      "ended_at": "2026-10-19T08:02:23+00:00",
+      "duration_s": 0.218,
+      "message": "리포트 2개 그림 포함 작성",
+      "artifacts": {
+        "report": "report.md",
+        "manifest": "run_manifest.json",
+        "figures": [
+          "figures/raw_trends.png",
+          "figures/event_study.png"
+        ]
+      }
+    }
+  ],
+  "quality": [
+    {
+      "check": "필수 컬럼",
+      "value": 4,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "시간 컬럼 정수형",
+      "value": "int64",
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "결측률 dong_id",
+      "value": 0.0,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "결측률 month_idx",
+      "value": 0.0,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "결측률 ring1",
+      "value": 0.0,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "결측률 log_price_m2",
+      "value": 0.0,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "사전 기간 수(기)",
+      "value": 12,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "사후 기간 수(기)",
+      "value": 9,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "처치 단위 수",
+      "value": 10,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "통제 단위 수",
+      "value": 10,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "단위×시점 중복",
+      "value": 0,
+      "status": "ok",
+      "message": ""
+    }
+  ],
+  "results": [
+    {
+      "method": "event_study",
+      "outcome": "log_price_m2",
+      "estimate": -0.004153452942386078,
+      "se": 0.0751840959342703,
+      "ci_low": -0.15151157318376018,
+      "ci_high": 0.143204667298988,
+      "p_value": 0.9559442583255827,
+      "n_obs": 397,
+      "n_clusters": 20,
+      "assumptions_checked": {
+        "parallel_pretrends": {
+          "test": "joint Wald (chi2, CRV1)",
+          "stat": 2.0306215982273312,
+          "df": 2,
+          "p_value": 0.36228981298002355,
+          "passed": true
+        },
+        "pre_periods": 6,
+        "n_adoption_cohorts": 1,
+        "placebo_time": {
+          "fake_treat_time": 6,
+          "estimate": -0.12503331244843122,
+          "p_value": 0.004701381316538411,
+          "passed": false
+        }
+      },
+      "warnings": [
+        "신뢰구간이 0을 포함합니다. '효과 없음'이 아니라 '효과 크기를 판별할 수 없음'으로 해석하세요.",
+        "가짜 도입시점 검정이 유의(p=0.005): 도입 전부터 차이가 벌어졌을 가능성."
+      ],
+      "triggers": [
+        "ci_crosses_zero",
+        "placebo_significant"
+      ],
+      "verdict": "conditional",
+      "extra": {
+        "coefs": [
+          {
+            "rel_time": -4,
+            "coef": 0.07564039483335333,
+            "se": 0.05904867660179127,
+            "ci_low": -0.047949905675172946,
+            "ci_high": 0.1992306953418796
+          },
+          {
+            "rel_time": -3,
+            "coef": 0.03698802605561917,
+            "se": 0.0877988845127046,
+            "ci_low": -0.14677715117968876,
+            "ci_high": 0.22075320329092712
+          },
+          {
+            "rel_time": -2,
+            "coef": 0.0,
+            "se": 0.0,
+            "ci_low": 0.0,
+            "ci_high": 0.0
+          },
+          {
+            "rel_time": 0,
+            "coef": 0.014270551410295937,
+            "se": 0.08043635203688412,
+            "ci_low": -0.1540846682517574,
+            "ci_high": 0.18262577107234926
+          },
+          {
+            "rel_time": 1,
+            "coef": -0.05422438487943362,
+            "se": 0.0536285636609393,
+            "ci_low": -0.16647025862514694,
+            "ci_high": 0.05802148886627972
+          },
+          {
+            "rel_time": 2,
+            "coef": -0.06523012734151269,
+            "se": 0.09107254244050268,
+            "ci_low": -0.2558471493656065,
+            "ci_high": 0.12538689468258113
+          },
+          {
+            "rel_time": 3,
+            "coef": 0.07138200553385293,
+            "se": 0.12119475863080316,
+            "ci_low": -0.18228153954862725,
+            "ci_high": 0.3250455506163331
+          },
+          {
+            "rel_time": 4,
+            "coef": -0.027098634445098697,
+            "se": 0.10241819066520783,
+            "ci_low": -0.24146237111635532,
+            "ci_high": 0.18726510222615794
+          },
+          {
+            "rel_time": 5,
+            "coef": 0.05031176601632105,
+            "se": 0.0858517544165321,
+            "ci_low": -0.1293780210906355,
+            "ci_high": 0.23000155312327764
+          },
+          {
+            "rel_time": 6,
+            "coef": 0.04156530244369605,
+            "se": 0.0985034889440708,
+            "ci_low": -0.16460486935938715,
+            "ci_high": 0.24773547424677925
+          },
+          {
+            "rel_time": 7,
+            "coef": 0.005851745795874182,
+            "se": 0.07134870577750933,
+            "ci_low": -0.14348281164735402,
+            "ci_high": 0.1551863032391024
+          },
+          {
+            "rel_time": 8,
+            "coef": -0.07420930101546985,
+            "se": 0.1226418153448881,
+            "ci_low": -0.33090157060862285,
+            "ci_high": 0.18248296857768315
+          }
+        ]
+      },
+      "identified": false
+    }
+  ],
+  "guard": {
+    "verdict": "conditional",
+    "narrative_source": "template",
+    "passed": true,
+    "violations": [],
+    "rejected_llm_violations": [],
+    "narrative": "**요약(조건부)**: 추정치는 -0.00 log 만원/㎡ (95% CI -0.15 ~ 0.14) 이지만 다음 위험 신호가 있어 조건부로만 보고합니다: 신뢰구간이 0을 포함, 가짜 도입시점 검정 유의. 신뢰구간이 0을 포함하므로 효과의 방향과 크기는 판별 불가입니다. 결론 전에 보완 분석이 필요합니다."
+  },
+  "report_path": "report.md"
+}

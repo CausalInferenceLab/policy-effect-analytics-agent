@@ -1,0 +1,24 @@
+{
+  "case_id": "hyun2-land-permit-spillover-2020",
+  "started_at": "2026-10-19T08:02:23+00:00",
+  "finished_at": "2026-10-19T08:02:23+00:00",
+  "git_sha": "c7df9e997cdeb88a43943c11f43dff9d894309dd",
+  "git_dirty": true,
+  "plan_sha256": "cad5eb9f0f974be25a2bd3e7aa840fb9917427600d0bb0af3a6093ff16ab3bb8",
+  "data_sha256": "853733936218659387459cea38a0a36c60360b62821d8bd127c8637687ca1bce",
+  "data_path": "data/panel.csv",
+  "versions": {
+    "python": "3.12.3",
+    "pandas": "2.3.3",
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pyfixest": "0.60.0",
+    "statsmodels": "0.15.0",
+    "pydantic": "2.14.1",
+    "matplotlib": "3.11.2"
+  },
+  "platform": "Linux-6.8.0-139-generic-x86_64-with-glibc2.39",
+  "verdicts": {
+    "log_price_m2": "conditional"
+  }
+}
