@@ -22,7 +22,7 @@ hypothesis:
     day and cannot be separated by data, so every estimate answers «permit zone plus the
     co-located audit extension», and the report states it that way.
   evidence:
-    - https://news.seoul.go.kr/citybuild/archives/512421   # 서울시 지정 공고
+    - https://www.korea.kr/news/policyNewsView.do?newsId=148873757   # 국토교통부 2020-06-23: 6.17 발표, 지정권자 서울시, 6.23 발효, 4개 법정동
     - Yonhap 2020-06-17, AKR20200617001651003   # announcement and audit extension
 
 answers:
