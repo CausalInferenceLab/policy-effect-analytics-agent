@@ -66,7 +66,9 @@
 3. 독립 검토 네 건을 받아 계획 보완을 더했다.
 4. 이 폴더의 `plan.yaml`을 썼다. 지정 전 결과를 본 뒤에 추가한 계획이다.
 
-**지정 이후(2020-07~2021-03) 가격과 지정 전후 비교는 아직 계산하지 않았다.** 지금까지 본 숫자는 `analysis-plan.yaml`의 `disclosures`에 모두 적었다.
+5. 2026-10-19 지정 이후(2020-07~2021-03) 가격을 처음 읽어 지정 전후 비교를 계산했다. 계획과 지정 전 단계 코드는 고치지 않았다. 지정 전 결과(`results/pre-period.json`)를 먼저 커밋하고 지정 전후 비교(`results/post-period.json`)를 뒤에 커밋했다.
+
+지금까지 본 숫자는 `analysis-plan.yaml`의 `disclosures`에 모두 적었다. 결과와 해석은 `discussion.md`에 있다.
 
 ## 이미 본 지정 전 결과와 그 뜻
 
@@ -82,7 +84,7 @@
 - 2019-12 이후 지정 동과 옆 동은 먼 동보다 약 12% 덜 올랐다. 정책이 없던 시기인데도 차이가 났다는 뜻이다. 같은 달 2019-12-16 대책이 15억 원 넘는 아파트의 담보대출을 막았다. 지정 전 15억 원 초과 거래 비율은 지정 동 81%, 옆 동 64%, 먼 동 13%였다. 그래서 이 대책이 원인일 수 있다(추정이며 확인하지 않았다).
 - 같은 단지 안에서 비교하면 차이가 3분의 1 정도로 준다. 차이의 상당 부분은 어떤 아파트가 거래됐는지가 바뀐 데서 온 것으로 보인다.
 - 계획은 p값이 0.10보다 작으면 그 비교에 «원래 흐름 차이 의심» 표지를 붙이게 했다. 직접 효과와 풍선효과 모두 이 표지가 붙었다. 효과 추정치는 그대로 보고하되, 이 표지를 옆에 단다.
-- `make flow`도 비슷한 규칙을 쓴다. 지정 전 흐름 검정의 p가 0.10보다 작으면 판정을 `not_identified`(식별 불가)로 낮춘다. 정책 전부터 흐름이 달랐으니 지정 뒤의 차이를 정책 효과로 볼 수 없다는 뜻이다. 위 결과로 보면 `make flow`의 판정도 식별 불가가 될 가능성이 크다. 이 판정은 실패가 아니라 "이 자료와 설계로는 판단할 수 없다"는 결과다.
+- `make flow`도 비슷한 규칙을 쓴다. 지정 전 흐름 검정의 p가 0.10보다 작으면 판정을 `not_identified`(식별 불가)로 낮춘다. 정책 전부터 흐름이 달랐으니 지정 뒤의 차이를 정책 효과로 볼 수 없다는 뜻이다. 지정 전 결과를 봤을 때는 `make flow` 판정도 식별 불가가 될 가능성이 크다고 봤다. 실제로는 지정 전 흐름 검정(범위 [-4, 8])은 통과하고(p 0.36) 가짜 지정일 검정이 걸려(p 0.005) 판정이 «조건부»로 나왔다.
 
 ## 결과를 어떻게 보고하나
 
@@ -95,18 +97,23 @@
 - **평소 출렁임과 비교:** 정책이 없던 2015~2019년에도 옆 동 − 먼 동 차이는 −8%~+5% 범위에서 움직였다. 실제 추정치가 이 범위 밖인지 본다.
 - **결론이 뒤집히는 조건:** "지정 뒤 흐름 차이가 지정 전 월별 변화의 몇 배까지 커지면 결론이 뒤집히는가"를 숫자로 낸다.
 
-그래도 지정 이후 값을 아직 계산하지 않았으므로 결과는 정해지지 않았다. 차이가 MDE(약 8%)보다 작으면 이 설계로도 "판별 불가"가 될 수 있다.
+차이가 MDE(약 8%)보다 작으면 이 설계로도 "판별 불가"가 될 수 있다고 미리 적어 두었다. 실제 결과는 `discussion.md`에 있다.
 
 ## 데이터와 이용 조건
 
 - 공공데이터포털 표기는 «이용허락범위 제한 없음»이다(공공누리 유형 표기 없음, 2026-10-18 확인). 스키마에 맞는 값이 없어 `license: other`로 적었다.
-- 원자료와 `data/panel.csv`는 커밋하지 않는다. `fetch.py`로 각자 받는다(`DATA_GO_KR_API_KEY` 필요).
+- 원자료, `data/deals.csv.gz`, `data/panel.csv`는 커밋하지 않는다. `fetch.py`로 각자 받는다(`DATA_GO_KR_API_KEY` 필요).
 - 2020-02-21 해제 신고가 의무가 되었다. 그래서 해제 표시 비율이 시기와 집단마다 다르다. 직거래 여부를 나타내는 값은 이 기간에 비어 있다.
 
-## 다음 단계
+## 다시 만들기
 
-1. 계획 검토 (이 PR)
-2. `fetch.py`: API에서 받아 `data/panel.csv`(`make flow`용)와 거래 단위 자료(주 분석용)를 만든다
-3. `estimate.py`: `analysis-plan.yaml`의 주 분석과 보조 분석을 계산한다. 지정 전 결과와 입력 파일이 그대로일 때만 지정 이후 계산을 시작한다
-4. `make flow CASE=cases/hyun2-land-permit-spillover-2020` → `report.md`
-5. `discussion.md`: 해석, 한계, 계획에서 바뀐 것
+```bash
+python cases/hyun2-land-permit-spillover-2020/fetch.py           # 약 740쪽 요청, 3분 안팎. data/ 에 저장
+python cases/hyun2-land-permit-spillover-2020/estimate.py pre    # 지정 전 단계 → results/pre-period.json (약 8분)
+python cases/hyun2-land-permit-spillover-2020/estimate.py post   # 지정 전후 비교 → results/post-period.json (약 1분)
+make flow CASE=cases/hyun2-land-permit-spillover-2020            # plan.yaml 비교 → flow_log.json, report.md, figures/
+```
+
+- `make flow`는 `fetch.py`만 실행하고 `estimate.py`는 실행하지 않는다. 주 분석 숫자는 `estimate.py`로 따로 만든다.
+- `estimate.py post`는 `results/pre-period.json`이 같은 입력(`analysis-plan.yaml`, `fetch.py`, `estimate.py`, `data/deals.csv.gz`의 sha256)으로 계산됐을 때만 돈다.
+- 무작위화 추론의 난수 seed가 고정되어 있어 같은 자료면 같은 숫자가 나온다. 2026-10-19에 받은 자료는 742쪽, 243,093행이었다(`fetch.py`가 `deals.csv.gz`의 sha256을 출력한다). 포털이 나중에 신고를 고치면 숫자가 조금 달라질 수 있다.
