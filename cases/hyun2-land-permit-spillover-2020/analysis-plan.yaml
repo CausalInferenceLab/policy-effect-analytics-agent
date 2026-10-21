@@ -1,0 +1,283 @@
+# Pre-analysis plan: land-permit-zone-spillover (main analysis of this case)
+#
+# Fixed on 2026-10-18 before any price from the outcome source had been seen or computed.
+# Later additions are listed under `amendments`; what has been seen of the outcome source is
+# listed under `disclosures`. README.md explains the terms and how this relates to plan.yaml.
+
+plan_version: 1
+fixed_on: "2026-10-18"
+
+hypothesis:
+  id: land-permit-zone-spillover
+  title: Seoul land-transaction permit zone (2020-06-23) → apartment prices in designated and neighbouring 법정동
+  sentence: >-
+    The land-transaction permit zone that took effect on 2020-06-23 in 강남구 삼성동 · 대치동 ·
+    청담동 and 송파구 잠실동 changed the monthly median apartment sale price per m² in those
+    4 법정동 (direct contrast) and in the 법정동 that share a land boundary with them
+    (spillover contrast), each relative to non-adjacent, non-designated 법정동 of 강남구 ·
+    서초구 · 송파구.
+  estimand_scope: >-
+    The same announcement extended the government's targeted transaction audit from 잠실 ·
+    삼성 to 대치 · 청담 (Yonhap 2020-06-17, AKR20200617001651003). It hit the same 동 on the same
+    day and cannot be separated by data, so every estimate answers «permit zone plus the
+    co-located audit extension», and the report states it that way.
+  evidence:
+    - https://www.korea.kr/news/policyNewsView.do?newsId=148873757   # 국토교통부 2020-06-23: 6.17 발표, 지정권자 서울시, 6.23 발효, 4개 법정동
+    - Yonhap 2020-06-17, AKR20200617001651003   # announcement and audit extension
+
+answers:
+  A:
+    claim: The permit zone curbed prices in the designated 동 and the curb did not leak to neighbours.
+    source: Yonhap 2020-06-17 (AKR20200617001651003), expert quote «풍선효과 차단과 갭투자 봉쇄 등에 효과가 있을 것»
+    observed_if_true: direct contrast < 0; spillover contrast ≈ 0.
+  B:
+    claim: Demand moved to neighbouring non-designated 동 and raised their prices (balloon effect).
+    source: KDI report pub_no=18385 (https://www.kdi.re.kr/research/reportView?pub_no=18385)
+    observed_if_true: spillover contrast > 0, and larger in ring 1 than ring 2 (distance gradient).
+
+direction: >-
+  Policy goal is price stabilisation. Direct contrast below 0 = goal met in the designated 동.
+  Spillover contrast above 0 = price pressure moved to neighbours (bad for the goal).
+
+treatment:
+  instrument: >-
+    토지거래허가구역 under 부동산 거래신고 등에 관한 법률 제10조: buying a residential plot above
+    the area threshold needs municipal permission and the buyer must occupy for 2 years, so gap
+    investment is barred.
+  onset: "2020-06-23"
+  onset_source: 서울특별시 공고 제2020-1832호; announcement 2020-06-17
+  announcement_gap: 2020-06-17 → 2020-06-23. Month 2020-06 is dropped from every analysis.
+
+outcome:
+  name: monthly median apartment sale price per m² (만원/m²), log
+  source: 국토교통부 아파트 매매 실거래가 API, data.go.kr 15126469, endpoint getRTMSDataSvcAptTrade
+  fields_used: [umdNm, dealYear, dealMonth, dealAmount, excluUseAr, buildYear, cdealType]   # names VERIFIED from one item 2026-10-18
+  cell: 법정동 (umdNm within sggCd) × contract month (dealYear, dealMonth)
+  construction: >-
+    Drop deals with a non-empty cdealType (cancelled). Price per m² = dealAmount / excluUseAr.
+    Cell value = median over the cell's deals. A cell with no deal is missing; it is not imputed.
+  measurement_change: >-
+    The reporting deadline shortened from 60 to 30 days and cancellation reporting became
+    mandatory on 2020-02-21 (정책브리핑 2020-02-20, newsId=148869388; 강남구청 card news).
+    Data are indexed by contract date and fetched in 2026, so late reports are included; the
+    change hits every group alike. Cancelled deals are dropped in every period.
+  collection: >-
+    Through fetch.py, LAWD_CD 11680 · 11650 ·
+    11710, DEAL_YMD 201906–202103, numOfRows 1000 with paging until a short page. Every raw
+    response page's sha256 is recorded before any estimate.
+
+window:
+  pre_months: 2019-06 .. 2020-05   # 12 months
+  dropped_month: 2020-06
+  post_months: 2020-07 .. 2021-03   # 9 months; ends before the 2021-04-27 designations (압구정 · 여의도 · 목동 · 성수)
+  placebo_onset: 2019-12   # pre-period only: pre 2019-06..2019-11, post 2019-12..2020-05
+
+units:
+  rule: >-
+    Adjacency = shares a 법정동 boundary; a boundary across the Han river does not count;
+    other streams (탄천 · 양재천) do. Judged by two independent judges from official boundary
+    sources (VWorld 서울 법정동 경계, 국토교통부 법정구역정보, 구청 maps) and a polygon judge
+    (shared-boundary length on the 2018 Seoul 법정동 GeoJSON); a unit takes the majority label.
+    Units count only if they have at least one deal in the window (data presence check 2026-10-18).
+  designated: [강남 삼성동, 강남 대치동, 강남 청담동, 송파 잠실동]
+  ring1_adjacent:   # 10
+    - 강남 개포동
+    - 강남 논현동
+    - 강남 도곡동
+    - 강남 신사동   # judges A + polygon: adjacent to 청담동; judge B: ring 2 → majority ring 1
+    - 강남 압구정동
+    - 강남 역삼동
+    - 강남 일원동
+    - 송파 삼전동
+    - 송파 석촌동
+    - 송파 신천동
+  ring2_next:   # 11 with deals
+    - 강남 수서동
+    - 강남 자곡동   # judge B unclear + polygon 55 m shared edge with 일원동; judge A silent → majority ring 2
+    - 서초 내곡동
+    - 서초 반포동
+    - 서초 서초동
+    - 서초 양재동
+    - 서초 잠원동
+    - 송파 가락동
+    - 송파 방이동
+    - 송파 송파동
+    - 송파 풍납동
+  ring2_without_deals: [서초 염곡동, 송파 오륜동]   # no apartment deal in the window; not counted
+  far_comparison:   # 10: remaining non-designated 동 of the three districts with deals
+    - 강남 세곡동
+    - 강남 율현동   # deals in 7/22 months
+    - 서초 방배동
+    - 서초 신원동
+    - 서초 우면동
+    - 송파 거여동
+    - 송파 마천동
+    - 송파 문정동
+    - 송파 오금동
+    - 송파 장지동
+
+design:
+  model: >-
+    Two-way fixed effects difference-in-differences on 동 × month cells:
+    log price = 동 FE + month FE + β_D·(designated × post) + β_1·(ring1 × post) + β_2·(ring2 × post).
+    Far comparison is the omitted group. Unweighted cells.
+  contrasts:
+    direct: β_D   # designated vs far
+    spillover: β_1   # ring 1 vs far (primary for B)
+    gradient: β_1 − β_2   # B predicts β_1 ≥ β_2 > 0
+  event_study: same model with month-by-group leads and lags, reference month 2020-05.
+
+inference:
+  primary: >-
+    Randomisation inference: shuffle the group labels (4 / 10 / 11 / 10) across the 35 analysis
+    units, 5,000 draws, seed 20261018, two-sided p for β_D, β_1 and β_1 − β_2.
+  secondary: 동-clustered standard errors (wild cluster bootstrap, Webb weights, 9,999 draws).
+
+pre_trend:
+  checks:
+    - event-study leads for 2019-06 .. 2020-04 (joint test).
+    - placebo onset 2019-12 on pre-period cells only, same model.
+  rule: >-
+    No check removes the hypothesis. If the joint lead test has p < 0.10 or the placebo
+    estimate has p < 0.10, the report labels the matching contrast «원래 흐름 차이 의심» next to
+    the estimate.
+
+power:
+  rule: >-
+    MDE at 80% power, α = 0.05, computed from pre-period residual variance only, before any
+    post-period contrast is computed, and reported with the estimates. No minimum meaningful
+    effect is fixed: no official document names one (judgment, not a threshold).
+
+conclusion_rule:
+  B_supported: β_1 > 0 with RI p < 0.05, and β_1 ≥ β_2.
+  A_supported: β_D < 0 with RI p < 0.05, and β_1 not > 0 at p < 0.05.
+  neither: >-
+    A non-significant contrast is written as «MDE 이상 효과는 배제», never «효과 0»
+    (superseded by the 2026-10-18 supplement below: only when the CI lies inside ±MDE).
+  wording: >-
+    Every passing check supports the link; none proves it. Conclusions name the estimand scope
+    above (permit zone plus audit extension).
+
+threats:   # named threats, reported, not exclusion rules
+  pre_existing_trend: Zone chosen around MICE / 영동대로 development; designated 동 may have been on a different path. → pre_trend checks.
+  anticipation: 2020-06-17 announcement → 2020-06 dropped.
+  same_day_measures:
+    - Reconstruction members must live 2 years to get a unit (수도권 투기과열지구) — hits 동 with many old complexes. → sensitivity S1.
+    - Jeonse loan recall on buying > 3억 KRW, 6-month move-in for mortgages, funding-plan evidence — all of Seoul (투기과열지구); hit every group.
+    - Targeted audit extension to 대치 · 청담 — inseparable; part of the estimand.
+  spillover_beyond_ring2: Demand may have spread across the three districts, shrinking every contrast. → sensitivity S2.
+
+sensitivity:
+  S1: drop deals with buildYear ≤ 1990 (≥ 30 years old in 2020).
+  S2: far comparison = every non-designated, non-ring 법정동 of Seoul's 25 districts (needs a 25-district fetch).
+  S3: drop 강남 율현동 (deals in 7/22 months).
+
+amendments:   # added after fixing; the fields above stay as fixed, each addition says what it supersedes
+  - id: supplement-before-post-results
+    date: "2026-10-18"
+    seen_before: >-
+      Pre-period results (2019-06..2020-05 prices only) and four independent reviews of the plan.
+      No post-period price and no post contrast had been computed.
+    why: >-
+      The pre-period checks labelled direct and spillover «원래 흐름 차이 의심», and the review found
+      (1) a coding error in S2, (2) groups ordered by price tier, so price-tier shocks such as the
+      2019-12-16 measures hit them unequally, (3) a conclusion rule that read a non-significant
+      result as «MDE 이상 효과는 배제» without a confidence interval, (4) a median that moves when
+      the mix of traded apartments moves.
+    keeps: Unit lists, window, outcome and its construction, main model and primary inference are unchanged.
+    correction:
+      S2: >-
+        The text above is unchanged. The first estimation code dropped the 10 far_comparison 동
+        from S2 instead of keeping them and adding the rest of Seoul; S2 pre-period results are recomputed.
+    supersedes_conclusion_rule:
+      interval: >-
+        95% CI = estimate ± t(G−1, 0.975) × 동-clustered CR1 SE, G = number of 동. With 4 designated
+        동 this interval is optimistic for the direct contrast and is reported with that caveat.
+      multiplicity: The three contrasts' RI p-values are Holm-adjusted; «supported» uses the Holm p.
+      B_supported: β_1 > 0 with Holm RI p < 0.05, and β_1 ≥ β_2.
+      A_supported: β_D < 0 with Holm RI p < 0.05, and spillover classified «MDE 이상 효과 배제» (below).
+      not_significant: >-
+        «MDE 이상 효과 배제» only if the CI lies inside (−MDE, +MDE); otherwise «판별 불가». Never «효과 0».
+      gradient: β_1 ≥ β_2 is described by its point estimate; a gradient is «확인» only if its CI excludes 0.
+      ri_reading: >-
+        RI p is a spatial-placebo measure conditional on the 35 동 being exchangeable, which their
+        different sizes and price tiers make doubtful; it is not called an exact p-value.
+      pre_trend: A labelled contrast is reported with trend_violation_bound next to it.
+      estimand_wording: >-
+        «허가구역·기획조사 도입 이후 먼 동 대비 상대 변화. 같은 시기 가격대별 정책·개발 충격과 분리되지 않음.»
+    supplementary:   # reported next to the main estimate; none replaces it
+      exposure_step: >-
+        Main model + e_u × 1[month ≥ 2019-12]. e_u = share of non-cancelled deals with dealAmount
+        > 150000 (15억) in 2019-06..2019-11 in 동 u (exposure to the 2019-12-16 mortgage ban).
+      exposure_step_and_post: exposure_step + e_u × post.
+      within_complex: >-
+        Deal-level model: log price per m² on complex FE (sggCd, umdNm, aptNm, jibun) + month FE +
+        log excluUseAr + floor + group × post; deals with an empty floor are dropped. Same RI over
+        동 labels, CR1 clustered by 동. Also run with placebo onset 2019-12 on pre-period deals.
+      diagnostics: >-
+        Diagnostics, counts only: deals per group × month, cells with 0 and 1–4 deals, share of
+        cdealType 'O' per group × month.
+      past_placebo_years: >-
+        Past placebo onsets: June of Y = 2015..2019, window (Y−1)-06..(Y+1)-03 with June Y dropped,
+        the same 35 동 (a 동 without deals in that window drops out), main model and RI. A
+        descriptive benchmark: how many years give |estimate| ≥ |actual|. Five years cannot give a
+        p-value below 1/6. «Past years» means years without a 2020-style 4-동 designation, not years
+        without any permit zone: 강남·서초 자연녹지 has been a permit zone since 1998-11-19
+        (likely, land.seoul.go.kr 지정현황); 2017-08-02 and 2018-09-13 measures fall inside windows.
+      linear_trends: >-
+        Group-specific linear trends fitted on pre-period cells 2016-06..2020-05 (two-way FE +
+        group × month index), removed from every cell, then the main model on the main window.
+        Holdout check: fit on 2016-06..2019-05, predict the 2019-06..2020-05 group gaps. A step
+        change (such as at 2019-12) is not absorbed by a linear trend.
+      trend_violation_bound: >-
+        Trend-violation bound, an approximation to Rambachan–Roth relative magnitudes. Δmax = the
+        largest absolute month-to-month change of a contrast's pre-period leads (reference 0).
+        θ = mean of the contrast's post event-study coefficients. Bias of month k after the
+        reference ≤ M̄·Δmax·k, so θ's interval = θ ± (t·SE + M̄·Δmax·mean k) for M̄ ∈ {0, 0.5, 1, 2};
+        report the smallest M̄ whose interval contains 0. Ignores the estimation error of Δmax.
+    threats_added:
+      - "2019-12-16 measures (15억+ mortgage ban, LTV cut above 9억): share of 2019-06..11 deals above 15억 is designated 80.9 % · ring1 64.3 % · ring2 38.3 % · far 13.3 % (VERIFIED pre-only count 2026-10-18, n=9,953). → exposure_step, exposure_step_and_post."
+      - "2019-11-06 분양가상한제 27개동 (all 4 designated 동, some ring and far 동); extended to all of 강남·서초·송파 on 2019-12-16."
+      - "GBC · 영동대로 복합환승센터 (삼성동): 2019-06-10 approval, 2019-11-26 building permit, 2020-05-06 construction permit (likely, press)."
+      - "2020-07-10 tax measures, 2020-07-31 lease law, 2020-08-04 supply sites (삼성동 서울의료원 among them): post-period shocks that differ by price tier and place."
+    reinterpretations:
+      S1: >-
+        «노후 단지 구성 민감도». The 2-year residence rule for reconstruction members applies to
+        projects applying for 조합설립인가 after the law change (MOLIT 6·17 Q&A item 7), not at once.
+    limitations:
+      - dealingGbn is empty in every row (direct trades published from 2021-11 contracts), so direct trades cannot be excluded.
+      - Land share and zoning are not in the data, so the share of deals exempt from the 18 ㎡ land-share threshold cannot be computed.
+      - Cancellation reporting became mandatory on 2020-02-21 and its share differs by group; reported by diagnostics, not assumed equal.
+    guard: >-
+      The pre-period results record the sha256 of the plan, the collection and estimation code and
+      the collected data; the post-period stage stops before reading any price if any differs.
+  - id: make-flow-comparison
+    date: "2026-10-18"
+    seen_before: Everything the supplement above had seen plus its pre-period results. No post-period price and no post contrast.
+    adds: >-
+      A supplementary `make flow` run on this folder's plan.yaml: ring1 (10 동) vs far (10 동) only,
+      cell log median price per m², event study with relative-time window [-4, 8], reference 2020-05,
+      CRV1 by 동, placebo onset shifted to 2019-12, and that plan's abstention rules. Reported next to
+      the main estimate; it replaces neither the main estimate nor the conclusion rule.
+    why_window: >-
+      With 11 pre-period coefficients and 20 clusters the joint pre-trend Wald test rejected in
+      63–73 % of simulated datasets without any pre-trend (α = 0.10, 1,000 datasets per scenario);
+      with window [-4, 8] (2 coefficients) it rejected in 13–16 %. The judgement rests on simulated
+      data, not on this case's prices.
+
+changes_that_make_a_new_hypothesis:
+  - Any change to the unit lists other than a same-rule correction of a misread boundary.
+  - Moving the window end past 2021-03.
+  - Replacing the outcome or its construction.
+
+disclosures:
+  - "Before the plan was fixed, while checking the API: deal counts (totalCount) for 송파구 2019-05, 2019-06, 2020-07."
+  - "2026-10-18 data presence check: number of months with at least one deal, per 법정동, for 5 districts × 22 months (the `units` counts above)."
+  - "Before the plan was fixed: a reviewer opened a Seoul city explanatory document showing result figures; not transcribed."
+  - "2026-10-18 fetch: counts only — 557 pages, 159,934 deal rows (3,657 with cdealType 'O') for 25 districts × 22 months; every page resultCode 000 and item count = totalCount. No price printed."
+  - "2026-10-18 pre-period estimation: MDE, event-study lead joint tests and placebo-onset 2019-12 estimates for main · S1 · S2 · S3, from 2019-06..2020-05 prices only. Post-period months entered only as deal presence per cell."
+  - "2026-10-18 plan review: post-period deal counts (e.g. designated 673 non-cancelled deals in 2020-07..2021-03, cells under 10 deals, cdealType 'O' counts per group), pre-only shares of deals above 9억/15억 per group, counts of fully identical pre-period rows."
+  - "2026-10-18 fetch for the supplement: 강남·서초·송파 × 201406..201905, 185 pages; total 742 pages, 243,093 rows, every page resultCode 000 and item count = totalCount. Counts only."
+  - "2026-10-18 pre-period estimation for the supplement: main · S1 · S3 unchanged, S2 corrected, plus exposure_step and within_complex with placebo onset 2019-12, diagnostics counts for all window months, past_placebo_years 2015..2019, linear_trends fit and holdout, trend_violation_bound Δmax, all from prices before 2020-06."
+  - "No post-period price and no post contrast has been computed."
+  - "2026-10-18 make flow check on pre-period cells: ring1 vs far, 2019-06..2020-05 prices only. make flow placebo_time (fake start 2019-12) estimate −0.125, p 0.0047. Joint pre-trend Wald on pre-period cells only (proxy for the full-window fit): window [-4, 8] chi2 p 0.34, randomisation inference p 0.40; window [-13, 8] chi2 p 0.00002, randomisation inference p 0.052. No post-period price and no post contrast computed."

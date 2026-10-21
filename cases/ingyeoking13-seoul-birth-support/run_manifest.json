@@ -1,0 +1,24 @@
+{
+  "case_id": "ingyeoking13-seoul-birth-support",
+  "started_at": "2026-10-18T17:20:19+00:00",
+  "finished_at": "2026-10-18T17:20:20+00:00",
+  "git_sha": "fe7780dd8e3222e5ed5117c0e6b0f3d4712605d0",
+  "git_dirty": true,
+  "plan_sha256": "fa1d1b837f2c4446a86d58d4f3b48a324e723e4b396e8d9b4b5c475c74f16ff6",
+  "data_sha256": "620969ed38217eefcda2acce51f08e65ff9dff9c963a90cfb00a9fe121d8f2eb",
+  "data_path": "data/panel.csv",
+  "versions": {
+    "python": "3.12.14",
+    "pandas": "2.3.3",
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pyfixest": "0.60.0",
+    "statsmodels": "0.15.0",
+    "pydantic": "2.14.1",
+    "matplotlib": "3.11.2"
+  },
+  "platform": "macOS-26.2-arm64-arm-64bit",
+  "verdicts": {
+    "log_births": "not_identified"
+  }
+}

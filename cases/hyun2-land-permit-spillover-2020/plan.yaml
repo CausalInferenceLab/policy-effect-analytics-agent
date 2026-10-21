@@ -1,0 +1,104 @@
+# 사전 등록 분석계획 — 지정 이후(2020-07~2021-03) 가격을 보기 전에 작성·커밋했습니다.
+# 스키마: core/schema/plan.py. 이 파일은 `make flow`가 실행하는 단일 대비(옆 동 vs 먼 동)만 담습니다.
+# 전체 사전 등록(4개 집단 동시 모형, 무작위화 추론, 민감도 S1~S3, 지정 이후 계산 전에 더한 보조 분석)은
+# analysis-plan.yaml 에 있고, 그 계획이 주 분석입니다. 두 파일의 관계는 README.md 에 적었습니다.
+case_id: hyun2-land-permit-spillover-2020
+title: "토지거래허가구역 지정(2020.6.23, 잠실·삼성·대치·청담) 뒤 옆 동네 아파트 ㎡당 가격(풍선효과)"
+question: >
+  2020년 6월 23일 송파구 잠실동과 강남구 삼성·대치·청담동을 토지거래허가구역으로 지정한 뒤,
+  이 4개 동과 경계를 맞댄 법정동 10곳의 아파트 ㎡당 거래가격 중위값이
+  강남·서초·송파구의 떨어진 법정동 10곳과 비교해 달라졌는가?
+synthetic_data: false
+
+unit: {name: 법정동, id_col: dong_id}   # dong_id = 시군구코드(5자리) + 법정동 이름
+time: {col: month_idx, freq: month, start: 0, end: 21}   # 0 = 2019-06, 13 = 2020-07, 21 = 2021-03
+
+treatment:
+  definition: >
+    지정 4개 동(강남 삼성·대치·청담, 송파 잠실)과 법정동 경계를 맞댄 동 10곳
+    (강남 개포·논현·도곡·신사·압구정·역삼·일원, 송파 삼전·석촌·신천). 한강 건너 경계는 세지 않는다.
+    발표 2020-06-17, 시행 2020-06-23(서울특별시 공고 제2020-1832호). 2020-06(month_idx 12)은 발표와 시행이
+    겹쳐 모든 분석에서 뺀다. 첫 처치 월 = 2020-07(month_idx 13).
+    같은 발표에서 국세청 등의 실거래 기획조사가 잠실·삼성에서 대치·청담으로 넓어졌으므로,
+    추정 대상은 «허가구역 + 같은 날 넓어진 기획조사»다.
+  group_col: ring1
+  treat_time: 13
+control:
+  definition: >
+    강남·서초·송파구에서 지정 동도 아니고 지정 동의 1·2차 인접 동도 아닌 법정동 10곳
+    (강남 세곡·율현, 서초 방배·신원·우면, 송파 거여·마천·문정·오금·장지).
+    지정 4개 동과 2차 인접 동 11곳은 이 대비에서 뺀다.
+  rationale: >
+    같은 구에서 같은 대출·세제 규제와 서울 전체 수요 충격을 받으면서, 허가구역과 경계를 맞대지 않아
+    수요가 직접 옮겨 오기 어려운 동이다. 다만 두 가지로 대리가 흐려질 수 있다. 첫째, 지정 전 15억 원 넘는
+    거래 비율이 옆 동 64%, 먼 동 13%(2019-06~11)로 달라 가격대별 정책(2019-12-16 대책 등)이 두 집단에
+    다르게 걸린다. 둘째, 수요가 먼 동까지 번지면 차이가 작게 나온다.
+
+outcomes:
+  - name: 아파트 ㎡당 거래가격 중위값(로그)
+    col: log_price_m2
+    definition: >
+      법정동·계약월별로 해제 신고(cdealType 비어 있지 않음)를 뺀 거래의 거래금액(만원) ÷ 전용면적(㎡)
+      중위값의 자연로그. 거래가 없는 칸은 결측으로 두고 채우지 않는다.
+    unit: "log 만원/㎡"
+    primary: true
+    expected_direction: unknown   # 답 A(옆 동 변화 없음)와 답 B(풍선효과로 상승)가 갈린다
+
+estimator:
+  method: event_study
+  cluster_col: dong_id
+  ref_period: -2        # 2020-05(month_idx 11). 2020-06 은 데이터에서 뺐다
+  # 지정 전 2019-06~2020-03(−13~−4)을 한 값으로 묶는다. 지정 전 계수가 11개면 동 20곳으로는 사전추세
+  # 결합검정이 흐름 차이가 없는 가짜 자료에서도 약 70% 기각한다(가짜 자료 1,000회, 기준 10%).
+  # 2개로 줄이면 13~16%로 내려간다. 2019-12 무렵의 꺾임은 가짜 시작일 검정(refutations)이 따로 본다.
+  window: [-4, 8]
+  alpha: 0.05
+
+assumptions:
+  - name: 평행추세
+    description: "지정이 없었다면 옆 동과 먼 동의 가격 흐름은 같았을 것"
+    check: pretrend_test
+  - name: 2019-12 무렵의 사전 차이
+    description: >
+      2019-12-16 대책(15억 원 넘는 아파트 담보대출 금지)이 고가 거래가 많은 옆 동에 더 세게 걸렸을 수 있다.
+      가짜 시작일 2019-12(month_idx 6)로 같은 비교를 한다
+    check: placebo_time
+  - name: 파급효과가 먼 동에 닿지 않음(SUTVA)
+    description: "수요가 먼 동까지 옮겨 가면 대조군이 오염되어 차이가 작게 추정된다. 서울 전체 대조(analysis-plan S2)로 본다"
+    check: manual
+  - name: 같은 시기 다른 정책
+    description: >
+      2019-11-06 분양가상한제 27개 동, 2020-07-10 세제, 2020-07-31 임대차법, 2020-08-04 공급대책(삼성동 서울의료원 부지),
+      GBC·영동대로 개발이 동마다 다르게 걸린다. 분리하지 못하므로 한계로 적는다
+    check: manual
+  - name: 거래되는 집의 구성
+    description: "허가 대상(대지지분 18㎡ 초과)이 줄면 같은 동 안에서도 거래되는 단지·면적이 바뀌어 중위값이 움직인다. 같은 단지 안에서 비교하는 보조 분석(analysis-plan.yaml within_complex)으로 본다"
+    check: manual
+
+refutations:
+  - kind: placebo_time
+    params: {shift: 7}   # 13 − 7 = 6 → 2019-12
+
+abstention:
+  - when: pretrend_rejected
+    verdict: not_identified
+    note: "지정 전 흐름이 다르면 지정 효과로 보고하지 않는다"
+  - when: placebo_significant
+    verdict: conditional
+  - when: ci_crosses_zero
+    verdict: conditional
+    note: "신뢰구간이 −MDE와 +MDE 사이에 다 들어올 때만 «MDE 이상 효과 배제», 아니면 «판별 불가». «효과 없음»으로 쓰지 않는다"
+  - when: few_clusters
+    verdict: conditional
+
+thresholds: {pretrend_alpha: 0.10, min_clusters: 20, min_pre_periods: 3}
+
+data_sources:
+  - name: "국토교통부_아파트 매매 실거래가 자료"
+    provider: "국토교통부 (공공데이터포털 15126469)"
+    url: "https://www.data.go.kr/data/15126469/openapi.do"
+    license: other
+    notes: >
+      공공데이터포털 표기 «이용허락범위 제한 없음»(공공누리 유형 표기 없음, 2026-10-18 확인).
+      LAWD_CD 11680·11650·11710, DEAL_YMD 2019-06~2021-03. DATA_GO_KR_API_KEY 필요.
+      원자료와 data/panel.csv 는 커밋하지 않고 fetch.py 로 받는다.
