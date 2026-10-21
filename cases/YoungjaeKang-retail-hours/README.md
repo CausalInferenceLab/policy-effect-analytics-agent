@@ -1,5 +1,7 @@
 # 대형마트 의무휴업 평일 전환과 골목상권 매출
 
+> **2026-10-21 최신 상태:** 원자료 열람 후 사용자 승인으로 **관측된 매출 행의 합계**를 탐색 지표로 삼았다. 실자료 전체336행·추정315행을 생성하고 이벤트스터디·가짜 시행일 검사를 실행했다. 평균 비교계수0.0124 로그포인트(p=0.955)로 방향·크기는 불확실하다. 전체 골목상권 매출의 인과효과는 판단 불가다. [결과와 한계](discussion.md), [수집·진단 이력](sales-readiness.md), [생성 보고서](report.md)를 참조한다. 아래10/20 기록은 당시 상태다.
+
 작성자: 강영재 (`YoungjaeKang`)
 
 동대문구의 대형마트가 일요일 대신 평일에 쉬게 된 뒤 골목상권의 식품판매 매출이 어떻게 달라졌는지 살펴본다. 서울의 다른 자치구와 비교하고, 자료 수집부터 검사·분석·보고서 작성까지 이어서 실행할 수 있도록 만드는 것이 7주 과정의 목표다.
@@ -20,7 +22,7 @@
 
 선행연구의 질문·방법·한계와 사례에 적용할 내용은 [연구 노트](research-notes.md)에 정리했다.
 
-초기 계획은 [PR #9](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/9)로 main에 병합됐고, 선행연구·분기 처리 보완 [PR #10](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/10)과 비교군 조사 [PR #11](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/11)은 2026-10-15 병합됐다. 매출 원자료는 아직 수집하거나 분석하지 않았다. 비교군 정책 이력, 동시기 지원사업, 자료 기준을 확인하고 필요한 계획 보완을 커밋·PR에 반영한 뒤 수집 코드(`fetch.py`)와 이 사례에 필요한 검사를 작성할 예정이다. 점포별 예외 전수 확인은 완료 조건에서 제외했다. 정책 오분류·동시 정책·공간 파급의 한계를 명시한 탐색 분석으로 진행하며 순수 인과효과 판단은 보류한다. 매출·공간 버전 호환성 검사는 후속 수집의 필수 조건이다.
+초기 계획은 [PR #9](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/9)로 main에 병합됐고, 선행연구·분기 처리 보완 [PR #10](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/10)과 비교군 조사 [PR #11](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/11)은 2026-10-15 병합됐다. 매출 원자료는 2026-10-21 취득·점검했으며 실제 효과는 추정하지 않았다. 수집 코드(`fetch.py`)와 사례별 검사는 구현했으며, 원본 해시와 관측 공백을 재현할 수 있다. 실자료 패널 발행은 아래 품질 조건 해소까지 보류한다. 점포별 예외 전수 확인은 완료 조건에서 제외했다. 정책 오분류·동시 정책·공간 파급의 한계를 명시한 탐색 분석으로 진행하며 순수 인과효과 판단은 보류한다. 매출·공간 버전 호환성 검사는 후속 수집의 필수 조건이다.
 
 특성자료 수집·검사는 매출 수집보다 먼저 진행한다. 서울 자료는 공공누리 1유형, 인구 자료는 동일 통계의 공식 제공목록에서 이용허락범위 제한 없음을 확인했다. 수집 계획은 [PR #12](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/12)로 2026-10-15 병합됐으며, 이 구현은 그 후속 작업이다.
 
@@ -93,3 +95,18 @@ make check PY=.venv/bin/python
 | 리포트 PR | 결과·그림, discussion.md의 해석·한계, 보고서 생성과 재현 안내 | 보고서와 산출물이 일치하고 다른 참여자가 재현 가능 |
 
 수집·품질 검사·추정은 하나의 수집·분석 PR 안에서 순차 진행한다. 매출 원자료 열람·패널 생성·효과 추정은 아직 하지 않았다. 점포 예외 전수 확인은 선행 조건에서 제외하되 입력 품질 기준과 탐색적 해석 원칙은 유지한다. 상세 작업과 공식 목표일은 [계획](plan.md#8-제출-순서와-남은-일)에 기록한다.
+
+
+## 관측 매출 탐색 분석 재현
+
+원본은 같은 snapshot을 지정해 재사용한다. `build`는 원래 전체매출 지표의 보류 진단만 수행하며, `build-observed`는 승인된 관측 지표의 패널을 생성한다. 기본 명령도 `build-observed`다.
+
+```bash
+.venv/bin/python cases/YoungjaeKang-retail-hours/fetch.py build-observed \
+  --snapshot cases/YoungjaeKang-retail-hours/data/raw/sales/20261021T120614Z
+MPLCONFIGDIR=/tmp/retail-matplotlib make flow PY=.venv/bin/python CASE=cases/YoungjaeKang-retail-hours
+```
+
+처음 재현하는 경우 `fetch.py fetch`로 원본을 취득한다. 제공기관 수정으로 새 원본은 기존 해시와 다를 수 있다. 분석 전에 `build-observed`를 성공시켜 패널과 출처를 갱신한다. 실패하면 기존 패널이 있어도 flow를 실행하지 않는다. 공통 flow는 기존 패널을 재사용한다.
+
+`data/observed-full.csv`에는 전환기 포함336행, `data/panel.csv`에는315행과 `log_observed_sales`, `data/panel.source.json`에는 입력·코드·계획·패널 해시 및 한계가 있다. 업종별 금액 미관측과 관측 수는 감사 폴더의 `observation-diagnostics.csv`에서 확인한다. 기존 전체매출의 완전성 검증을 통과했다는 뜻이 아니다.
