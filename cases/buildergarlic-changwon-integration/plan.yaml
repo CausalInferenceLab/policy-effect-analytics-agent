@@ -1,0 +1,122 @@
+# 사전 등록 분석계획 — 이 브랜치에서는 결과를 보기 전에 이 파일을 먼저 커밋합니다.
+#
+# 변경 이력(초안 PR #28 → 이 계획): 초안은 '주민 1인당 행정운영경비(지방재정365 결산)'를 지표로 잡았지만
+#   그 표는 API·장기 시계열이 없어 fetch.py 로 재현할 수 없었습니다. KOSIS OpenAPI 로 받을 수 있고
+#   1998년부터 시군구 단위로 이어지는 세 지표(주민등록인구·순이동·재정자립도)로 바꿨습니다. 처치 단위가
+#   한 곳이라 core 의 무작위화 추론(placebo-in-space)을 주 추정으로 쓰고, 합성통제(synth.py)로 보완합니다.
+#   초안이 요구한 '통합 전 3개 시 합산 → 동일 경계', '2010 전환연도 제외', '2011 첫 사후연도'는 그대로입니다.
+case_id: buildergarlic-changwon-integration
+title: "마산·창원·진해 행정구역 통합(2010.7.1)이 통합 창원시의 인구·인구이동·재정자립도에 미친 효과"
+question: >
+  2010년 7월 1일 마산시·창원시·진해시가 통합 창원시로 합쳐진 뒤, 같은 기간 행정구역이 바뀌지 않은
+  전국의 다른 기초 시들과 비교해, (통합 전 3개 시를 합산해 같은 경계로 맞춘) 창원의 주민등록인구·순이동률·
+  재정자립도가 달라졌는가?
+synthetic_data: false
+
+unit: {name: 기초 시(통합 경계 재구성), id_col: region_id}
+time: {col: year, freq: year, start: 1998, end: 2023}   # 2010(전환연도)은 fetch.py 가 모든 시에서 제외
+
+treatment:
+  definition: >
+    「경상남도 창원시 설치 및 지원특례에 관한 법률」(법률 제10052호, 2010.3.12 공포)에 따라 2010.7.1 출범한
+    통합 창원시. 통합 전(≤2009)은 마산·창원·진해 3개 시 값을 합산해 같은 경계로 맞춤. 2010년은 반년만
+    통합된 전환연도라 제외하고 2011년을 첫 사후연도로 둠(주민여론조사 2009.11, 국회 통과 2010.3).
+  group_col: treated
+  treat_time: 2011
+control:
+  definition: >
+    1998~2023년 사이 행정구역 통합·분리·승격이 없었던 전국 기초 시 62곳(fetch.py 의 DONOR_CITIES).
+    통합·경계변경이 있었던 청주·공주·논산·계룡·제주·서귀포·화성·광주·양주·포천·당진·여주·울산·세종과
+    창원에 접한 김해·밀양은 제외.
+  rationale: >
+    같은 전국 경기·인구정책·지방재정제도 변화를 받는 기초 시 집단이라 '통합이 없었다면'의 추세를 대리한다.
+    처치 단위가 하나라 군집-강건 표준오차 대신 무작위화 추론(비교 시 하나를 차례로 가짜 창원으로 두는
+    placebo-in-space)으로 p값·신뢰구간을 내고, 합성통제(synth.py)로 같은 패널을 다시 본다.
+
+outcomes:
+  - name: 주민등록인구(로그)
+    col: log_population
+    definition: "log(연말 주민등록 총인구수). 통합 전은 3개 시 인구 합계의 로그"
+    unit: "log 명"
+    primary: true
+    expected_direction: increase     # 통합 추진 당시 '인구 100만 광역도시로 성장'이 명시적 목표였음
+  - name: 순이동률(인구 천명당)
+    col: net_migration_rate
+    definition: >
+      (연간 총전입 − 총전출) ÷ 연말 주민등록인구 × 1000. 통합 전은 3개 시의 전입·전출을 각각 합산한 뒤
+      계산(3개 시 사이의 이동은 전입과 전출에 같이 잡혀 상쇄됨)
+    unit: "명/천명"
+    expected_direction: unknown
+  - name: 재정자립도
+    col: fiscal_independence
+    definition: >
+      e-지방지표 재정자립도(%) = (지방세 + 세외수입) ÷ 일반회계 세입 × 100. 통합 전은 3개 시의 인구 가중
+      평균(예산 가중이 정확하나 예산 규모가 같은 표에 없어 근사). 2014년 세외수입 분류 변경은 모든
+      지자체에 같이 적용되어 연도 고정효과로 흡수
+    unit: "%"
+    expected_direction: unknown
+
+estimator:
+  method: event_study
+  cluster_col: region_id
+  ref_period: -2          # 2010(상대시점 -1)은 전환연도로 제외하므로 2009(상대시점 -2)를 기준
+  window: [-8, 10]        # 2003~2021 을 개별 계수, 그 밖은 양끝에 묶음
+  alpha: 0.05
+
+assumptions:
+  - name: 평행추세
+    description: "통합이 없었다면 통합 경계 창원과 비교 시들의 결과 추세가 같았을 것. 1998~2009 사전 계수의 무작위화 추론 결합검정"
+    check: pretrend_test
+  - name: 선반영 없음
+    description: "통합 논의(2009 주민여론조사)와 국회 통과(2010.3) 전에 이미 인구 이동이 반응했는지 가짜 시점(2008) 검정"
+    check: placebo_time
+  - name: 파급효과 없음(SUTVA)
+    description: "김해·밀양 등 인접 시로 인구·세원이 옮겨가면 대조군이 오염됨 → 인접 시 제외. 나머지 전국 시로의 파급은 작다고 가정"
+    check: manual
+  - name: 동시 정책 없음
+    description: "창원에만 적용된 통합 인센티브(보통교부세 특례 등)는 '통합 패키지'의 일부로 보고 분리하지 않음. 그 밖의 창원 한정 정책은 수동 점검"
+    check: manual
+
+refutations:
+  - kind: placebo_time
+    params: {shift: 3}     # 사전 구간(1998~2009)만으로 2008 을 가짜 통합연도로 두고 재추정
+
+abstention:
+  - when: pretrend_rejected
+    verdict: not_identified
+    note: "통합 전부터 추세가 달랐다면 통합 효과로 보고하지 않는다"
+  - when: few_treated_clusters
+    verdict: conditional
+    note: "처치 단위가 1개 — p값·신뢰구간은 무작위화 추론, 합성통제(synth.py)로 보완"
+  - when: placebo_significant
+    verdict: conditional
+  - when: ci_crosses_zero
+    verdict: conditional
+    note: "효과 없음이 아니라 '판별 불가'로 보고"
+  - when: short_pre_period
+    verdict: conditional
+
+thresholds: {pretrend_alpha: 0.10, min_clusters: 20, min_pre_periods: 5}
+
+data_sources:
+  - name: "행정구역(시군구)별 성별 인구수 — 주민등록인구현황 (KOSIS DT_1B040A3)"
+    provider: "행정안전부 · KOSIS 국가통계포털"
+    url: "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1B040A3"
+    license: KOGL-1
+    adapter: kosis
+    query: {orgId: "101", tblId: DT_1B040A3, itmId: T20, objL1: ALL, prdSe: Y, startPrdDe: "1998", endPrdDe: "2023"}
+    notes: "KOSIS_API_KEY 필요(무료). 1992년부터 연말 주민등록 총인구(T20). 공공누리 유형은 통계표 하단에서 확인"
+  - name: "시군구별 이동자수 — 국내인구이동통계 (KOSIS DT_1B26001_A01)"
+    provider: "통계청 · KOSIS 국가통계포털"
+    url: "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1B26001_A01"
+    license: KOGL-1
+    adapter: kosis
+    query: {orgId: "101", tblId: DT_1B26001_A01, itmId: ALL, objL1: ALL, prdSe: Y, startPrdDe: "1998", endPrdDe: "2023"}
+    notes: "총전입(T10)·총전출(T20). 순이동 = 전입 − 전출"
+  - name: "재정자립도(시도/시/군/구) — e-지방지표 (KOSIS DT_1YL20921, ID 확인 필요)"
+    provider: "행정안전부 · KOSIS e-지방지표"
+    url: "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1YL20921"
+    license: KOGL-1
+    adapter: kosis
+    query: {orgId: "101", tblId: DT_1YL20921, itmId: ALL, objL1: ALL, prdSe: Y, startPrdDe: "1998", endPrdDe: "2023"}
+    notes: "통계표 ID 를 원본 페이지에서 확인하지 못함. 오류가 나면 `python fetch.py --list-fiscal` 로 후보를 찾아 이 줄과 fetch.py 의 FIS_TBL 을 고친다(설계는 그대로)"
