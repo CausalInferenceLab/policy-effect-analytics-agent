@@ -71,27 +71,21 @@ BIZ_COLS = ["C1", "C1_NM", "C2", "C2_NM", "C3", "C3_NM", "ITM_NM", "PRD_DE", "DT
 
 
 def _biz_rows(code, name, year, total_emp, mfg_emp, total_est):
+    """사업체노동실태현황(9차 표) 모양: 항목 '사업체수'·'총종사자수_계', 산업 대분류는 'C. 제조업(10~33)' 처럼 알파벳 접두어,
+    소분류('식료품제조업')는 접두어 없음, 규모 '전규모'."""
     rows = []
     for ind_code, ind in (
-        ("0", "전산업"),
-        ("C", "제조업"),
-        ("J", "정보통신업"),
-        ("K", "금융 및 보험업"),
+        ("0", "전체"),
+        ("C", "C. 제조업(10~33)"),
+        ("C10", "식료품제조업"),
+        ("J", "J. 출판영상방송통신및정보서비스업(58~63)"),
+        ("K", "K. 금융및보험업(64~66)"),
+        ("K66", "금융및보험관련서비스업"),
     ):
-        for size_code, size in (("0", "계"), ("1", "1~4인"), ("2", "5~9인")):
-            emp = {
-                "전산업": total_emp,
-                "제조업": mfg_emp,
-                "정보통신업": 300,
-                "금융 및 보험업": 200,
-            }[ind]
-            est = {
-                "전산업": total_est,
-                "제조업": total_est // 5,
-                "정보통신업": 20,
-                "금융 및 보험업": 30,
-            }[ind]
-            f = 1.0 if size == "계" else 0.3
+        for size_code, size in (("00", "전규모"), ("01", "1~4인"), ("02", "5~9인")):
+            emp = {"0": total_emp, "C": mfg_emp, "C10": mfg_emp // 4, "J": 300, "K": 200, "K66": 50}[ind_code]
+            est = {"0": total_est, "C": total_est // 5, "C10": 10, "J": 20, "K": 30, "K66": 5}[ind_code]
+            f = 1.0 if size == "전규모" else 0.3
             rows.append(
                 (
                     code,
@@ -100,9 +94,22 @@ def _biz_rows(code, name, year, total_emp, mfg_emp, total_est):
                     ind,
                     size_code,
                     size,
-                    "종사자수",
+                    "총종사자수_계",
                     str(year),
                     str(int(emp * f)),
+                )
+            )
+            rows.append(
+                (
+                    code,
+                    name,
+                    ind_code,
+                    ind,
+                    size_code,
+                    size,
+                    "총종사자수_남자",
+                    str(year),
+                    str(int(emp * f * 0.6)),
                 )
             )
             rows.append(
@@ -145,12 +152,37 @@ def test_pick_dims_selects_total_rows_and_sums_over_pattern():
     mfg = fetch.pick_dims(fetch.pick_item(d, "종사자"), fetch.MEASURES["employees_mfg"])
     assert mfg["value"].tolist() == [400]
     hvs = fetch.pick_dims(fetch.pick_item(d, "종사자"), fetch.MEASURES["employees_hvs"])
-    assert hvs["value"].tolist() == [500]  # 정보통신 300 + 금융보험 200 (규모 '계'만)
+    assert hvs["value"].tolist() == [500]  # J 300 + K 200 (대분류만 — 소분류 K66 제외, 규모 '전규모'만)
     with pytest.raises(ValueError, match="맞는 이름이 없습니다"):
         fetch.pick_dims(
             fetch.pick_item(d, "종사자"),
-            fetch.Measure("x", ("biz_mid",), "종사자", select={"industry": "^농업"}),
+            fetch.Measure("x", ("lab07",), "종사자", select={"industry": "^농업"}),
         )
+
+
+def test_item_and_industry_patterns_cover_all_table_generations():
+    """8차(2001~2006)·9차·10차 표의 항목·분류 이름이 같은 정규식으로 잡혀야 한다."""
+    import re
+
+    assert re.search(fetch.EMP_ITEM, "총종사자수") and re.search(fetch.EMP_ITEM, "총종사자수_계")
+    assert not re.search(fetch.EMP_ITEM, "총종사자수_남자")
+    for name in ("제조업(15∼37)", "C. 제조업(10~33)", "C.제조업(10~34)"):
+        assert re.match(fetch.MFG_PAT, name), name
+    assert not re.match(fetch.MFG_PAT, "식료품제조업")
+    for name in ("전산업", "전체", "전규모", "계"):
+        assert re.match(fetch.TOTAL_PAT, name), name
+    for name in (
+        "J. 출판영상방송통신및정보서비스업(58~63)",
+        "J.정보통신업(58~63)",
+        "K. 금융및보험업(64~66)",
+        "M.전문 과학 및 기술 서비스업(70~73)",
+    ):
+        assert re.search(fetch.HVS_PAT, name), name
+    assert not re.search(fetch.HVS_PAT, "금융및보험관련서비스업")
+    assert re.search(fetch.MEASURES["unemployment_rate"].item, "실업률 (％)")
+    assert not re.search(fetch.MEASURES["unemployment_rate"].item, "실업률(RSE)")
+    assert re.search(fetch.MEASURES["employment_rate"].item, "고용률 (%)")
+    assert not re.search(fetch.MEASURES["employment_rate"].item, "15~64세 고용률 (%)")
 
 
 AGE_COLS = ["C1", "C1_NM", "C2", "C2_NM", "C3", "C3_NM", "ITM_NM", "PRD_DE", "DT"]
@@ -190,26 +222,36 @@ def _age_rows(code, name, year, by_age: dict[str, int]):
     return rows
 
 
-def test_age_measures_sum_youth_and_elderly_bands():
-    ages = {
-        "0~4세": 50,
-        "15~19세": 60,
-        "20~24세": 70,
-        "25~29세": 80,
-        "30~34세": 90,
-        "60~64세": 40,
-        "65~69세": 30,
-        "70~74세": 20,
+def test_age_measures_sum_youth_and_under65_bands():
+    """주민등록연앙인구 표처럼 '80세 이상'·'85세 이상' 합계행이 세부 계급과 함께 있어도 65세 이상을 이중 계산하지 않는다
+    (65세 이상 = 계 − 0~64세 합). '통합창원시' 는 창원시로 맞춘다."""
+    detail = {
+        "0 - 4세": 50,
+        "15 - 19세": 60,
+        "20 - 24세": 70,
+        "25 - 29세": 80,
+        "30 - 34세": 90,
+        "60 - 64세": 40,
+        "65 - 69세": 30,
+        "70 - 74세": 20,
+        "80 - 84세": 6,
+        "85 - 89세": 3,
         "100세 이상": 1,
     }
-    d = fetch.tidy(_resp(_age_rows("48120", "창원시", 2015, ages), AGE_COLS))
+    rows = _age_rows("38110", "통합창원시", 2015, detail)
+    for sex_code, sex in (("0", "계"), ("1", "남"), ("2", "여")):
+        for i, (k, v) in enumerate((("80세 이상", 10), ("85세 이상", 4))):
+            rows.append(("38110", "통합창원시", sex_code, sex, f"9{i}0", k, "인구", "2015", str(v if sex == "계" else v // 2)))
+    rows = [(*r[:6], "주민등록연앙인구", *r[7:]) for r in rows]
+    d = fetch.tidy(_resp(rows, AGE_COLS))
     assert fetch.detect_dims(d) == {"sex": "C2_NM", "age": "C3_NM"}
     tot = fetch.pick_dims(fetch.pick_item(d, "인구"), fetch.MEASURES["pop_age_total"])
     youth = fetch.pick_dims(fetch.pick_item(d, "인구"), fetch.MEASURES["pop_youth"])
-    old = fetch.pick_dims(fetch.pick_item(d, "인구"), fetch.MEASURES["pop_elderly"])
-    assert tot["value"].tolist() == [sum(ages.values())]
+    under65 = fetch.pick_dims(fetch.pick_item(d, "인구"), fetch.MEASURES["pop_under65"])
+    assert tot["value"].tolist() == [sum(detail.values())]
     assert youth["value"].tolist() == [70 + 80 + 90]
-    assert old["value"].tolist() == [30 + 20 + 1]
+    assert under65["value"].tolist() == [50 + 60 + 70 + 80 + 90 + 40]
+    assert fetch.city_rows(tot)["region"].tolist() == ["창원시"]
 
 
 def test_pick_dims_refuses_ambiguous_untouched_dimension():
@@ -222,6 +264,15 @@ def test_pick_dims_refuses_ambiguous_untouched_dimension():
             fetch.pick_item(d, "인구"),
             fetch.Measure("x", ("age",), "인구", sum_over={"age": fetch.YOUTH_PAT}),
         )
+
+
+def test_pick_dims_skips_select_dimension_absent_from_table():
+    """2002~ 표는 성별이 항목(총종사자수_계)에 있어 'sex' 분류가 없다 — select 의 sex 조건은 건너뛴다."""
+    d = fetch.tidy(_resp(_biz_rows("15118ZONE_07383811", "창원시", 2015, 1000, 400, 100), BIZ_COLS))
+    emp = fetch.pick_dims(fetch.pick_item(d, fetch.EMP_ITEM), fetch.MEASURES["employees"])
+    assert emp["value"].tolist() == [1000]  # 성별 분류가 없어도 전체·전규모 행 하나
+    mfg = fetch.pick_dims(fetch.pick_item(d, fetch.EMP_ITEM), fetch.MEASURES["employees_mfg"])
+    assert mfg["value"].tolist() == [400]  # 'C. 제조업(10~33)' 만 — 소분류 '식료품제조업' 은 제외
 
 
 # ── 경계 재구성 ───────────────────────────────────────────────────────────────────────────────
@@ -248,7 +299,7 @@ def test_reconstruct_sums_before_merger_and_weighted_mean_for_rates():
         fetch.reconstruct(_toy({"마산시": 1.0, "창원시": 4.0, "진주시": 9.0}), "sum")
 
 
-def test_city_rows_treats_zero_filled_defunct_codes_as_missing_and_keeps_7digit_codes():
+def test_city_rows_treats_zero_filled_defunct_codes_as_missing_and_matches_by_name():
     long = pd.DataFrame(
         [
             ("48160", "마산시", "종사자수", "2011", 0),  # 폐지 코드: KOSIS 가 '-' 대신 0 으로 채움
@@ -256,16 +307,20 @@ def test_city_rows_treats_zero_filled_defunct_codes_as_missing_and_keeps_7digit_
             ("48121", "의창구", "종사자수", "2011", 90000),  # 일반구 → 제외
             ("1236010", "전라남도 목포시", "재정자립도(세입과목개편전)", "2011", 25.3),
             ("48", "경상남도", "종사자수", "2011", 1),
+            ("3803", "진주시", "고용률 (%)", "201302", 63.2),  # 지역별고용조사 4자리 코드·반기 시점
+            ("15118ZONE_07383805", "통영시", "사업체수", "2009", 3000),  # 사업체노동실태현황 코드
+            ("3099", "경기도", "고용률 (%)", "201302", 60.0),  # 시도 행 → 제외
         ],
         columns=["region_code", "region", "item", "period", "value"],
     )
     d = fetch.city_rows(long).set_index("region")
-    assert set(d.index) == {"마산시", "창원시", "목포시"}
+    assert set(d.index) == {"마산시", "창원시", "목포시", "진주시", "통영시"}
     assert (
         np.isnan(d.loc["마산시", "value"])
         and d.loc["창원시", "value"] == 400000
         and d.loc["목포시", "value"] == 25.3
     )
+    assert d.loc["진주시", "year"] == 2013 and d.loc["통영시", "year"] == 2009
 
 
 def _biz_long(years, cities, with_prefix=False):
@@ -275,9 +330,9 @@ def _biz_long(years, cities, with_prefix=False):
         for y in years:
             gone = c in ("마산시", "진해시") and y >= fetch.MERGE_YEAR
             if gone:
-                rows += [(code, c, "0", "전산업", "0", "계", "종사자수", str(y), "0"),
-                         (code, c, "0", "전산업", "0", "계", "사업체수", str(y), "0"),
-                         (code, c, "C", "제조업", "0", "계", "종사자수", str(y), "0")]  # fmt: skip
+                rows += [(code, c, "0", "전체", "00", "전규모", "총종사자수_계", str(y), "0"),
+                         (code, c, "0", "전체", "00", "전규모", "사업체수", str(y), "0"),
+                         (code, c, "C", "C. 제조업(10~33)", "00", "전규모", "총종사자수_계", str(y), "0")]  # fmt: skip
             else:
                 rows += _biz_rows(
                     code,
@@ -293,8 +348,8 @@ def _biz_long(years, cities, with_prefix=False):
 def test_build_measure_concatenates_tables_and_prefers_latest_on_overlap():
     cities = (*fetch.PRE_MERGER, "진주시")
     raw = {
-        "biz_old": _biz_long(range(2001, 2006), cities),
-        "biz_mid": _biz_long(range(2005, 2012), cities, True),
+        "lab04": _biz_long(range(2001, 2006), cities),
+        "lab07": _biz_long(range(2005, 2012), cities, True),
     }
     out = fetch.build_measure(fetch.MEASURES["employees"], raw).set_index(["region", "year"])[
         "value"
@@ -325,8 +380,8 @@ def test_finalize_core_builds_balanced_panel_with_shares():
                 )
     raw = {
         "pop": pd.DataFrame(pop_rows, columns=["region_code", "region", "item", "period", "value"]),
-        "biz_old": biz[biz["period"].astype(int) <= 2005], "biz_mid": biz[biz["period"].astype(int).between(2006, 2019)],
-        "biz_new": biz[biz["period"].astype(int) >= 2020],
+        "lab04": biz[biz["period"].astype(int) <= 2006], "lab07": biz[biz["period"].astype(int).between(2007, 2016)],
+        "lab17": biz[biz["period"].astype(int) >= 2017],
         "fiscal": pd.DataFrame(fis_rows, columns=["region_code", "region", "item", "period", "value"]),
     }  # fmt: skip
     pop_city = fetch.city_measure(fetch.MEASURES["population"], raw)
@@ -368,7 +423,7 @@ def test_finalize_extended_computes_ratio_indicators_and_allows_gaps():
             rows.append((c, y))
     base = pd.DataFrame(rows, columns=["region", "year"])
     parts = {
-        "pop_age_total": base.assign(value=1000.0), "pop_youth": base.assign(value=200.0), "pop_elderly": base.assign(value=150.0),
+        "pop_age_total": base.assign(value=1000.0), "pop_youth": base.assign(value=200.0), "pop_under65": base.assign(value=850.0),
         "mig_youth_in": base.assign(value=30.0), "mig_youth_out": base.assign(value=50.0),
         "employment_rate": base[base["year"] == 2012].assign(value=60.0),
     }  # fmt: skip

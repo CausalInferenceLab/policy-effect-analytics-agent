@@ -346,11 +346,9 @@ def run(n_perm: int = 999, make_figs: bool = True) -> dict:
     core = pd.read_csv(PANEL)
     ext = pd.read_csv(EXT) if EXT.exists() else None
     src = PANEL.with_suffix(".source.json")
-    synthetic = (
-        bool(json.loads(src.read_text("utf-8")).get("synthetic_data"))
-        if src.exists()
-        else plan.synthetic_data
-    )
+    src_meta = json.loads(src.read_text("utf-8")) if src.exists() else {}
+    synthetic = bool(src_meta.get("synthetic_data")) if src.exists() else plan.synthetic_data
+    indicator_errors = src_meta.get("indicator_errors", {})  # fetch.py 가 남긴 지표별 수집 실패 사유
     treat_time, merge_year = cfg["treat_time"], cfg["merge_year"]
     FIG.mkdir(exist_ok=True)
     rows = []
@@ -360,9 +358,8 @@ def run(n_perm: int = 999, make_figs: bool = True) -> dict:
         base = {"col": col, "name": ind["name"], "domain": ind["domain"], "goal": ind["goal"], "goal_basis": ind["goal_basis"],
                 "core": bool(ind.get("core")), "scale": ind.get("scale", "")}  # fmt: skip
         if df is None or col not in df.columns or df[col].notna().sum() == 0:
-            rows.append(
-                {**base, "class": "no_data", "note": "통계표 미확인/수집 실패 (fetch.py --probe)"}
-            )
+            note = indicator_errors.get(col) or "통계표 미확인/수집 실패 (fetch.py --probe)"
+            rows.append({**base, "class": "no_data", "note": note})
             continue
         try:
             d = balanced_subset(df, col, tuple(ind.get("years", ())) or None, merge_year)

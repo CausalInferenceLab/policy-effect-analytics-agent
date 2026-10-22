@@ -59,8 +59,8 @@ indicators:
     goal: increase
     goal_basis: "G2 청년 유출 완화 (그림 1-2 청년인구비율). 보고서는 19~34세, 5세 계급 자료라 20~34세로 근사"
     core: false
-    source: age
-    years: [2008, 2023]
+    source: age               # 주민등록연앙인구 DT_1B040M5(1993~2022) + DT_1B040M5_1(2023~) — 실수집에서 DT_1B04005N(2011~) 대신
+    years: [2001, 2023]       # 실수집: 연앙인구 표가 2001 부터 있어 사전 기간을 계획(2008~)보다 늘림
     scale: pct_point
   - col: elderly_share
     name: 고령(65세 이상) 인구 비율(%)
@@ -69,7 +69,7 @@ indicators:
     goal_basis: "G2 고령화 완화 (그림 1-2 고령인구비율)"
     core: false
     source: age
-    years: [2008, 2023]
+    years: [2001, 2023]       # 65세 이상 = 계 − (0~64세 계급 합): 표에 80세 이상·85세 이상 합계행이 세부 계급과 함께 있어 빼서 구함
     scale: pct_point
   - col: youth_net_migration_rate
     name: 청년(20~34세) 순이동률(‰)
@@ -77,8 +77,8 @@ indicators:
     goal: increase
     goal_basis: "G2 청년 순유출률 (그림 1-1). (전입−전출) ÷ 청년인구 × 1000, 부호가 반대라 '증가'가 유출 완화"
     core: false
-    source: mig_age
-    years: [2008, 2023]
+    source: mig_age           # 시군구/성/연령(5세)별 이동자수 DT_1B26001(1970~) — 실수집에서 DT_1B26003_A01(시도 간 표) 대신
+    years: [2001, 2023]       # 실수집: 2001 부터 있어 사전 기간을 계획(2008~)보다 늘림
     scale: per_mille
   - col: fiscal_autonomy
     name: 재정자주도(%)
@@ -95,7 +95,7 @@ indicators:
     goal: increase
     goal_basis: "그림 2-6, 표 2-6"
     core: false
-    source: employment
+    source: emp13             # 지역별고용조사 시군구: 2008~2010 연간 DT_1ES1A01S + 2010.4/4~2012.4/4 분기(4분기) DT_1ES2A01S + 2013~ 반기(하반기) DT_1ES3A01S
     years: [2008, 2023]
     scale: pct_point
   - col: unemployment_rate
@@ -104,7 +104,7 @@ indicators:
     goal: decrease
     goal_basis: "그림 2-7, 표 2-6"
     core: false
-    source: employment
+    source: emp13
     years: [2008, 2023]
     scale: pct_point
   - col: high_value_service_share
@@ -113,8 +113,8 @@ indicators:
     goal: increase
     goal_basis: "그림 2-2 고부가가치 서비스업 비중 (BOK이슈노트 2025-18 분류)"
     core: false
-    source: biz_mid           # biz_mid(2006~2019) + biz_new(2020~)
-    years: [2006, 2023]       # 9차 산업분류(2008) 이후 표만 사용 — 8차와 대분류가 달라 2001~2005 는 뺀다
+    source: lab07             # 사업체노동실태현황 9차(2007~2016: DT_118N_SAUP57/78) + 10차(2017~: SAUPN78) 대분류 J·K·M 합 ÷ 전체
+    years: [2007, 2023]       # 9차 산업분류 표(2007~)부터 사용 — 8차 표(2001~2006)는 대분류가 달라(정보통신 없음) 뺀다
     scale: pct_point
   - col: residents_per_civil_servant
     name: 공무원 1인당 주민수(명)
@@ -122,7 +122,7 @@ indicators:
     goal: increase
     goal_basis: "G3 행정 효율화(조직 슬림화). 값이 클수록 공무원 대비 주민이 많음 (¶19, ¶30)"
     core: false
-    source: civil_servants
+    source: civil_servants    # 시군구별 공무원 현원 DT_110027_001(행안부)은 2015 년부터라 통합 전 자료가 없음 → 수집하지 않음(자료 없음)
     years: [2008, 2023]
     scale: level
 
