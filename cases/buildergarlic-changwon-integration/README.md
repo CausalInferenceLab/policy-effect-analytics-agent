@@ -17,7 +17,7 @@
 | **처치가 하나뿐이다**: 통합 창원시 한 곳이라 보통의 표준오차·p값을 믿을 수 없다 | core 의 무작위화 추론(비교 시 하나를 차례로 '가짜 창원'으로 두는 placebo-in-space)이 자동으로 켜지고, 같은 패널로 합성통제(`synth.py`)를 보조로 돌린다 |
 | **비교 대상이 오염된다**: 같은 기간 통합·분리·승격한 시, 창원과 접한 시 | 청주(2014 청원 통합)·공주·논산·계룡·제주·서귀포·화성·광주·양주·포천·당진·여주·울산·세종과 인접한 김해·밀양을 대조군에서 뺀다 |
 
-데이터는 모두 KOSIS OpenAPI(무료 키)로 받습니다. 1998년부터 시군구 단위로 이어지는 표만 골랐습니다.
+데이터는 모두 KOSIS OpenAPI(무료 키)로 받습니다. 2001년(재정자립도 표의 시작)부터 시군구 단위로 이어지는 표만 골랐습니다.
 
 | 지표 | KOSIS 통계표 | 통합 전 3개 시 처리 |
 |---|---|---|
@@ -34,6 +34,8 @@ python cases/buildergarlic-changwon-integration/synth.py    # 보조: 합성통�
 ```
 
 키 없이 파이프라인만 확인하려면 `python fetch.py --simulate` 로 **합성 패널**을 만들 수 있습니다(실데이터 아님, 결과 해석 금지).
+Windows 콘솔(cp949)에서는 한글 출력 때문에 검사가 멈출 수 있으니 `$env:PYTHONUTF8=1`(cmd: `set PYTHONUTF8=1`) 뒤에 실행합니다.
+`make` 가 없으면 첫 줄 대신 `python -m core.agent cases/buildergarlic-changwon-integration`.
 자동 검사(`tests/test_changwon_integration.py`)는 이 합성 패널로 경계 재구성·합성통제·6단계 흐름을 네트워크 없이 점검합니다.
 
 ## 파일

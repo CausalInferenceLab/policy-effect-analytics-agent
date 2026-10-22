@@ -67,6 +67,40 @@ def test_city_rows_keeps_only_basic_local_governments():
     assert set(d["region"]) == {"창원시", "수원시", "마산시"}
     assert d["year"].dtype.kind == "i" and d.loc[d["region"] == "마산시", "value"].isna().all()
 
+def test_city_rows_treats_zero_filled_defunct_codes_as_missing_and_keeps_7digit_codes():
+    long = _long(
+        [
+            ("48160", "마산시", "총전입", "2011", "0"),  # 폐지 코드: KOSIS 가 '-' 대신 0 으로 채움
+            ("48120", "창원시", "총전입", "2011", "163566"),
+            ("1236010", "전라남도 목포시", "재정자립도(세입과목개편전)", "2011", "25.3"),  # 7자리
+        ]
+    )
+    d = fetch.city_rows(long).set_index("region")
+    assert np.isnan(d.loc["마산시", "value"]) and d.loc["창원시", "value"] == 163566
+    assert d.loc["목포시", "value"] == 25.3
+
+
+def test_reconstruct_drops_zero_filled_defunct_codes_but_refuses_real_duplicates():
+    rows = []
+    for y in ("2008", "2009", "2010", "2011"):
+        post = int(y) >= fetch.MERGE_YEAR
+        rows += [
+            ("48110", "창원시", "총전입", y, "0" if post else "40"),  # 옛 창원 코드: 폐지 후 0
+            ("48160", "마산시", "총전입", y, "0" if post else "10"),
+            ("48190", "진해시", "총전입", y, "0" if post else "20"),
+            ("48120", "창원시", "총전입", y, "70" if post else "0"),  # 새 창원 코드: 2010 부터
+            ("48170", "진주시", "총전입", y, "9"),
+        ]
+    d = fetch.city_rows(_long(rows))
+    out = fetch.reconstruct(d, "sum").set_index(["region", "year"])["value"]
+    assert out["창원시", 2009] == 70 and out["창원시", 2011] == 70 and out["진주시", 2011] == 9
+    assert not out.index.duplicated().any()
+    # 두 코드에 진짜 값이 같이 있으면 합산하지 않고 멈춘다
+    d2 = d.copy()
+    d2.loc[(d2["region"] == "창원시") & (d2["year"] == 2011), "value"] = 70.0
+    with pytest.raises(ValueError, match="둘 이상"):
+        fetch.reconstruct(d2, "sum")
+
 
 def _toy(values_by_city: dict[str, float], years=(2008, 2009, 2010, 2011)):
     rows = []
@@ -138,6 +172,25 @@ def test_assemble_builds_balanced_panel_with_outcomes():
     assert cw["fiscal_independence"].eq(30.0).all()
     assert np.allclose(panel["log_population"], np.log(panel["population"]))
 
+def test_assemble_uses_pre_reform_fiscal_series():
+    years = (*fetch.YEARS, fetch.MERGE_YEAR)
+    cities = (*fetch.DONOR_CITIES, *fetch.PRE_MERGER)
+    pop, mig, fis = [], [], []
+    for i, c in enumerate(cities):
+        code = f"{10000 + i * 10:05d}"
+        for y in years:
+            gone = c in ("마산시", "진해시") and y >= fetch.MERGE_YEAR
+            v = "-" if gone else "100000"
+            pop.append((code, c, "총인구수", str(y), v))
+            mig.append((code, c, "총전입", str(y), "-" if gone else "5000"))
+            mig.append((code, c, "총전출", str(y), "-" if gone else "4000"))
+            fis.append((code, c, "재정자립도(세입과목개편전)", str(y), "-" if gone else "30.0"))
+            if y >= 2014:  # KOSIS 는 2014년부터 개편후 계열을 같이 싣는다
+                fis.append((code, c, "재정자립도(세입과목개편후)", str(y), "-" if gone else "45.0"))
+    panel, chosen = fetch.assemble(_long(pop), _long(mig), _long(fis))
+    assert chosen["fiscal"] == "재정자립도(세입과목개편전)"
+    assert panel["fiscal_independence"].eq(30.0).all()
+
 
 def test_finalize_refuses_missing_values_instead_of_filling():
     panel = fetch.simulate()
@@ -156,7 +209,7 @@ def test_simulated_panel_is_balanced_single_treated():
 # ── 합성통제 ───────────────────────────────────────────────────────────────────────────────────
 def _synth_panel(effect: float, seed: int = 3, n_donors: int = 12, t0: int = 2011):
     rng = np.random.default_rng(seed)
-    years = [y for y in range(1998, 2024) if y != 2010]
+    years = [y for y in range(1998, 2024) if y != 2010]  # 합성 패널 전용 기간(실데이터 기간과 무관)
     donors = {
         f"D{i:02d}": np.cumsum(rng.normal(0.01, 0.03, len(years))) + rng.normal(0, 0.5)
         for i in range(n_donors)
@@ -207,7 +260,13 @@ def test_flow_and_synth_run_end_to_end_on_simulated_panel(tmp_path):
         case,
         ignore=shutil.ignore_patterns("data", "figures", "synth_*", "report.md", "*.json"),
     )
-    env = {**os.environ, "PYTHONPATH": str(ROOT), "MPLBACKEND": "Agg", "KOSIS_API_KEY": ""}
+    env = {
+        **os.environ,
+        "PYTHONPATH": str(ROOT),
+        "MPLBACKEND": "Agg",
+        "KOSIS_API_KEY": "",
+        "PYTHONUTF8": "1",  # Windows cp949 콘솔에서도 한글 출력이 깨지지 않게
+    }
     subprocess.run([sys.executable, "fetch.py", "--simulate"], check=True, cwd=case, env=env)
     plan = yaml.safe_load((case / "plan.yaml").read_text(encoding="utf-8"))
     plan["synthetic_data"] = True  # 합성 패널이므로 리포트에 경고가 붙어야 한다

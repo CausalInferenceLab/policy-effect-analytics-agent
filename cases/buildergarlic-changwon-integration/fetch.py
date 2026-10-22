@@ -4,14 +4,16 @@
     python fetch.py --simulate      # 키 없이 파이프라인만 점검하는 합성 패널 — 실데이터 아님, 결과 해석 금지
     python fetch.py --list-fiscal   # 재정자립도 통계표 ID 후보를 KOSIS 통계표 검색으로 보여줌
 
-한 행 = 기초 시 × 연도(1998~2023, 2010 제외). plan.yaml 의 열(region_id, year, treated,
+한 행 = 기초 시 × 연도(2001~2023, 2010 제외). plan.yaml 의 열(region_id, year, treated,
 log_population, net_migration_rate, fiscal_independence)을 만듭니다.
 
 행정경계 변경 처리(이 케이스의 핵심)
 - 통합 전(≤2009) 마산시·창원시·진해시 값을 합산해 통합 창원시와 같은 경계로 맞춥니다.
   인구·전입·전출은 합계, 재정자립도(비율)는 인구 가중 평균(근사치, discussion.md 에 한계 기록).
 - 2010년은 7월에 통합된 전환연도라 모든 단위에서 제외합니다(균형 패널 유지).
-- 1998~2023 사이 통합·분리·승격이 있었던 시와 창원과 접한 김해·밀양은 대조군에서 뺍니다(DONOR_CITIES).
+- 2001~2023 사이 통합·분리·승격이 있었던 시와 창원과 접한 김해·밀양은 대조군에서 뺍니다(DONOR_CITIES).
+- KOSIS 는 폐지된 시군구 코드를 2023년까지 남기고 폐지 후 연도를 0 으로 채웁니다 → city_rows 가 0 을 결측으로 봅니다.
+- 재정자립도는 '세입과목개편전' 계열(2001~2023, 한 정의)을 씁니다. 개편후 계열은 2014년부터라 사전 구간이 없습니다.
 
 주의: data/ 아래 파일은 git 에 올라가지 않습니다. KOSIS 가공본은 재배포하지 않고 각자 받습니다.
 """
@@ -39,7 +41,7 @@ from core.adapters.kosis import KosisAdapter  # noqa: E402
 OUT = HERE / "data" / "panel.csv"
 RAW = HERE / "data" / "raw"
 
-START, END = 1998, 2023
+START, END = 2001, 2023  # 2001: 재정자립도 표가 2001년부터 (1998 → 2001, 실데이터 첫 수집 때 변경; plan.yaml 머리글)
 MERGE_YEAR = 2010  # 2010-07-01 통합 → 반년만 통합된 전환연도, 패널에서 제외
 TREAT_TIME = 2011  # 첫 완전 사후연도 (plan.yaml treatment.treat_time 과 같아야 함)
 MERGED = "창원시"
@@ -48,9 +50,9 @@ PRE_MERGER = ("마산시", "창원시", "진해시")  # 통합 전 3개 시 → 
 # KOSIS 통계표 (plan.yaml data_sources 와 같아야 함; 테스트가 확인)
 POP_TBL = "DT_1B040A3"  # 행정구역(시군구)별 성별 인구수 — 총인구수 T20, 1992~
 MIG_TBL = "DT_1B26001_A01"  # 시군구별 이동자수 — 총전입 T10, 총전출 T20
-FIS_TBL = "DT_1YL20921"  # e-지방지표 재정자립도(시도/시/군/구) — ID 미확인: 오류 나면 --list-fiscal
+FIS_TBL = "DT_1YL20921"  # e-지방지표 재정자립도(시도/시/군/구), 2001~. 2026-10-22 실수집으로 ID 확인
 
-# 대조군: 1998~2023 사이 행정구역 통합·분리·승격이 없었던 기초 시 62곳.
+# 대조군: 2001~2023 사이 행정구역 통합·분리·승격이 없었던 기초 시 62곳.
 # 제외(이유): 청주(2014 청원 통합)·공주(2012 세종 분할)·논산·계룡(2003 분리)·제주·서귀포(2006 군 통합)·
 #   화성·광주·양주·포천(2001~03 군→시)·당진(2012)·여주(2013)·울산(1997 광역시)·세종(2012)·
 #   김해·밀양(창원과 접함 → 파급 오염 우려).
@@ -79,18 +81,23 @@ UNITS = (MERGED, *DONOR_CITIES)
 def city_rows(long: pd.DataFrame) -> pd.DataFrame:
     """KOSIS 롱포맷(region_code, region, item, period, value)에서 기초자치단체 행만 남긴다.
 
-    코드가 5자리이고 끝자리가 0 인 행 = 시·군·자치구 (일반구 48121 의창구 같은 행과 시도·전국은 제외).
-    지역 이름은 마지막 어절만 쓴다('경상남도 창원시' → '창원시').
+    - 코드가 5자리(주민등록·이동표) 또는 7자리(e-지방지표의 광주·전남, 예 1236010 목포시)이고 끝자리가 0 인 행
+      = 시·군·자치구. 일반구(48121 의창구)는 상위 시와 이중 계산되므로 제외. 시도·전국 행은 reconstruct 의
+      이름 필터에서 빠진다.
+    - 지역 이름은 마지막 어절만 쓴다('경상남도 창원시' → '창원시').
+    - 값 0 은 결측으로 본다. KOSIS 는 폐지된 지역코드(옛 창원 48110·마산 48160·진해 48190 등)의 폐지 후
+      연도를 '-' 가 아니라 0 으로 채운다. 인구·전입·전출·재정자립도가 실제로 0 인 시는 없다.
     """
     d = long.copy()
     code = d["region_code"].astype(str).str.strip()
-    keep = code.str.fullmatch(r"\d{5}").fillna(False) & code.str.endswith("0")
+    keep = code.str.fullmatch(r"\d{5}|\d{7}").fillna(False) & code.str.endswith("0")
     d = d.loc[keep].copy()
     d["region"] = d["region"].astype(str).str.strip().str.split().str[-1]
     d["year"] = pd.to_numeric(d["period"].astype(str).str[:4], errors="coerce")
     d = d.dropna(subset=["year"])
     d["year"] = d["year"].astype(int)
     d["value"] = pd.to_numeric(d["value"], errors="coerce")
+    d.loc[d["value"] == 0, "value"] = np.nan
     return d[["region", "year", "item", "value"]]
 
 
@@ -120,6 +127,13 @@ def reconstruct(
     x = d[["region", "year", "value"]].copy()
     x = x[x["region"].isin(PRE_MERGER) | x["region"].isin(DONOR_CITIES)]
     x = x[x["year"] != MERGE_YEAR]
+    x = x.dropna(subset=["value"])  # '-'·0 은 city_rows 에서 NaN → 폐지 코드의 빈 행을 여기서 버린다
+    dup = x[x.duplicated(["region", "year"], keep=False)]
+    if len(dup):
+        ex = dup[["region", "year"]].drop_duplicates().head(6).to_dict("records")
+        raise ValueError(
+            f"같은 시·연도에 값이 둘 이상입니다(지역코드가 둘인 시?): {ex}. 합산하지 않고 멈춥니다."
+        )
     pre = x["year"] < MERGE_YEAR
     old = x[pre & x["region"].isin(PRE_MERGER)].dropna(subset=["value"])
     for y in sorted(x.loc[pre, "year"].unique()):
@@ -139,7 +153,7 @@ def reconstruct(
     elif how == "wmean":
         if weights is None:
             raise ValueError("how='wmean' 은 weights(인구표)가 필요합니다")
-        w = weights[["region", "year", "value"]].rename(columns={"value": "w"})
+        w = weights[["region", "year", "value"]].rename(columns={"value": "w"}).dropna(subset=["w"])
         m = old.merge(w, on=["region", "year"], how="left")
         if m["w"].isna().any():
             raise ValueError("가중 평균용 인구가 없는 연도·시가 있습니다")
@@ -166,7 +180,8 @@ def assemble(pop: pd.DataFrame, mig: pd.DataFrame, fis: pd.DataFrame) -> tuple[p
     p = pick_item(city_rows(pop), "인구")
     m = city_rows(mig)
     mi, mo = pick_item(m, "전입"), pick_item(m, "전출")
-    f = pick_item(city_rows(fis), "재정자립도")
+    # '(세입과목개편전)' 계열: 2001~2023 한 정의로 이어짐. 개편후 계열은 2014~ 라 사전 구간이 없다
+    f = pick_item(city_rows(fis), "재정자립도", exclude="개편후")
     chosen = {
         "population": p["item"].iloc[0],
         "in_moves": mi["item"].iloc[0],
@@ -342,6 +357,9 @@ def write(panel: pd.DataFrame, meta: dict) -> None:
 
 
 def main(argv=None) -> None:
+    for stream in (sys.stdout, sys.stderr):  # Windows cp949 콘솔에서 한글·기호 출력으로 멈추지 않게
+        if hasattr(stream, "reconfigure"):
+            stream.reconfigure(errors="replace")
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--simulate", action="store_true", help="키 없이 합성 패널 생성(실데이터 아님)")
     ap.add_argument("--list-fiscal", action="store_true", help="재정자립도 통계표 ID 후보 검색")
