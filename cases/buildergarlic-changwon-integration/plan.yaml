@@ -2,9 +2,14 @@
 #
 # 변경 이력(초안 PR #28 → 이 계획): 초안은 '주민 1인당 행정운영경비(지방재정365 결산)'를 지표로 잡았지만
 #   그 표는 API·장기 시계열이 없어 fetch.py 로 재현할 수 없었습니다. KOSIS OpenAPI 로 받을 수 있고
-#   1998년부터 시군구 단위로 이어지는 세 지표(주민등록인구·순이동·재정자립도)로 바꿨습니다. 처치 단위가
+#   시군구 단위로 길게 이어지는 세 지표(주민등록인구·순이동·재정자립도)로 바꿨습니다. 처치 단위가
 #   한 곳이라 core 의 무작위화 추론(placebo-in-space)을 주 추정으로 쓰고, 합성통제(synth.py)로 보완합니다.
 #   초안이 요구한 '통합 전 3개 시 합산 → 동일 경계', '2010 전환연도 제외', '2011 첫 사후연도'는 그대로입니다.
+# 2026-10-22 실데이터 첫 수집(추정 산출 전, flow ② 단계에서 멈춤) 뒤 두 가지를 고쳤습니다.
+#   ① 재정자립도 표(DT_1YL20921, ID 확인됨)가 2001년부터라 분석 시작연도를 1998 → 2001 로 당김(세 지표 공통 기간,
+#      사전 9년·사후 13년). ② KOSIS 가 폐지된 시군구 코드(옛 창원·마산·진해 등)의 폐지 후 연도를 0 으로 채우고
+#      광주·전남 시의 코드가 7자리인 점을 fetch.py 의 정리 규칙에 반영. 지표·처치·대조군·추정 방법은 그대로이며
+#      어떤 추정치도 보기 전의 변경입니다(discussion.md '계획에서 바뀐 것').
 case_id: buildergarlic-changwon-integration
 title: "마산·창원·진해 행정구역 통합(2010.7.1)이 통합 창원시의 인구·인구이동·재정자립도에 미친 효과"
 question: >
@@ -14,7 +19,7 @@ question: >
 synthetic_data: false
 
 unit: {name: 기초 시(통합 경계 재구성), id_col: region_id}
-time: {col: year, freq: year, start: 1998, end: 2023}   # 2010(전환연도)은 fetch.py 가 모든 시에서 제외
+time: {col: year, freq: year, start: 2001, end: 2023}   # 2010(전환연도)은 fetch.py 가 모든 시에서 제외
 
 treatment:
   definition: >
@@ -25,7 +30,7 @@ treatment:
   treat_time: 2011
 control:
   definition: >
-    1998~2023년 사이 행정구역 통합·분리·승격이 없었던 전국 기초 시 62곳(fetch.py 의 DONOR_CITIES).
+    2001~2023년 사이 행정구역 통합·분리·승격이 없었던 전국 기초 시 62곳(fetch.py 의 DONOR_CITIES).
     통합·경계변경이 있었던 청주·공주·논산·계룡·제주·서귀포·화성·광주·양주·포천·당진·여주·울산·세종과
     창원에 접한 김해·밀양은 제외.
   rationale: >
@@ -65,7 +70,7 @@ estimator:
 
 assumptions:
   - name: 평행추세
-    description: "통합이 없었다면 통합 경계 창원과 비교 시들의 결과 추세가 같았을 것. 1998~2009 사전 계수의 무작위화 추론 결합검정"
+    description: "통합이 없었다면 통합 경계 창원과 비교 시들의 결과 추세가 같았을 것. 2001~2009 사전 계수의 무작위화 추론 결합검정"
     check: pretrend_test
   - name: 선반영 없음
     description: "통합 논의(2009 주민여론조사)와 국회 통과(2010.3) 전에 이미 인구 이동이 반응했는지 가짜 시점(2008) 검정"
@@ -79,7 +84,7 @@ assumptions:
 
 refutations:
   - kind: placebo_time
-    params: {shift: 3}     # 사전 구간(1998~2009)만으로 2008 을 가짜 통합연도로 두고 재추정
+    params: {shift: 3}     # 사전 구간(2001~2009)만으로 2008 을 가짜 통합연도로 두고 재추정
 
 abstention:
   - when: pretrend_rejected
@@ -104,19 +109,19 @@ data_sources:
     url: "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1B040A3"
     license: KOGL-1
     adapter: kosis
-    query: {orgId: "101", tblId: DT_1B040A3, itmId: T20, objL1: ALL, prdSe: Y, startPrdDe: "1998", endPrdDe: "2023"}
+    query: {orgId: "101", tblId: DT_1B040A3, itmId: T20, objL1: ALL, prdSe: Y, startPrdDe: "2001", endPrdDe: "2023"}
     notes: "KOSIS_API_KEY 필요(무료). 1992년부터 연말 주민등록 총인구(T20). 공공누리 유형은 통계표 하단에서 확인"
   - name: "시군구별 이동자수 — 국내인구이동통계 (KOSIS DT_1B26001_A01)"
     provider: "통계청 · KOSIS 국가통계포털"
     url: "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1B26001_A01"
     license: KOGL-1
     adapter: kosis
-    query: {orgId: "101", tblId: DT_1B26001_A01, itmId: ALL, objL1: ALL, prdSe: Y, startPrdDe: "1998", endPrdDe: "2023"}
-    notes: "총전입(T10)·총전출(T20). 순이동 = 전입 − 전출"
-  - name: "재정자립도(시도/시/군/구) — e-지방지표 (KOSIS DT_1YL20921, ID 확인 필요)"
+    query: {orgId: "101", tblId: DT_1B26001_A01, itmId: ALL, objL1: ALL, prdSe: Y, startPrdDe: "2001", endPrdDe: "2023"}
+    notes: "총전입(T10)·총전출(T20). 순이동 = 전입 − 전출. 폐지된 시군구 코드(옛 창원 48110·마산 48160·진해 48190 등)가 2023년까지 남아 폐지 후 연도에 0 이 들어 있어 fetch.py 가 결측으로 처리(새 창원시는 48120)"
+  - name: "재정자립도(시도/시/군/구) — e-지방지표 (KOSIS DT_1YL20921)"
     provider: "행정안전부 · KOSIS e-지방지표"
     url: "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1YL20921"
     license: KOGL-1
     adapter: kosis
-    query: {orgId: "101", tblId: DT_1YL20921, itmId: ALL, objL1: ALL, prdSe: Y, startPrdDe: "1998", endPrdDe: "2023"}
-    notes: "통계표 ID 를 원본 페이지에서 확인하지 못함. 오류가 나면 `python fetch.py --list-fiscal` 로 후보를 찾아 이 줄과 fetch.py 의 FIS_TBL 을 고친다(설계는 그대로)"
+    query: {orgId: "101", tblId: DT_1YL20921, itmId: ALL, objL1: ALL, prdSe: Y, startPrdDe: "2001", endPrdDe: "2023"}
+    notes: "2001년부터(ID 는 2026-10-22 실수집으로 확인). 항목이 '재정자립도(세입과목개편전)'(2001~2023)과 '(세입과목개편후)'(2014~) 둘이라 fetch.py 는 한 정의로 이어지는 개편전 계열을 쓴다. 광주·전남 시의 지역코드는 7자리(예 1236010 목포시)"

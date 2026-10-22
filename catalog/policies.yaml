@@ -196,7 +196,7 @@ policies:
       - https://www.khan.co.kr/article/202009260902001
     unit: 기초 시 × 연
     treated_units: [창원시(통합 경계 — 옛 마산·창원·진해 합산)]
-    control_units: 1998~2023 경계가 바뀌지 않은 전국 기초 시 62곳 (인접 김해·밀양 제외)
+    control_units: 2001~2023 경계가 바뀌지 않은 전국 기초 시 62곳 (인접 김해·밀양 제외)
     outcomes: [주민등록인구(로그), 순이동률(천명당), 재정자립도]
     design: scm
     datasets:
