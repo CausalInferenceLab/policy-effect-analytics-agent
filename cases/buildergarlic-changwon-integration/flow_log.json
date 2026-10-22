@@ -4,17 +4,17 @@
   "question": "2010년 7월 1일 마산시·창원시·진해시가 통합 창원시로 합쳐진 뒤, 같은 기간 행정구역이 바뀌지 않은 전국의 다른 기초 시들과 비교해, (통합 전 3개 시를 합산해 같은 경계로 맞춘) 창원의 주민등록인구·순이동률· 재정자립도가 달라졌는가?\n",
   "status": "warn",
   "verdict": "conditional",
-  "started_at": "2026-10-22T12:39:14+00:00",
-  "ended_at": "2026-10-22T12:39:54+00:00",
+  "started_at": "2026-10-22T12:47:10+00:00",
+  "ended_at": "2026-10-22T12:47:24+00:00",
   "steps": [
     {
       "index": 1,
       "step": "define_problem",
       "title": "① 문제 정의",
       "status": "ok",
-      "started_at": "2026-10-22T12:39:14+00:00",
-      "ended_at": "2026-10-22T12:39:14+00:00",
-      "duration_s": 0.1,
+      "started_at": "2026-10-22T12:47:10+00:00",
+      "ended_at": "2026-10-22T12:47:10+00:00",
+      "duration_s": 0.096,
       "message": "분석계획 검증 완료, 사전 등록(git 커밋) 확인: buildergarlic-changwon-integration",
       "artifacts": {
         "plan": "plan.yaml",
@@ -27,17 +27,17 @@
       "step": "collect",
       "title": "② 데이터 수집",
       "status": "ok",
-      "started_at": "2026-10-22T12:39:14+00:00",
-      "ended_at": "2026-10-22T12:39:39+00:00",
-      "duration_s": 24.857,
-      "message": "fetch.py 실행",
+      "started_at": "2026-10-22T12:47:10+00:00",
+      "ended_at": "2026-10-22T12:47:10+00:00",
+      "duration_s": 0.001,
+      "message": "기존 스냅샷 재사용 (새로 받으려면 파일 삭제 후 재실행)",
       "artifacts": {
         "data": "data/panel.csv",
         "data_sha256": "1264bfbdd5424d251c83b7c3453a46d4926f672a818b43f3f9f9e739f4ff8797",
         "licenses": [
           "KOGL-1"
         ],
-        "method": "fetch.py 실행",
+        "method": "기존 스냅샷 재사용 (새로 받으려면 파일 삭제 후 재실행)",
         "source_meta": "data\\panel.source.json"
       }
     },
@@ -46,9 +46,9 @@
       "step": "structure_metrics",
       "title": "③ 지표 구조화·품질 점검",
       "status": "ok",
-      "started_at": "2026-10-22T12:39:39+00:00",
-      "ended_at": "2026-10-22T12:39:39+00:00",
-      "duration_s": 0.008,
+      "started_at": "2026-10-22T12:47:10+00:00",
+      "ended_at": "2026-10-22T12:47:10+00:00",
+      "duration_s": 0.01,
       "message": "13개 점검 모두 통과",
       "artifacts": {
         "rows": 1386,
@@ -60,9 +60,9 @@
       "step": "estimate",
       "title": "④ 효과 추정",
       "status": "warn",
-      "started_at": "2026-10-22T12:39:39+00:00",
-      "ended_at": "2026-10-22T12:39:53+00:00",
-      "duration_s": 14.07,
+      "started_at": "2026-10-22T12:47:10+00:00",
+      "ended_at": "2026-10-22T12:47:23+00:00",
+      "duration_s": 12.923,
       "message": "event_study: -0.064 [-0.301, 0.181] → conditional",
       "artifacts": {
         "log_population": {
@@ -96,8 +96,8 @@
       "step": "guard",
       "title": "⑤ 과잉해석 가드",
       "status": "warn",
-      "started_at": "2026-10-22T12:39:53+00:00",
-      "ended_at": "2026-10-22T12:39:53+00:00",
+      "started_at": "2026-10-22T12:47:23+00:00",
+      "ended_at": "2026-10-22T12:47:23+00:00",
       "duration_s": 0.001,
       "message": "1차 지표 판정 조건부, 서술=template",
       "artifacts": {
@@ -112,9 +112,9 @@
       "step": "report",
       "title": "⑥ 리포트·재현 기록",
       "status": "ok",
-      "started_at": "2026-10-22T12:39:53+00:00",
-      "ended_at": "2026-10-22T12:39:54+00:00",
-      "duration_s": 0.509,
+      "started_at": "2026-10-22T12:47:23+00:00",
+      "ended_at": "2026-10-22T12:47:24+00:00",
+      "duration_s": 0.478,
       "message": "리포트 2개 그림 포함 작성",
       "artifacts": {
         "report": "report.md",

@@ -1,8 +1,8 @@
 {
   "case_id": "buildergarlic-changwon-integration",
-  "started_at": "2026-10-22T12:39:14+00:00",
-  "finished_at": "2026-10-22T12:39:54+00:00",
-  "git_sha": "4e4df651c16e998027c36845a2a4d21fe129ee54",
+  "started_at": "2026-10-22T12:47:10+00:00",
+  "finished_at": "2026-10-22T12:47:24+00:00",
+  "git_sha": "7d9618ade807e8466308b6b2c462f4bc9fff0a15",
   "git_dirty": true,
   "plan_sha256": "76ab511b3e3da626d85818a15a27db4a3ebf9a6c67c180700f01cfd2044036c8",
   "data_sha256": "1264bfbdd5424d251c83b7c3453a46d4926f672a818b43f3f9f9e739f4ff8797",
