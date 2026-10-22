@@ -1,0 +1,137 @@
+# 작성자: jgkim1008
+# 분석 계획서 (사전 등록) — 판매액지수 원자료를 열어보기 전에 커밋한다.
+# 스키마: core/schema/plan.py  |  작성 요령: docs/strategy/plan-guide.md
+# 같은 주제의 서울 자치구 사례: cases/YoungjaeKang-retail-hours (동대문구, 상권 추정매출)
+# 이 사례는 광역시 단위·전 구군 동시 전환(대구)을 다룬다.
+
+case_id: jgkim1008-daegu-mart-holiday
+title: "대구시 대형마트 의무휴업일 평일 전환과 지역 소매업 판매"
+question: >-
+  2023년 2월 대구시가 대형마트 의무휴업일을 일요일에서 월요일로 바꿔 일요일 영업을
+  허용한 이후, 대구의 슈퍼마켓·잡화점 판매액지수는 같은 기간 일요일 의무휴업을 유지한
+  다른 광역시와 비교해 어떻게 달라졌는가?
+synthetic_data: false
+
+# 분석 단위: 광역시 × 분기
+unit: {name: 광역시, id_col: region_id}
+time: {col: quarter_idx, freq: quarter, start: 0, end: 19}
+# 0 = 2019Q1, 19 = 2023Q4. 16 = 2023Q1(전환 분기)은 모든 지역의 추정에서 제외한다.
+# 제외 후 재번호하지 않는다. 추정 입력의 시점은 0~15, 17~19이다.
+# 제외 규칙은 time 필드가 자동 적용하지 않으므로 fetch.py에서 구현·검사한다.
+# 2020~2021 코로나 충격은 전국 공통 충격으로 보고 대조군으로 상쇄되는지 사전추세로 점검한다.
+
+treatment:
+  definition: >-
+    대구광역시 8개 구·군이 '대형마트 및 준대규모점포 의무휴업일 변경 지정' 고시로
+    의무휴업일을 매월 둘째·넷째 일요일에서 둘째·넷째 월요일로 동시에 변경했다.
+    2022-12-19 평일 전환 협약, 2023-01 행정예고, 2023-02-12(일) 첫 일요일 영업,
+    2023-02-13(월) 첫 평일 휴무. 대상은 대형마트 17곳·SSM 43곳이다.
+    전환이 분기 중간(2023Q1)에 일어나 2023Q1(16)은 추정에서 제외하고,
+    전환 후 첫 온전한 분기인 2023Q2(17)부터를 처치 이후로 본다.
+    근거 법령: 유통산업발전법 제12조의2(이해당사자 합의 시 공휴일 외 지정).
+  group_col: treated
+  treat_time: 17
+control:
+  definition: >-
+    분석 기간(2019Q1~2023Q4) 동안 일요일 의무휴업을 유지한 광역시:
+    부산, 인천, 광주, 대전, 울산. 전체 기간 treated=0.
+    부산은 2024-05~07 순차 전환이므로 분석 기간 밖이다.
+    서울(2024~ 일부 자치구 전환)·경기(2023년 이전부터 31개 시군 중 14곳 평일 휴무)·
+    충북(청주 2023-05 전환)은 광역시와 구조가 다르거나 기간 내 전환이 있어 쓰지 않는다.
+  rationale: >-
+    광역시는 인구 규모·도시 구조·유통 구성이 대구와 비슷하고, 같은 분기의 전국 경기·
+    물가·이커머스 확산 충격을 함께 받는다. 광주는 2024-01 공휴일 의무휴업 유지를
+    공식 발표해 이력이 가장 분명하다. 인천·대전·울산은 분석 기간 내 구·군 단위 평일
+    전환이 없었는지 공개 고시로 확인해 README에 기록하고, 전환이 확인되면 판매액지수를
+    열기 전에 제외하는 계획 변경을 커밋한다. 검색 결과 없음을 미전환의 증거로 쓰지 않는다.
+    대구 인접 지역(경북 경산 등)으로의 소비 이동은 광역시 단위 지표에 섞일 수 있어 한계로 둔다.
+
+outcomes:
+  - name: 슈퍼마켓·잡화점 판매액지수
+    col: super_idx
+    definition: >-
+      통계청 서비스업동향조사 시도별 업태별 소매판매액지수 중 '슈퍼마켓 및 잡화점'
+      불변지수(2020=100), 분기. 지역별 자연로그를 취해 비율 변화로 해석한다.
+    unit: "지수(2020=100, 로그)"
+    primary: true
+    expected_direction: unknown
+  - name: 대형마트 판매액지수
+    col: mart_idx
+    definition: "같은 통계표의 '대형마트' 불변지수(2020=100), 분기, 자연로그"
+    unit: "지수(2020=100, 로그)"
+    expected_direction: increase
+  - name: 승용차·연료소매점 판매액지수 (가짜 지표)
+    col: auto_fuel_idx
+    definition: >-
+      같은 통계표의 '승용차 및 연료소매점' 불변지수, 분기, 자연로그.
+      의무휴업과 무관한 업태로, 여기서도 효과가 잡히면 공통 충격을 의심한다.
+    unit: "지수(2020=100, 로그)"
+    expected_direction: unknown
+
+estimator:
+  method: event_study
+  cluster_col: region_id
+  ref_period: -2          # 상대시점 -1(2023Q1)은 추정에서 제외되므로 2022Q4를 기준으로 한다
+  window: [-4, 2]         # -4 이전은 한 묶음. 사전 계수를 줄여 사전추세 결합검정의 과잉 기각을 피한다
+  alpha: 0.05
+
+assumptions:
+  - name: 평행추세
+    description: "전환이 없었다면 대구와 대조 광역시의 판매액지수 추세는 같았을 것"
+    check: pretrend_test
+  - name: 동시 정책 없음
+    description: >-
+      2023Q2~Q4에 대구에만 적용된 다른 소비 지원·유통 정책이 없었는지
+      대구시 보도자료로 확인한다 (예: 1대형마트-1전통시장 전담제 등 상생 사업).
+    check: manual
+  - name: 대조군 오염 없음
+    description: "대조 광역시의 구·군이 분석 기간 내 평일 전환하지 않았음을 고시로 확인"
+    check: manual
+  - name: 선반영 없음
+    description: >-
+      2022-12-19 협약 발표는 기준 분기(2022Q4) 안에 있다. 일요일 영업은 2023-02-12부터
+      가능했으므로 발표만으로 판매가 미리 바뀌었을 가능성은 낮다고 보고, 기준 분기의
+      값을 그림으로 확인한다.
+    check: manual
+  - name: 행정구역 불변
+    description: >-
+      2023-07-01 경북 군위군이 대구에 편입되어 2023Q3부터 대구 시도 통계 범위가
+      바뀔 수 있다. 통계표 주석으로 반영 시점을 확인하고 한계에 기록한다.
+    check: manual
+
+refutations:
+  - kind: placebo_time
+    params: {shift: 8}    # 17 - 8 = 9 → 2021Q2를 가짜 시작으로 두고 사전 기간만으로 검정
+
+abstention:
+  - when: pretrend_rejected
+    verdict: not_identified
+  - when: placebo_significant
+    verdict: not_identified
+  - when: few_treated_clusters
+    verdict: conditional
+    note: >-
+      처치 지역이 대구 1곳뿐이라 무작위화 추론으로 대체한다. 공통 실행기는 대조 5곳에서만
+      재배정해 경우가 5가지뿐이고, 대구가 가장 극단이면 p값이 약 0.001로 표시된다.
+      정확한 순열 p값(대구 포함 6곳 중 순위)은 1/6≈0.17보다 작아질 수 없으므로
+      실행기 p값을 유의성 근거로 쓰지 않고, 크기·방향과 6곳 중 순위로 조건부 보고한다.
+  - when: few_clusters
+    verdict: conditional
+    note: "전체 6개 광역시로 군집 수가 적어 표준오차를 신뢰하기 어렵다"
+  - when: ci_crosses_zero
+    verdict: conditional
+    note: "효과 없음이 아니라 '판별 불가'로 보고"
+  - when: short_pre_period
+    verdict: not_identified
+
+thresholds: {pretrend_alpha: 0.10, min_clusters: 20, min_pre_periods: 3}
+
+data_sources:
+  - name: "서비스업동향조사 시도/업태별 소매판매액지수"
+    provider: "통계청 KOSIS"
+    url: "https://kosis.kr"
+    license: KOGL-1
+    adapter: kosis
+    notes: >-
+      통계표 ID(tblId)·제공 주기는 fetch.py 작성 시 메타데이터로 확인해 기재한다.
+      공공누리 유형은 통계표별로 확인한다. 원자료와 가공본은 커밋하지 않는다.
