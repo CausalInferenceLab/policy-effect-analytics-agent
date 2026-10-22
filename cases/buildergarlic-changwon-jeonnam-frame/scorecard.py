@@ -348,7 +348,9 @@ def run(n_perm: int = 999, make_figs: bool = True) -> dict:
     src = PANEL.with_suffix(".source.json")
     src_meta = json.loads(src.read_text("utf-8")) if src.exists() else {}
     synthetic = bool(src_meta.get("synthetic_data")) if src.exists() else plan.synthetic_data
-    indicator_errors = src_meta.get("indicator_errors", {})  # fetch.py 가 남긴 지표별 수집 실패 사유
+    indicator_errors = src_meta.get(
+        "indicator_errors", {}
+    )  # fetch.py 가 남긴 지표별 수집 실패 사유
     treat_time, merge_year = cfg["treat_time"], cfg["merge_year"]
     FIG.mkdir(exist_ok=True)
     rows = []

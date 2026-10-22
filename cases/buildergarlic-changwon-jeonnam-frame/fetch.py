@@ -58,7 +58,9 @@ from core.adapters.base import MissingAPIKey  # noqa: E402
 from core.adapters.kosis import URL as KOSIS_URL  # noqa: E402
 from core.adapters.kosis import KosisAdapter  # noqa: E402
 
-META_URL = "https://kosis.kr/openapi/statisticsData.do"  # getMeta: 통계표의 항목·분류 코드·수록 기간
+META_URL = (
+    "https://kosis.kr/openapi/statisticsData.do"  # getMeta: 통계표의 항목·분류 코드·수록 기간
+)
 OUT = HERE / "data" / "panel.csv"
 EXT = HERE / "data" / "extended.csv"
 RAW = HERE / "data" / "raw"
@@ -68,7 +70,9 @@ MERGE_YEAR = 2010  # 2010-07-01 통합 → 반년만 통합된 전환연도, 패
 TREAT_TIME = 2011  # 첫 완전 사후연도 (plan.yaml treatment.treat_time 과 같아야 함)
 MERGED = "창원시"
 PRE_MERGER = ("마산시", "창원시", "진해시")  # 통합 전 3개 시 → 합산
-NAME_FIX = {"통합창원시": "창원시"}  # 표에 따라 통합 뒤 이름이 다름 ('통합 창원시'는 마지막 어절 규칙으로 처리)
+NAME_FIX = {
+    "통합창원시": "창원시"
+}  # 표에 따라 통합 뒤 이름이 다름 ('통합 창원시'는 마지막 어절 규칙으로 처리)
 
 # 대조군: 2001~2023 사이 행정구역 통합·분리·승격이 없었던 기초 시 62곳 (PR #35 케이스와 같은 목록).
 DONOR_CITIES = (
@@ -109,7 +113,9 @@ class Table:
     org_id: str = "101"
     itm_id: str = "ALL"
     chunk: int = 6  # 한 호출의 연도 수 (KOSIS 셀 수 제한 4만)
-    levels: int | None = None  # objL1~objLn 의 개수 — None 이면 메타정보에서 알아낸다 (표마다 달라 틀리면 err 20/21)
+    levels: int | None = (
+        None  # objL1~objLn 의 개수 — None 이면 메타정보에서 알아낸다 (표마다 달라 틀리면 err 20/21)
+    )
     prd_se: str = "Y"  # Y(년) | H(반기) | Q(분기)
     period_keep: str | None = None  # PRD_DE 정규식 — 예: 반기 표에서 하반기만 '02$'
     note: str = ""
@@ -157,7 +163,9 @@ class Measure:
     tables: tuple[str, ...]  # TABLES 키 (여러 표면 연도별로 이어 붙임)
     item: str  # ITM_NM 정규식
     item_exclude: str | None = None
-    select: dict[str, str] = field(default_factory=dict)  # 분류 종류 → 한 행을 고르는 이름 정규식 (표에 그 분류가 없으면 건너뜀)
+    select: dict[str, str] = field(
+        default_factory=dict
+    )  # 분류 종류 → 한 행을 고르는 이름 정규식 (표에 그 분류가 없으면 건너뜀)
     sum_over: dict[str, str] = field(
         default_factory=dict
     )  # 분류 종류 → 여러 행을 합산하는 이름 정규식
@@ -552,16 +560,27 @@ PRD_SE_KO = {"Y": "년", "H": "반기", "Q": "분기", "M": "월"}
 
 def table_meta(t: Table, api_key: str) -> dict:
     """getMeta(type=ITM, PRD): 항목 이름, 분류(objL1~n)별 코드·이름, 수록 기간. 자료를 받지 않고 구조를 알 수 있다."""
-    base = {"method": "getMeta", "apiKey": api_key, "format": "json", "jsonVD": "Y", "orgId": t.org_id, "tblId": t.tbl_id}
+    base = {
+        "method": "getMeta",
+        "apiKey": api_key,
+        "format": "json",
+        "jsonVD": "Y",
+        "orgId": t.org_id,
+        "tblId": t.tbl_id,
+    }
     itm = _get({**base, "type": "ITM"}, url=META_URL)
     if isinstance(itm, dict):
-        raise RuntimeError(f"{t.key}({t.tbl_id}): 메타정보 없음 — KOSIS 오류 {itm.get('err')}: {itm.get('errMsg')}")
+        raise RuntimeError(
+            f"{t.key}({t.tbl_id}): 메타정보 없음 — KOSIS 오류 {itm.get('err')}: {itm.get('errMsg')}"
+        )
     items, dims = [], {}
     for x in itm:
         if x.get("OBJ_ID") == "ITEM":
             items.append(str(x.get("ITM_NM")))
         else:
-            dims.setdefault((x.get("OBJ_ID"), x.get("OBJ_NM")), []).append((str(x.get("ITM_ID")), str(x.get("ITM_NM"))))
+            dims.setdefault((x.get("OBJ_ID"), x.get("OBJ_NM")), []).append(
+                (str(x.get("ITM_ID")), str(x.get("ITM_NM")))
+            )
     prd = _get({**base, "type": "PRD"}, url=META_URL)
     period = None
     if isinstance(prd, list):
@@ -671,7 +690,13 @@ def fetch_real(only: str = "all") -> tuple[pd.DataFrame, pd.DataFrame | None, di
     for key in wanted:
         t = TABLES[key]
         if t.status == "unavailable":
-            prov[key] = {"tblId": t.tbl_id, "name": t.name, "ok": False, "status": t.status, "error": t.note}
+            prov[key] = {
+                "tblId": t.tbl_id,
+                "name": t.name,
+                "ok": False,
+                "status": t.status,
+                "error": t.note,
+            }
             print(f"[fetch] {key:16s} {t.tbl_id:14s} 건너뜀: {t.note[:120]}")
             continue
         try:
@@ -691,8 +716,15 @@ def fetch_real(only: str = "all") -> tuple[pd.DataFrame, pd.DataFrame | None, di
                          "items": meta["items"][:12], "codes_requested": {k: sorted(v) for k, v in codes.items()}}  # fmt: skip
             print(f"[fetch] {key:16s} {t.tbl_id:14s} {len(df):7d}행  분류={prov[key]['dims']}")
         except Exception as err:  # noqa: BLE001 — 후보 표는 실패해도 핵심이 아니면 계속
-            prov[key] = {"tblId": t.tbl_id, "name": t.name, "ok": False, "error": _redact(str(err))[:300]}
-            print(f"[fetch] {key:16s} {t.tbl_id:14s} 실패: {_redact(str(err))[:160]}", file=sys.stderr)
+            prov[key] = {
+                "tblId": t.tbl_id,
+                "name": t.name,
+                "ok": False,
+                "error": _redact(str(err))[:300],
+            }
+            print(
+                f"[fetch] {key:16s} {t.tbl_id:14s} 실패: {_redact(str(err))[:160]}", file=sys.stderr
+            )
             if key in CORE_TABLES:
                 raise RuntimeError(
                     f"핵심 통계표 {key}({t.tbl_id}) 수집 실패: {_redact(str(err))}\n→ python fetch.py --probe 로 구조를 보고, "
@@ -775,11 +807,19 @@ def probe() -> dict:
             dims = detect_dims(s)
             n_levels = len(meta["dims"])
             period = meta["period"]
-            covers = bool(period) and int(period[0][:4]) <= t.years[0] and int(period[1][:4]) >= t.years[1]
+            covers = (
+                bool(period)
+                and int(period[0][:4]) <= t.years[0]
+                and int(period[1][:4]) >= t.years[1]
+            )
             info = {"ok": True, "levels": n_levels, "levels_in_table": t.levels, "period_available": period, "dims": dims,
                     "items": meta["items"][:10], "covers_years": covers, "n_regions": len(meta["dims"][0]["codes"]) if meta["dims"] else 0}  # fmt: skip
             samples = {c: sorted(s[c].dropna().astype(str).unique())[:8] for c in dims.values()}
-            flag = "" if (t.levels in (None, n_levels)) else f"  ⚠ levels={t.levels} 인데 표는 {n_levels}"
+            flag = (
+                ""
+                if (t.levels in (None, n_levels))
+                else f"  ⚠ levels={t.levels} 인데 표는 {n_levels}"
+            )
             print(
                 f"[probe] {key:16s} {t.tbl_id:14s} OK  분류 {n_levels}개  수록={period}  {t.years[0]}~{t.years[1]} 덮음={'예' if covers else '아니오'}  항목={info['items'][:4]}{flag}"
             )
@@ -831,7 +871,9 @@ def main(argv=None) -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--simulate", action="store_true", help="키 없이 합성 패널 생성(실데이터 아님)")
     ap.add_argument("--discover", metavar="키워드", help="KOSIS 통계표 검색으로 ID 후보 보기")
-    ap.add_argument("--probe", action="store_true", help="TABLES 의 통계표 구조·기간 확인(메타정보)")
+    ap.add_argument(
+        "--probe", action="store_true", help="TABLES 의 통계표 구조·기간 확인(메타정보)"
+    )
     ap.add_argument(
         "--only", choices=["all", "core"], default="all", help="core: 핵심 4지표만 수집"
     )

@@ -83,8 +83,17 @@ def _biz_rows(code, name, year, total_emp, mfg_emp, total_est):
         ("K66", "금융및보험관련서비스업"),
     ):
         for size_code, size in (("00", "전규모"), ("01", "1~4인"), ("02", "5~9인")):
-            emp = {"0": total_emp, "C": mfg_emp, "C10": mfg_emp // 4, "J": 300, "K": 200, "K66": 50}[ind_code]
-            est = {"0": total_est, "C": total_est // 5, "C10": 10, "J": 20, "K": 30, "K66": 5}[ind_code]
+            emp = {
+                "0": total_emp,
+                "C": mfg_emp,
+                "C10": mfg_emp // 4,
+                "J": 300,
+                "K": 200,
+                "K66": 50,
+            }[ind_code]
+            est = {"0": total_est, "C": total_est // 5, "C10": 10, "J": 20, "K": 30, "K66": 5}[
+                ind_code
+            ]
             f = 1.0 if size == "전규모" else 0.3
             rows.append(
                 (
@@ -152,7 +161,9 @@ def test_pick_dims_selects_total_rows_and_sums_over_pattern():
     mfg = fetch.pick_dims(fetch.pick_item(d, "종사자"), fetch.MEASURES["employees_mfg"])
     assert mfg["value"].tolist() == [400]
     hvs = fetch.pick_dims(fetch.pick_item(d, "종사자"), fetch.MEASURES["employees_hvs"])
-    assert hvs["value"].tolist() == [500]  # J 300 + K 200 (대분류만 — 소분류 K66 제외, 규모 '전규모'만)
+    assert hvs["value"].tolist() == [
+        500
+    ]  # J 300 + K 200 (대분류만 — 소분류 K66 제외, 규모 '전규모'만)
     with pytest.raises(ValueError, match="맞는 이름이 없습니다"):
         fetch.pick_dims(
             fetch.pick_item(d, "종사자"),
@@ -241,7 +252,19 @@ def test_age_measures_sum_youth_and_under65_bands():
     rows = _age_rows("38110", "통합창원시", 2015, detail)
     for sex_code, sex in (("0", "계"), ("1", "남"), ("2", "여")):
         for i, (k, v) in enumerate((("80세 이상", 10), ("85세 이상", 4))):
-            rows.append(("38110", "통합창원시", sex_code, sex, f"9{i}0", k, "인구", "2015", str(v if sex == "계" else v // 2)))
+            rows.append(
+                (
+                    "38110",
+                    "통합창원시",
+                    sex_code,
+                    sex,
+                    f"9{i}0",
+                    k,
+                    "인구",
+                    "2015",
+                    str(v if sex == "계" else v // 2),
+                )
+            )
     rows = [(*r[:6], "주민등록연앙인구", *r[7:]) for r in rows]
     d = fetch.tidy(_resp(rows, AGE_COLS))
     assert fetch.detect_dims(d) == {"sex": "C2_NM", "age": "C3_NM"}
