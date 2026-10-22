@@ -11,6 +11,73 @@
 # 스키마: core/discovery/ontology.py · 설명: catalog/README.md
 version: 1
 datasets:
+- id: kosis-digital-divide
+  name: KOSIS 디지털정보격차실태조사 — 일반국민 대비 취약계층 디지털정보화 수준
+  provider: 한국지능정보사회진흥원 (KOSIS 제공)
+  portal: kosis
+  url: https://kosis.kr/statHtml/statHtml.do?orgId=127&tblId=DT_12017N008
+  access: open_api
+  approval: 확인필요
+  license: 확인필요
+  license_note: "KOSIS 이용 조건·원통계 출처 표시 조건 재확인 필요. 이 PR에는 통계값·원응답을 포함하지 않음"
+  space: 전국 (취약계층 집단별)
+  time: 연
+  period: "기존 2026-10-03 수집 기록: 2014~2025 조사연도; 주 비교 2016~2025. 최신 수록기간 재확인 필요"
+  measures: [종합 디지털정보화 수준, 접근 수준, 역량 수준, 활용 수준]
+  roles: [outcome]
+  topics: [digital-inclusion]
+  notes: >-
+    기관 127의 DT_12017N008·DT_12017N009·DT_12017N0010·DT_12017N0011 네 표.
+    일반국민=100 상대지수이며 100은 상한이 아니다. 조사연도와 발표·수정일을 구분한다.
+    2014~2015는 지표·대상 기준 변경 때문에 주 비교에서 분리한다.
+    outcome은 후보 역할이며 시행 후 관측 확보나 효과 식별을 뜻하지 않는다.
+    기존 조사에서는 시행 후 연간 값이 없었다. 원자료·수집 코드는 이번에 이관하지 않는다.
+    근거: https://github.com/gonasooc/a11y/blob/c45a5a16276e845f0b025cd7692138b1d44624a7/analyses/digital-inclusion/kosis_analysis_plan.json
+  verified: "2026-10-22 기존 a11y 수집 명세·계획·코드 대조. 공식 통계표는 웹 도구로 열리지 않아 최신 내용·이용 조건 재확인 미완료; 인증 API 재호출 없음"
+- id: '15154774'
+  name: 행정안전부_무인민원발급기정보 조회서비스
+  provider: 행정안전부
+  portal: data.go.kr
+  url: https://www.data.go.kr/data/15154774/openapi.do
+  access: open_api
+  approval: 자동승인
+  license: other
+  license_note: "포털 표기: 이용허락범위 제한 없음 / 무료 / 개발·운영단계 자동승인. 원자료·가공 데이터는 이 PR에 포함하지 않음"
+  space: 지점 (무인민원발급기)
+  time: 수시
+  period: "기존 수집일 2026-10-03의 현황; 포털 시간범위 미기재, 과거 기능 이력 제공 여부 미확인"
+  measures: [사용 여부, 장애인 편의기능 기재값, 설치장소, 관리기관]
+  roles: [outcome]
+  topics: [digital-inclusion]
+  notes: >-
+    공공 무인민원발급기 자료로 민간 키오스크 전체를 대표하지 않는다.
+    개방자치단체코드·관리번호로 식별하고 기능별 제공·미제공·미상을 구분한다.
+    최종수정시점·데이터갱신시점은 설치일 또는 기능 도입일이 아니다.
+    기능 기재값은 현장 작동·법 준수 확인이 아니며 outcome은 후속 지표 후보 역할이다.
+    근거: https://github.com/gonasooc/a11y/blob/c45a5a16276e845f0b025cd7692138b1d44624a7/analyses/digital-inclusion/mois_analyze.py
+  verified: "2026-10-22 공식 포털의 서비스명·설명·이용 조건 확인. 필드·가공은 기존 2026-10-03 수집 명세와 코드 대조; 인증 API 재호출 없음"
+- id: '15129471'
+  name: 조달청_나라장터쇼핑몰 품목정보 서비스
+  provider: 조달청
+  portal: data.go.kr
+  url: https://www.data.go.kr/data/15129471/openapi.do
+  access: open_api
+  approval: 자동승인
+  license: other
+  license_note: "포털 표기: 이용허락범위 제한 없음 / 무료 / 개발·운영단계 자동승인. 원자료·가공 데이터는 이 PR에 포함하지 않음"
+  space: 개별 (계약·물품 등록 및 납품요구 변경 기록)
+  time: 수시
+  period: "기존 수집 범위 2025-01~2026-09; API 전체 제공기간을 뜻하지 않음"
+  measures: [품목 등록, 납품요구 증감수량, 납품요구 증감금액]
+  roles: [outcome]
+  topics: [digital-inclusion]
+  notes: >-
+    기존 탐색은 컴퓨터키오스크 중 증명발급기·무인안내시스템을 주 분석 대상으로 삼았다.
+    등록은 계약·물품 단위이며 고유 제품의 최초 출시·검증을 뜻하지 않는다.
+    납품요구는 접수일 기준 변경차수별 증감을 합산한다. 취소의 음수를 보존하고 단위·옵션을 분리한다.
+    공공조달 흐름이며 민간 판매·실제 설치·접근성 인증 여부 또는 이용자 성과를 뜻하지 않는다.
+    근거: https://github.com/gonasooc/a11y/blob/c45a5a16276e845f0b025cd7692138b1d44624a7/analyses/digital-inclusion/pps_analyze.py
+  verified: "2026-10-22 공식 포털의 서비스명·설명·이용 조건 확인. 필드·가공은 기존 수집 명세와 코드 대조; 인증 API 재호출 없음"
 - id: '15108347'
   name: 한국사회보장정보원_지자체복지서비스
   provider: 한국사회보장정보원
