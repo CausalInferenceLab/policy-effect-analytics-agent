@@ -1,0 +1,33 @@
+{
+  "inputs": {
+    "support_total_bn_krw": 1460.0,
+    "support_years": 10,
+    "support_per_year_bn_krw": 146.0
+  },
+  "multipliers": {
+    "production_national": 1.8,
+    "production_region": 0.85,
+    "production_gyeonggi_region": 1.045,
+    "jobs_per_bn_national": 8.8,
+    "jobs_per_bn_region": 4.6,
+    "region_retention_share": 0.4722222222222222,
+    "gyeonggi_retention_share": 0.5903954802259886
+  },
+  "production_total_bn_krw": {
+    "national": 2628.0,
+    "region": 1241.0,
+    "region_if_gyeonggi_like": 1525.6999999999998
+  },
+  "jobs_per_year": {
+    "national": 128.48000000000002,
+    "region": 67.16
+  },
+  "jobs_region_share_of_baseline_pct": 0.021332554061952076,
+  "implied_log_employment_effect": 0.00021330278996185384,
+  "scale_vs_report": {
+    "report_support_per_capita_krw_per_year": 1562500.0,
+    "changwon_support_per_capita_krw_per_year": 13371.420511942235,
+    "ratio_changwon_to_report": 0.00855770912764303,
+    "report_support_share_of_grdp_pct_per_year": 3.1486146095717884
+  }
+}

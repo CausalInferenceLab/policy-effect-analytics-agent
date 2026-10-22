@@ -1,0 +1,27 @@
+{
+  "case_id": "buildergarlic-changwon-jeonnam-frame",
+  "started_at": "2026-10-22T15:08:35+00:00",
+  "finished_at": "2026-10-22T15:08:56+00:00",
+  "git_sha": "e75e8239d34d7ad56fc60f552fcce29fe83b4403",
+  "git_dirty": true,
+  "plan_sha256": "6045ec9e95cffcdc0da2dd715d370e6ac6c3f685ce3a37a9435f601dbe412c94",
+  "data_sha256": "a06e2a3301b34d479b8efd1f5acce560c7aaa8fd23dac5cafd45853913fd9275",
+  "data_path": "data\\panel.csv",
+  "versions": {
+    "python": "3.14.7",
+    "pandas": "2.3.3",
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pyfixest": "0.60.0",
+    "statsmodels": "0.15.0",
+    "pydantic": "2.14.1",
+    "matplotlib": "3.11.2"
+  },
+  "platform": "Windows-11-10.0.26300-SP0",
+  "verdicts": {
+    "log_employees": "conditional",
+    "log_establishments": "conditional",
+    "manufacturing_emp_share": "conditional",
+    "fiscal_independence": "conditional"
+  }
+}
