@@ -1,0 +1,142 @@
+# 보고서 지표 전체와 성공/실패 종합 규칙 — 결과를 보기 전에 커밋하는 사전 등록 문서(plan.yaml 의 보완).
+# scorecard.py 가 읽는다. plan.yaml 의 핵심 지표 4개는 make flow 가 추정하고, 여기 적힌 확장 지표는 scorecard.py 가
+# 같은 추정기(core.estimators.event_study + 무작위화 추론)로 각 지표의 수록 기간 안에서 돌린다.
+#
+# goal: 보고서가 통합의 목표로 둔 방향 (framework.md §1·§3). increase | decrease | unknown
+# goal_basis: 어느 목표(G1~G6)·어느 기준(B1~B3)에서 왔는지
+# source: fetch.py 의 TABLES 키. status 는 통계표 ID 확인 여부(verified | candidate). candidate 가 수집에 실패하면
+#         그 지표는 '자료 없음'으로 표에 남기고 종합 판정에서 뺀다(지표를 빼는 결정은 자료 수집 실패일 때만).
+version: 1
+merge_year: 2010
+treat_time: 2011
+
+# 보고서 표 2-6 의 '지방광역시 평균·여타 도 평균'에 해당하는 소집단 (대조군 62곳 안에서 고름)
+groups:
+  all_donors: "plan.yaml control (62곳)"
+  peer_big_cities:        # 인구 50만 이상(2023 주민등록) 비광역 시 중 경계가 안 바뀐 곳
+    [수원시, 성남시, 고양시, 용인시, 부천시, 안산시, 안양시, 남양주시, 천안시, 전주시, 포항시]
+  gyeongnam_cities:       # 같은 도(경남) 안의 시 (인접 김해·밀양 제외)
+    [진주시, 통영시, 사천시, 거제시, 양산시]
+
+pre_window: [2005, 2009]   # 보고서식 '10년 전 대비'(B2) 기술통계의 통합 전 평균 구간
+post_window: [2019, 2023]  # 통합 후 평균 구간 (최근 5년)
+
+indicators:
+  # ── 핵심 (plan.yaml outcomes 와 같아야 함; make flow 결과를 그대로 읽는다) ──
+  - col: log_employees
+    name: 사업체 종사자수(로그)
+    domain: 사업체·고용 (G5)
+    goal: increase
+    goal_basis: "G5 기업·투자 유치·고용유발 (framework §2-3, §2-5)"
+    core: true
+    scale: log
+  - col: log_establishments
+    name: 사업체수(로그)
+    domain: 사업체·고용 (G5)
+    goal: increase
+    goal_basis: "G5 (framework §2-3)"
+    core: true
+    scale: log
+  - col: manufacturing_emp_share
+    name: 제조업 종사자 비중(%)
+    domain: 산업구조 (G5)
+    goal: unknown
+    goal_basis: "표 2-3 산업별 종사자 비중. 창원은 제조업 도시라 방향 미지정"
+    core: true
+    scale: pct_point
+  - col: fiscal_independence
+    name: 재정자립도(%)
+    domain: 지방재정·행정효율 (G3·G4)
+    goal: increase
+    goal_basis: "경로 1위 '행정 효율화·지방재정 확대' (¶16)"
+    core: true
+    scale: pct_point
+
+  # ── 확장 (scorecard.py 가 data/extended.csv 에서 읽어 지표별 기간으로 추정) ──
+  - col: youth_share
+    name: 청년(20~34세) 인구 비율(%)
+    domain: 인구 (G2)
+    goal: increase
+    goal_basis: "G2 청년 유출 완화 (그림 1-2 청년인구비율). 보고서는 19~34세, 5세 계급 자료라 20~34세로 근사"
+    core: false
+    source: age
+    years: [2008, 2023]
+    scale: pct_point
+  - col: elderly_share
+    name: 고령(65세 이상) 인구 비율(%)
+    domain: 인구 (G2)
+    goal: decrease
+    goal_basis: "G2 고령화 완화 (그림 1-2 고령인구비율)"
+    core: false
+    source: age
+    years: [2008, 2023]
+    scale: pct_point
+  - col: youth_net_migration_rate
+    name: 청년(20~34세) 순이동률(‰)
+    domain: 인구 (G2)
+    goal: increase
+    goal_basis: "G2 청년 순유출률 (그림 1-1). (전입−전출) ÷ 청년인구 × 1000, 부호가 반대라 '증가'가 유출 완화"
+    core: false
+    source: mig_age
+    years: [2008, 2023]
+    scale: per_mille
+  - col: fiscal_autonomy
+    name: 재정자주도(%)
+    domain: 지방재정·행정효율 (G3·G4)
+    goal: increase
+    goal_basis: "G4 교부세 인센티브가 자주재원을 늘렸는지 (¶16)"
+    core: false
+    source: fiscal_autonomy
+    years: [2001, 2023]
+    scale: pct_point
+  - col: employment_rate
+    name: 고용률(%)
+    domain: 노동시장 (G5·G6)
+    goal: increase
+    goal_basis: "그림 2-6, 표 2-6"
+    core: false
+    source: employment
+    years: [2008, 2023]
+    scale: pct_point
+  - col: unemployment_rate
+    name: 실업률(%)
+    domain: 노동시장 (G5·G6)
+    goal: decrease
+    goal_basis: "그림 2-7, 표 2-6"
+    core: false
+    source: employment
+    years: [2008, 2023]
+    scale: pct_point
+  - col: high_value_service_share
+    name: 고부가 서비스업(정보통신·금융보험·전문과학기술) 종사자 비중(%)
+    domain: 산업구조 (G5)
+    goal: increase
+    goal_basis: "그림 2-2 고부가가치 서비스업 비중 (BOK이슈노트 2025-18 분류)"
+    core: false
+    source: biz_mid           # biz_mid(2006~2019) + biz_new(2020~)
+    years: [2006, 2023]       # 9차 산업분류(2008) 이후 표만 사용 — 8차와 대분류가 달라 2001~2005 는 뺀다
+    scale: pct_point
+  - col: residents_per_civil_servant
+    name: 공무원 1인당 주민수(명)
+    domain: 지방재정·행정효율 (G3)
+    goal: increase
+    goal_basis: "G3 행정 효율화(조직 슬림화). 값이 클수록 공무원 대비 주민이 많음 (¶19, ¶30)"
+    core: false
+    source: civil_servants
+    years: [2008, 2023]
+    scale: level
+
+# ── 성공/실패 종합 규칙 (결과를 보기 전에 정함) ──
+# 지표별 판정: 추정치의 95% 구간(무작위화 추론)이 0을 제외하고 방향이 goal 과 같으면 success,
+#              0을 제외하고 방향이 goal 과 반대면 failure, 그 밖(구간이 0 포함, goal=unknown, 사전추세 기각,
+#              자료 없음)은 undetermined. 사전추세가 기각된(not_identified) 지표는 방향을 읽지 않는다.
+# 종합 판정:
+#   success   : 1차 지표(log_employees)가 success 이고, 판정 가능한 지표 중 failure 가 없으며 success 가 절반 이상
+#   failure   : 1차 지표가 failure 이거나, 판정 가능한 지표 중 failure 가 절반 이상
+#   mixed     : success 와 failure 가 모두 있음
+#   undetermined : 그 밖 (대부분 undetermined) — '효과 없음'이 아니라 '이 설계로는 가를 수 없음'
+# 기술통계(B1·B2)는 보조 정보로만 쓰고 판정에는 넣지 않는다(비교군 대비 변화 방향은 표에 함께 적는다).
+scoring:
+  primary: log_employees
+  min_decidable: 3          # 판정 가능한 지표가 이보다 적으면 종합은 undetermined
+  alpha: 0.05
