@@ -734,11 +734,16 @@ datasets:
   - 시군구 성별 주민등록 인구
   roles:
   - covariate
+  - outcome
   topics:
   - birth-marriage
   - housing-regulation
   - local-currency
-  verified: 2026-09-27 검색 색인 표 이름만 확인 (KOSIS 본문 미확인)
+  - local-gov-merger
+  notes: >-
+    연(연말)·월 수록, 1992년부터. 행정구역 통합 사례(local-gov-merger)에서는 결과 지표(인구 성장)로 쓰며,
+    통합 전 옛 시들의 행을 합산해 통합 후와 같은 경계로 맞춘다(cases/buildergarlic-changwon-integration/fetch.py).
+  verified: 2026-09-27 검색 색인 표 이름만 확인 (KOSIS 본문 미확인); 2026-10-22 공개 코드 저장소(chrisryugj/korean-stats-mcp)에서 항목 T20=총인구수·1992~ 수록 확인
 - id: '15142080'
   name: 국토교통부_대중교통 이용인원수
   provider: 국토교통부
@@ -894,3 +899,48 @@ datasets:
   - public-transit
   notes: 경기 정류소 × 일, 최초 승차와 환승 승차 구분. 기후동행카드 미참여 경기 지역을 대조로 쓸 때. 제공 형태(파일/API) 확인필요
   verified: 2026-10-18 메타데이터 페이지 확인
+- id: DT_1B26001_A01
+  name: 시군구별 이동자수 (국내인구이동통계)
+  provider: 통계청(KOSIS 수록)
+  portal: kosis
+  url: https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1B26001_A01
+  access: open_api
+  approval: 즉시
+  license: 확인필요
+  space: 시군구
+  time: 월
+  period: 확인필요 (연 단위 조회 가능)
+  measures:
+  - 총전입(T10)
+  - 총전출(T20)
+  - 시군구 내 이동(T30)
+  roles:
+  - outcome
+  topics:
+  - local-gov-merger
+  notes: >-
+    순이동 = 총전입 − 총전출. 경기 일반구는 시 단위로만 수록. 통합 전 옛 시들을 합산할 때 옛 시 사이의 이동은
+    전입·전출에 같이 잡혀 순이동에서 상쇄되므로 순이동은 경계 재구성에 안전하다(총전입·총전출 각각은 아님).
+  verified: 2026-10-22 공개 코드 저장소(choseungyoon/money-move)에 기록된 항목 코드로 확인 (KOSIS 본문 미확인)
+- id: DT_1YL20921
+  name: 재정자립도(시도/시/군/구) — e-지방지표
+  provider: 행정안전부(KOSIS e-지방지표 수록)
+  portal: kosis
+  url: https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1YL20921
+  access: open_api
+  approval: 즉시
+  license: 확인필요
+  space: 시군구
+  time: 연
+  period: 확인필요 (e-지방지표는 1997년부터로 알려짐)
+  measures:
+  - 재정자립도(%) = (지방세 + 세외수입) ÷ 일반회계 세입 × 100
+  roles:
+  - outcome
+  topics:
+  - local-gov-merger
+  notes: >-
+    통계표 ID 는 검색 결과 기준이라 확인필요(틀리면 cases/buildergarlic-changwon-integration/fetch.py --list-fiscal).
+    2014년 세외수입 분류 변경으로 정의가 끊긴다. 통합 지역의 통합 전 수치가 옛 시별 행으로 남아 있는지 확인 필요
+    (KOSIS Q&A 는 청주 사례에서 개편 전 수치를 따로 제공하지 않는다고 답함). 대안: 지방재정365 재정자립도(최종, 2010 회계연도~) API.
+  verified: 확인필요 — 2026-10-22 KOSIS e-지방지표 화면·검색 색인으로 지표 존재만 확인, 통계표 ID·본문 미확인

@@ -185,3 +185,50 @@ policies:
         role: outcome
     search_terms: [미세먼지 측정정보]
     pitfalls: ["전국 동시 → 공간 대조군 없음", "기상·국외 유입이 크게 교란"]
+
+  - id: T9
+    name: 마산·창원·진해 행정구역 통합 (통합 창원시 출범)
+    keywords: [창원, 마산, 진해, 마창진, 통합시, 행정구역 통합, 통합 창원시, 창원 분리, 특례시]
+    summary: 2010.7.1 마산시·창원시·진해시를 통합해 인구 108만 통합 창원시 출범. 근거 법률(법률 제10052호) 2010.3.12 공포.
+    announced: 2010-03-12
+    effective: 2010-07-01
+    sources:
+      - https://www.khan.co.kr/article/202009260902001
+    unit: 기초 시 × 연
+    treated_units: [창원시(통합 경계 — 옛 마산·창원·진해 합산)]
+    control_units: 1998~2023 경계가 바뀌지 않은 전국 기초 시 62곳 (인접 김해·밀양 제외)
+    outcomes: [주민등록인구(로그), 순이동률(천명당), 재정자립도]
+    design: scm
+    datasets:
+      - id: DT_1B040A3
+        name: 행정구역(시군구)별 성별 인구수 (주민등록인구현황)
+        provider: 행정안전부(KOSIS)
+        url: https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1B040A3
+        access: api_key
+        license: 확인필요
+        granularity: 시군구 × 연(연말)
+        role: outcome
+      - id: DT_1B26001_A01
+        name: 시군구별 이동자수 (국내인구이동통계)
+        provider: 통계청(KOSIS)
+        url: https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1B26001_A01
+        access: api_key
+        license: 확인필요
+        granularity: 시군구 × 연
+        role: outcome
+      - id: DT_1YL20921
+        name: 재정자립도(시도/시/군/구) — e-지방지표
+        provider: 행정안전부(KOSIS)
+        url: https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1YL20921
+        access: api_key
+        license: 확인필요
+        granularity: 시군구 × 연
+        role: outcome
+    search_terms: [주민등록인구 시군구, 시군구별 이동자수, 재정자립도]
+    pitfalls:
+      - "경계 변경: 통합 전 창원시(옛)와 통합 후 창원시는 다른 지역 → 옛 3개 시를 합산해 같은 경계로."
+      - "전환연도: 2010년은 반년만 통합 → 제외하고 2011년을 첫 사후연도로."
+      - "처치 단위 1개: 보통의 표준오차 대신 무작위화 추론(placebo-in-space)·합성통제."
+      - "통합 패키지: 보통교부세 특례 등 인센티브가 함께 들어와 통합만의 효과로 분리 불가."
+      - "파급: 김해·밀양 등 인접 시로 인구·세원이 옮겨가면 대조군 오염 → 제외."
+    sample_case: cases/buildergarlic-changwon-integration
