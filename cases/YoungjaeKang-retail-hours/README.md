@@ -19,20 +19,21 @@
 
 ## 관측 매출 탐색 분석 재현
 
-저장소 루트에서 개발 환경을 설치한 뒤 실행한다. API 키는 필요하지 않다. 처음 실행할 때는 다음 두 명령을 **`&&`로 연결**한다. 취득·검사·패널 생성이 실패하면 분석을 실행하지 않는다.
+저장소 루트에서 개발 환경을 설치한 뒤 실행한다. API 키는 필요하지 않다. 처음에는 다음 명령으로 원본을 취득한다. 성공하면 출력된 스냅샷 경로를 아래 재현 명령의 `--snapshot`에 넣는다. 실패 시 다음 단계로 진행하지 않는다.
 
 ```bash
-.venv/bin/python cases/YoungjaeKang-retail-hours/fetch.py fetch && \
-MPLCONFIGDIR=/tmp/retail-matplotlib make flow PY=.venv/bin/python CASE=cases/YoungjaeKang-retail-hours
+.venv/bin/python cases/YoungjaeKang-retail-hours/fetch.py fetch
 ```
 
 저장된 스냅샷으로 재현할 때는 `fetch`가 출력한 경로를 지정한다. 아래 경로는 이번 분석에서 사용한 로컬 스냅샷이며 저장소에 포함되지 않는다.
 
 ```bash
-.venv/bin/python cases/YoungjaeKang-retail-hours/fetch.py build-observed \
+MPLCONFIGDIR=/tmp/retail-matplotlib .venv/bin/python cases/YoungjaeKang-retail-hours/visualize.py \
   --snapshot cases/YoungjaeKang-retail-hours/data/raw/sales/20261021T120614Z && \
 MPLCONFIGDIR=/tmp/retail-matplotlib make flow PY=.venv/bin/python CASE=cases/YoungjaeKang-retail-hours
 ```
+
+`visualize.py --snapshot <경로>`는 원본을 다시 검사하고 관측 패널과 진단 그림 2개를 생성한다. 실패 시 `&&` 뒤의 분석은 실행되지 않는다. 이어지는 `make flow`가 기본 그림과 discussion의 추가 그림 링크를 포함한 보고서를 재생성한다.
 
 `fetch`는 새 원본 취득 후 관측 패널을 생성한다. `build-observed`는 해시를 확인한 기존 원본으로 재생성하며 기본 명령도 동일하다. `build`는 원래 전체매출 지표의 보류 진단만 수행하고 종료 코드 2를 반환한다. `simulate`는 별도 폴더에서 합성 입력으로 실행 흐름을 검사한다.
 
@@ -104,7 +105,7 @@ make check PY=.venv/bin/python
 .venv/bin/python scripts/check_lineage.py
 ```
 
-2026-10-21 기준 사례 테스트 76개와 `make check`가 통과했다(2개 skip, 기존 시간축 경고). 실제 원본에서 336/315행과 공통 품질검사 11개, 6단계 실행을 확인했다. 2026-10-23 최신 main 반영 후 사례 76개와 `make check`를 다시 통과했다(2개 skip, 기존 시간축 경고). 라이선스·계보·format·diff 검사도 통과했고, 동일 실제 스냅샷의 패널과 추정치를 재현했다. 다른 참여자의 재현은 아직 확인하지 않았다.
+2026-10-21 기준 사례 테스트 76개와 `make check`가 통과했다(2개 skip, 기존 시간축 경고). 실제 원본에서 336/315행과 공통 품질검사 11개, 6단계 실행을 확인했다. 2026-10-23 최신 main 반영 후 사례 76개와 `make check`를 다시 통과했다(2개 skip, 기존 시간축 경고). 라이선스·계보·format·diff 검사도 통과했고, 동일 실제 스냅샷의 패널과 추정치를 재현했다. 후속 보고서에서는 시각화 검사 6개를 추가해 사례 테스트가 82개다. 첫 분기 진입·이탈의 결측 보존, 미관측 금액의 0 대체 차단, 진단 격자·진입이탈 불일치와 원본 검사 실패 시 중단을 검사한다. 다른 참여자의 재현은 아직 확인하지 않았다.
 
 ## 정책 근거와 제출 이력
 
@@ -112,6 +113,6 @@ make check PY=.venv/bin/python
 
 초기 계획 #9, 보완 #10·#11·#12, 비교군 고정 #29는 병합됐다. 특성자료 구현 #22와 동일 해결본 #31은 2026-10-23 병합 없이 닫혔다. 이번 통합 PR은 그 구현을 포함하고 매출 수집·탐색 분석으로 이어지며, 두 PR의 대체 관계를 제출 본문에 명시한다. 원자료 열람 후 변경과 미해결 근거는 삭제하지 않는다.
 
-후속 작업은 관측 범위 시각화와 보고서 보강, 타 참여자 재현, 기존 사이트 주제 연결·한계 표시다. 공통 사이트 변경은 메인테이너와 논의 후 별도 PR로 진행한다. 이번 계산 완료를 사이트 공개 완료로 보고하지 않는다.
+관측 범위 그림 2개와 결과·한계·향후 방향을 연결한 보고서를 후속 PR에서 보강했다. `visualization_manifest.json`은 이 추가 그림의 출처·해시를 기록한다. 남은 작업은 타 참여자 재현과 기존 사이트 주제 연결·한계 표시다. 공통 사이트 변경은 메인테이너와 논의 후 별도 PR로 진행한다. 이번 계산 완료를 사이트 공개 완료로 보고하지 않는다.
 
 학습·연구용 분석이며 정부·공공기관의 공식 평가가 아니다.
