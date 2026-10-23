@@ -734,11 +734,16 @@ datasets:
   - 시군구 성별 주민등록 인구
   roles:
   - covariate
+  - outcome
   topics:
   - birth-marriage
   - housing-regulation
   - local-currency
-  verified: 2026-09-27 검색 색인 표 이름만 확인 (KOSIS 본문 미확인)
+  - local-gov-merger
+  notes: >-
+    연(연말)·월 수록, 1992년부터. 행정구역 통합 사례(local-gov-merger)에서는 결과 지표(인구 성장)로 쓰며,
+    통합 전 옛 시들의 행을 합산해 통합 후와 같은 경계로 맞춘다(cases/buildergarlic-changwon-integration/fetch.py).
+  verified: 2026-09-27 검색 색인 표 이름만 확인 (KOSIS 본문 미확인); 2026-10-22 공개 코드 저장소(chrisryugj/korean-stats-mcp)에서 항목 T20=총인구수·1992~ 수록 확인
 - id: '15142080'
   name: 국토교통부_대중교통 이용인원수
   provider: 국토교통부
@@ -894,3 +899,51 @@ datasets:
   - public-transit
   notes: 경기 정류소 × 일, 최초 승차와 환승 승차 구분. 기후동행카드 미참여 경기 지역을 대조로 쓸 때. 제공 형태(파일/API) 확인필요
   verified: 2026-10-18 메타데이터 페이지 확인
+- id: DT_1B26001_A01
+  name: 시군구별 이동자수 (국내인구이동통계)
+  provider: 통계청(KOSIS 수록)
+  portal: kosis
+  url: https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1B26001_A01
+  access: open_api
+  approval: 즉시
+  license: 확인필요
+  space: 시군구
+  time: 월
+  period: 1998~ 확인 (연 단위 조회, 2023 까지 수집 확인)
+  measures:
+  - 총전입(T10)
+  - 총전출(T20)
+  - 시군구 내 이동(T30)
+  roles:
+  - outcome
+  topics:
+  - local-gov-merger
+  notes: >-
+    순이동 = 총전입 − 총전출. 경기 일반구는 시 단위로만 수록. 통합 전 옛 시들을 합산할 때 옛 시 사이의 이동은
+    전입·전출에 같이 잡혀 순이동에서 상쇄되므로 순이동은 경계 재구성에 안전하다(총전입·총전출 각각은 아님).
+    주의: 폐지된 시군구 코드(옛 창원 48110·마산 48160·진해 48190, 울산시, 청원군 등 28곳)가 2023년까지 남아 있고
+    폐지 후 연도 값이 '-' 가 아니라 0 이다. 옛 창원시와 새 창원시(48120)는 이름이 같으니 코드나 0 으로 구분한다.
+  verified: 2026-10-22 OpenAPI 실수집으로 항목 코드·기간·폐지 코드 0 채움 확인 (cases/buildergarlic-changwon-integration/fetch.py)
+- id: DT_1YL20921
+  name: 재정자립도(시도/시/군/구) — e-지방지표
+  provider: 행정안전부(KOSIS e-지방지표 수록)
+  portal: kosis
+  url: https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1YL20921
+  access: open_api
+  approval: 즉시
+  license: 확인필요
+  space: 시군구
+  time: 연
+  period: 2001~ (연, OpenAPI 로 확인)
+  measures:
+  - 재정자립도(%) = (지방세 + 세외수입) ÷ 일반회계 세입 × 100
+  roles:
+  - outcome
+  topics:
+  - local-gov-merger
+  notes: >-
+    항목이 둘: '재정자립도(세입과목개편전)'(2001~2023)과 '재정자립도(세입과목개편후)'(2014~). 한 정의로 긴 시계열이
+    필요하면 개편전 계열을 쓴다. 통합 전 옛 시(창원 38010·마산 38020·진해 38040)는 2009년까지 따로 수록되고
+    통합 후는 38110 창원시. 지역코드가 경남 등은 5자리, 광주·전남은 7자리(1236010 목포시)로 섞여 있다.
+    대안: 지방재정365 재정자립도(최종, 2010 회계연도~) API.
+  verified: 2026-10-22 OpenAPI 실수집으로 통계표 ID·기간·항목 확인 (cases/buildergarlic-changwon-integration/fetch.py). 공공누리 유형은 확인필요
