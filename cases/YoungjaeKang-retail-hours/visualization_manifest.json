@@ -1,0 +1,18 @@
+{
+  "scope": "descriptive_observation_diagnostics_not_causal_effect",
+  "snapshot": "20261021T120614Z",
+  "plan_sha256": "65a42ab745f5065c20785262689390899dd7183925e252b74e3d97f38e26f9a2",
+  "panel_sha256": "053314944c2842d4a63df6eab0d32ef9351ddb4dde46c5b980c08a47fcdf6221",
+  "diagnostics_sha256": "e02f93c28327f0d99d97835b2023c997167324fd21b70e55b30a0dfe4015b662",
+  "source_code_sha256": {
+    "fetch.py": "30b0ece927d690c60143687ba0b97081edef731142e4b8866b8b44c45ad88ac8",
+    "sales_panel.py": "c2c2709aa3c7b18235d8da5c94c3e4900baff37780a96ab4afb6faedaffb4db5",
+    "characteristics_files.py": "5793380f932667efb6c15f9810e4daf99c59cb80863cdd8b93476ec169ff088f",
+    "fetch_characteristics.py": "dc47aad1886b43b899a816fb979aba707af5fd34f144424774a3f64e3c5973a8"
+  },
+  "visualize_sha256": "2d4e1145f42e60f0b08ee4d5a2ab62f14da1c77559c9d8f9b1fb036daefdbd1b",
+  "figures": {
+    "observation_coverage.png": "ac355062e230d44dcbfc7b3c9da2f71ba0a92fdeebb9984e318890e93f4c1e4a",
+    "industry_coverage.png": "ec552b07dfbd8a6edd6d16aa1662e2d862673421fa393e47bb6ad35b64ab8f80"
+  }
+}
