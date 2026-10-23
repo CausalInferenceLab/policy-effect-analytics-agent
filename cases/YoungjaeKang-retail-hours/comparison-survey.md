@@ -36,7 +36,7 @@
 
 ## 공통 자료 확인 현황
 
-아래 특성자료의 취득·검사는 별도 [PR #22](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/22)의 로컬 작업 결과다. 해당 수집 구현은 이번 PR에 포함하지 않는다.
+아래 특성자료의 취득·검사는 별도 [PR #22](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/22)의 로컬 작업 결과다. 해당 구현은 #22·#31이 병합 없이 닫힌 뒤 이번 수집·분석 통합 PR에 포함한다.
 
 | 항목 | 이번에 보강한 확인 | 아직 남은 일 |
 |---|---|---|
