@@ -65,12 +65,11 @@ COLLECT_KO = {
 }
 NAV = [
     ("index.html", "홈"),
+    ("projects.html", "프로젝트"),
     ("issues.html", "지금 이슈"),
     ("index.html#topics", "주제"),
     ("data.html", "데이터 지도"),
     ("lineage.html", "데이터 계보"),
-    ("apps.html", "서비스"),
-    ("architecture.html", "구조"),
     ("index.html#join", "참여하기"),
 ]
 TERMS = [
@@ -116,6 +115,7 @@ def page(title: str, body: str, current: str, depth: int = 0) -> str:
 <div class="wrap">{body}
 <footer>가짜연구소 인과추론팀 × 오픈업 오픈소스 AI 특화형 트랙3 · 이 사이트의 숫자와 판정은 레포의 <code>catalog/</code>·<code>cases/</code>에서
 자동으로 만들어집니다. 시뮬레이션 결과에는 따로 표시가 붙습니다.<br>
+<span class="foot-links"><a href="{up}apps.html">서비스 · 공개 API</a> · <a href="{up}architecture.html">구조와 작동 방식</a> · <a href="{up}projects.html">참여자 프로젝트</a> · <a href="{REPO}/blob/main/docs/ops/mentee-guide.md">참여 가이드</a></span><br>
 <b>공식 평가가 아닙니다.</b> 학습·연구용 오픈소스 분석이며 정부·공공기관의 공식 평가나 통계가 아니고, 데이터 제공 기관의 후원·보증을 뜻하지 않습니다. · <a href="{REPO}">소스 코드 (MIT)</a></footer>
 </div></body></html>"""
 
@@ -457,18 +457,22 @@ def ranking_block(topics, issues, trends: dict, n: int = 5) -> str:
     )
 
 
-def index_page(topics, policies, issues, datasets) -> str:
+def index_page(topics, policies, issues, datasets, projects=()) -> str:
+    import projects as proj
+
     issue_topics = {i.topic for i in issues}
     cards = []
     for t in topics:
         key, lab, cls = readiness(t)
         res = bool(case_logs(t, policies))
+        n_proj = sum(p["topic"] == t.id and not p["mentor"] for p in projects)
         n_ds = sum(t.id in d.topics for d in datasets)
         cards.append(
             f'<a class="card topic" data-topic="{t.id}" data-ready="{key}" data-result="{int(res)}" '
             f'data-issue="{int(t.id in issue_topics)}" href="topics/{t.id}.html"><div><h3>{e(t.name)}</h3>'
             f'<span class="badge {cls}">{lab}</span>'
             + (' <span class="badge info">분석 예시 있음</span>' if res else "")
+            + (f' <span class="badge go">프로젝트 {n_proj}</span>' if n_proj else "")
             + f'</div><p class="muted">{e(t.question)}</p><div class="gates">{gate_badges(t)}</div>'
             f'<p class="muted small" style="margin:6px 0 0">데이터셋 {n_ds}개</p></a>'
         )
@@ -477,20 +481,11 @@ def index_page(topics, policies, issues, datasets) -> str:
         f"<h3>{e(i.name)}</h3><p class='muted' style='margin:0'>{e(i.issue)}</p>"
         f'<div class="tags"><span class="badge {SUPPORT[i.design][1]}">{DESIGN_SHORT[i.design]}</span>'
         f'<span class="badge info">데이터 {len(i.datasets)}개</span></div></a>'
-        for i in issues
+        for i in issues[:3]
     )
-    n_api = sum(d.access == "open_api" for d in datasets)
     chips = "".join(
         f'<button class="chip" type="button" data-ask="{e(x)}">{e(x)}</button>'
         for x in HOME_EXAMPLES
-    )
-    flow = "".join(
-        f'<div class="card"><span class="n">{i + 1:02d}</span><b>{a}</b><p>{b}</p><div class="who">{c}</div></div>'
-        for i, (a, b, c) in enumerate(HOME_STEPS)
-    )
-    reflect = "".join(
-        f'<div class="card"><span class="n">{i + 1:02d}</span><b>{a}</b><p>{b}</p></div>'
-        for i, (a, b) in enumerate(REFLECT_STEPS)
     )
     body = f"""
 <div class="hero"><span class="eyebrow">오픈소스 · 공공데이터 · 인과추론</span>
@@ -525,17 +520,13 @@ AI도 결과를 계산하지 않습니다. 주제·데이터·계획을 함께 �
 <a class="stat" href="#topics"><div class="v">{len(topics)}</div><div class="l">분석 주제</div></a>
 <a class="stat" href="issues.html"><div class="v">{len(issues)}</div><div class="l">지금 이슈인 정책</div></a>
 <a class="stat" href="data.html"><div class="v">{len(datasets)}</div><div class="l">정리한 데이터셋</div></a>
-<a class="stat" href="data.html"><div class="v">{n_api}</div><div class="l">오픈API로 받을 수 있는 것</div></a>
+<a class="stat" href="projects.html"><div class="v">{sum(not p["mentor"] for p in projects)}</div><div class="l">참여자 프로젝트</div></a>
 </div></div>
 
-<section id="reflect"><h2>대화가 오픈소스가 되는 길</h2><p class="sub">여기서 나눈 질문이 새 주제·새 데이터·새 분석으로 쌓입니다. 없던 공공데이터 정책 분석을 함께 만드는 방식입니다.</p>
-<div class="flow">{reflect}</div></section>
-
-<section id="how"><h2>이렇게 확인합니다</h2><p class="sub">효과를 추정하는 한 바퀴(트랙 B의 Cycle)입니다. 1~2단계의 재료는 트랙 A의 데이터 계보가, 6단계의 결과는 트랙 C의 서비스가 이어받습니다.</p>
-<div class="flow">{flow}</div></section>
+{proj.strip(e, list(projects), topics)}
 
 <section id="issues"><h2>지금 이슈인 정책</h2><p class="sub">요즘 논쟁 중인 정책을 어떻게 분석할 수 있는지, 어떤 데이터를 받을 수 있는지 정리했습니다.</p>
-<div class="grid">{issue_cards}</div><div class="cta"><a class="btn ghost" href="issues.html">분석 가이드 전체 보기</a></div></section>
+<div class="grid">{issue_cards}</div><div class="cta"><a class="btn ghost" href="issues.html">지금 이슈 {len(issues)}개 · 분석 가이드 전체 보기</a></div></section>
 
 <section id="topics"><h2>주제</h2><p class="sub">이슈 하나가 아니라 주제 단위로 봅니다. 배지는 세 가지 확인 사항의 상태입니다.</p>
 <div class="chips" role="group" aria-label="필터">
@@ -547,6 +538,48 @@ AI도 결과를 계산하지 않습니다. 주제·데이터·계획을 함께 �
 <span style="flex:1"></span>
 <button class="chip v" data-v="grid" aria-pressed="true">카드</button><button class="chip v" data-v="list" aria-pressed="false">목록</button></div>
 <div class="grid" id="cards">{"".join(cards)}</div></section>
+
+<section id="join"><h2>참여하기 — 세 가지 방식</h2><p class="sub">커리어 방향과 해 보고 싶은 시도에 따라 하나를 고릅니다. 세 트랙은 이어져 있습니다:
+A가 이슈와 데이터를 이으면, B가 그 데이터로 효과를 추정하고, C가 그 결과로 서비스를 만듭니다.</p>
+<div class="grid3">
+<div class="card"><div class="icon">A</div><h3>데이터 온톨로지</h3><p><b>데이터 온톨로지를 만들고 싶다</b></p>
+<p class="muted">공공 이슈와 연결되는 데이터를 찾고 이슈 → 정책 → 원천 데이터 → 가공 → 지표로 이어지는 계보(Lineage)를 만듭니다.</p>
+<p class="small">내 작업: <code>catalog/lineage/&lt;내ID&gt;-&lt;주제&gt;.yaml</code>, <code>catalog/datasets.yaml</code></p>
+<p class="small"><a href="lineage.html">데이터 계보 보기</a> · <a href="{REPO}/blob/main/docs/tracks/ontology.md">트랙 A 가이드</a></p></div>
+<div class="card"><div class="icon">B</div><h3>가설과 분석</h3><p><b>가설 설정과 분석을 익히고 싶다</b></p>
+<p class="muted">실제 사례로 가설 → 계획 → 수집 → 추정 → 반증 → 해석의 한 바퀴(Cycle)를 돌며 효과를 추정합니다.</p>
+<p class="small">내 작업: <code>cases/&lt;내ID&gt;-&lt;주제&gt;/</code></p>
+<p class="small"><a href="architecture.html#how">여섯 단계 보기</a> · <a href="{REPO}/blob/main/docs/tracks/analysis.md">트랙 B 가이드</a></p></div>
+<div class="card"><div class="icon">C</div><h3>서비스 개발</h3><p><b>서비스를 개발하고 싶다</b></p>
+<p class="muted">분석 Cycle에서 나온 데이터(공개 API)로 웹·앱 서비스를 만듭니다. 합쳐지면 이 사이트에서 바로 열립니다.</p>
+<p class="small">내 작업: <code>apps/&lt;내ID&gt;-&lt;서비스&gt;/</code></p>
+<p class="small"><a href="apps.html">서비스와 API 보기</a> · <a href="{REPO}/blob/main/docs/tracks/service.md">트랙 C 가이드</a></p></div>
+</div><div class="cta"><a class="btn primary" href="{REPO}/blob/main/docs/ops/mentee-guide.md">멘티 참여 가이드</a>
+<a class="btn ghost" href="{REPO}/issues/new?template=case-proposal.yml">작업 제안 올리기</a>
+<a class="btn ghost" href="{REPO}/blob/main/docs/ops/github-onboarding.md">GitHub가 처음이라면</a>
+<a class="btn ghost" href="{REPO}/issues?q=label%3Afrom-site">올라온 질문 보기</a></div></section>
+<script type="application/json" id="catalog">{catalog_json(topics, policies, issues, datasets)}</script>
+<script src="ask.js"></script>
+<script>{HOME_JS}</script>"""
+    return page("정책 효과 분석 플랫폼", body, "index.html")
+
+
+def how_sections() -> str:
+    """홈에서 옮긴 '작동 방식' 설명 — 구조 페이지 아래에 붙인다."""
+    flow = "".join(
+        f'<div class="card"><span class="n">{i + 1:02d}</span><b>{a}</b><p>{b}</p><div class="who">{c}</div></div>'
+        for i, (a, b, c) in enumerate(HOME_STEPS)
+    )
+    reflect = "".join(
+        f'<div class="card"><span class="n">{i + 1:02d}</span><b>{a}</b><p>{b}</p></div>'
+        for i, (a, b) in enumerate(REFLECT_STEPS)
+    )
+    return f"""
+<section id="reflect"><h2>대화가 오픈소스가 되는 길</h2><p class="sub">여기서 나눈 질문이 새 주제·새 데이터·새 분석으로 쌓입니다. 없던 공공데이터 정책 분석을 함께 만드는 방식입니다.</p>
+<div class="flow">{reflect}</div></section>
+
+<section id="how"><h2>이렇게 확인합니다</h2><p class="sub">효과를 추정하는 한 바퀴(트랙 B의 Cycle)입니다. 1~2단계의 재료는 트랙 A의 데이터 계보가, 6단계의 결과는 트랙 C의 서비스가 이어받습니다.</p>
+<div class="flow">{flow}</div></section>
 
 <section id="why"><h2>왜 주제 단위로 보나</h2><p class="sub">화제가 된 정책 하나만 골라 분석하면, 결과를 보고 사례를 고르는 것과 같아집니다.</p>
 <div class="split">
@@ -567,29 +600,7 @@ AI도 결과를 계산하지 않습니다. 주제·데이터·계획을 함께 �
 <div class="card"><div class="icon">6</div><h3>한계를 숨기지 않는다</h3><p class="muted">시뮬레이션, 키 대기, 확인 필요 상태를 배지로 그대로 보여줍니다.</p></div>
 </div></section>
 
-<section id="join"><h2>참여하기 — 세 가지 방식</h2><p class="sub">커리어 방향과 해 보고 싶은 시도에 따라 하나를 고릅니다. 세 트랙은 이어져 있습니다:
-A가 이슈와 데이터를 이으면, B가 그 데이터로 효과를 추정하고, C가 그 결과로 서비스를 만듭니다.</p>
-<div class="grid3">
-<div class="card"><div class="icon">A</div><h3>데이터 온톨로지</h3><p><b>데이터 온톨로지를 만들고 싶다</b></p>
-<p class="muted">공공 이슈와 연결되는 데이터를 찾고 이슈 → 정책 → 원천 데이터 → 가공 → 지표로 이어지는 계보(Lineage)를 만듭니다.</p>
-<p class="small">내 작업: <code>catalog/lineage/&lt;내ID&gt;-&lt;주제&gt;.yaml</code>, <code>catalog/datasets.yaml</code></p>
-<p class="small"><a href="lineage.html">데이터 계보 보기</a> · <a href="{REPO}/blob/main/docs/tracks/ontology.md">트랙 A 가이드</a></p></div>
-<div class="card"><div class="icon">B</div><h3>가설과 분석</h3><p><b>가설 설정과 분석을 익히고 싶다</b></p>
-<p class="muted">실제 사례로 가설 → 계획 → 수집 → 추정 → 반증 → 해석의 한 바퀴(Cycle)를 돌며 효과를 추정합니다.</p>
-<p class="small">내 작업: <code>cases/&lt;내ID&gt;-&lt;주제&gt;/</code></p>
-<p class="small"><a href="#how">여섯 단계 보기</a> · <a href="{REPO}/blob/main/docs/tracks/analysis.md">트랙 B 가이드</a></p></div>
-<div class="card"><div class="icon">C</div><h3>서비스 개발</h3><p><b>서비스를 개발하고 싶다</b></p>
-<p class="muted">분석 Cycle에서 나온 데이터(공개 API)로 웹·앱 서비스를 만듭니다. 합쳐지면 이 사이트에서 바로 열립니다.</p>
-<p class="small">내 작업: <code>apps/&lt;내ID&gt;-&lt;서비스&gt;/</code></p>
-<p class="small"><a href="apps.html">서비스와 API 보기</a> · <a href="{REPO}/blob/main/docs/tracks/service.md">트랙 C 가이드</a></p></div>
-</div><div class="cta"><a class="btn primary" href="{REPO}/blob/main/docs/ops/mentee-guide.md">멘티 참여 가이드</a>
-<a class="btn ghost" href="{REPO}/issues/new?template=case-proposal.yml">작업 제안 올리기</a>
-<a class="btn ghost" href="{REPO}/blob/main/docs/ops/github-onboarding.md">GitHub가 처음이라면</a>
-<a class="btn ghost" href="{REPO}/issues?q=label%3Afrom-site">올라온 질문 보기</a></div></section>
-<script type="application/json" id="catalog">{catalog_json(topics, policies, issues, datasets)}</script>
-<script src="ask.js"></script>
-<script>{HOME_JS}</script>"""
-    return page("정책 효과 분석 플랫폼", body, "index.html")
+"""
 
 
 # ─── 지금 이슈: 효과 추정 가이드 ───────────────────────────────────────────────
@@ -845,7 +856,9 @@ def legal_block(t) -> str:
     )
 
 
-def topic_page(t, policies, issues, datasets) -> str:
+def topic_page(t, policies, issues, datasets, projects=()) -> str:
+    import projects as proj
+
     by_id = {p.id: p for p in policies}
     ps = [by_id[i] for i in t.policies]
     _, lab, cls = readiness(t)
@@ -914,6 +927,15 @@ def topic_page(t, policies, issues, datasets) -> str:
                 f'<span class="badge {scls}">{sup}</span></p>{pits}</div>'
             )
         body.append("</section>")
+    mine = proj.by_topic(list(projects), t.id)
+    if mine:
+        tb = {t.id: t}
+        body.append(
+            "<section><h2>이 주제의 프로젝트</h2><p class='sub'>참여자와 멘토가 이 주제로 진행 중인 분석입니다.</p>"
+            '<div class="grid proj-grid">'
+            + "".join(proj.project_card(e, p, tb, up="../") for p in mine)
+            + "</div></section>"
+        )
     cases = case_logs(t, policies)
     if cases:
         body.append("<section><h2>5. 분석 예시</h2>")
@@ -928,25 +950,29 @@ def topic_page(t, policies, issues, datasets) -> str:
 # ─── 빌드 ────────────────────────────────────────────────────────────────────
 def main() -> None:
     import architecture
+    import projects as proj
 
     topics, policies = load_topics(), load_catalog()
     issues, datasets = load_issues(), load_datasets()
+    projects = proj.load_projects()
     if OUT.exists():
         shutil.rmtree(OUT)
     (OUT / "topics").mkdir(parents=True)
     pages = {
-        "index.html": index_page(topics, policies, issues, datasets),
+        "index.html": index_page(topics, policies, issues, datasets, projects),
         "issues.html": issues_page(issues, datasets, topics),
         "data.html": data_page(datasets, topics, issues),
         "architecture.html": page(
-            "구조 · 정책 효과 분석 플랫폼", architecture.body(e), "architecture.html"
+            "구조 · 정책 효과 분석 플랫폼",
+            architecture.body(e) + how_sections(),
+            "architecture.html",
         ),
     }
     for name, text in pages.items():
         (OUT / name).write_text(text, encoding="utf-8")
     for t in topics:
         (OUT / "topics" / f"{t.id}.html").write_text(
-            topic_page(t, policies, issues, datasets), encoding="utf-8"
+            topic_page(t, policies, issues, datasets, projects), encoding="utf-8"
         )
     # 트랙 A·C: 공개 API, 데이터 계보, 서비스
     import api
@@ -962,6 +988,14 @@ def main() -> None:
             "데이터 계보 · 정책 효과 분석 플랫폼",
             tracks.lineage_body(e, topics, issues, datasets, load_lineages(), results),
             "lineage.html",
+        ),
+        encoding="utf-8",
+    )
+    (OUT / "projects.html").write_text(
+        page(
+            "참여자 프로젝트 · 정책 효과 분석 플랫폼",
+            proj.projects_body(e, projects, load_lineages(), topics),
+            "projects.html",
         ),
         encoding="utf-8",
     )

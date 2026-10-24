@@ -22,6 +22,7 @@ API_DOC = [
     ("legal/housing-regulation.json", "법제처에서 모은 법령·행정규칙·조례 목록 (주제마다 하나)"),
     ("lineage.json", "데이터 계보 (개수 = 계보 파일 수) — 트랙 A 산출물"),
     ("results.json", "분석 결과: 판정 · 추정치 · 신뢰구간 · 그림 — 트랙 B 산출물"),
+    ("projects.json", "참여자 프로젝트: 담당자 · 트랙 · 주제 · 진행 단계 · 자동 판정"),
 ]
 
 
