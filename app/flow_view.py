@@ -59,7 +59,11 @@ def list_cases(root: Path | None = None) -> list[Path]:
     root = root or cases_dir()
     if not root.is_dir():
         return []
-    return sorted(p for p in root.iterdir() if p.is_dir() and (p / "plan.yaml").exists())
+    return sorted(
+        p
+        for p in root.iterdir()
+        if p.is_dir() and p.name != "_template" and (p / "plan.yaml").exists()
+    )
 
 
 def llm_available() -> bool:

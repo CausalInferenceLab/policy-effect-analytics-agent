@@ -200,4 +200,7 @@ footer { margin-top: 64px; color: var(--muted); font-size: 13px; border-top: 1px
   .arrow { transform: rotate(90deg); justify-self: center }
   .layer { grid-template-columns: minmax(0, 1fr) }
   .lin-grid { grid-template-columns: minmax(0, 1fr) }
+  .nav .links { flex-wrap: nowrap; overflow-x: auto; white-space: nowrap; scrollbar-width: none; padding-bottom: 2px }
+  .nav .links::-webkit-scrollbar { display: none }
+  .proj-grid { grid-template-columns: minmax(0, 1fr) }
 }
