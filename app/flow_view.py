@@ -43,9 +43,9 @@ STATUS_BADGE = {
     "skipped": ("SKIPPED", "gray"),
 }
 VERDICT_LABEL = {
-    "identified": ("식별됨", "green"),
-    "conditional": ("조건부", "orange"),
-    "not_identified": ("식별 불가", "red"),
+    "identified": ("효과 근거 있음", "green"),
+    "conditional": ("크기를 판별하지 못함", "orange"),
+    "not_identified": ("판단 불가", "red"),
 }
 LLM_KEY_ENVS = ("OPENAI_API_KEY", "ANTHROPIC_API_KEY", "OPENAI_BASE_URL")
 

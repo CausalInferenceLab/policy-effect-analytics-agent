@@ -84,8 +84,10 @@ def case_results(out: Path) -> list[dict]:
         c: lin.topic for lin in load_lineages() for s in lin.steps for c in s.used_by
     }
     from projects import load_registry
+    from quality import prereg
 
-    topic_of |= {c: m["topic"] for c, m in load_registry().items() if m.get("topic")}
+    reg = load_registry()
+    topic_of |= {c: m["topic"] for c, m in reg.items() if m.get("topic")}
     rows = []
     for log_path in sorted(CASES.glob("*/flow_log.json")):
         case = log_path.parent
@@ -144,6 +146,10 @@ def case_results(out: Path) -> list[dict]:
                 "figures": figs,
                 "source": f"cases/{case.name}",
                 "page": f"answers/{case.name}.html",
+                "record": {
+                    "preregistration": (prereg(case) or {}).get("label"),
+                    "reproduced_by": list(reg.get(case.name, {}).get("reproduced_by") or []),
+                },
             }
         )
     return rows

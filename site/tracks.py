@@ -130,7 +130,11 @@ def lineage_body(e, topics, issues, datasets, lineages, results) -> str:
             f"<td>{roles['treatment']} · {roles['outcome']} · {roles['covariate']}</td>"
             f"<td>{n_lin}</td><td>{n_res}</td><td>{gap}</td></tr>"
         )
-    ko = {"identified": "효과 근거 있음", "conditional": "조건부", "not_identified": "판단 불가"}
+    ko = {
+        "identified": "효과 근거 있음",
+        "conditional": "크기를 판별하지 못함",
+        "not_identified": "판단 불가",
+    }
     verdicts = {r["case"]: ko.get(r.get("verdict"), r.get("verdict") or "") for r in results}
     cards = "".join(_lineage_card(lin, e, issues_by_id, ds_by_id, verdicts) for lin in lineages)
     return f"""
