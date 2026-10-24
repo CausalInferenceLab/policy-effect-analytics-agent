@@ -143,6 +143,7 @@ def case_results(out: Path) -> list[dict]:
                 ],
                 "figures": figs,
                 "source": f"cases/{case.name}",
+                "page": f"answers/{case.name}.html",
             }
         )
     return rows
