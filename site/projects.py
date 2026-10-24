@@ -158,6 +158,8 @@ def project_card(e, p: dict, topics_by_id: dict, up: str = "") -> str:
             'loading="lazy">'
         )
     links = [f'<a href="{REPO}/tree/main/cases/{e(p["case"])}">폴더</a>']
+    if p["stages"][2]:
+        links.insert(0, f'<a href="{up}answers/{e(p["case"])}.html"><b>결과 보기</b></a>')
     if p["has_report"]:
         links.append(f'<a href="{REPO}/blob/main/cases/{e(p["case"])}/report.md">리포트</a>')
     if p["issue"]:

@@ -14,6 +14,7 @@
 
 ## 먼저 볼 것
 
+- [분석 결과](https://causalinferencelab.github.io/policy-effect-analytics-agent/results.html): 사용자가 보는 화면. 케이스마다 쉬운 말 답, 인용해도 되는 문장, 쓴 데이터, 재현 명령이 붙습니다. 내 `discussion.md`의 '결과를 한 문장으로'가 여기 '작성자 해석'으로 나오니 꼭 채워 주세요
 - [참여자 프로젝트](https://causalinferencelab.github.io/policy-effect-analytics-agent/projects.html): 누가 어떤 정책을 어디까지(계획 → 수집 → 분석 → 해석) 진행했는지, 열린 PR·작업 제안까지 한 화면에
 - [사이트 첫 화면](https://causalinferencelab.github.io/policy-effect-analytics-agent/): 궁금한 정책을 적으면 주제·관련 법령·데이터·분석 계획 초안을 대화로 정리해 줍니다.
 - [지금 이슈](https://causalinferencelab.github.io/policy-effect-analytics-agent/issues.html): 논쟁 중인 정책 7개의 분석 가이드 (기후동행카드 예시: [climate-card.md](../strategy/climate-card.md))

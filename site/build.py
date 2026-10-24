@@ -16,14 +16,12 @@ import sys
 from pathlib import Path
 
 import pandas as pd
-import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(ROOT))
 sys.path.insert(0, str(HERE))
 
-from core.agent.guard import TRIGGER_KO  # noqa: E402
 from core.discovery.catalog import GATE_STATUS_KO, load_catalog, load_topics  # noqa: E402
 from core.discovery.ontology import (  # noqa: E402
     ACCESS_KO,
@@ -65,11 +63,11 @@ COLLECT_KO = {
 }
 NAV = [
     ("index.html", "홈"),
-    ("projects.html", "프로젝트"),
-    ("issues.html", "지금 이슈"),
+    ("results.html", "분석 결과"),
     ("index.html#topics", "주제"),
+    ("issues.html", "지금 이슈"),
     ("data.html", "데이터 지도"),
-    ("lineage.html", "데이터 계보"),
+    ("projects.html", "프로젝트"),
     ("index.html#join", "참여하기"),
 ]
 TERMS = [
@@ -115,7 +113,7 @@ def page(title: str, body: str, current: str, depth: int = 0) -> str:
 <div class="wrap">{body}
 <footer>가짜연구소 인과추론팀 × 오픈업 오픈소스 AI 특화형 트랙3 · 이 사이트의 숫자와 판정은 레포의 <code>catalog/</code>·<code>cases/</code>에서
 자동으로 만들어집니다. 시뮬레이션 결과에는 따로 표시가 붙습니다.<br>
-<span class="foot-links"><a href="{up}apps.html">서비스 · 공개 API</a> · <a href="{up}architecture.html">구조와 작동 방식</a> · <a href="{up}projects.html">참여자 프로젝트</a> · <a href="{REPO}/blob/main/docs/ops/mentee-guide.md">참여 가이드</a></span><br>
+<span class="foot-links"><a href="{up}results.html">분석 결과</a> · <a href="{up}lineage.html">데이터 계보</a> · <a href="{up}apps.html">서비스 · 공개 API</a> · <a href="{up}architecture.html">구조와 작동 방식</a> · <a href="{up}projects.html">참여자 프로젝트</a> · <a href="{REPO}/blob/main/docs/ops/mentee-guide.md">참여 가이드</a></span><br>
 <b>공식 평가가 아닙니다.</b> 학습·연구용 오픈소스 분석이며 정부·공공기관의 공식 평가나 통계가 아니고, 데이터 제공 기관의 후원·보증을 뜻하지 않습니다. · <a href="{REPO}">소스 코드 (MIT)</a></footer>
 </div></body></html>"""
 
@@ -144,15 +142,6 @@ def readiness(t) -> tuple[str, str, str]:
     if "key" in st:
         return "key", "데이터 키만 있으면 됨", "warn"
     return "ready", "분석 가능", "go"
-
-
-def case_logs(t, policies) -> list[str]:
-    by_id = {p.id: p for p in policies}
-    return [
-        by_id[i].sample_case
-        for i in t.policies
-        if by_id[i].sample_case and (ROOT / by_id[i].sample_case / "flow_log.json").exists()
-    ]
 
 
 def dataset_table(ds) -> str:
@@ -223,48 +212,6 @@ def bars_svg(counts: pd.Series, label: str) -> str:
 
 
 # ─── 분석 결과 ────────────────────────────────────────────────────────────────
-def case_block(case_rel: str, depth: int) -> str:
-    case = ROOT / case_rel
-    log = json.loads((case / "flow_log.json").read_text(encoding="utf-8"))
-    plan = yaml.safe_load((case / "plan.yaml").read_text(encoding="utf-8"))
-    dest = OUT / "cases" / case.name
-    dest.mkdir(parents=True, exist_ok=True)
-    figs = []
-    for f in sorted((case / "figures").glob("*.png")):
-        shutil.copy(f, dest / f.name)
-        figs.append(f'<img src="{"../" * depth}cases/{case.name}/{f.name}" alt="{e(f.stem)}">')
-    label, cls = VERDICT.get(log.get("verdict"), ("-", "warn"))
-    out = []
-    if plan.get("synthetic_data"):
-        out.append(
-            '<div class="banner stop">시뮬레이션 데이터 결과입니다. 실제 정책 효과가 아닙니다. '
-            "분석 과정을 보여주기 위한 예시이며, 데이터 키를 받으면 실제 데이터로 바꿉니다.</div>"
-        )
-    out.append(f"<p><b>질문</b> {e(plan['question'].strip())}</p>")
-    out.append(f'<p>종합 판정 <span class="badge {cls}">{label}</span></p>')
-    names = {o["col"]: o["name"] for o in plan["outcomes"]}
-    rows = "".join(
-        f"<tr><td>{e(names.get(r['outcome'], r['outcome']))}</td><td>{r['estimate']:+.3f}</td>"
-        f"<td>{r['ci_low']:.3f} ~ {r['ci_high']:.3f}</td>"
-        f'<td><span class="badge {VERDICT[r["verdict"]][1]}">{VERDICT[r["verdict"]][0]}</span></td>'
-        f"<td class='muted'>{e(', '.join(TRIGGER_KO.get(x, x) for x in r.get('triggers') or []) or '-')}</td></tr>"
-        for r in log["results"]
-    )
-    out.append(
-        "<div class='tablewrap'><table><tr><th>결과 지표</th><th>추정 효과</th><th>95% 범위</th><th>판정</th><th>주의</th></tr>"
-        f"{rows}</table></div>"
-    )
-    narr = (log.get("guard") or {}).get("narrative")
-    if narr:
-        out.append(f'<p class="card" style="margin-top:12px">{e(narr).replace("**", "")}</p>')
-    if figs:
-        out.append(f'<div class="figs" style="margin-top:12px">{"".join(figs)}</div>')
-    out.append(
-        f'<p class="muted">분석 계획·코드·리포트: <a href="{REPO}/tree/main/{case_rel}">{case_rel}</a></p>'
-    )
-    return "\n".join(out)
-
-
 # ─── 홈 ──────────────────────────────────────────────────────────────────────
 # 대화창 엔진은 site/ask.js (가이드 모드 + 사용자 키로 부르는 AI 모드). 여기서는 필터만 다룬다.
 HOME_JS = """
@@ -309,10 +256,13 @@ REFLECT_STEPS = [
 TRENDS = ROOT / "catalog" / "snapshots" / "trends.json"
 
 
-def catalog_json(topics, policies, issues, datasets) -> str:
+def catalog_json(topics, policies, issues, datasets, answers=()) -> str:
     """대화창(ask.js)이 읽는 카탈로그. </script> 가 끼어들지 않게 '</' 를 이스케이프한다."""
+    import answers as ans
+
     data = {
         "repo": REPO,
+        "results": ans.catalog(list(answers)),
         "topics": [
             {
                 "id": t.id,
@@ -457,21 +407,22 @@ def ranking_block(topics, issues, trends: dict, n: int = 5) -> str:
     )
 
 
-def index_page(topics, policies, issues, datasets, projects=()) -> str:
+def index_page(topics, policies, issues, datasets, projects=(), answers=()) -> str:
+    import answers as ans
     import projects as proj
 
     issue_topics = {i.topic for i in issues}
     cards = []
     for t in topics:
         key, lab, cls = readiness(t)
-        res = bool(case_logs(t, policies))
+        res = any(a["topic"] == t.id for a in answers)
         n_proj = sum(p["topic"] == t.id and not p["mentor"] for p in projects)
         n_ds = sum(t.id in d.topics for d in datasets)
         cards.append(
             f'<a class="card topic" data-topic="{t.id}" data-ready="{key}" data-result="{int(res)}" '
             f'data-issue="{int(t.id in issue_topics)}" href="topics/{t.id}.html"><div><h3>{e(t.name)}</h3>'
             f'<span class="badge {cls}">{lab}</span>'
-            + (' <span class="badge info">분석 예시 있음</span>' if res else "")
+            + (' <span class="badge info">분석 결과 있음</span>' if res else "")
             + (f' <span class="badge go">프로젝트 {n_proj}</span>' if n_proj else "")
             + f'</div><p class="muted">{e(t.question)}</p><div class="gates">{gate_badges(t)}</div>'
             f'<p class="muted small" style="margin:6px 0 0">데이터셋 {n_ds}개</p></a>'
@@ -520,9 +471,11 @@ AI도 결과를 계산하지 않습니다. 주제·데이터·계획을 함께 �
 <a class="stat" href="#topics"><div class="v">{len(topics)}</div><div class="l">분석 주제</div></a>
 <a class="stat" href="issues.html"><div class="v">{len(issues)}</div><div class="l">지금 이슈인 정책</div></a>
 <a class="stat" href="data.html"><div class="v">{len(datasets)}</div><div class="l">정리한 데이터셋</div></a>
+<a class="stat" href="results.html"><div class="v">{sum(not a["mentor"] and not a["synthetic"] for a in answers)}</div><div class="l">나온 분석 결과</div></a>
 <a class="stat" href="projects.html"><div class="v">{sum(not p["mentor"] for p in projects)}</div><div class="l">참여자 프로젝트</div></a>
 </div></div>
 
+{ans.strip(e, list(answers), topics)}
 {proj.strip(e, list(projects), topics)}
 
 <section id="issues"><h2>지금 이슈인 정책</h2><p class="sub">요즘 논쟁 중인 정책을 어떻게 분석할 수 있는지, 어떤 데이터를 받을 수 있는지 정리했습니다.</p>
@@ -532,7 +485,7 @@ AI도 결과를 계산하지 않습니다. 주제·데이터·계획을 함께 �
 <div class="chips" role="group" aria-label="필터">
 <button class="chip f" data-f="all" aria-pressed="true">전체</button>
 <button class="chip f" data-f="issue" aria-pressed="false">지금 이슈 있음</button>
-<button class="chip f" data-f="result" aria-pressed="false">분석 예시 있음</button>
+<button class="chip f" data-f="result" aria-pressed="false">분석 결과 있음</button>
 <button class="chip f" data-f="key" aria-pressed="false">데이터 키만 있으면 됨</button>
 <button class="chip f" data-f="check" aria-pressed="false">확인할 것 있음</button>
 <span style="flex:1"></span>
@@ -558,7 +511,7 @@ A가 이슈와 데이터를 이으면, B가 그 데이터로 효과를 추정하
 <a class="btn ghost" href="{REPO}/issues/new?template=case-proposal.yml">작업 제안 올리기</a>
 <a class="btn ghost" href="{REPO}/blob/main/docs/ops/github-onboarding.md">GitHub가 처음이라면</a>
 <a class="btn ghost" href="{REPO}/issues?q=label%3Afrom-site">올라온 질문 보기</a></div></section>
-<script type="application/json" id="catalog">{catalog_json(topics, policies, issues, datasets)}</script>
+<script type="application/json" id="catalog">{catalog_json(topics, policies, issues, datasets, answers)}</script>
 <script src="ask.js"></script>
 <script>{HOME_JS}</script>"""
     return page("정책 효과 분석 플랫폼", body, "index.html")
@@ -856,7 +809,8 @@ def legal_block(t) -> str:
     )
 
 
-def topic_page(t, policies, issues, datasets, projects=()) -> str:
+def topic_page(t, policies, issues, datasets, projects=(), answers=()) -> str:
+    import answers as ans
     import projects as proj
 
     by_id = {p.id: p for p in policies}
@@ -936,11 +890,15 @@ def topic_page(t, policies, issues, datasets, projects=()) -> str:
             + "".join(proj.project_card(e, p, tb, up="../") for p in mine)
             + "</div></section>"
         )
-    cases = case_logs(t, policies)
-    if cases:
-        body.append("<section><h2>5. 분석 예시</h2>")
-        body += [case_block(c, depth=1) for c in cases]
-        body.append("</section>")
+    mine_ans = [a for a in answers if a["topic"] == t.id]
+    if mine_ans:
+        tb = {t.id: t}
+        body.append(
+            "<section><h2>5. 이 주제의 분석 결과</h2><p class='sub'>판정, 인용해도 되는 문장, 쓴 데이터, 재현하는 법은 결과를 눌러 보세요.</p>"
+            '<div class="grid proj-grid">'
+            + "".join(ans.card(e, a, tb, up="../") for a in mine_ans)
+            + "</div></section>"
+        )
     if t.pitfalls:
         items = "".join(f"<li>{e(x)}</li>" for x in t.pitfalls)
         body.append(f"<section><h2>주의할 점</h2><ul>{items}</ul></section>")
@@ -955,11 +913,14 @@ def main() -> None:
     topics, policies = load_topics(), load_catalog()
     issues, datasets = load_issues(), load_datasets()
     projects = proj.load_projects()
+    import answers as ans
+
+    answers = ans.load_answers()
     if OUT.exists():
         shutil.rmtree(OUT)
     (OUT / "topics").mkdir(parents=True)
     pages = {
-        "index.html": index_page(topics, policies, issues, datasets, projects),
+        "index.html": index_page(topics, policies, issues, datasets, projects, answers),
         "issues.html": issues_page(issues, datasets, topics),
         "data.html": data_page(datasets, topics, issues),
         "architecture.html": page(
@@ -972,7 +933,7 @@ def main() -> None:
         (OUT / name).write_text(text, encoding="utf-8")
     for t in topics:
         (OUT / "topics" / f"{t.id}.html").write_text(
-            topic_page(t, policies, issues, datasets, projects), encoding="utf-8"
+            topic_page(t, policies, issues, datasets, projects, answers), encoding="utf-8"
         )
     # 트랙 A·C: 공개 API, 데이터 계보, 서비스
     import api
@@ -991,6 +952,26 @@ def main() -> None:
         ),
         encoding="utf-8",
     )
+    # 분석 결과: 목록 + 케이스별 답 페이지 (그림은 write_api 가 _site/cases/ 로 복사해 둠)
+    (OUT / "results.html").write_text(
+        page(
+            "분석 결과 · 정책 효과 분석 플랫폼", ans.index_body(e, answers, topics), "results.html"
+        ),
+        encoding="utf-8",
+    )
+    (OUT / "answers").mkdir(exist_ok=True)
+    tb = {t.id: t for t in topics}
+    ds_by_url = {d.url: d for d in datasets}
+    for a in answers:
+        (OUT / a["page"]).write_text(
+            page(
+                f"{a['title']} · 분석 결과",
+                ans.page_body(e, a, tb, ds_by_url),
+                "results.html",
+                depth=1,
+            ),
+            encoding="utf-8",
+        )
     (OUT / "projects.html").write_text(
         page(
             "참여자 프로젝트 · 정책 효과 분석 플랫폼",

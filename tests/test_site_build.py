@@ -2,6 +2,7 @@
 
 import importlib.util
 import json
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -178,3 +179,30 @@ def test_projects_page_lists_every_case(tmp_path, monkeypatch):
     projects = json.loads((out / "api" / "projects.json").read_text(encoding="utf-8"))
     assert all({"case", "owner", "stages", "topic"} <= p.keys() for p in projects)
     assert "projects.html" in (out / "index.html").read_text(encoding="utf-8")
+
+
+def test_answer_pages_for_users(tmp_path, monkeypatch):
+    """분석 결과 화면: 결과가 있는 케이스마다 답 페이지가 있고, 판단 불가 결과는 숫자를 진단용으로 표시한다."""
+    mod = _load_build()
+    monkeypatch.setattr(mod, "OUT", tmp_path / "_site")
+    mod.main()
+    out = tmp_path / "_site"
+    root = Path(__file__).resolve().parents[1]
+    results = json.loads((out / "api" / "results.json").read_text(encoding="utf-8"))
+    assert results and (out / "results.html").exists()
+    for r in results:
+        page = (out / r["page"]).read_text(encoding="utf-8")
+        assert "이 결과를 쓰려면" in page and "인용문" in page and "직접 돌려 보기" in page
+        assert f"make flow CASE=cases/{r['case']}" in page
+        if r["verdict"] == "not_identified":
+            assert "진단용" in page
+    for case in (root / "cases").glob("*/flow_log.json"):
+        if not case.parent.name.startswith("_"):
+            assert (out / "answers" / f"{case.parent.name}.html").exists(), case.parent.name
+    home = (out / "index.html").read_text(encoding="utf-8")
+    cat = json.loads(
+        re.search(r'<script type="application/json" id="catalog">(.*?)</script>', home, re.S)
+        .group(1)
+        .replace("<\\/", "</")
+    )
+    assert cat["results"] and all("page" in x for x in cat["results"])
