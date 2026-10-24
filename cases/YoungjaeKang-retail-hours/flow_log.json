@@ -1,0 +1,352 @@
+{
+  "schema_version": "1",
+  "case_dir": "cases/YoungjaeKang-retail-hours",
+  "question": "동대문구의 대형마트 의무휴업 평일 전환 이후, 골목상권 식품판매 관련 업종 중 공개 파일에 관측된 행의 원본 매출 금액 합계는 서울 내 사전 고정한 비교 자치구와 비교해 어떻게 달라졌는가? 전체 매출이나 인과효과로 해석하지 않는다.",
+  "status": "warn",
+  "verdict": "conditional",
+  "started_at": "2026-10-23T13:00:48+00:00",
+  "ended_at": "2026-10-23T13:00:50+00:00",
+  "steps": [
+    {
+      "index": 1,
+      "step": "define_problem",
+      "title": "① 문제 정의",
+      "status": "ok",
+      "started_at": "2026-10-23T13:00:48+00:00",
+      "ended_at": "2026-10-23T13:00:48+00:00",
+      "duration_s": 0.011,
+      "message": "분석계획 검증 완료, 사전 등록(git 커밋) 확인: YoungjaeKang-retail-hours",
+      "artifacts": {
+        "plan": "plan.yaml",
+        "plan_sha256": "65a42ab745f5065c20785262689390899dd7183925e252b74e3d97f38e26f9a2",
+        "committed": true
+      }
+    },
+    {
+      "index": 2,
+      "step": "collect",
+      "title": "② 데이터 수집",
+      "status": "ok",
+      "started_at": "2026-10-23T13:00:48+00:00",
+      "ended_at": "2026-10-23T13:00:48+00:00",
+      "duration_s": 0.0,
+      "message": "기존 스냅샷 재사용 (새로 받으려면 파일 삭제 후 재실행)",
+      "artifacts": {
+        "data": "data/panel.csv",
+        "data_sha256": "053314944c2842d4a63df6eab0d32ef9351ddb4dde46c5b980c08a47fcdf6221",
+        "licenses": [
+          "KOGL-1",
+          "other"
+        ],
+        "method": "기존 스냅샷 재사용 (새로 받으려면 파일 삭제 후 재실행)",
+        "source_meta": "data/panel.source.json"
+      }
+    },
+    {
+      "index": 3,
+      "step": "structure_metrics",
+      "title": "③ 지표 구조화·품질 점검",
+      "status": "ok",
+      "started_at": "2026-10-23T13:00:48+00:00",
+      "ended_at": "2026-10-23T13:00:48+00:00",
+      "duration_s": 0.003,
+      "message": "11개 점검 모두 통과",
+      "artifacts": {
+        "rows": 315,
+        "units": 21
+      }
+    },
+    {
+      "index": 4,
+      "step": "estimate",
+      "title": "④ 효과 추정",
+      "status": "warn",
+      "started_at": "2026-10-23T13:00:48+00:00",
+      "ended_at": "2026-10-23T13:00:50+00:00",
+      "duration_s": 1.929,
+      "message": "event_study: +0.012 [-1.339, 1.236] → conditional",
+      "artifacts": {
+        "log_observed_sales": {
+          "estimate": 0.0124,
+          "ci": [
+            -1.3387,
+            1.2357
+          ],
+          "verdict": "conditional"
+        }
+      }
+    },
+    {
+      "index": 5,
+      "step": "guard",
+      "title": "⑤ 과잉해석 가드",
+      "status": "warn",
+      "started_at": "2026-10-23T13:00:50+00:00",
+      "ended_at": "2026-10-23T13:00:50+00:00",
+      "duration_s": 0.001,
+      "message": "1차 지표 판정 조건부, 서술=template",
+      "artifacts": {
+        "triggers": [
+          "few_treated_clusters",
+          "ci_crosses_zero"
+        ]
+      }
+    },
+    {
+      "index": 6,
+      "step": "report",
+      "title": "⑥ 리포트·재현 기록",
+      "status": "ok",
+      "started_at": "2026-10-23T13:00:50+00:00",
+      "ended_at": "2026-10-23T13:00:50+00:00",
+      "duration_s": 0.246,
+      "message": "리포트 2개 그림 포함 작성",
+      "artifacts": {
+        "report": "report.md",
+        "manifest": "run_manifest.json",
+        "figures": [
+          "figures/raw_trends.png",
+          "figures/event_study.png"
+        ]
+      }
+    }
+  ],
+  "quality": [
+    {
+      "check": "필수 컬럼",
+      "value": 4,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "시간 컬럼 정수형",
+      "value": "int64",
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "결측률 gu_code",
+      "value": 0.0,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "결측률 quarter_idx",
+      "value": 0.0,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "결측률 treated",
+      "value": 0.0,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "결측률 log_observed_sales",
+      "value": 0.0,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "사전 기간 수(기)",
+      "value": 12,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "사후 기간 수(기)",
+      "value": 3,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "처치 단위 수",
+      "value": 1,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "통제 단위 수",
+      "value": 20,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "단위×시점 중복",
+      "value": 0,
+      "status": "ok",
+      "message": ""
+    }
+  ],
+  "results": [
+    {
+      "method": "event_study",
+      "outcome": "log_observed_sales",
+      "estimate": 0.012394357696022283,
+      "se": 0.08280327804924201,
+      "ci_low": -1.338674949383393,
+      "ci_high": 1.2356598114030604,
+      "p_value": 0.955,
+      "n_obs": 315,
+      "n_clusters": 21,
+      "assumptions_checked": {
+        "inference": "randomization inference (처치 단위 1개를 무작위 재배정, 999회)",
+        "parallel_pretrends": {
+          "test": "randomization inference (사전 계수 제곱합)",
+          "p_value": 1.0,
+          "passed": true
+        },
+        "pre_periods": 12,
+        "n_adoption_cohorts": 1,
+        "placebo_time": {
+          "fake_treat_time": 8,
+          "estimate": 0.05869084662369979,
+          "p_value": 0.718,
+          "passed": true
+        }
+      },
+      "warnings": [
+        "처치 단위가 1개뿐이라 군집-강건 표준오차를 믿을 수 없습니다. 무작위화 추론(처치 단위를 무작위로 바꿔 반복)으로 p값과 신뢰구간을 계산했습니다.",
+        "신뢰구간이 0을 포함합니다. '효과 없음'이 아니라 '효과 크기를 판별할 수 없음'으로 해석하세요."
+      ],
+      "triggers": [
+        "few_treated_clusters",
+        "ci_crosses_zero"
+      ],
+      "verdict": "conditional",
+      "extra": {
+        "coefs": [
+          {
+            "rel_time": -13,
+            "coef": -0.12537772334114508,
+            "se": 0.11185055752399384,
+            "ci_low": -0.3586938978925042,
+            "ci_high": 0.10793845121021406
+          },
+          {
+            "rel_time": -12,
+            "coef": -0.012895202204684994,
+            "se": 0.10353738487868815,
+            "ci_low": -0.22887040248712598,
+            "ci_high": 0.203079998077756
+          },
+          {
+            "rel_time": -11,
+            "coef": -5.622455220066082e-05,
+            "se": 0.09090800841601653,
+            "ci_low": -0.1896870071717488,
+            "ci_high": 0.18957455806734747
+          },
+          {
+            "rel_time": -10,
+            "coef": -0.1048359390342393,
+            "se": 0.1013906536529818,
+            "ci_low": -0.3163331364487526,
+            "ci_high": 0.10666125838027402
+          },
+          {
+            "rel_time": -9,
+            "coef": -0.08698882047549514,
+            "se": 0.07753201275659093,
+            "ci_low": -0.24871776507869459,
+            "ci_high": 0.07474012412770431
+          },
+          {
+            "rel_time": -8,
+            "coef": -0.01824149334010877,
+            "se": 0.08849889061437399,
+            "ci_low": -0.20284694428527308,
+            "ci_high": 0.16636395760505554
+          },
+          {
+            "rel_time": -7,
+            "coef": -0.009983127907219128,
+            "se": 0.09138853736641474,
+            "ci_low": -0.20061627635265095,
+            "ci_high": 0.18065002053821272
+          },
+          {
+            "rel_time": -6,
+            "coef": -0.09522227401794103,
+            "se": 0.06968188653139733,
+            "ci_low": -0.24057614225896345,
+            "ci_high": 0.05013159422308139
+          },
+          {
+            "rel_time": -5,
+            "coef": -0.015500760547796241,
+            "se": 0.06457723979677482,
+            "ci_low": -0.15020652228919107,
+            "ci_high": 0.1192050011935986
+          },
+          {
+            "rel_time": -4,
+            "coef": 0.030738439822638842,
+            "se": 0.03542236761772351,
+            "ci_low": -0.04315132424354644,
+            "ci_high": 0.10462820388882411
+          },
+          {
+            "rel_time": -3,
+            "coef": 0.0,
+            "se": 0.0,
+            "ci_low": 0.0,
+            "ci_high": 0.0
+          },
+          {
+            "rel_time": -2,
+            "coef": -0.007274695216560205,
+            "se": 0.039612690504269875,
+            "ci_low": -0.08990531965632279,
+            "ci_high": 0.07535592922320239
+          },
+          {
+            "rel_time": 0,
+            "coef": -0.19427518592863574,
+            "se": 0.08853091840115807,
+            "ci_low": -0.37894744566632843,
+            "ci_high": -0.00960292619094305
+          },
+          {
+            "rel_time": 1,
+            "coef": 0.12242146014836602,
+            "se": 0.07905221378158454,
+            "ci_low": -0.04247856822546622,
+            "ci_high": 0.2873214885221983
+          },
+          {
+            "rel_time": 2,
+            "coef": 0.10903679886833657,
+            "se": 0.0911103397696231,
+            "ci_low": -0.08101603955907068,
+            "ci_high": 0.29908963729574384
+          }
+        ],
+        "crv1": {
+          "ci": [
+            -0.14989708508234806,
+            0.17468580047439264
+          ],
+          "p_value": 0.8810136288596109,
+          "pretrend": {
+            "test": "joint Wald (chi2, CRV1)",
+            "stat": 90.77332366982753,
+            "df": 11,
+            "p_value": 1.175928809157809e-14
+          }
+        }
+      },
+      "identified": false
+    }
+  ],
+  "guard": {
+    "verdict": "conditional",
+    "narrative_source": "template",
+    "passed": true,
+    "violations": [],
+    "rejected_llm_violations": [],
+    "narrative": "**요약(조건부)**: 추정치는 +0.01 관측 원본 금액(원) 합계의 자연로그; 기간 환산 없음 (95% CI -1.34 ~ 1.24) 이지만 다음 위험 신호가 있어 조건부로만 보고합니다: 처치 단위 수 부족(무작위화 추론 사용), 신뢰구간이 0을 포함. 신뢰구간이 0을 포함하므로 효과의 방향과 크기는 판별 불가입니다. 결론 전에 보완 분석이 필요합니다."
+  },
+  "report_path": "report.md"
+}
