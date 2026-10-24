@@ -14,6 +14,7 @@
 
 ## 먼저 볼 것
 
+- [참여자 프로젝트](https://causalinferencelab.github.io/policy-effect-analytics-agent/projects.html): 누가 어떤 정책을 어디까지(계획 → 수집 → 분석 → 해석) 진행했는지, 열린 PR·작업 제안까지 한 화면에
 - [사이트 첫 화면](https://causalinferencelab.github.io/policy-effect-analytics-agent/): 궁금한 정책을 적으면 주제·관련 법령·데이터·분석 계획 초안을 대화로 정리해 줍니다.
 - [지금 이슈](https://causalinferencelab.github.io/policy-effect-analytics-agent/issues.html): 논쟁 중인 정책 7개의 분석 가이드 (기후동행카드 예시: [climate-card.md](../strategy/climate-card.md))
 - [데이터 지도](https://causalinferencelab.github.io/policy-effect-analytics-agent/data.html): 공공데이터 40개를 역할·단위·받는 법으로 정리
@@ -75,6 +76,7 @@ cp -r apps/_template apps/<내ID>-<서비스>                 # C (예: apps/gil
 ```
 
 - 계보의 `id`, 케이스의 `case_id`는 파일·폴더 이름과 같아야 합니다.
+- 새 케이스를 만들면 `catalog/projects.yaml`에 한 줄(담당자·트랙·주제·작업 제안 이슈 번호)을 추가합니다. 그래야 프로젝트 화면과 주제 페이지에 주제와 함께 나옵니다.
 - 수정은 **내 파일·폴더만** 합니다. `catalog/datasets.yaml` 추가는 누구나 PR로 합니다. `core/`·`site/`를 고쳐야 하면 먼저 이슈를 열고 따로 PR을 올립니다.
 - `data/` 아래 파일은 git에 올라가지 않습니다. 데이터는 `fetch.py`로 각자 받게 합니다.
 - PR 하나에 한 단계만 담고, 멘토 또는 다른 멘티 1명 승인 + 자동 검사 통과 뒤 합칩니다.

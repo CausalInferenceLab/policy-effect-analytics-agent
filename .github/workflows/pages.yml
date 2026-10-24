@@ -15,6 +15,7 @@ on:
 permissions:
   contents: read
   issues: read      # 사이트 질문(라벨 from-site) 수를 세어 순위에 반영
+  pull-requests: read  # 프로젝트 화면의 '지금 진행 중인 기여'(열린 PR)
   pages: write
   id-token: write
 
@@ -45,6 +46,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: python scripts/refresh_trends.py
+      - name: Refresh open PRs and proposals (프로젝트 화면)
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python scripts/refresh_activity.py
       - run: python site/build.py
       - uses: actions/upload-pages-artifact@v3
         with:

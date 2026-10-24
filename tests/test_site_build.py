@@ -1,6 +1,7 @@
 """정적 대시보드가 모든 주제 페이지를 만들고, 로컬 경로·개인정보를 담지 않는지."""
 
 import importlib.util
+import json
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -149,3 +150,31 @@ def test_apps_have_meta_and_no_secrets():
                 assert not re.search(r"sk-[A-Za-z0-9_-]{20,}|AKIA[0-9A-Z]{16}", text), (
                     f"{f}: 비밀값처럼 보임"
                 )
+
+
+def test_projects_page_lists_every_case(tmp_path, monkeypatch):
+    """참여자 프로젝트 화면: cases/ 의 모든 케이스가 나오고, 명단(projects.yaml)은 있는 폴더·주제만 가리킨다."""
+    import yaml
+
+    mod = _load_build()
+    monkeypatch.setattr(mod, "OUT", tmp_path / "_site")
+    mod.main()
+    out = tmp_path / "_site"
+    page = (out / "projects.html").read_text(encoding="utf-8")
+    root = Path(__file__).resolve().parents[1]
+    reg = yaml.safe_load((root / "catalog" / "projects.yaml").read_text(encoding="utf-8"))
+    topics = {
+        t["id"]
+        for t in yaml.safe_load((root / "catalog" / "topics.yaml").read_text(encoding="utf-8"))[
+            "topics"
+        ]
+    }
+    for p in reg["projects"]:
+        assert p["track"] in {"A", "B", "C"}, p["case"]
+        assert p.get("topic") in topics, p["case"]
+    for case in (root / "cases").iterdir():
+        if case.is_dir() and not case.name.startswith("_") and (case / "plan.yaml").exists():
+            assert f"cases/{case.name}" in page, case.name
+    projects = json.loads((out / "api" / "projects.json").read_text(encoding="utf-8"))
+    assert all({"case", "owner", "stages", "topic"} <= p.keys() for p in projects)
+    assert "projects.html" in (out / "index.html").read_text(encoding="utf-8")

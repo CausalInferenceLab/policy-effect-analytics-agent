@@ -68,6 +68,13 @@ def _dump(path: Path, obj) -> None:
 
 
 # ─── 분석 결과 ────────────────────────────────────────────────────────────────
+def _projects() -> list[dict]:
+    """참여자 프로젝트 목록 (트랙 C 서비스용). 열린 PR 정보는 빼고 레포에 있는 것만."""
+    from projects import load_projects
+
+    return [{k: v for k, v in p.items() if k != "open_prs"} for p in load_projects()]
+
+
 def case_results(out: Path) -> list[dict]:
     """cases/*/flow_log.json 을 서비스가 쓰기 쉬운 모양으로. 그림은 _site/cases/<케이스>/ 로 복사."""
     from core.discovery.lineage import load_lineages
@@ -76,6 +83,9 @@ def case_results(out: Path) -> list[dict]:
     topic_of = {Path(p).name: t for t, p in _sample_cases().items()} | {
         c: lin.topic for lin in load_lineages() for s in lin.steps for c in s.used_by
     }
+    from projects import load_registry
+
+    topic_of |= {c: m["topic"] for c, m in load_registry().items() if m.get("topic")}
     rows = []
     for log_path in sorted(CASES.glob("*/flow_log.json")):
         case = log_path.parent
@@ -178,6 +188,7 @@ def write_api(out: Path, topics, issues, datasets, legal_summary) -> dict:
         "datasets.json": [d.model_dump(mode="json") for d in datasets],
         "lineage.json": graph(),
         "results.json": case_results(out),
+        "projects.json": _projects(),
     }
     for name, obj in files.items():
         _dump(api / name, obj)
