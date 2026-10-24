@@ -15,13 +15,17 @@ function ciBar(o) {
   return `<div class="ci" title="95% 신뢰구간 ${lo.toFixed(3)} ~ ${hi.toFixed(3)}"><b style="left:50%"></b><i style="left:${x(lo)}%;width:${Math.max(1, x(hi) - x(lo))}%"></i></div>`;
 }
 
-function render(t, issues, results, lineage) {
+function render(t, issues, results, lineage, projects) {
   const iss = issues.filter((i) => i.topic === t.id);
   const res = results.filter((r) => r.topic === t.id);
   const lins = lineage.lineages.filter((l) => l.topic === t.id);
+  const projs = (projects || []).filter((p) => p.topic === t.id);
+  const STAGES = ["계획", "수집", "분석", "해석"];
   const recent = (t.legal && t.legal.recent) || [];
   let h = `<div class="card"><b>${esc(t.name)}</b><p>${esc(t.question)}</p></div>`;
   h += `<h2>지금 이슈 ${iss.length}개</h2>` + (iss.map((i) => `<div class="card"><div class="row"><b>${esc(i.name)}</b><span class="muted">${esc(i.effective)}</span></div><p class="muted">${esc(i.issue)}</p></div>`).join("") || `<p class="muted">없음</p>`);
+  h += `<h2>참여자 프로젝트 ${projs.length}개</h2>` + (projs.map((p) => `<div class="card"><div class="row"><b>${esc(p.title)}</b><span class="muted">@${esc(p.owner)}${p.mentor ? " · 멘토 예시" : ""}</span>${p.verdict ? `<span class="badge ${esc(p.verdict)}">${VERDICT[p.verdict] || esc(p.verdict)}</span>` : ""}</div>
+      <p class="muted">진행: ${p.stages.map((ok, i) => (ok ? "●" : "○") + " " + STAGES[i]).join("  ")}</p></div>`).join("") || `<p class="muted">아직 없음</p>`);
   h += `<h2>최근 바뀐 법령</h2>` + (recent.length ? `<ol>${recent.map((r) => `<li>${esc(r.announced)} ${esc(r.name)} <span class="muted">${esc(r.change)}</span></li>`).join("")}</ol>` : `<p class="muted">수집된 법령 없음</p>`);
   h += `<h2>데이터 계보 ${lins.length}개</h2>` + (lins.map((l) => `<div class="card"><b>${esc(l.title)}</b> <span class="muted">by ${esc(l.owner)}</span><ol>${l.steps.map((s) => `<li>${esc(s.label || s.ref || s.id)} <span class="muted">${esc(s.kind)}${s.how ? " · " + esc(s.how) : ""}</span></li>`).join("")}</ol></div>`).join("") || `<p class="muted">아직 없음 — 트랙 A에서 만들 수 있습니다</p>`);
   h += `<h2>분석 결과 ${res.length}개</h2>` + (res.map((r) => `<div class="card"><div class="row"><b>${esc(r.title)}</b>${r.synthetic ? '<span class="badge conditional">시뮬레이션</span>' : ""}</div>
@@ -30,14 +34,14 @@ function render(t, issues, results, lineage) {
   document.getElementById("out").innerHTML = h;
 }
 
-Promise.all([get("index.json"), get("topics.json"), get("issues.json"), get("results.json"), get("lineage.json")])
-  .then(([index, topics, issues, results, lineage]) => {
+Promise.all([get("index.json"), get("topics.json"), get("issues.json"), get("results.json"), get("lineage.json"), get("projects.json").catch(() => [])])
+  .then(([index, topics, issues, results, lineage, projects]) => {
     document.getElementById("terms").textContent = index.terms + " · 데이터 생성: " + index.generated_at;
     const sel = document.getElementById("topic");
     sel.innerHTML = topics.map((t) => `<option value="${esc(t.id)}">${esc(t.name)}</option>`).join("");
     const first = topics.find((t) => results.some((r) => r.topic === t.id)) || topics[0];
     sel.value = first.id;
-    const show = () => render(topics.find((t) => t.id === sel.value), issues, results, lineage);
+    const show = () => render(topics.find((t) => t.id === sel.value), issues, results, lineage, projects);
     sel.onchange = show;
     show();
   })
