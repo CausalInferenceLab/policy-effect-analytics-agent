@@ -98,12 +98,26 @@ def read_discussion(case: Path) -> dict:
     if tmpl.exists() and md.strip() == tmpl.read_text(encoding="utf-8").strip():
         return {}
     secs = _sections(md)
-    summary = next((_first_paragraph(b) for t, b in secs if "한 문장" in t), "")
+    tmpl_secs = dict(_sections(tmpl.read_text(encoding="utf-8"))) if tmpl.exists() else {}
+    summary = next(
+        (
+            _first_paragraph(b)
+            for t, b in secs
+            if "한 문장" in t and b.strip() != (tmpl_secs.get(t) or "").strip()
+        ),
+        "",
+    )
+    has_one_line = bool(summary)
     if not summary:
         summary = next((_first_paragraph(b) for t, b in secs if t == "" and b.strip()), "")
     cautions = next((_bullets(b) for t, b in secs if re.search(r"조심|한계|제한", t)), [])
     changed = next((_first_paragraph(b) for t, b in secs if re.search(r"계획.*(바뀐|변경)", t)), "")
-    return {"summary": summary[:600], "cautions": cautions, "plan_changed": changed[:500]}
+    return {
+        "summary": summary[:600],
+        "has_one_line": has_one_line,
+        "cautions": cautions,
+        "plan_changed": changed[:500],
+    }
 
 
 def _is_log(col: str, unit: str | None) -> bool:
@@ -126,8 +140,21 @@ def effect_text(est, lo, hi, col: str, unit: str | None) -> tuple[str, str]:
     return f"{est:+.3g}{u}", f"{lo:+.3g} ~ {hi:+.3g}{u}"
 
 
+def bounds_text(lo, hi, col: str, unit: str | None) -> tuple[str, str] | None:
+    """배제 진술용 (하한, 상한) 문자열. 범위가 너무 넓으면 None."""
+    if lo is None or hi is None:
+        return None
+    if _is_log(col, unit):
+        if hi - lo > 1.0:
+            return None
+        return f"{(math.exp(lo) - 1) * 100:+.1f}%", f"{(math.exp(hi) - 1) * 100:+.1f}%"
+    u = f" {unit}" if unit else ""
+    return f"{lo:+.3g}{u}", f"{hi:+.3g}{u}"
+
+
 def load_answers() -> list[dict]:
     from projects import load_registry
+    from quality import prereg
 
     reg = load_registry()
     try:
@@ -169,6 +196,9 @@ def load_answers() -> list[dict]:
                     "n": r.get("n_obs"),
                     "clusters": r.get("n_clusters"),
                     "primary": r.get("outcome") == primary,
+                    "bounds": bounds_text(
+                        r.get("ci_low"), r.get("ci_high"), r.get("outcome", ""), o.get("unit")
+                    ),
                 }
             )
         results.sort(key=lambda x: not x["primary"])
@@ -197,6 +227,8 @@ def load_answers() -> list[dict]:
                 "manifest": manifest,
                 "finished": (log.get("ended_at") or "")[:10],
                 "page": f"answers/{case.name}.html",
+                "reproduced_by": list(meta.get("reproduced_by") or []),
+                "prereg": prereg(case),
                 **read_discussion(case),
             }
         )
@@ -224,6 +256,10 @@ def card(e, a: dict, topics_by_id: dict, up: str = "") -> str:
         tags.append('<span class="badge stop">시뮬레이션 데이터 결과</span>')
     if a["mentor"]:
         tags.append('<span class="badge">멘토 예시</span>')
+    if a.get("reproduced_by"):
+        tags.append('<span class="badge go">교차 재현됨</span>')
+    if (a.get("prereg") or {}).get("level") == "go":
+        tags.append('<span class="badge go">계획 먼저 커밋</span>')
     return (
         f'<a class="card answer" data-verdict="{e(a["verdict"] or "")}" href="{up}{e(a["page"])}">'
         f'<div class="tags">{"".join(tags)}</div><h3>{e(a["title"])}</h3>'
@@ -231,6 +267,33 @@ def card(e, a: dict, topics_by_id: dict, up: str = "") -> str:
         f'<p class="small muted" style="margin:auto 0 0">{e(t.name) if t else "주제 미지정"} · @{e(a["owner"])}'
         f"{' · ' + e(a['finished']) if a['finished'] else ''}</p></a>"
     )
+
+
+def rule_out(a: dict) -> str:
+    """판별하지 못한 결과에서도 말할 수 있는 것: 95% 범위 밖의 큰 효과는 자료와 맞지 않는다."""
+    if a["verdict"] != "conditional":
+        return ""
+    r = next((r for r in a["results"] if r.get("bounds")), None)
+    if not r:
+        return ""
+    lo, hi = r["bounds"]
+    return (
+        f"그래도 말할 수 있는 것(배제 범위) — {r['name']}: {hi}보다 큰 증가나 {lo}보다 큰 감소는 "
+        "이 자료와 맞지 않습니다(설계 가정이 맞다는 전제)."
+    )
+
+
+def trust_block(e, a: dict) -> str:
+    from quality import checks
+
+    items = "".join(
+        f'<li><span class="badge {lvl}">{e(head)}</span> <span class="muted small">{e(txt)}</span></li>'
+        for lvl, head, txt in checks(a)
+    )
+    return f"""<section id="trust"><h2>이 결과를 얼마나 믿을 수 있나</h2>
+<p class="sub">판정과 별개로, 기록으로 확인되는 것만 적었습니다. 노란 항목은 결과가 틀렸다는 뜻이 아니라 아직 확인되지 않았다는 뜻입니다.</p>
+<ul class="plain trust">{items}</ul>
+<p class="small muted">교차 재현을 하셨나요? <a href="{REPO}/issues/new?template=reproduction.yml&amp;title=%5B재현%5D%20{e(a["case"])}">재현 기록 남기기</a></p></section>"""
 
 
 def _usage(e, a: dict) -> str:
@@ -254,6 +317,9 @@ def _usage(e, a: dict) -> str:
             '"이 자료로는 효과가 있었는지·얼마나인지 판별하지 못했다."',
             f"범위를 함께 쓰기: {eff}" if p else "추정 범위를 함께 쓰기",
         ]
+        ro = rule_out(a)
+        if ro:
+            do.append(ro)
         dont = ["'효과가 없다' — 판별하지 못한 것과 없는 것은 다릅니다", "추정치 하나만 떼어 인용"]
     else:
         reasons = (
@@ -352,6 +418,7 @@ def page_body(e, a: dict, topics_by_id: dict, datasets_by_url: dict) -> str:
 <div class="tablewrap"><table><tr><th>결과 지표</th><th>추정 효과</th><th>95% 범위</th><th>판정</th><th>주의</th></tr>{rows}</table></div>
 {dim_note}<div class="figs">{figs}</div>
 {("<h3>작성자가 적은 한계</h3>" + cautions) if cautions else ""}</section>
+{trust_block(e, a)}
 <section id="data"><h2>쓴 공공데이터</h2>
 {src_html}
 <p class="small muted">원자료는 레포에 올리지 않습니다. 아래 명령이 공개 창구에서 직접 받아 같은 결과를 만듭니다. 각 데이터의 단위·받는 법·키 필요 여부는 <a href="../data.html">데이터 지도</a>에 있습니다.</p></section>
@@ -395,6 +462,11 @@ def index_body(e, answers: list[dict], topics) -> str:
 <div class="grid proj-grid" id="answer-cards">{"".join(card(e, a, tb) for a in real) or "<p class='card'>아직 없습니다.</p>"}</div></section>
 <section><h2>예시</h2><p class="sub">흐름을 보여 주는 멘토 예시입니다.</p>
 <div class="grid proj-grid">{"".join(card(e, a, tb) for a in examples)}</div></section>
+<section id="reuse"><h2>우리 지역·정책에 같은 분석을 하려면</h2>
+<ol><li>위에서 비슷한 결과 하나를 엽니다 — 같은 데이터·설계를 쓰는 것이 가장 빠릅니다.</li>
+<li>그 화면 아래 <b>내 지역·정책에 적용하기</b>대로 폴더를 복사하고 <code>plan.yaml</code>의 처치·대조만 바꿉니다.</li>
+<li><b>데이터를 보기 전에</b> 계획만 담은 PR을 먼저 올립니다. 결과는 이 화면에 같은 형식으로 나옵니다.</li></ol>
+<p class="small muted">코드를 다루지 않는다면 <a href="index.html#ask">질문하기</a>로 남겨 주세요. 참여자가 검토해 분석으로 잇습니다.</p></section>
 <section><h2>아직 결과가 없는 주제</h2><p class="sub">{gap or "없음"}</p>
 <div class="cta"><a class="btn primary" href="index.html#ask">질문하기</a>
 <a class="btn ghost" href="{REPO}/issues/new?template=case-proposal.yml">분석 제안하기</a></div></section>

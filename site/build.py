@@ -41,7 +41,7 @@ GATE_Q = {"when": "언제 시작했나", "who": "누가 받았나", "what": "무
 GATE_CLASS = {"pass": "go", "check": "warn", "key": "warn", "fail": "stop"}
 VERDICT = {
     "identified": ("효과 근거 있음", "go"),
-    "conditional": ("조건부", "warn"),
+    "conditional": ("크기를 판별하지 못함", "warn"),
     "not_identified": ("판단 불가", "stop"),
 }
 DESIGN_SHORT = {
@@ -67,8 +67,7 @@ NAV = [
     ("index.html#topics", "주제"),
     ("issues.html", "지금 이슈"),
     ("data.html", "데이터 지도"),
-    ("projects.html", "프로젝트"),
-    ("index.html#join", "참여하기"),
+    ("projects.html", "참여"),
 ]
 TERMS = [
     (
@@ -91,7 +90,10 @@ TERMS = [
         "무작위화 추론",
         "정책 지역이 몇 곳뿐일 때, 가짜 정책 지역을 수백 번 뽑아 비교해 우연인지 판단합니다.",
     ),
-    ("판정", "효과 근거 있음 · 조건부 · 판단 불가 세 가지입니다. 판단 불가도 정직한 결과입니다."),
+    (
+        "판정",
+        "효과 근거 있음 · 크기를 판별하지 못함 · 판단 불가 세 가지입니다. 판단 불가도 정직한 결과입니다.",
+    ),
 ]
 
 e = html.escape
@@ -231,7 +233,7 @@ HOME_STEPS = [
     ("비교하기", "정책을 받은 곳과 안 받은 곳의 변화를 비교합니다", "트랙 B"),
     (
         "말하기",
-        "효과 근거 있음 · 조건부 · 판단 불가 중 하나로 쓰고, 결과는 API로 공개됩니다",
+        "효과 근거 있음 · 크기를 판별하지 못함 · 판단 불가 중 하나로 쓰고, 결과는 API로 공개됩니다",
         "트랙 B → C",
     ),
 ]
@@ -438,11 +440,20 @@ def index_page(topics, policies, issues, datasets, projects=(), answers=()) -> s
         f'<button class="chip" type="button" data-ask="{e(x)}">{e(x)}</button>'
         for x in HOME_EXAMPLES
     )
+    n_answers = sum(not a["mentor"] and not a["synthetic"] for a in answers)
+    n_people = len({p["owner"] for p in projects if not p["mentor"]})
     body = f"""
 <div class="hero"><span class="eyebrow">오픈소스 · 공공데이터 · 인과추론</span>
 <h1>그 정책, 정말 효과가 있었을까?</h1>
 <p class="lede">뉴스와 SNS에서 사람들이 묻는 정책을 공공데이터로 확인합니다.
 정책을 받은 곳과 안 받은 곳을 비교하고, 데이터로 판단할 수 없으면 <b>판단할 수 없다고</b> 말합니다.</p>
+
+<nav class="tasks" aria-label="무엇을 하러 오셨나요">
+<a class="task" href="results.html"><b>효과가 있었는지 알고 싶어요</b><span>나온 분석 결과 <span class="n">{n_answers}개</span> — 쉬운 말 답과 인용해도 되는 문장</span></a>
+<a class="task" href="#ask"><b>궁금한 정책을 물어보고 싶어요</b><span>아래 대화창이 주제·법령·데이터를 찾아 줍니다</span></a>
+<a class="task" href="results.html#reuse"><b>우리 지역에도 해 보고 싶어요</b><span>비슷한 결과를 복사해 처치·대조만 바꿔 시작</span></a>
+<a class="task" href="projects.html"><b>분석에 참여하고 싶어요</b><span>참여자 <span class="n">{n_people}명</span>의 진행 상황과 다음 할 일</span></a>
+</nav>
 
 <div class="ask" id="ask">
 <div id="chat-log" class="chat-log" aria-live="polite" hidden></div>
@@ -476,7 +487,6 @@ AI도 결과를 계산하지 않습니다. 주제·데이터·계획을 함께 �
 </div></div>
 
 {ans.strip(e, list(answers), topics)}
-{proj.strip(e, list(projects), topics)}
 
 <section id="issues"><h2>지금 이슈인 정책</h2><p class="sub">요즘 논쟁 중인 정책을 어떻게 분석할 수 있는지, 어떤 데이터를 받을 수 있는지 정리했습니다.</p>
 <div class="grid">{issue_cards}</div><div class="cta"><a class="btn ghost" href="issues.html">지금 이슈 {len(issues)}개 · 분석 가이드 전체 보기</a></div></section>
@@ -491,6 +501,8 @@ AI도 결과를 계산하지 않습니다. 주제·데이터·계획을 함께 �
 <span style="flex:1"></span>
 <button class="chip v" data-v="grid" aria-pressed="true">카드</button><button class="chip v" data-v="list" aria-pressed="false">목록</button></div>
 <div class="grid" id="cards">{"".join(cards)}</div></section>
+
+{proj.strip(e, list(projects), topics)}
 
 <section id="join"><h2>참여하기 — 세 가지 방식</h2><p class="sub">커리어 방향과 해 보고 싶은 시도에 따라 하나를 고릅니다. 세 트랙은 이어져 있습니다:
 A가 이슈와 데이터를 이으면, B가 그 데이터로 효과를 추정하고, C가 그 결과로 서비스를 만듭니다.</p>
@@ -754,6 +766,23 @@ def legal_core(t, df: pd.DataFrame) -> pd.DataFrame:
     return core.sort_values("announced", ascending=False)
 
 
+def legal_stale(fetched: str, today: str | None = None, days: int = 14) -> str:
+    """법령 스냅샷이 오래됐으면 경고 한 줄. 자동 갱신(LAW_OC)이 켜지면 저절로 사라진다."""
+    if not fetched:
+        return ""
+    try:
+        age = (pd.Timestamp(today or pd.Timestamp.today().date()) - pd.Timestamp(fetched)).days
+    except (ValueError, TypeError):
+        return ""
+    if age <= days:
+        return ""
+    return (
+        f"<div class='banner warn'>이 법령 목록은 <b>{e(fetched)}</b> 이후 {age}일째 갱신되지 않았습니다. "
+        "그 뒤의 개정·지정·해제는 빠져 있을 수 있으니 처치 시점을 정하기 전에 "
+        "<a href='https://www.law.go.kr'>국가법령정보센터</a>에서 확인하세요.</div>"
+    )
+
+
 def legal_block(t) -> str:
     if not t.legal or not (t.legal.laws or t.legal.admin_rules):
         note = f"<p class='muted'>{e(t.legal.note)}</p>" if t.legal and t.legal.note else ""
@@ -771,6 +800,7 @@ def legal_block(t) -> str:
     cnt = df["group"].value_counts()
     src = ROOT / "catalog" / "snapshots" / f"legal_{t.id}.source.json"
     fetched = json.loads(src.read_text(encoding="utf-8")).get("fetched", "") if src.exists() else ""
+    stale = legal_stale(fetched)
     core = legal_core(t, df).head(12)
     today = pd.Timestamp.today().strftime("%Y-%m-%d")
     rows = "".join(
@@ -785,6 +815,7 @@ def legal_block(t) -> str:
     note = f"<p class='muted small'>{e(t.legal.note)}</p>" if t.legal.note else ""
     return (
         head
+        + stale
         + '<div class="stats" style="margin-top:8px">'
         + "".join(
             f'<div class="stat"><div class="v">{cnt.get(g, 0)}</div><div class="l">{lab}</div></div>'
@@ -916,6 +947,7 @@ def main() -> None:
     import answers as ans
 
     answers = ans.load_answers()
+    proj.attach_next_steps(projects, answers)
     if OUT.exists():
         shutil.rmtree(OUT)
     (OUT / "topics").mkdir(parents=True)

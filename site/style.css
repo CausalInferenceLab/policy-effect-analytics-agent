@@ -218,3 +218,20 @@ footer { margin-top: 64px; color: var(--muted); font-size: 13px; border-top: 1px
   .nav .links::-webkit-scrollbar { display: none }
   .proj-grid { grid-template-columns: minmax(0, 1fr) }
 }
+
+/* 첫 화면: 무엇을 하러 오셨나요 */
+.tasks { display: grid; gap: 10px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin: 22px 0 0 }
+.task { display: flex; flex-direction: column; gap: 4px; background: var(--surface); border: 1px solid var(--hair); border-radius: 14px; padding: 14px 16px; text-decoration: none; color: inherit }
+.task:hover { border-color: var(--accent) }
+.task b { font-size: 16px; color: var(--ink) }
+.task b::after { content: "\00a0→"; color: var(--accent) }
+.task span { color: var(--muted); font-size: 14px; line-height: 1.5 }
+.task .n { color: var(--accent); font-weight: 700 }
+
+/* 답 페이지: 이 결과를 얼마나 믿을 수 있나 */
+ul.trust li { padding: 8px 0; border-top: 1px solid var(--hair) }
+ul.trust li:first-child { border-top: 0 }
+
+/* 프로젝트 카드: 다음 할 일 */
+details.todo { font-size: 14px; margin: 4px 0 0 }
+details.todo ul { margin: 6px 0 0; padding-left: 18px; color: var(--ink2) }

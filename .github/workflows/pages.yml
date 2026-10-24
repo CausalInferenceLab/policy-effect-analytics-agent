@@ -32,6 +32,8 @@ jobs:
       NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # 답 페이지의 '사전 등록 기록'(plan.yaml 과 첫 결과의 커밋 시각 비교)에 전체 기록이 필요
       - uses: actions/setup-python@v5
         with:
           python-version: "3.11"

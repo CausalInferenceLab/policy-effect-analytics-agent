@@ -43,11 +43,26 @@ make demo                                             # 예시를 연습용 폴�
 | 1. 찾기 | 대화창·순위·지금 이슈에서 주제를 고릅니다 | "작업 제안" 이슈 |
 | 2. 모으기 | 그 주제의 정책을 모두 모읍니다. 주제 페이지의 법령 목록에서 시작일 후보를 찾고, 공식 발표로 확인합니다 | 정책 목록 표 |
 | 3. 거르기 | 언제 시작했나 · 누가 받았나 · 무엇으로 재나를 확인합니다 | 이슈에 확인 결과 |
-| 4. 계획하기 | `cp -r cases/_template cases/<내ID>-<주제>` 후 `plan.yaml`을 쓰고 **데이터를 보기 전에** PR | 계획 PR |
+| 4. 계획하기 | `cp -r cases/_template cases/<내ID>-<주제>` 후 `plan.yaml`을 쓰고 **데이터를 보기 전에** 계획만 담아 PR | 계획 PR (하루 이상 먼저) |
 | 5. 비교하기 | `fetch.py`로 `data/panel.csv`를 만들고 `make flow CASE=cases/<내ID>-<주제>` | 수집·분석 PR |
-| 6. 말하기 | `discussion.md`에 해석·한계를 쓰고 다시 `make flow` → `report.md`에 합쳐짐 | 리포트 PR |
+| 6. 말하기 | `discussion.md`에 **결과를 한 문장으로**·한계를 쓰고 다시 `make flow` → `report.md`에 합쳐짐 | 리포트 PR |
+| 7. 재현받기 | 다른 참여자 1명이 내 케이스를 돌려 보고 [교차 재현 기록](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/issues/new?template=reproduction.yml)을 남김 | 재현 이슈 → `reproduced_by` |
 
 "판단 불가"도 좋은 결과입니다. 왜 판단할 수 없는지가 분명하면 됩니다.
+
+### 사이트가 확인하는 것
+
+결과 답 페이지의 **이 결과를 얼마나 믿을 수 있나**와 프로젝트 카드의 **다음 할 일**은 폴더와 git 기록에서 자동으로 만들어집니다.
+
+- **사전 등록**: `plan.yaml`이 첫 결과(`flow_log.json`)보다 하루 이상 먼저 커밋되고 그 뒤 바뀌지 않으면 '계획 먼저 커밋'. 같은 날이면 '기록 약함', 결과 뒤에 고치면 '결과 뒤 계획 수정 n회'로 나옵니다. 고쳤다면 이유를 `discussion.md > 계획에서 바뀐 것`에 적습니다.
+- **교차 재현**: 다른 사람이 같은 판정을 얻으면 `catalog/projects.yaml`의 내 줄에 `reproduced_by: [그 사람 ID]`를 추가합니다.
+- **한 문장 해석**: `discussion.md`의 '결과를 한 문장으로'가 답 페이지 첫 줄에 그대로 나옵니다. 비어 있으면 자동 판정 문장이 대신 나옵니다.
+
+## 짝 리뷰
+
+결과 PR에는 멘토 외에 **다른 멘티 1명**이 리뷰를 답니다. 리뷰는 세 가지만 봅니다: 처치 시점·대상이 출처와 맞는가, 대조가 처치와 비교할 만한가, 한 문장 해석이 판정을 넘지 않는가. 그리고 가능하면 직접 돌려 재현 이슈를 남깁니다.
+
+전체 점검과 계획: [roadmap.md](roadmap.md) · 외부 사용자 테스트: [user-test.md](user-test.md)
 
 ## 주차별 목표
 

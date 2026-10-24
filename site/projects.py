@@ -21,7 +21,7 @@ STAGES = ["계획", "수집", "분석", "해석"]
 TRACK_KO = {"A": "데이터 온톨로지", "B": "가설과 분석", "C": "서비스 개발"}
 VERDICT = {
     "identified": ("효과 근거 있음", "go"),
-    "conditional": ("조건부", "warn"),
+    "conditional": ("크기를 판별하지 못함", "warn"),
     "not_identified": ("판단 불가", "stop"),
 }
 
@@ -113,9 +113,19 @@ def load_projects() -> list[dict]:
                 else [],
                 "has_report": (case / "report.md").exists(),
                 "open_prs": prs_by_case.get(case.name, []),
+                "registered": case.name in reg,
             }
         )
     return rows
+
+
+def attach_next_steps(projects: list[dict], answers: list[dict]) -> None:
+    """프로젝트마다 '다음 할 일'을 붙인다 (결과 정보가 있어야 해서 load_answers 뒤에 부른다)."""
+    from quality import next_steps
+
+    by_case = {a["case"]: a for a in answers}
+    for p in projects:
+        p["next"] = [] if p["mentor"] else next_steps(p, by_case.get(p["case"]), p["registered"])
 
 
 # ─── 그리기 ───────────────────────────────────────────────────────────────────
@@ -150,6 +160,14 @@ def project_card(e, p: dict, topics_by_id: dict, up: str = "") -> str:
             f'<a class="badge {"" if pr.get("draft") else "info"}" href="{e(pr["url"])}">'
             f"{'Draft ' if pr.get('draft') else '리뷰 중 '}PR #{pr['number']}</a>"
         )
+    todo = ""
+    if p.get("next"):
+        todo = (
+            '<details class="todo"><summary>다음 할 일 '
+            f"{len(p['next'])}</summary><ul>"
+            + "".join(f"<li>{e(x)}</li>" for x in p["next"])
+            + "</ul></details>"
+        )
     fig = ""
     if p["figures"]:
         f = "event_study.png" if "event_study.png" in p["figures"] else p["figures"][0]
@@ -171,6 +189,7 @@ def project_card(e, p: dict, topics_by_id: dict, up: str = "") -> str:
         f"<h3>{e(p['title'])}</h3>{stage_bar(e, p['stages'])}"
         + (f'<div class="tags">{"".join(badges)}</div>' if badges else "")
         + fig
+        + todo
         + f'<p class="small proj-links">{" · ".join(links)}</p></article>'
     )
 
@@ -242,7 +261,8 @@ def projects_body(e, projects, lineages, topics) -> str:
 <div class="hero" style="padding-bottom:0"><span class="eyebrow">참여자 프로젝트</span>
 <h1>누가, 어떤 정책을, 어디까지</h1>
 <p class="lede">참여자가 각자 고른 정책을 <b>계획 → 수집 → 분석 → 해석</b> 순서로 진행합니다.
-이 화면은 레포의 <code>cases/</code>와 <code>catalog/lineage/</code>에서 자동으로 만들어집니다.</p>
+이 화면은 레포의 <code>cases/</code>와 <code>catalog/lineage/</code>에서 자동으로 만들어집니다.
+처음이라면 <a href="index.html#join">세 가지 참여 방식</a>과 <a href="{REPO}/blob/main/docs/ops/mentee-guide.md">참여 가이드</a>부터 보세요.</p>
 <div class="stats">
 <div class="stat"><div class="v">{len(people)}</div><div class="l">참여자</div></div>
 <a class="stat" href="#cases"><div class="v">{len(mentee)}</div><div class="l">분석 프로젝트</div></a>
@@ -251,7 +271,8 @@ def projects_body(e, projects, lineages, topics) -> str:
 </div></div>
 {pr_list(e, act)}
 <section id="cases"><h2>분석 프로젝트 (트랙 B)</h2>
-<p class="sub">막대는 진행 단계입니다. 판정은 파이프라인의 자동 판정이고, 해석은 각 프로젝트의 discussion.md가 우선합니다.</p>
+<p class="sub">막대는 진행 단계입니다. 판정은 파이프라인의 자동 판정이고, 해석은 각 프로젝트의 discussion.md가 우선합니다.
+<b>다음 할 일</b>은 폴더·git 기록에서 자동으로 뽑습니다(한 문장 해석, 교차 재현, 계획 먼저 커밋 등).</p>
 <div class="chips" role="group" aria-label="단계 필터">
 <button class="chip pf" data-s="-9" aria-pressed="true">전체</button>
 <button class="chip pf" data-s="2" aria-pressed="false">분석 결과 있음</button>

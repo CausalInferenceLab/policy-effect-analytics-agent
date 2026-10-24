@@ -2,6 +2,8 @@
 # 새 케이스를 만들면 여기에 한 줄 추가합니다(없어도 사이트에는 '주제 미지정'으로 나옵니다).
 # 진행 단계(계획 → 수집 → 분석 → 해석)와 판정은 폴더 안의 파일에서 자동으로 읽습니다:
 #   plan.yaml → 계획 · fetch.py → 수집 · flow_log.json → 분석 · discussion.md(템플릿과 다르면) → 해석
+# reproduced_by: [GitHub ID, ...] — 다른 참여자가 make flow 로 같은 판정을 얻었으면 재현 이슈를 확인하고 추가합니다.
+#   답 페이지의 '이 결과를 얼마나 믿을 수 있나'와 카드의 '교차 재현됨' 배지로 나옵니다.
 version: 1
 projects:
   - case: YoungjaeKang-retail-hours
