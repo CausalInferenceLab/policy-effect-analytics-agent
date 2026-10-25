@@ -1,0 +1,26 @@
+{
+  "case_id": "whatfontisthis-wonju-voucher-202409",
+  "started_at": "2026-10-25T09:56:58+00:00",
+  "finished_at": "2026-10-25T09:57:00+00:00",
+  "git_sha": "bae45ce3c5ecf3ed365fbcc9480ae70d6f0c073d",
+  "git_dirty": true,
+  "plan_sha256": "46b454d258532f1ec90fe4ffb90f1241cad3fc7ff56c86a9ed3ff1af8d8a9e3e",
+  "data_sha256": "0a4e24c932ae93cc227a97964a7c47ebd5e78cb1a12e88e7b69d8cd4f901b140",
+  "data_path": "data\\panel.csv",
+  "versions": {
+    "python": "3.12.11",
+    "pandas": "2.3.3",
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pyfixest": "0.60.0",
+    "statsmodels": "0.15.0",
+    "pydantic": "2.14.1",
+    "matplotlib": "3.11.2",
+    "langgraph": "1.2.17"
+  },
+  "platform": "Windows-11-10.0.26200-SP0",
+  "verdicts": {
+    "log_mbl_use_amt": "conditional",
+    "log_mbl_user_cnt": "conditional"
+  }
+}
