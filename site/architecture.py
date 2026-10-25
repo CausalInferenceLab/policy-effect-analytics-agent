@@ -346,7 +346,7 @@ def body(e) -> str:
         for n, w, r, lic in RELATED
     )
     return f"""
-<div class="hero" style="padding-bottom:0"><span class="eyebrow">구조</span>
+<div class="hero" style="padding-bottom:0">
 <h1>한 장으로 보는 구조</h1>
 <p class="lede">두 개의 고리로 움직입니다. 사람들의 질문이 <b>대화 고리</b>로 들어와 주제와 데이터가 쌓이고,
 멘티는 <b>기여 고리</b>의 세 트랙(A 데이터 온톨로지 · B 가설과 분석 · C 서비스 개발) 중 하나로 그 위에 쌓습니다.</p></div>

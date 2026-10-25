@@ -53,7 +53,7 @@ def test_home_has_chat_and_catalog(tmp_path, monkeypatch):
     ).group(1)
     cat = json.loads(raw.replace("<\\/", "</"))
     assert {"repo", "topics", "issues", "datasets"} <= cat.keys()
-    assert "요즘 궁금해하는 주제" in home
+    assert 'id="topics"' in home and '<script src="ask.js"></script>' in home
     assert "공식 평가가 아닙니다" in home
     # 개별 참여로 바뀌었으므로 조 단위 안내가 남아 있으면 안 됨
     for f in out.rglob("*.html"):
@@ -135,7 +135,8 @@ def test_tracks_api_and_apps(tmp_path, monkeypatch):
     assert (out / "apps" / "_template" / "index.html").exists()
     assert not (out / "apps" / "_template" / "app.yaml").exists()
     nav = (out / "index.html").read_text(encoding="utf-8")
-    assert "데이터 계보" in nav and "서비스" in nav and "데이터 온톨로지" in nav
+    assert "데이터 계보" in nav and "서비스" in nav
+    assert "데이터 온톨로지" in (out / "projects.html").read_text(encoding="utf-8")
 
 
 def test_apps_have_meta_and_no_secrets():
@@ -208,11 +209,44 @@ def test_answer_pages_for_users(tmp_path, monkeypatch):
         .replace("<\\/", "</")
     )
     assert cat["results"] and all("page" in x for x in cat["results"])
-    # 첫 화면은 사용자 과업으로 시작한다
-    assert 'class="tasks"' in home and "results.html#reuse" in home
+    # 첫 화면: 질문 → 이미 나온 답 → 주제·이슈 → 다음에 할 수 있는 것
+    assert home.index('id="ask"') < home.index('id="answers"') < home.index('id="topics"')
+    assert 'id="next"' in home and "results.html#reuse" in home and "impact.html" in home
     assert 'id="reuse"' in (out / "results.html").read_text(encoding="utf-8")
     # 주제 페이지는 '지금 말할 수 있는 것'으로 시작하고, 결과 CSV는 엑셀용 BOM 을 붙인다
     for t in (out / "topics").glob("*.html"):
         assert 'id="now"' in t.read_text(encoding="utf-8"), t.name
     raw = (out / "api" / "results.csv").read_bytes()
     assert raw.startswith(b"\xef\xbb\xbf") and b"rule_out" in raw.splitlines()[0]
+
+
+def test_impact_page_and_tracking(tmp_path, monkeypatch):
+    """성과 화면: 측정 못 한 칸은 '측정 전', 이벤트 이름은 사이트 버튼과 같고, 통계 코드가 없으면 추적하지 않는다."""
+    mod = _load_build()
+    monkeypatch.setattr(mod, "OUT", tmp_path / "_site")
+    monkeypatch.delenv("GOATCOUNTER_CODE", raising=False)
+    mod.main()
+    out = tmp_path / "_site"
+    page = (out / "impact.html").read_text(encoding="utf-8")
+    for sec in ("쓰임", "외부 검증", "결과의 질", "참여"):
+        assert f"<h2>{sec}</h2>" in page
+    kpi = json.loads((out / "api" / "metrics.json").read_text(encoding="utf-8"))
+    assert kpi["quality"]["all"] >= kpi["quality"]["results"] > 0
+    assert (out / "track.js").exists() and "data-gc" not in (out / "index.html").read_text(
+        encoding="utf-8"
+    )
+    import sys
+
+    sys.path.insert(0, str(ROOT / "site"))
+    import impact
+
+    used = set()
+    for f in out.rglob("*.html"):
+        used |= set(re.findall(r'data-track="([a-z-]+)"', f.read_text(encoding="utf-8")))
+    js = (ROOT / "site" / "ask.js").read_text(encoding="utf-8")
+    used |= set(re.findall(r'track\("([a-z-]+)"', js))
+    assert used - {"propose-case"} <= set(impact.EVENTS), used - set(impact.EVENTS)
+    monkeypatch.setenv("GOATCOUNTER_CODE", "policy-effect")
+    assert 'data-gc="policy-effect"' in mod.page("t", "", "index.html")
+    monkeypatch.setenv("GOATCOUNTER_CODE", 'bad code"><script>')
+    assert "data-gc" not in mod.page("t", "", "index.html")

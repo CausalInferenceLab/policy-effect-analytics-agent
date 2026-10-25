@@ -69,4 +69,6 @@
 | '계획 먼저 커밋' 결과 | 0개 | 새로 시작하는 분석 전부 |
 | 한 문장 해석이 있는 결과 | 3/6 | 6/6 |
 
+이 숫자는 사이트의 [성과 화면](https://causalinferencelab.github.io/policy-effect-analytics-agent/impact.html)이 매일 다시 셉니다. 정의와 측정 설정: [metrics.md](metrics.md)
+
 이 문서는 단계가 끝날 때마다 갱신합니다.

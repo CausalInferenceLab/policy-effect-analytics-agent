@@ -279,6 +279,7 @@ ${JSON.stringify(compact)}`;
     fields.conversation = shortConvo;
     const cut = shortConvo !== convo || fields.proposal !== prop;
     if (cut && navigator.clipboard) navigator.clipboard.writeText(convo + (prop ? "\n\n---\n" + prop : "")).catch(() => {});
+    if (window.track) window.track("propose");
     window.open(issueUrl(fields), "_blank", "noopener");
     say("GitHub 이슈 작성 화면을 새 창으로 열었습니다. 내용을 확인하고 제출하면 멘토와 멘티가 검토해 카탈로그와 분석에 반영합니다. (GitHub 로그인이 필요합니다)" +
       (cut ? " 대화가 길어 앞부분을 줄였습니다. 전체 대화는 클립보드에 복사해 두었으니 이슈 본문에 붙여 넣어 주세요." : ""));
@@ -288,6 +289,7 @@ ${JSON.stringify(compact)}`;
   async function send(text) {
     text = text.trim();
     if (!text) return;
+    if (window.track) window.track("ask");
     bubble("user", esc(text));
     state.messages.push({ role: "user", content: text });
     input.value = "";
