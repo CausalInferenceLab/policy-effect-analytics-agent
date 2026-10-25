@@ -195,6 +195,7 @@ def test_answer_pages_for_users(tmp_path, monkeypatch):
         assert "이 결과를 쓰려면" in page and "인용문" in page and "직접 돌려 보기" in page
         assert f"make flow CASE=cases/{r['case']}" in page
         assert "이 결과를 얼마나 믿을 수 있나" in page
+        assert 'property="og:url"' in page and (out / "answers" / f"{r['case']}.csv").exists()
         if r["verdict"] == "not_identified":
             assert "진단용" in page
     for case in (root / "cases").glob("*/flow_log.json"):
@@ -210,3 +211,8 @@ def test_answer_pages_for_users(tmp_path, monkeypatch):
     # 첫 화면은 사용자 과업으로 시작한다
     assert 'class="tasks"' in home and "results.html#reuse" in home
     assert 'id="reuse"' in (out / "results.html").read_text(encoding="utf-8")
+    # 주제 페이지는 '지금 말할 수 있는 것'으로 시작하고, 결과 CSV는 엑셀용 BOM 을 붙인다
+    for t in (out / "topics").glob("*.html"):
+        assert 'id="now"' in t.read_text(encoding="utf-8"), t.name
+    raw = (out / "api" / "results.csv").read_bytes()
+    assert raw.startswith(b"\xef\xbb\xbf") and b"rule_out" in raw.splitlines()[0]

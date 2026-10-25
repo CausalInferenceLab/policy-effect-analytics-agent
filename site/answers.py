@@ -13,12 +13,15 @@
 
 from __future__ import annotations
 
+import csv
 import json
 import math
 import re
 from pathlib import Path
 
 import yaml
+
+from core.report import interpret
 
 ROOT = Path(__file__).resolve().parents[1]
 CASES = ROOT / "cases"
@@ -136,20 +139,13 @@ def effect_text(est, lo, hi, col: str, unit: str | None) -> tuple[str, str]:
             return f"{(math.exp(v) - 1) * 100:+.1f}%"
 
         return pct(est), f"{pct(lo)} ~ {pct(hi)}"
-    u = f" {unit}" if unit else ""
+    u = interpret._u(unit)
     return f"{est:+.3g}{u}", f"{lo:+.3g} ~ {hi:+.3g}{u}"
 
 
 def bounds_text(lo, hi, col: str, unit: str | None) -> tuple[str, str] | None:
-    """배제 진술용 (하한, 상한) 문자열. 범위가 너무 넓으면 None."""
-    if lo is None or hi is None:
-        return None
-    if _is_log(col, unit):
-        if hi - lo > 1.0:
-            return None
-        return f"{(math.exp(lo) - 1) * 100:+.1f}%", f"{(math.exp(hi) - 1) * 100:+.1f}%"
-    u = f" {unit}" if unit else ""
-    return f"{lo:+.3g}{u}", f"{hi:+.3g}{u}"
+    """배제 진술용 (하한, 상한) 문자열. 범위가 너무 넓으면 None. (계산은 core/report/interpret.py)"""
+    return interpret.bounds(lo, hi, col, unit)
 
 
 def load_answers() -> list[dict]:
@@ -196,8 +192,13 @@ def load_answers() -> list[dict]:
                     "n": r.get("n_obs"),
                     "clusters": r.get("n_clusters"),
                     "primary": r.get("outcome") == primary,
-                    "bounds": bounds_text(
-                        r.get("ci_low"), r.get("ci_high"), r.get("outcome", ""), o.get("unit")
+                    "said": interpret.statements(
+                        r.get("verdict"),
+                        o.get("name", r.get("outcome")),
+                        r.get("ci_low"),
+                        r.get("ci_high"),
+                        r.get("outcome", ""),
+                        o.get("unit"),
                     ),
                 }
             )
@@ -237,6 +238,88 @@ def load_answers() -> list[dict]:
     return rows
 
 
+# ─── 내보내기 ─────────────────────────────────────────────────────────────────
+CSV_COLS = [
+    "case",
+    "title",
+    "topic",
+    "verdict",
+    "outcome",
+    "outcome_name",
+    "outcome_verdict",
+    "estimate",
+    "ci_low",
+    "ci_high",
+    "p_value",
+    "n_obs",
+    "effect",
+    "range_95",
+    "rule_out",
+    "page",
+]
+
+
+def csv_rows(results_json: list[dict]) -> list[dict]:
+    """api/results.json → 지표 한 줄씩. 엑셀에서 바로 열리게 판정은 한국어로."""
+    rows = []
+    for r in results_json:
+        for o in r.get("outcomes", []):
+            lo, hi = (o.get("ci") or [None, None])[:2]
+            said = o.get("said") or {}
+            rows.append(
+                {
+                    "case": r["case"],
+                    "title": r.get("title"),
+                    "topic": r.get("topic"),
+                    "verdict": VERDICT.get(r.get("verdict"), (r.get("verdict"),))[0],
+                    "outcome": o.get("col"),
+                    "outcome_name": o.get("name"),
+                    "outcome_verdict": VERDICT.get(o.get("verdict"), (o.get("verdict"),))[0],
+                    "estimate": o.get("estimate"),
+                    "ci_low": lo,
+                    "ci_high": hi,
+                    "p_value": o.get("p_value"),
+                    "n_obs": o.get("n_obs"),
+                    "effect": interpret.fmt(o["estimate"], o.get("col") or "", o.get("unit"))
+                    if o.get("estimate") is not None
+                    else "",
+                    "range_95": " ~ ".join(
+                        interpret.fmt(v, o.get("col") or "", o.get("unit")) for v in (lo, hi)
+                    )
+                    if lo is not None and hi is not None
+                    else "",
+                    "rule_out": said.get("rule_out", ""),
+                    "page": f"{SITE}/{r['page']}",
+                }
+            )
+    return rows
+
+
+def _write(path: Path, rows: list[dict]) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("w", encoding="utf-8-sig", newline="") as f:  # BOM: 엑셀 한글 깨짐 방지
+        w = csv.DictWriter(f, fieldnames=CSV_COLS)
+        w.writeheader()
+        w.writerows(rows)
+
+
+def write_csv(out: Path, results_json: list[dict]) -> None:
+    """api/results.csv (전체) + answers/<케이스>.csv (케이스별)."""
+    rows = csv_rows(results_json)
+    _write(out / "api" / "results.csv", rows)
+    for case in {r["case"] for r in rows}:
+        _write(out / "answers" / f"{case}.csv", [r for r in rows if r["case"] == case])
+
+
+def share_text(a: dict) -> str:
+    """공유 미리보기 설명: 판정 + 한 줄 답."""
+    lab = VERDICT.get(a["verdict"], (a["verdict"] or "-",))[0]
+    line = one_line(a)
+    line = line if len(line) <= 150 else line[:148] + "…"
+    sim = "시뮬레이션 데이터 · " if a["synthetic"] else ""
+    return f"[{sim}판정: {lab}] {line}"
+
+
 # ─── 그리기 ───────────────────────────────────────────────────────────────────
 def one_line(a: dict) -> str:
     return a.get("summary") or _plain(a.get("guard", "")) or VERDICT_PLAIN.get(a["verdict"], "")
@@ -270,16 +353,24 @@ def card(e, a: dict, topics_by_id: dict, up: str = "") -> str:
 
 
 def rule_out(a: dict) -> str:
-    """판별하지 못한 결과에서도 말할 수 있는 것: 95% 범위 밖의 큰 효과는 자료와 맞지 않는다."""
+    """판별하지 못한 결과에서도 말할 수 있는 것: 95% 범위 밖의 큰 효과는 자료와 맞지 않는다 (주 지표 우선)."""
     if a["verdict"] != "conditional":
         return ""
-    r = next((r for r in a["results"] if r.get("bounds")), None)
-    if not r:
+    r = next((r for r in a["results"] if (r.get("said") or {}).get("rule_out")), None)
+    return f"그래도 말할 수 있는 것(배제 범위) — {r['said']['rule_out']}" if r else ""
+
+
+def said_block(e, a: dict) -> str:
+    """근거 섹션: 지표별 배제 범위 · 검출 한계."""
+    items = [v for r in a["results"] for v in (r.get("said") or {}).values()]
+    if not items:
         return ""
-    lo, hi = r["bounds"]
+    lis = "".join(f"<li>{e(x)}</li>" for x in items)
     return (
-        f"그래도 말할 수 있는 것(배제 범위) — {r['name']}: {hi}보다 큰 증가나 {lo}보다 큰 감소는 "
-        "이 자료와 맞지 않습니다(설계 가정이 맞다는 전제)."
+        "<h3>그래도 말할 수 있는 것</h3>"
+        "<p class='small muted'>효과가 있었는지는 판별하지 못했지만, 95% 범위 밖의 큰 효과는 이 자료와 맞지 않습니다(배제 범위). "
+        "'효과가 없다'는 뜻이 아닙니다.</p>"
+        f"<ul>{lis}</ul>"
     )
 
 
@@ -335,7 +426,9 @@ def _usage(e, a: dict) -> str:
     return f"""<section id="use"><h2>이 결과를 쓰려면</h2>
 <div class="split"><div class="card"><h3><span class="badge go">이렇게 쓰세요</span></h3><ul>{lis(do)}</ul></div>
 <div class="card"><h3><span class="badge stop">이렇게 쓰면 안 됩니다</span></h3><ul>{lis(dont)}</ul></div></div>
-<div class="card cite"><div class="row-between"><b>인용문</b><button class="btn ghost small-btn" type="button" data-copy="cite-text">복사</button></div>
+<div class="card cite"><div class="row-between"><b>인용문</b><span><button class="btn ghost small-btn" type="button" data-copy="cite-text">인용문 복사</button>
+<button class="btn ghost small-btn" type="button" data-copy="page-url">링크 복사</button></span></div>
+<span id="page-url" hidden>{SITE}/{e(a["page"])}</span>
 <p id="cite-text" class="small" style="margin:8px 0 0">{e(cite)}</p></div></section>"""
 
 
@@ -416,7 +509,9 @@ def page_body(e, a: dict, topics_by_id: dict, datasets_by_url: dict) -> str:
 {_usage(e, a)}
 <section id="evidence"><h2>근거</h2>{changed}
 <div class="tablewrap"><table><tr><th>결과 지표</th><th>추정 효과</th><th>95% 범위</th><th>판정</th><th>주의</th></tr>{rows}</table></div>
-{dim_note}<div class="figs">{figs}</div>
+{dim_note}{said_block(e, a)}
+<p class="small"><a href="{e(a["case"])}.csv" download>숫자 내려받기 (CSV)</a> · <a href="../api/results.json">전체 결과 API (JSON)</a> · <a href="../api/results.csv" download>전체 결과 CSV</a></p>
+<div class="figs">{figs}</div>
 {("<h3>작성자가 적은 한계</h3>" + cautions) if cautions else ""}</section>
 {trust_block(e, a)}
 <section id="data"><h2>쓴 공공데이터</h2>
@@ -458,7 +553,8 @@ def index_body(e, answers: list[dict], topics) -> str:
 <button class="chip af" data-v="" aria-pressed="true">전체</button>
 <button class="chip af" data-v="identified" aria-pressed="false">효과 근거 있음</button>
 <button class="chip af" data-v="conditional" aria-pressed="false">크기를 판별하지 못함</button>
-<button class="chip af" data-v="not_identified" aria-pressed="false">판단 불가</button></div>
+<button class="chip af" data-v="not_identified" aria-pressed="false">판단 불가</button>
+<input id="answer-q" type="search" class="search" placeholder="정책·지역·주제로 찾기" aria-label="분석 결과 검색"></div>
 <div class="grid proj-grid" id="answer-cards">{"".join(card(e, a, tb) for a in real) or "<p class='card'>아직 없습니다.</p>"}</div></section>
 <section><h2>예시</h2><p class="sub">흐름을 보여 주는 멘토 예시입니다.</p>
 <div class="grid proj-grid">{"".join(card(e, a, tb) for a in examples)}</div></section>
@@ -470,7 +566,33 @@ def index_body(e, answers: list[dict], topics) -> str:
 <section><h2>아직 결과가 없는 주제</h2><p class="sub">{gap or "없음"}</p>
 <div class="cta"><a class="btn primary" href="index.html#ask">질문하기</a>
 <a class="btn ghost" href="{REPO}/issues/new?template=case-proposal.yml">분석 제안하기</a></div></section>
-<script>document.querySelectorAll('.af').forEach(b=>b.addEventListener('click',()=>{{document.querySelectorAll('.af').forEach(x=>x.setAttribute('aria-pressed',x===b));const v=b.dataset.v;document.querySelectorAll('#answer-cards .answer').forEach(c=>{{c.hidden=!!v&&c.dataset.verdict!==v}})}}))</script>"""
+<script>(()=>{{let v='';const q=document.getElementById('answer-q');
+const apply=()=>{{const s=q.value.trim().toLowerCase();document.querySelectorAll('#answer-cards .answer').forEach(c=>{{c.hidden=(!!v&&c.dataset.verdict!==v)||(!!s&&!c.textContent.toLowerCase().includes(s))}})}};
+document.querySelectorAll('.af').forEach(b=>b.addEventListener('click',()=>{{document.querySelectorAll('.af').forEach(x=>x.setAttribute('aria-pressed',x===b));v=b.dataset.v;apply()}}));
+q.addEventListener('input',apply);const h=new URLSearchParams(location.search).get('q');if(h){{q.value=h;apply()}}}})()</script>"""
+
+
+def topic_box(e, mine: list[dict], up: str = "../") -> str:
+    """주제 페이지 맨 위: 이 주제에 대해 지금 말할 수 있는 것."""
+    if not mine:
+        return f"""<section id="now" style="padding-top:28px"><div class="card now">
+<h2>지금 말할 수 있는 것</h2><p class="muted" style="margin:0 0 10px">이 주제는 아직 분석 결과가 없습니다. 아래 정책·데이터·설계가 출발점입니다.</p>
+<div class="cta" style="margin:0"><a class="btn primary" href="{up}index.html#ask">이 주제로 질문하기</a>
+<a class="btn ghost" href="{REPO}/issues/new?template=case-proposal.yml">분석 제안하기</a></div></div></section>"""
+    items = []
+    for a in mine:
+        extra = rule_out(a)
+        tag = " <span class='badge stop'>시뮬레이션 데이터 결과</span>" if a["synthetic"] else ""
+        tag += " <span class='badge'>멘토 예시</span>" if a["mentor"] else ""
+        items.append(
+            f"<li>{verdict_chip(e, a['verdict'])}{tag} <a href='{up}{e(a['page'])}'><b>{e(a['title'])}</b></a>"
+            f"<div class='muted small'>{e(one_line(a)[:200])}</div>"
+            + (f"<div class='small'>{e(extra)}</div>" if extra else "")
+            + "</li>"
+        )
+    return f"""<section id="now" style="padding-top:28px"><div class="card now">
+<h2>지금 말할 수 있는 것</h2><p class="muted" style="margin:0 0 6px">이 주제로 나온 분석 {len(mine)}개입니다. 인용 문장·쓴 데이터·재현 방법은 제목을 눌러 보세요.</p>
+<ul class="plain trust">{"".join(items)}</ul></div></section>"""
 
 
 def strip(e, answers: list[dict], topics, limit: int = 4) -> str:

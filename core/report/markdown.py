@@ -6,11 +6,12 @@
 from __future__ import annotations
 
 from ..estimators.result import EffectResult
+from .interpret import statements
 
 VERDICT_KO = {
-    "identified": "✅ 식별됨 (가정 하에서)",
-    "conditional": "⚠️ 조건부",
-    "not_identified": "⛔ 식별 불가",
+    "identified": "✅ 효과 근거 있음 (가정 하에서)",
+    "conditional": "⚠️ 크기를 판별하지 못함",
+    "not_identified": "⛔ 판단 불가",
 }
 
 
@@ -29,6 +30,34 @@ def results_table(results: list[EffectResult]) -> str:
             f"| {_p(r.p_value)} | {r.n_obs} | {r.n_clusters or '-'} | {VERDICT_KO[r.verdict]} |"
         )
     return "\n".join(rows)
+
+
+def said_lines(plan, results: list[EffectResult]) -> list[str]:
+    """판정을 넘지 않는 범위에서 '그래도 말할 수 있는 것' (배제 범위 · 검출 한계)."""
+    outs = {o.col: o for o in plan.outcomes}
+    lines = []
+    for r in results:
+        o = outs.get(r.outcome)
+        st = statements(
+            r.verdict,
+            o.name if o else r.outcome,
+            r.ci_low,
+            r.ci_high,
+            r.outcome,
+            o.unit if o else None,
+        )
+        lines += [f"- {v}" for v in st.values()]
+    if not lines:
+        return []
+    return [
+        "### 그래도 말할 수 있는 것",
+        "",
+        *lines,
+        "",
+        "> 배제 범위: 효과가 있었는지는 판별하지 못했지만, 95% 범위 밖의 큰 효과는 이 자료와 맞지 않습니다. "
+        "'효과가 없다'는 뜻이 아닙니다. 판단 불가 결과에는 쓰지 않습니다.",
+        "",
+    ]
 
 
 def render_report(
@@ -67,6 +96,7 @@ def render_report(
         results_table(results),
         "",
     ]
+    L += said_lines(plan, results)
     for name, path in figures.items():
         L += [f"![{name}]({path})", ""]
     L += ["## 3. 가정 점검 및 반박 검정", "", "| 가정 | 점검 방법 | 결과 |", "|---|---|---|"]

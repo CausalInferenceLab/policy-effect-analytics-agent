@@ -235,3 +235,8 @@ ul.trust li:first-child { border-top: 0 }
 /* 프로젝트 카드: 다음 할 일 */
 details.todo { font-size: 14px; margin: 4px 0 0 }
 details.todo ul { margin: 6px 0 0; padding-left: 18px; color: var(--ink2) }
+
+/* 주제 페이지: 지금 말할 수 있는 것 · 결과 검색 */
+.card.now { border-width: 2px; border-color: var(--accent) }
+.card.now h2 { margin-top: 0 }
+input.search { flex: 1 1 200px; min-width: 0; padding: 6px 12px; border: 1px solid var(--hair); border-radius: 999px; background: var(--surface); color: var(--ink); font: inherit; font-size: 14px }
