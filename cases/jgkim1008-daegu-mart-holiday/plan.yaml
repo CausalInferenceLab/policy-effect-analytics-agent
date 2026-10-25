@@ -50,23 +50,25 @@ control:
     대구 인접 지역(경북 경산 등)으로의 소비 이동은 광역시 단위 지표에 섞일 수 있어 한계로 둔다.
 
 outcomes:
-  - name: 슈퍼마켓·잡화점 판매액지수
+  - name: 슈퍼마켓·잡화점 및 편의점 판매액지수
     col: super_idx
     definition: >-
-      통계청 서비스업동향조사 시도별 업태별 소매판매액지수 중 '슈퍼마켓 및 잡화점'
-      불변지수(2020=100), 분기. 지역별 자연로그를 취해 비율 변화로 해석한다.
+      KOSIS DT_1K41018 '시도별 소매판매액지수' 중 업종 A4 '슈퍼마켓· 잡화점 및 편의점'
+      불변지수(T2, 2020=100), 분기. 지역별 자연로그를 취해 비율 변화로 해석한다.
+      시도 단위에서는 편의점이 분리되지 않아 함께 포함된다. 편의점은 의무휴업 대상이
+      아니고 일요일에도 영업하므로 효과가 희석될 수 있다(한계로 기록).
     unit: "지수(2020=100, 로그)"
     primary: true
     expected_direction: unknown
   - name: 대형마트 판매액지수
     col: mart_idx
-    definition: "같은 통계표의 '대형마트' 불변지수(2020=100), 분기, 자연로그"
+    definition: "같은 통계표(DT_1K41018)의 업종 A2 '대형마트' 불변지수(2020=100), 분기, 자연로그"
     unit: "지수(2020=100, 로그)"
     expected_direction: increase
   - name: 승용차·연료소매점 판매액지수 (가짜 지표)
     col: auto_fuel_idx
     definition: >-
-      같은 통계표의 '승용차 및 연료소매점' 불변지수, 분기, 자연로그.
+      같은 통계표(DT_1K41018)의 업종 A5 '승용차 및 연료소매점' 불변지수, 분기, 자연로그.
       의무휴업과 무관한 업태로, 여기서도 효과가 잡히면 공통 충격을 의심한다.
     unit: "지수(2020=100, 로그)"
     expected_direction: unknown
@@ -134,11 +136,14 @@ abstention:
 thresholds: {pretrend_alpha: 0.10, min_clusters: 20, min_pre_periods: 3}
 
 data_sources:
-  - name: "서비스업동향조사 시도/업태별 소매판매액지수"
-    provider: "통계청 KOSIS"
-    url: "https://kosis.kr"
+  - name: "서비스업동향조사 시도별 소매판매액지수(2020=100)"
+    provider: "국가데이터처(구 통계청) KOSIS"
+    url: "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1K41018"
     license: KOGL-1
     adapter: kosis
     notes: >-
-      통계표 ID(tblId)·제공 주기는 fetch.py 작성 시 메타데이터로 확인해 기재한다.
-      공공누리 유형은 통계표별로 확인한다. 원자료와 가공본은 커밋하지 않는다.
+      orgId=101, tblId=DT_1K41018, 항목 T2(불변지수), 업종 A2·A4·A5, 행정구역 SGG
+      21·22·23·24·25·26, 주기 분기(2010Q1~). 메타데이터 조회 기준 전 기간이
+      2026-08-05에 재송부되었으므로 받은 날짜를 기록한다. 월별 시도 자료는 대형마트만
+      DT_1K41015에 있어 주 지표와 주기를 맞추기 위해 분기로 유지한다.
+      공공누리 유형은 KOSIS 통계표 화면에서 확인해 README에 기록한다. 원자료와 가공본은 커밋하지 않는다.
