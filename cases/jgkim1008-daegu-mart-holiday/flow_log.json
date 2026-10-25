@@ -1,0 +1,516 @@
+{
+  "schema_version": "1",
+  "case_dir": "cases/jgkim1008-daegu-mart-holiday",
+  "question": "2023년 2월 대구시가 대형마트 의무휴업일을 일요일에서 월요일로 바꿔 일요일 영업을 허용한 이후, 대구의 슈퍼마켓·잡화점 판매액지수는 같은 기간 일요일 의무휴업을 유지한 다른 광역시와 비교해 어떻게 달라졌는가?",
+  "status": "warn",
+  "verdict": "not_identified",
+  "started_at": "2026-10-25T12:37:56+00:00",
+  "ended_at": "2026-10-25T12:37:58+00:00",
+  "steps": [
+    {
+      "index": 1,
+      "step": "define_problem",
+      "title": "① 문제 정의",
+      "status": "ok",
+      "started_at": "2026-10-25T12:37:56+00:00",
+      "ended_at": "2026-10-25T12:37:56+00:00",
+      "duration_s": 0.034,
+      "message": "분석계획 검증 완료, 사전 등록(git 커밋) 확인: jgkim1008-daegu-mart-holiday",
+      "artifacts": {
+        "plan": "plan.yaml",
+        "plan_sha256": "4dd6f9db881b93159b54891a4177da659be965b6f790e13e0a390f2b0728ce6d",
+        "committed": true
+      }
+    },
+    {
+      "index": 2,
+      "step": "collect",
+      "title": "② 데이터 수집",
+      "status": "ok",
+      "started_at": "2026-10-25T12:37:56+00:00",
+      "ended_at": "2026-10-25T12:37:56+00:00",
+      "duration_s": 0.0,
+      "message": "기존 스냅샷 재사용 (새로 받으려면 파일 삭제 후 재실행)",
+      "artifacts": {
+        "data": "data/panel.csv",
+        "data_sha256": "a1d0106751b47a6827966641e48e64bc4b04c86f9ef9eb53b6e0e9b46c5b3feb",
+        "licenses": [
+          "KOGL-1"
+        ],
+        "method": "기존 스냅샷 재사용 (새로 받으려면 파일 삭제 후 재실행)"
+      }
+    },
+    {
+      "index": 3,
+      "step": "structure_metrics",
+      "title": "③ 지표 구조화·품질 점검",
+      "status": "ok",
+      "started_at": "2026-10-25T12:37:56+00:00",
+      "ended_at": "2026-10-25T12:37:56+00:00",
+      "duration_s": 0.004,
+      "message": "13개 점검 모두 통과",
+      "artifacts": {
+        "rows": 114,
+        "units": 6
+      }
+    },
+    {
+      "index": 4,
+      "step": "estimate",
+      "title": "④ 효과 추정",
+      "status": "warn",
+      "started_at": "2026-10-25T12:37:56+00:00",
+      "ended_at": "2026-10-25T12:37:58+00:00",
+      "duration_s": 2.197,
+      "message": "event_study: -0.084 [-0.195, 0.052] → conditional",
+      "artifacts": {
+        "super_idx": {
+          "estimate": -0.0839,
+          "ci": [
+            -0.1951,
+            0.0524
+          ],
+          "verdict": "conditional"
+        },
+        "mart_idx": {
+          "estimate": -0.0098,
+          "ci": [
+            -0.1063,
+            0.0868
+          ],
+          "verdict": "not_identified"
+        },
+        "auto_fuel_idx": {
+          "estimate": -0.02,
+          "ci": [
+            -0.1466,
+            0.0639
+          ],
+          "verdict": "conditional"
+        }
+      }
+    },
+    {
+      "index": 5,
+      "step": "guard",
+      "title": "⑤ 과잉해석 가드",
+      "status": "warn",
+      "started_at": "2026-10-25T12:37:58+00:00",
+      "ended_at": "2026-10-25T12:37:58+00:00",
+      "duration_s": 0.001,
+      "message": "1차 지표 판정 크기를 판별하지 못함, 서술=template",
+      "artifacts": {
+        "triggers": [
+          "few_treated_clusters",
+          "few_clusters",
+          "ci_crosses_zero"
+        ]
+      }
+    },
+    {
+      "index": 6,
+      "step": "report",
+      "title": "⑥ 리포트·재현 기록",
+      "status": "ok",
+      "started_at": "2026-10-25T12:37:58+00:00",
+      "ended_at": "2026-10-25T12:37:58+00:00",
+      "duration_s": 0.215,
+      "message": "리포트 2개 그림 포함 작성",
+      "artifacts": {
+        "report": "report.md",
+        "manifest": "run_manifest.json",
+        "figures": [
+          "figures/raw_trends.png",
+          "figures/event_study.png"
+        ]
+      }
+    }
+  ],
+  "quality": [
+    {
+      "check": "필수 컬럼",
+      "value": 6,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "시간 컬럼 정수형",
+      "value": "int64",
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "결측률 region_id",
+      "value": 0.0,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "결측률 quarter_idx",
+      "value": 0.0,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "결측률 treated",
+      "value": 0.0,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "결측률 super_idx",
+      "value": 0.0,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "결측률 mart_idx",
+      "value": 0.0,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "결측률 auto_fuel_idx",
+      "value": 0.0,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "사전 기간 수(기)",
+      "value": 16,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "사후 기간 수(기)",
+      "value": 3,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "처치 단위 수",
+      "value": 1,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "통제 단위 수",
+      "value": 5,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "단위×시점 중복",
+      "value": 0,
+      "status": "ok",
+      "message": ""
+    }
+  ],
+  "results": [
+    {
+      "method": "event_study",
+      "outcome": "super_idx",
+      "estimate": -0.08390845697700097,
+      "se": 0.038081284298734905,
+      "ci_low": -0.19508716247152863,
+      "ci_high": 0.052442785610625986,
+      "p_value": 0.42,
+      "n_obs": 114,
+      "n_clusters": 6,
+      "assumptions_checked": {
+        "inference": "randomization inference (처치 단위 1개를 무작위 재배정, 999회)",
+        "parallel_pretrends": {
+          "test": "randomization inference (사전 계수 제곱합)",
+          "p_value": 1.0,
+          "passed": true
+        },
+        "pre_periods": 16,
+        "n_adoption_cohorts": 1,
+        "placebo_time": {
+          "fake_treat_time": 9,
+          "estimate": 0.006262179323323981,
+          "p_value": 0.615,
+          "passed": true
+        }
+      },
+      "warnings": [
+        "처치 단위가 1개뿐이라 군집-강건 표준오차를 믿을 수 없습니다. 무작위화 추론(처치 단위를 무작위로 바꿔 반복)으로 p값과 신뢰구간을 계산했습니다.",
+        "클러스터 수 6개 < 20: 군집-강건 표준오차가 과소추정될 수 있습니다. wild cluster bootstrap(pyfixest `wildboottest`) 또는 randomization inference 를 병행하세요.",
+        "신뢰구간이 0을 포함합니다. '효과 없음'이 아니라 '효과 크기를 판별할 수 없음'으로 해석하세요."
+      ],
+      "triggers": [
+        "few_treated_clusters",
+        "few_clusters",
+        "ci_crosses_zero"
+      ],
+      "verdict": "conditional",
+      "extra": {
+        "coefs": [
+          {
+            "rel_time": -4,
+            "coef": -0.015147509084676745,
+            "se": 0.01948683222684093,
+            "ci_low": -0.06524000604108642,
+            "ci_high": 0.03494498787173292
+          },
+          {
+            "rel_time": -3,
+            "coef": -0.024149891141118214,
+            "se": 0.020505605482270473,
+            "ci_low": -0.07686122812256714,
+            "ci_high": 0.028561445840330713
+          },
+          {
+            "rel_time": -2,
+            "coef": 0.0,
+            "se": 0.0,
+            "ci_low": 0.0,
+            "ci_high": 0.0
+          },
+          {
+            "rel_time": 0,
+            "coef": -0.0851159777948231,
+            "se": 0.040694159002586654,
+            "ci_low": -0.18972364374336842,
+            "ci_high": 0.019491688153722195
+          },
+          {
+            "rel_time": 1,
+            "coef": -0.09248196975509941,
+            "se": 0.03960848259078296,
+            "ci_low": -0.1942988156400833,
+            "ci_high": 0.009334876129884484
+          },
+          {
+            "rel_time": 2,
+            "coef": -0.0741274233810804,
+            "se": 0.035188059731602744,
+            "ci_low": -0.16458121055842412,
+            "ci_high": 0.016326363796263302
+          }
+        ],
+        "crv1": {
+          "ci": [
+            -0.15854640268755205,
+            -0.009270511266449913
+          ],
+          "p_value": 0.027566281293839284,
+          "pretrend": {
+            "test": "joint Wald (chi2, CRV1)",
+            "stat": 1.7273903236155048,
+            "df": 2,
+            "p_value": 0.421601315371805
+          }
+        }
+      },
+      "identified": false
+    },
+    {
+      "method": "event_study",
+      "outcome": "mart_idx",
+      "estimate": -0.009784884120228928,
+      "se": 0.028383265756518707,
+      "ci_low": -0.10632536515761826,
+      "ci_high": 0.08675559691716028,
+      "p_value": 1.0,
+      "n_obs": 114,
+      "n_clusters": 6,
+      "assumptions_checked": {
+        "inference": "randomization inference (처치 단위 1개를 무작위 재배정, 999회)",
+        "parallel_pretrends": {
+          "test": "randomization inference (사전 계수 제곱합)",
+          "p_value": 0.79,
+          "passed": true
+        },
+        "pre_periods": 16,
+        "n_adoption_cohorts": 1,
+        "placebo_time": {
+          "fake_treat_time": 9,
+          "estimate": 0.03533598581405023,
+          "p_value": 0.001,
+          "passed": false
+        }
+      },
+      "warnings": [
+        "처치 단위가 1개뿐이라 군집-강건 표준오차를 믿을 수 없습니다. 무작위화 추론(처치 단위를 무작위로 바꿔 반복)으로 p값과 신뢰구간을 계산했습니다.",
+        "클러스터 수 6개 < 20: 군집-강건 표준오차가 과소추정될 수 있습니다. wild cluster bootstrap(pyfixest `wildboottest`) 또는 randomization inference 를 병행하세요.",
+        "신뢰구간이 0을 포함합니다. '효과 없음'이 아니라 '효과 크기를 판별할 수 없음'으로 해석하세요.",
+        "가짜 도입시점 검정이 유의(p=0.001): 도입 전부터 차이가 벌어졌을 가능성."
+      ],
+      "triggers": [
+        "few_treated_clusters",
+        "few_clusters",
+        "ci_crosses_zero",
+        "placebo_significant"
+      ],
+      "verdict": "not_identified",
+      "extra": {
+        "coefs": [
+          {
+            "rel_time": -4,
+            "coef": -0.03500758689330518,
+            "se": 0.015566374826002947,
+            "ci_low": -0.07502222726773478,
+            "ci_high": 0.005007053481124409
+          },
+          {
+            "rel_time": -3,
+            "coef": 0.017064787672820644,
+            "se": 0.014452359172717817,
+            "ci_low": -0.020086184298659666,
+            "ci_high": 0.054215759644300955
+          },
+          {
+            "rel_time": -2,
+            "coef": 0.0,
+            "se": 0.0,
+            "ci_low": 0.0,
+            "ci_high": 0.0
+          },
+          {
+            "rel_time": 0,
+            "coef": -0.017222978025410833,
+            "se": 0.024046301077418068,
+            "ci_low": -0.07903596278926367,
+            "ci_high": 0.04459000673844201
+          },
+          {
+            "rel_time": 1,
+            "coef": -0.021598251842866577,
+            "se": 0.027504250645313894,
+            "ci_low": -0.09230017895449888,
+            "ci_high": 0.04910367526876572
+          },
+          {
+            "rel_time": 2,
+            "coef": 0.009466577507590623,
+            "se": 0.034998015166450645,
+            "ci_low": -0.08049868456261168,
+            "ci_high": 0.09943183957779293
+          }
+        ],
+        "crv1": {
+          "ci": [
+            -0.0654150627666346,
+            0.04584529452617675
+          ],
+          "p_value": 0.7302888614893773,
+          "pretrend": {
+            "test": "joint Wald (chi2, CRV1)",
+            "stat": 393.7706314080872,
+            "df": 2,
+            "p_value": 3.1174092660847608e-86
+          }
+        }
+      },
+      "identified": false
+    },
+    {
+      "method": "event_study",
+      "outcome": "auto_fuel_idx",
+      "estimate": -0.019982876920664288,
+      "se": 0.026085111888501142,
+      "ci_low": -0.14658899518328683,
+      "ci_high": 0.06394702170287303,
+      "p_value": 0.596,
+      "n_obs": 114,
+      "n_clusters": 6,
+      "assumptions_checked": {
+        "inference": "randomization inference (처치 단위 1개를 무작위 재배정, 999회)",
+        "parallel_pretrends": {
+          "test": "randomization inference (사전 계수 제곱합)",
+          "p_value": 0.181,
+          "passed": true
+        },
+        "pre_periods": 16,
+        "n_adoption_cohorts": 1,
+        "placebo_time": {
+          "fake_treat_time": 9,
+          "estimate": -0.044324882407337965,
+          "p_value": 0.196,
+          "passed": true
+        }
+      },
+      "warnings": [
+        "처치 단위가 1개뿐이라 군집-강건 표준오차를 믿을 수 없습니다. 무작위화 추론(처치 단위를 무작위로 바꿔 반복)으로 p값과 신뢰구간을 계산했습니다.",
+        "클러스터 수 6개 < 20: 군집-강건 표준오차가 과소추정될 수 있습니다. wild cluster bootstrap(pyfixest `wildboottest`) 또는 randomization inference 를 병행하세요.",
+        "신뢰구간이 0을 포함합니다. '효과 없음'이 아니라 '효과 크기를 판별할 수 없음'으로 해석하세요."
+      ],
+      "triggers": [
+        "few_treated_clusters",
+        "few_clusters",
+        "ci_crosses_zero"
+      ],
+      "verdict": "conditional",
+      "extra": {
+        "coefs": [
+          {
+            "rel_time": -4,
+            "coef": 0.11350043709855967,
+            "se": 0.0328562508927801,
+            "ci_low": 0.02904075536646966,
+            "ci_high": 0.19796011883064968
+          },
+          {
+            "rel_time": -3,
+            "coef": 0.060192017813783694,
+            "se": 0.03501459452631929,
+            "ci_low": -0.02981586285774343,
+            "ci_high": 0.15019989848531082
+          },
+          {
+            "rel_time": -2,
+            "coef": 0.0,
+            "se": 0.0,
+            "ci_low": 0.0,
+            "ci_high": 0.0
+          },
+          {
+            "rel_time": 0,
+            "coef": 0.027147852452830246,
+            "se": 0.03528776844822765,
+            "ci_low": -0.06356224414032403,
+            "ci_high": 0.11785794904598453
+          },
+          {
+            "rel_time": 1,
+            "coef": -0.05260764325438515,
+            "se": 0.03158943782800636,
+            "ci_low": -0.13381087833302102,
+            "ci_high": 0.028595591824250713
+          },
+          {
+            "rel_time": 2,
+            "coef": -0.034488839960437966,
+            "se": 0.03237031297390382,
+            "ci_low": -0.11769937850501769,
+            "ci_high": 0.04872169858414175
+          }
+        ],
+        "crv1": {
+          "ci": [
+            -0.07110875675482412,
+            0.031143002913495543
+          ],
+          "p_value": 0.4436379537887276,
+          "pretrend": {
+            "test": "joint Wald (chi2, CRV1)",
+            "stat": 25.629005431025345,
+            "df": 2,
+            "p_value": 2.721022809287591e-06
+          }
+        }
+      },
+      "identified": false
+    }
+  ],
+  "guard": {
+    "verdict": "conditional",
+    "narrative_source": "template",
+    "passed": true,
+    "violations": [],
+    "rejected_llm_violations": [],
+    "narrative": "**요약(크기를 판별하지 못함)**: 추정치는 -0.08 지수(2020=100, 로그) (95% CI -0.20 ~ 0.05) 이지만 다음 위험 신호가 있어 단정하지 않고 범위로만 보고합니다: 처치 단위 수 부족(무작위화 추론 사용), 클러스터 수 부족(표준오차 과소추정 위험), 신뢰구간이 0을 포함. 신뢰구간이 0을 포함하므로 효과의 방향과 크기는 판별 불가입니다. 결론 전에 보완 분석이 필요합니다."
+  },
+  "report_path": "report.md"
+}

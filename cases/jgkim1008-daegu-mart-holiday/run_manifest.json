@@ -1,0 +1,26 @@
+{
+  "case_id": "jgkim1008-daegu-mart-holiday",
+  "started_at": "2026-10-25T12:37:56+00:00",
+  "finished_at": "2026-10-25T12:37:58+00:00",
+  "git_sha": "903f4d33d58464199d7a40172a1edcd7aafbf217",
+  "git_dirty": true,
+  "plan_sha256": "4dd6f9db881b93159b54891a4177da659be965b6f790e13e0a390f2b0728ce6d",
+  "data_sha256": "a1d0106751b47a6827966641e48e64bc4b04c86f9ef9eb53b6e0e9b46c5b3feb",
+  "data_path": "data/panel.csv",
+  "versions": {
+    "python": "3.12.5",
+    "pandas": "2.3.3",
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pyfixest": "0.60.0",
+    "statsmodels": "0.15.0",
+    "pydantic": "2.14.0",
+    "matplotlib": "3.11.2"
+  },
+  "platform": "macOS-15.5-arm64-arm-64bit",
+  "verdicts": {
+    "super_idx": "conditional",
+    "mart_idx": "not_identified",
+    "auto_fuel_idx": "conditional"
+  }
+}
