@@ -65,12 +65,22 @@ def save_raw(raw: pd.DataFrame) -> None:
     folder.mkdir(parents=True, exist_ok=True)
     stamp = date.today().isoformat()
     raw.to_csv(folder / f"kosis_{TBL_ID}_{stamp}.csv", index=False)
-    meta = {"orgId": ORG_ID, "tblId": TBL_ID, "itmId": ITEM, "period": [START, END], "fetched": stamp}
-    (folder / f"kosis_{TBL_ID}_{stamp}.json").write_text(json.dumps(meta, ensure_ascii=False, indent=2))
+    meta = {
+        "orgId": ORG_ID,
+        "tblId": TBL_ID,
+        "itmId": ITEM,
+        "period": [START, END],
+        "fetched": stamp,
+    }
+    (folder / f"kosis_{TBL_ID}_{stamp}.json").write_text(
+        json.dumps(meta, ensure_ascii=False, indent=2)
+    )
 
 
 def build_panel(raw: pd.DataFrame) -> pd.DataFrame:
-    df = raw.rename(columns={"C1": "region_id", "C2": "industry", "PRD_DE": "period", "DT": "value"})
+    df = raw.rename(
+        columns={"C1": "region_id", "C2": "industry", "PRD_DE": "period", "DT": "value"}
+    )
     df = df[df["industry"].isin(INDUSTRIES)].copy()
     df["value"] = pd.to_numeric(df["value"], errors="coerce")
     year = df["period"].str[:4].astype(int)
@@ -88,7 +98,9 @@ def build_panel(raw: pd.DataFrame) -> pd.DataFrame:
     expected = {(r, q) for r in REGIONS for q in range(N_QUARTERS)}
     got = set(zip(panel["region_id"], panel["quarter_idx"], strict=True))
     if got != expected:
-        raise ValueError(f"지역×분기 불일치: 빠짐 {sorted(expected - got)[:5]}, 남음 {sorted(got - expected)[:5]}")
+        raise ValueError(
+            f"지역×분기 불일치: 빠짐 {sorted(expected - got)[:5]}, 남음 {sorted(got - expected)[:5]}"
+        )
     cols = list(INDUSTRIES.values())
     if panel[cols].isna().any().any() or (panel[cols] <= 0).any().any():
         raise ValueError("판매액지수에 결측 또는 0 이하 값이 있어 로그를 취할 수 없습니다")
