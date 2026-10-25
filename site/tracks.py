@@ -138,7 +138,7 @@ def lineage_body(e, topics, issues, datasets, lineages, results) -> str:
     verdicts = {r["case"]: ko.get(r.get("verdict"), r.get("verdict") or "") for r in results}
     cards = "".join(_lineage_card(lin, e, issues_by_id, ds_by_id, verdicts) for lin in lineages)
     return f"""
-<div class="hero" style="padding-bottom:0"><span class="eyebrow">트랙 A · 데이터 온톨로지</span>
+<div class="hero" style="padding-bottom:0"><nav class="crumb" aria-label="위치"><a href="projects.html#join">참여</a> / 트랙 A</nav>
 <h1>데이터 계보</h1>
 <p class="lede">공공 이슈에서 출발해 정책 · 원천 데이터 · 가공 · 지표를 거쳐 분석까지 이어지는 길입니다.
 "이 숫자는 어디서 와서 어떻게 만들어졌나"를 누구나 따라갈 수 있게 적습니다.</p></div>
@@ -181,7 +181,7 @@ def apps_body(e, apps, index) -> str:
         for p, desc in API_DOC
     )
     return f"""
-<div class="hero" style="padding-bottom:0"><span class="eyebrow">트랙 C · 서비스 개발</span>
+<div class="hero" style="padding-bottom:0"><nav class="crumb" aria-label="위치"><a href="projects.html#join">참여</a> / 트랙 C</nav>
 <h1>서비스</h1>
 <p class="lede">분석 Cycle에서 나온 데이터로 만든 웹·앱 서비스입니다. 모든 데이터는 아래 공개 API로 열려 있어,
 서버 없이 브라우저에서 바로 불러 쓸 수 있습니다.</p></div>

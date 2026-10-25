@@ -62,7 +62,7 @@ make demo                                             # 예시를 연습용 폴�
 
 결과 PR에는 멘토 외에 **다른 멘티 1명**이 리뷰를 답니다. 리뷰는 세 가지만 봅니다: 처치 시점·대상이 출처와 맞는가, 대조가 처치와 비교할 만한가, 한 문장 해석이 판정을 넘지 않는가. 그리고 가능하면 직접 돌려 재현 이슈를 남깁니다.
 
-전체 점검과 계획: [roadmap.md](roadmap.md) · 외부 사용자 테스트: [user-test.md](user-test.md)
+전체 점검과 계획: [roadmap.md](roadmap.md) · 외부 사용자 테스트: [user-test.md](user-test.md) · 성과 지표: [metrics.md](metrics.md)
 
 ## 주차별 목표
 

@@ -192,6 +192,10 @@ def load_answers() -> list[dict]:
                     "n": r.get("n_obs"),
                     "clusters": r.get("n_clusters"),
                     "primary": r.get("outcome") == primary,
+                    "est": r.get("estimate"),
+                    "lo": r.get("ci_low"),
+                    "hi": r.get("ci_high"),
+                    "unit": o.get("unit"),
                     "said": interpret.statements(
                         r.get("verdict"),
                         o.get("name", r.get("outcome")),
@@ -314,26 +318,82 @@ def write_csv(out: Path, results_json: list[dict]) -> None:
 def share_text(a: dict) -> str:
     """공유 미리보기 설명: 판정 + 한 줄 답."""
     lab = VERDICT.get(a["verdict"], (a["verdict"] or "-",))[0]
-    line = one_line(a)
+    line = card_line(a)
     line = line if len(line) <= 150 else line[:148] + "…"
     sim = "시뮬레이션 데이터 · " if a["synthetic"] else ""
     return f"[{sim}판정: {lab}] {line}"
 
 
 # ─── 그리기 ───────────────────────────────────────────────────────────────────
-def one_line(a: dict) -> str:
-    return a.get("summary") or _plain(a.get("guard", "")) or VERDICT_PLAIN.get(a["verdict"], "")
-
-
 def verdict_chip(e, v: str | None) -> str:
     lab, cls = VERDICT.get(v, (v or "-", "warn"))
     return f'<span class="badge {cls}">{e(lab)}</span>'
 
 
+def auto_summary(a: dict) -> str:
+    """flow_log 의 자동 요약. 예전 실행의 판정 이름은 지금 이름으로 바꿔 보여 준다."""
+    t = _plain(a.get("guard", ""))
+    for old, new in (
+        ("요약(조건부)", "요약(크기를 판별하지 못함)"),
+        ("요약(식별 불가)", "요약(판단 불가)"),
+        ("요약(식별됨)", "요약(효과 근거 있음)"),
+        ("조건부로만 보고합니다", "단정하지 않고 범위로만 보고합니다"),
+    ):
+        t = t.replace(old, new)
+    return t
+
+
+def card_line(a: dict) -> str:
+    """목록에 쓰는 한 줄: 작성자의 한 문장 해석, 없으면 판정을 쉬운 말로 (자동 요약의 기술 용어는 쓰지 않음)."""
+    line = a.get("summary") if a.get("has_one_line") else VERDICT_PLAIN.get(a["verdict"], "")
+    line = line or ""
+    return line if len(line) <= 150 else line[:148] + "…"
+
+
+def range_glyph(e, a: dict) -> str:
+    """주 지표의 95% 범위를 0선과 함께 그린 작은 그림 — 결과 목록의 표지.
+    판단 불가는 회색 점선(진단용), 로그 지표는 %로 바꿔 그린다."""
+    r = next(
+        (x for x in a["results"] if x.get("est") is not None and x.get("lo") is not None), None
+    )
+    if not r:
+        return ""
+    col, unit = r.get("col") or "", r.get("unit")
+
+    def tx(v):
+        return (math.exp(v) - 1) * 100 if interpret.is_log(col, unit) else v
+
+    est, lo, hi = tx(r["est"]), tx(r["lo"]), tx(r["hi"])
+    a_min, a_max = min(lo, 0.0), max(hi, 0.0)
+    span = (a_max - a_min) or 1.0
+    a_min, a_max = a_min - span * 0.08, a_max + span * 0.08
+    w, h, pad = 200, 34, 8
+
+    def x(v):
+        return pad + (v - a_min) / (a_max - a_min) * (w - 2 * pad)
+
+    v = a["verdict"] or "conditional"
+    cls = {"identified": "go", "conditional": "warn"}.get(v, "stop")
+    dash = " stroke-dasharray='3 3'" if v == "not_identified" else ""
+    eff, rng = effect_text(r["est"], r["lo"], r["hi"], col, unit)
+    label = f"{r['name']} {eff}, 95% 범위 {rng}"
+    note = (
+        "진단용"
+        if v == "not_identified"
+        else ("범위가 너무 넓음" if rng.startswith("범위") else rng)
+    )
+    return (
+        f"<figure class='glyph g-{cls}'><svg viewBox='0 0 {w} {h}' role='img' aria-label='{e(label)}'>"
+        f"<line class='zero' x1='{x(0):.1f}' x2='{x(0):.1f}' y1='4' y2='{h - 4}'/>"
+        f"<line class='band' x1='{x(lo):.1f}' x2='{x(hi):.1f}' y1='{h / 2}' y2='{h / 2}'{dash}/>"
+        f"<circle class='est' cx='{x(est):.1f}' cy='{h / 2}' r='5'/>"
+        f"<title>{e(label)}</title></svg>"
+        f"<figcaption><span class='eff'>{e(eff)}</span> <span>{e(note)}</span></figcaption></figure>"
+    )
+
+
 def card(e, a: dict, topics_by_id: dict, up: str = "") -> str:
     t = topics_by_id.get(a["topic"])
-    line = one_line(a)
-    line = line if len(line) <= 140 else line[:138] + "…"
     tags = [verdict_chip(e, a["verdict"])]
     if a["synthetic"]:
         tags.append('<span class="badge stop">시뮬레이션 데이터 결과</span>')
@@ -343,12 +403,16 @@ def card(e, a: dict, topics_by_id: dict, up: str = "") -> str:
         tags.append('<span class="badge go">교차 재현됨</span>')
     if (a.get("prereg") or {}).get("level") == "go":
         tags.append('<span class="badge go">계획 먼저 커밋</span>')
+    meta = [e(t.name) if t else "주제 미지정", f"@{e(a['owner'])}"]
+    if a["finished"]:
+        meta.append(e(a["finished"]))
+    v = {"identified": "go", "conditional": "warn"}.get(a["verdict"], "stop")
     return (
-        f'<a class="card answer" data-verdict="{e(a["verdict"] or "")}" href="{up}{e(a["page"])}">'
-        f'<div class="tags">{"".join(tags)}</div><h3>{e(a["title"])}</h3>'
-        f'<p class="muted">{e(line)}</p>'
-        f'<p class="small muted" style="margin:auto 0 0">{e(t.name) if t else "주제 미지정"} · @{e(a["owner"])}'
-        f"{' · ' + e(a['finished']) if a['finished'] else ''}</p></a>"
+        f'<a class="answer v-{v}" data-verdict="{e(a["verdict"] or "")}" href="{up}{e(a["page"])}">'
+        f'<div class="a-main"><div class="tags">{"".join(tags)}</div><h3>{e(a["title"])}</h3>'
+        f'<p class="a-line">{e(card_line(a))}</p>'
+        f'<p class="a-meta">{", ".join(meta)}</p></div>'
+        f"{range_glyph(e, a)}</a>"
     )
 
 
@@ -384,7 +448,7 @@ def trust_block(e, a: dict) -> str:
     return f"""<section id="trust"><h2>이 결과를 얼마나 믿을 수 있나</h2>
 <p class="sub">판정과 별개로, 기록으로 확인되는 것만 적었습니다. 노란 항목은 결과가 틀렸다는 뜻이 아니라 아직 확인되지 않았다는 뜻입니다.</p>
 <ul class="plain trust">{items}</ul>
-<p class="small muted">교차 재현을 하셨나요? <a href="{REPO}/issues/new?template=reproduction.yml&amp;title=%5B재현%5D%20{e(a["case"])}">재현 기록 남기기</a></p></section>"""
+<p class="small muted">교차 재현을 하셨나요? <a href="{REPO}/issues/new?template=reproduction.yml&amp;title=%5B재현%5D%20{e(a["case"])}" data-track="reproduce">재현 기록 남기기</a></p></section>"""
 
 
 def _usage(e, a: dict) -> str:
@@ -426,8 +490,8 @@ def _usage(e, a: dict) -> str:
     return f"""<section id="use"><h2>이 결과를 쓰려면</h2>
 <div class="split"><div class="card"><h3><span class="badge go">이렇게 쓰세요</span></h3><ul>{lis(do)}</ul></div>
 <div class="card"><h3><span class="badge stop">이렇게 쓰면 안 됩니다</span></h3><ul>{lis(dont)}</ul></div></div>
-<div class="card cite"><div class="row-between"><b>인용문</b><span><button class="btn ghost small-btn" type="button" data-copy="cite-text">인용문 복사</button>
-<button class="btn ghost small-btn" type="button" data-copy="page-url">링크 복사</button></span></div>
+<div class="card cite"><div class="row-between"><b>인용문</b><span><button class="btn ghost small-btn" type="button" data-copy="cite-text" data-track="cite-copy">인용문 복사</button>
+<button class="btn ghost small-btn" type="button" data-copy="page-url" data-track="link-copy">링크 복사</button></span></div>
 <span id="page-url" hidden>{SITE}/{e(a["page"])}</span>
 <p id="cite-text" class="small" style="margin:8px 0 0">{e(cite)}</p></div></section>"""
 
@@ -497,7 +561,7 @@ def page_body(e, a: dict, topics_by_id: dict, datasets_by_url: dict) -> str:
         + "</p>"
     )
     return f"""
-<div class="hero" style="padding-bottom:0"><span class="eyebrow">분석 결과 · {e(t.name) if t else "주제 미지정"}</span>
+<div class="hero" style="padding-bottom:0"><nav class="crumb" aria-label="위치"><a href="../results.html">분석 결과</a> / {f'<a href="../topics/{e(t.id)}.html">{e(t.name)}</a>' if t else "주제 미지정"}</nav>
 <h1 class="h1-sm">{e(a["title"])}</h1>
 <p class="lede">{e(a["question"])}</p></div>
 {banner}
@@ -505,12 +569,12 @@ def page_body(e, a: dict, topics_by_id: dict, datasets_by_url: dict) -> str:
 <div class="answer-verdict"><span class="badge {cls} big">{e(lab)}</span></div>
 <p style="margin:10px 0 6px"><b>{e(VERDICT_PLAIN.get(a["verdict"], ""))}</b></p>
 {author}
-<p class="muted small">자동 요약: {e(_plain(a["guard"]))}</p></div></section>
+<details class="small"><summary>파이프라인 자동 요약 보기</summary><p class="muted">{e(auto_summary(a))}</p></details></div></section>
 {_usage(e, a)}
 <section id="evidence"><h2>근거</h2>{changed}
 <div class="tablewrap"><table><tr><th>결과 지표</th><th>추정 효과</th><th>95% 범위</th><th>판정</th><th>주의</th></tr>{rows}</table></div>
 {dim_note}{said_block(e, a)}
-<p class="small"><a href="{e(a["case"])}.csv" download>숫자 내려받기 (CSV)</a> · <a href="../api/results.json">전체 결과 API (JSON)</a> · <a href="../api/results.csv" download>전체 결과 CSV</a></p>
+<p class="small"><a href="{e(a["case"])}.csv" download data-track="csv-download">숫자 내려받기 (CSV)</a> · <a href="../api/results.json">전체 결과 API (JSON)</a> · <a href="../api/results.csv" download data-track="csv-download">전체 결과 CSV</a></p>
 <div class="figs">{figs}</div>
 {("<h3>작성자가 적은 한계</h3>" + cautions) if cautions else ""}</section>
 {trust_block(e, a)}
@@ -532,78 +596,76 @@ make flow CASE=cases/{e(a["case"])}</code></pre>
 <script>document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',()=>{{const t=document.getElementById(b.dataset.copy).textContent;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>{{b.textContent='복사됨'}}).catch(()=>{{b.textContent='직접 선택해 복사하세요'}})}}))</script>"""
 
 
+def legend(e) -> str:
+    items = "".join(
+        f"<div><dt>{verdict_chip(e, k)}</dt><dd>{e(VERDICT_PLAIN[k])}</dd></div>"
+        for k in ("identified", "conditional", "not_identified")
+    )
+    return f"""<dl class="legend">{items}</dl>
+<p class="small muted">오른쪽 막대는 주 지표의 95% 범위, 점은 추정치, 세로선은 '변화 없음(0)'입니다. 막대가 세로선을 지나면 변화가 있었는지 말할 수 없습니다.</p>"""
+
+
 def index_body(e, answers: list[dict], topics) -> str:
     tb = {t.id: t for t in topics}
     real = [a for a in answers if not a["synthetic"] and not a["mentor"]]
     examples = [a for a in answers if a["synthetic"] or a["mentor"]]
-    legend = "".join(
-        f'<div class="card"><h3>{verdict_chip(e, k)}</h3><p class="muted" style="margin:0">{e(VERDICT_PLAIN[k])}</p></div>'
-        for k in ("identified", "conditional", "not_identified")
-    )
     no_result = [t for t in topics if not any(a["topic"] == t.id for a in answers)]
     gap = ", ".join(f'<a href="topics/{e(t.id)}.html">{e(t.name)}</a>' for t in no_result)
     return f"""
-<div class="hero" style="padding-bottom:0"><span class="eyebrow">분석 결과</span>
-<h1>그 정책, 효과 있었나 — 지금까지 나온 답</h1>
-<p class="lede">공공데이터로 정책을 받은 곳과 안 받은 곳을 비교한 결과입니다. 결과마다 <b>쉬운 말 답, 인용해도 되는 문장, 쓴 데이터, 직접 재현하는 법</b>을 붙였습니다.</p></div>
-<section style="padding-top:24px"><h2>판정은 세 가지입니다</h2><div class="grid3">{legend}</div>
-<p class="small muted">'판단 불가'도 결과입니다. 왜 판단할 수 없는지가 다음 분석의 출발점이 됩니다.</p></section>
-<section id="answers"><h2>참여자 분석 {len(real)}개</h2>
+<div class="hero" style="padding-bottom:0"><h1 class="h1-sm">분석 결과</h1>
+<p class="lede">정책을 받은 곳과 안 받은 곳을 공공데이터로 비교한 결과입니다. 결과마다 쉬운 말 답, 인용해도 되는 문장, 쓴 데이터, 재현 방법이 있습니다.</p></div>
+<section id="answers" style="padding-top:24px">
+<div class="toolbar"><input id="answer-q" type="search" class="search" placeholder="정책·지역·주제로 찾기 (예: 창원, 대형마트)" aria-label="분석 결과 검색">
 <div class="chips" role="group" aria-label="판정 필터">
-<button class="chip af" data-v="" aria-pressed="true">전체</button>
+<button class="chip af" data-v="" aria-pressed="true">전체 {len(real)}</button>
 <button class="chip af" data-v="identified" aria-pressed="false">효과 근거 있음</button>
 <button class="chip af" data-v="conditional" aria-pressed="false">크기를 판별하지 못함</button>
-<button class="chip af" data-v="not_identified" aria-pressed="false">판단 불가</button>
-<input id="answer-q" type="search" class="search" placeholder="정책·지역·주제로 찾기" aria-label="분석 결과 검색"></div>
-<div class="grid proj-grid" id="answer-cards">{"".join(card(e, a, tb) for a in real) or "<p class='card'>아직 없습니다.</p>"}</div></section>
-<section><h2>예시</h2><p class="sub">흐름을 보여 주는 멘토 예시입니다.</p>
-<div class="grid proj-grid">{"".join(card(e, a, tb) for a in examples)}</div></section>
+<button class="chip af" data-v="not_identified" aria-pressed="false">판단 불가</button></div></div>
+<div class="answers" id="answer-cards">{"".join(card(e, a, tb) for a in real) or "<p class='card'>아직 없습니다.</p>"}</div>
+<p id="answer-empty" class="card" hidden>찾는 결과가 없습니다. <a href="index.html#ask">대화창에 물어보거나</a> <a href="{REPO}/issues/new?template=case-proposal.yml">분석을 제안해</a> 주세요.</p></section>
+<section id="read"><h2>판정 읽는 법</h2>{legend(e)}</section>
+<section><h2>예시</h2><p class="sub">분석 흐름을 보여 주는 멘토 예시입니다.</p>
+<div class="answers">{"".join(card(e, a, tb) for a in examples)}</div></section>
 <section id="reuse"><h2>우리 지역·정책에 같은 분석을 하려면</h2>
-<ol><li>위에서 비슷한 결과 하나를 엽니다 — 같은 데이터·설계를 쓰는 것이 가장 빠릅니다.</li>
-<li>그 화면 아래 <b>내 지역·정책에 적용하기</b>대로 폴더를 복사하고 <code>plan.yaml</code>의 처치·대조만 바꿉니다.</li>
-<li><b>데이터를 보기 전에</b> 계획만 담은 PR을 먼저 올립니다. 결과는 이 화면에 같은 형식으로 나옵니다.</li></ol>
-<p class="small muted">코드를 다루지 않는다면 <a href="index.html#ask">질문하기</a>로 남겨 주세요. 참여자가 검토해 분석으로 잇습니다.</p></section>
+<ol><li>비슷한 결과 하나를 엽니다. 같은 데이터·설계를 쓰는 것이 가장 빠릅니다.</li>
+<li>그 화면 아래 '내 지역·정책에 적용하기'대로 폴더를 복사하고 <code>plan.yaml</code>의 처치·대조만 바꿉니다.</li>
+<li>데이터를 보기 전에 계획만 담은 PR을 먼저 올립니다. 결과는 이 화면에 같은 형식으로 나옵니다.</li></ol>
+<p class="small muted">코드를 다루지 않는다면 <a href="index.html#ask">대화창</a>에 남겨 주세요. 참여자가 검토해 분석으로 잇습니다.</p></section>
 <section><h2>아직 결과가 없는 주제</h2><p class="sub">{gap or "없음"}</p>
-<div class="cta"><a class="btn primary" href="index.html#ask">질문하기</a>
-<a class="btn ghost" href="{REPO}/issues/new?template=case-proposal.yml">분석 제안하기</a></div></section>
-<script>(()=>{{let v='';const q=document.getElementById('answer-q');
-const apply=()=>{{const s=q.value.trim().toLowerCase();document.querySelectorAll('#answer-cards .answer').forEach(c=>{{c.hidden=(!!v&&c.dataset.verdict!==v)||(!!s&&!c.textContent.toLowerCase().includes(s))}})}};
+<div class="cta"><a class="btn ghost" href="{REPO}/issues/new?template=case-proposal.yml" data-track="propose-case">분석 제안하기</a></div></section>
+<script>(()=>{{let v='';const q=document.getElementById('answer-q'),none=document.getElementById('answer-empty');
+const apply=()=>{{const s=q.value.trim().toLowerCase();let n=0;document.querySelectorAll('#answer-cards .answer').forEach(c=>{{c.hidden=(!!v&&c.dataset.verdict!==v)||(!!s&&!c.textContent.toLowerCase().includes(s));n+=!c.hidden}});none.hidden=n>0}};
 document.querySelectorAll('.af').forEach(b=>b.addEventListener('click',()=>{{document.querySelectorAll('.af').forEach(x=>x.setAttribute('aria-pressed',x===b));v=b.dataset.v;apply()}}));
-q.addEventListener('input',apply);const h=new URLSearchParams(location.search).get('q');if(h){{q.value=h;apply()}}}})()</script>"""
+q.addEventListener('input',()=>{{apply();window.track&&window.track('search',true)}});const h=new URLSearchParams(location.search).get('q');if(h){{q.value=h;apply()}}}})()</script>"""
 
 
-def topic_box(e, mine: list[dict], up: str = "../") -> str:
+def topic_box(e, mine: list[dict], up: str = "../", topics_by_id: dict | None = None) -> str:
     """주제 페이지 맨 위: 이 주제에 대해 지금 말할 수 있는 것."""
     if not mine:
-        return f"""<section id="now" style="padding-top:28px"><div class="card now">
-<h2>지금 말할 수 있는 것</h2><p class="muted" style="margin:0 0 10px">이 주제는 아직 분석 결과가 없습니다. 아래 정책·데이터·설계가 출발점입니다.</p>
+        return f"""<section id="now" style="padding-top:28px"><div class="now">
+<h2>지금 말할 수 있는 것</h2><p class="muted" style="margin:0 0 12px">이 주제는 아직 분석 결과가 없습니다. 아래 정책·데이터·설계가 출발점입니다.</p>
 <div class="cta" style="margin:0"><a class="btn primary" href="{up}index.html#ask">이 주제로 질문하기</a>
-<a class="btn ghost" href="{REPO}/issues/new?template=case-proposal.yml">분석 제안하기</a></div></div></section>"""
-    items = []
-    for a in mine:
-        extra = rule_out(a)
-        tag = " <span class='badge stop'>시뮬레이션 데이터 결과</span>" if a["synthetic"] else ""
-        tag += " <span class='badge'>멘토 예시</span>" if a["mentor"] else ""
-        items.append(
-            f"<li>{verdict_chip(e, a['verdict'])}{tag} <a href='{up}{e(a['page'])}'><b>{e(a['title'])}</b></a>"
-            f"<div class='muted small'>{e(one_line(a)[:200])}</div>"
-            + (f"<div class='small'>{e(extra)}</div>" if extra else "")
-            + "</li>"
-        )
-    return f"""<section id="now" style="padding-top:28px"><div class="card now">
-<h2>지금 말할 수 있는 것</h2><p class="muted" style="margin:0 0 6px">이 주제로 나온 분석 {len(mine)}개입니다. 인용 문장·쓴 데이터·재현 방법은 제목을 눌러 보세요.</p>
-<ul class="plain trust">{"".join(items)}</ul></div></section>"""
+<a class="btn ghost" href="{REPO}/issues/new?template=case-proposal.yml" data-track="propose-case">분석 제안하기</a></div></div></section>"""
+    rows = "".join(card(e, a, topics_by_id or {}, up=up) for a in mine)
+    outs = "".join(f"<li>{e(rule_out(a))}</li>" for a in mine if rule_out(a))
+    return f"""<section id="now" style="padding-top:28px"><div class="now">
+<h2>지금 말할 수 있는 것</h2><p class="muted" style="margin:0 0 12px">이 주제로 나온 분석 {len(mine)}개입니다. 인용 문장·쓴 데이터·재현 방법은 결과를 눌러 보세요.</p>
+<div class="answers">{rows}</div>{f"<ul class='said small'>{outs}</ul>" if outs else ""}</div></section>"""
 
 
 def strip(e, answers: list[dict], topics, limit: int = 4) -> str:
     tb = {t.id: t for t in topics}
-    real = [a for a in answers if not a["synthetic"] and not a["mentor"]][:limit]
+    real = [a for a in answers if not a["synthetic"] and not a["mentor"]]
     if not real:
         return ""
-    return f"""<section id="answers"><h2>이미 나온 답</h2>
-<p class="sub">참여자가 공공데이터로 확인한 결과입니다. 판정과 함께 인용해도 되는 문장, 직접 재현하는 법을 붙였습니다.</p>
-<div class="grid proj-grid">{"".join(card(e, a, tb) for a in real)}</div>
-<div class="cta"><a class="btn ghost" href="results.html">분석 결과 전체 보기</a></div></section>"""
+    more = (
+        f'<a class="more" href="results.html">{len(real)}개 모두 보기</a>'
+        if len(real) > limit
+        else ""
+    )
+    return f"""<section id="answers"><div class="sec-head"><h2>이미 나온 답</h2>{more}</div>
+<p class="sub">참여자가 공공데이터로 확인한 결과입니다. 눌러서 인용해도 되는 문장과 재현 방법을 보세요.</p>
+<div class="answers">{"".join(card(e, a, tb) for a in real[:limit])}</div></section>"""
 
 
 def catalog(answers: list[dict]) -> list[dict]:
@@ -614,7 +676,7 @@ def catalog(answers: list[dict]) -> list[dict]:
             "title": a["title"],
             "page": a["page"],
             "verdict": VERDICT.get(a["verdict"], (a["verdict"],))[0],
-            "line": one_line(a)[:160],
+            "line": card_line(a)[:160],
             "example": a["synthetic"] or a["mentor"],
         }
         for a in answers

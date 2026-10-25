@@ -258,17 +258,17 @@ def projects_body(e, projects, lineages, topics) -> str:
     mentor_cards = "".join(project_card(e, p, tb) for p in mentor)
     lin_cards = lineage_list(e, lineages, tb)
     return f"""
-<div class="hero" style="padding-bottom:0"><span class="eyebrow">참여자 프로젝트</span>
-<h1>누가, 어떤 정책을, 어디까지</h1>
+<div class="hero" style="padding-bottom:0"><h1>참여</h1>
 <p class="lede">참여자가 각자 고른 정책을 <b>계획 → 수집 → 분석 → 해석</b> 순서로 진행합니다.
 이 화면은 레포의 <code>cases/</code>와 <code>catalog/lineage/</code>에서 자동으로 만들어집니다.
-처음이라면 <a href="index.html#join">세 가지 참여 방식</a>과 <a href="{REPO}/blob/main/docs/ops/mentee-guide.md">참여 가이드</a>부터 보세요.</p>
+처음이라면 아래 <a href="#join">세 가지 참여 방식</a>과 <a href="{REPO}/blob/main/docs/ops/mentee-guide.md">참여 가이드</a>부터 보세요.</p>
 <div class="stats">
 <div class="stat"><div class="v">{len(people)}</div><div class="l">참여자</div></div>
 <a class="stat" href="#cases"><div class="v">{len(mentee)}</div><div class="l">분석 프로젝트</div></a>
 <a class="stat" href="#cases"><div class="v">{n_res}</div><div class="l">분석 결과가 나온 프로젝트</div></a>
 <a class="stat" href="#lineages"><div class="v">{len(lineages)}</div><div class="l">데이터 계보</div></a>
 </div></div>
+{JOIN.format(REPO=REPO)}
 {pr_list(e, act)}
 <section id="cases"><h2>분석 프로젝트 (트랙 B)</h2>
 <p class="sub">막대는 진행 단계입니다. 판정은 파이프라인의 자동 판정이고, 해석은 각 프로젝트의 discussion.md가 우선합니다.
@@ -287,6 +287,26 @@ def projects_body(e, projects, lineages, topics) -> str:
 <a class="btn ghost" href="{REPO}/blob/main/docs/ops/mentee-guide.md">참여 가이드</a></div></section>
 <script>{FILTER_JS}</script>"""
 
+
+JOIN = """<section id="join"><h2>세 가지 참여 방식</h2><p class="sub">커리어 방향과 해 보고 싶은 시도에 따라 하나를 고릅니다. 세 트랙은 이어져 있습니다:
+A가 이슈와 데이터를 이으면, B가 그 데이터로 효과를 추정하고, C가 그 결과로 서비스를 만듭니다.</p>
+<div class="grid3">
+<div class="card"><div class="icon">A</div><h3>데이터 온톨로지</h3><p><b>데이터 온톨로지를 만들고 싶다</b></p>
+<p class="muted">공공 이슈와 연결되는 데이터를 찾고 이슈 → 정책 → 원천 데이터 → 가공 → 지표로 이어지는 계보(Lineage)를 만듭니다.</p>
+<p class="small">내 작업: <code>catalog/lineage/&lt;내ID&gt;-&lt;주제&gt;.yaml</code>, <code>catalog/datasets.yaml</code></p>
+<p class="small"><a href="lineage.html">데이터 계보 보기</a> · <a href="{REPO}/blob/main/docs/tracks/ontology.md">트랙 A 가이드</a></p></div>
+<div class="card"><div class="icon">B</div><h3>가설과 분석</h3><p><b>가설 설정과 분석을 익히고 싶다</b></p>
+<p class="muted">실제 사례로 가설 → 계획 → 수집 → 추정 → 반증 → 해석의 한 바퀴(Cycle)를 돌며 효과를 추정합니다.</p>
+<p class="small">내 작업: <code>cases/&lt;내ID&gt;-&lt;주제&gt;/</code></p>
+<p class="small"><a href="architecture.html#how">여섯 단계 보기</a> · <a href="{REPO}/blob/main/docs/tracks/analysis.md">트랙 B 가이드</a></p></div>
+<div class="card"><div class="icon">C</div><h3>서비스 개발</h3><p><b>서비스를 개발하고 싶다</b></p>
+<p class="muted">분석 Cycle에서 나온 데이터(공개 API)로 웹·앱 서비스를 만듭니다. 합쳐지면 이 사이트에서 바로 열립니다.</p>
+<p class="small">내 작업: <code>apps/&lt;내ID&gt;-&lt;서비스&gt;/</code></p>
+<p class="small"><a href="apps.html">서비스와 API 보기</a> · <a href="{REPO}/blob/main/docs/tracks/service.md">트랙 C 가이드</a></p></div>
+</div><div class="cta"><a class="btn primary" href="{REPO}/blob/main/docs/ops/mentee-guide.md">멘티 참여 가이드</a>
+<a class="btn ghost" href="{REPO}/issues/new?template=case-proposal.yml">작업 제안 올리기</a>
+<a class="btn ghost" href="{REPO}/blob/main/docs/ops/github-onboarding.md">GitHub가 처음이라면</a>
+<a class="btn ghost" href="{REPO}/issues?q=label%3Afrom-site">올라온 질문 보기</a></div></section>"""
 
 FILTER_JS = """
 document.querySelectorAll('.pf').forEach(b=>b.addEventListener('click',()=>{

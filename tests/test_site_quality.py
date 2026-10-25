@@ -71,3 +71,24 @@ def test_legal_stale_banner():
     assert "28일째" in mod.legal_stale("2026-09-27", today="2026-10-25")
     assert mod.legal_stale("2026-10-20", today="2026-10-25") == ""
     assert mod.legal_stale("", today="2026-10-25") == ""
+
+
+def test_user_test_parsing_and_weekly():
+    sys.path.insert(0, str(ROOT / "scripts"))
+    from datetime import date
+
+    import impact
+    import refresh_metrics
+
+    body = "### 참가자 역할\n\n기자\n\n### 과업 1 — 결과를 찾았나요?\n\n혼자 찾음\n\n### 과업 2 — 한 문장\n\n바르게 말함\n"
+    ans = refresh_metrics.parse_user_test(body)
+    assert ans == {"1": "혼자 찾음", "2": "바르게 말함"} and refresh_metrics.user_test_pass(ans)
+    assert not refresh_metrics.user_test_pass({"1": "힌트 받고 찾음", "2": "바르게 말함"})
+    wk = impact.weekly(
+        ["2026-10-19", "2026-10-21", "2026-10-12", "2020-01-01"], weeks=3, today=date(2026, 10, 25)
+    )
+    assert wk == [("2026-10-05", 0), ("2026-10-12", 1), ("2026-10-19", 2)]
+    k = impact.compute({}, [], [])
+    assert (
+        k["usage_on"] is False and k["use"]["pageviews"] is None and k["external"]["tests"] is None
+    )
