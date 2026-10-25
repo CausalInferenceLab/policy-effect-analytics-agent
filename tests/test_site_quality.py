@@ -16,7 +16,13 @@ def _answer(**kw):
         "case": "x",
         "verdict": "conditional",
         "results": [
-            {"name": "판매액(로그)", "bounds": ("-26.0%", "+19.8%"), "primary": True},
+            {
+                "name": "판매액(로그)",
+                "said": {
+                    "rule_out": "판매액(로그): +19.8%보다 큰 증가나 -26.0%보다 큰 감소는 맞지 않음"
+                },
+                "primary": True,
+            },
         ],
         "manifest": {},
     }
@@ -25,9 +31,9 @@ def _answer(**kw):
 
 def test_rule_out_only_for_conditional():
     s = answers.rule_out(_answer())
-    assert "+19.8%보다 큰 증가" in s and "-26.0%보다 큰 감소" in s and "설계 가정" in s
+    assert s.startswith("그래도 말할 수 있는 것") and "+19.8%보다 큰 증가" in s
     assert answers.rule_out(_answer(verdict="not_identified")) == ""
-    assert answers.rule_out(_answer(results=[{"name": "y", "bounds": None}])) == ""
+    assert answers.rule_out(_answer(results=[{"name": "y", "said": {}}])) == ""
 
 
 def test_bounds_text_hides_wide_log_ranges():

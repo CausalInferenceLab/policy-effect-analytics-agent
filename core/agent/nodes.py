@@ -305,7 +305,11 @@ def guard(s: FlowState):
     }
     if violations:
         raise FlowError(f"서술 린트 실패: {violations}")
-    ko = {"identified": "효과 근거 있음", "conditional": "조건부", "not_identified": "판단 불가"}
+    ko = {
+        "identified": "효과 근거 있음",
+        "conditional": "크기를 판별하지 못함",
+        "not_identified": "판단 불가",
+    }
     msg = f"1차 지표 판정 {ko.get(r.verdict, r.verdict)}, 서술={source}"
     if rejected:
         msg += f" (LLM 서술에서 과잉해석 {len(rejected)}건 → 템플릿으로 대체)"

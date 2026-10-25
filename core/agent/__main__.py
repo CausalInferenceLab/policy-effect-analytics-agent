@@ -29,7 +29,11 @@ def main(argv=None) -> int:
         print(
             f"{st.title:<18} {ICON.get(st.status, st.status):<5} {st.duration_s or 0:>6.2f}s  {st.message}"
         )
-    ko = {"identified": "효과 근거 있음", "conditional": "조건부", "not_identified": "판단 불가"}
+    ko = {
+        "identified": "효과 근거 있음",
+        "conditional": "크기를 판별하지 못함",
+        "not_identified": "판단 불가",
+    }
     each = ", ".join(f"{r.outcome}={ko.get(r.verdict, r.verdict)}" for r in s.results)
     print(f"\n상태={s.status}  지표별 판정: {each or '없음'}")
     if s.verdict:

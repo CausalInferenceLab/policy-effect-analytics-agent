@@ -53,9 +53,11 @@ class EffectResult:
         return d
 
     def summary_ko(self) -> str:
-        label = {"identified": "식별됨", "conditional": "조건부", "not_identified": "식별 불가"}[
-            self.verdict
-        ]
+        label = {
+            "identified": "효과 근거 있음",
+            "conditional": "크기를 판별하지 못함",
+            "not_identified": "판단 불가",
+        }[self.verdict]
         s = (
             f"[{self.method}] {self.outcome}: 효과 {self.estimate:.3f} "
             f"(95% CI {self.ci_low:.3f} ~ {self.ci_high:.3f}, p={self.p_value:.3g}, "

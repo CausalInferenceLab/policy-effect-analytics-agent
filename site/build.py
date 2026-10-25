@@ -35,6 +35,8 @@ from core.discovery.ontology import (  # noqa: E402
 
 OUT = ROOT / "_site"
 REPO = "https://github.com/CausalInferenceLab/policy-effect-analytics-agent"
+SITE = "https://causalinferencelab.github.io/policy-effect-analytics-agent"
+DESC = "뉴스와 SNS에서 궁금해하는 정책이 정말 효과가 있었는지 공공데이터로 확인하는 오픈소스"
 CSS = (HERE / "style.css").read_text(encoding="utf-8")
 
 GATE_Q = {"when": "언제 시작했나", "who": "누가 받았나", "what": "무엇으로 재나"}
@@ -100,15 +102,33 @@ e = html.escape
 
 
 # ─── 공통 ──────────────────────────────────────────────────────────────────────
-def page(title: str, body: str, current: str, depth: int = 0) -> str:
+def page(
+    title: str,
+    body: str,
+    current: str,
+    depth: int = 0,
+    desc: str | None = None,
+    path: str | None = None,
+    image: str | None = None,
+) -> str:
+    """공통 틀. path(사이트 안 경로)를 주면 공유 미리보기(Open Graph)용 주소·그림을 붙인다."""
     up = "../" * depth
+    d = e(desc or DESC)
+    og = f'<meta property="og:type" content="website"><meta property="og:title" content="{e(title)}">'
+    og += (
+        f'<meta property="og:description" content="{d}"><meta property="og:locale" content="ko_KR">'
+    )
+    if path:
+        og += f'<meta property="og:url" content="{SITE}/{e(path)}"><link rel="canonical" href="{SITE}/{e(path)}">'
+    if image:
+        og += f'<meta property="og:image" content="{SITE}/{e(image)}"><meta name="twitter:card" content="summary_large_image">'
     links = "".join(
         f'<a href="{up}{href}"{" aria-current=page" if href == current else ""}>{label}</a>'
         for href, label in NAV
     )
     return f"""<!doctype html><html lang="ko"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>{e(title)}</title>
-<meta name="description" content="뉴스와 SNS에서 궁금해하는 정책이 정말 효과가 있었는지 공공데이터로 확인하는 오픈소스">
+<meta name="description" content="{d}">{og}
 <style>{CSS}</style></head><body>
 <nav class="nav"><div class="in"><b><a href="{up}index.html">정책 효과 분석 플랫폼</a></b>
 <span class="links">{links}<a href="{REPO}">GitHub ↗</a></span></div></nav>
@@ -526,7 +546,7 @@ A가 이슈와 데이터를 이으면, B가 그 데이터로 효과를 추정하
 <script type="application/json" id="catalog">{catalog_json(topics, policies, issues, datasets, answers)}</script>
 <script src="ask.js"></script>
 <script>{HOME_JS}</script>"""
-    return page("정책 효과 분석 플랫폼", body, "index.html")
+    return page("정책 효과 분석 플랫폼", body, "index.html", path="index.html")
 
 
 def how_sections() -> str:
@@ -853,6 +873,7 @@ def topic_page(t, policies, issues, datasets, projects=(), answers=()) -> str:
         f"<div class='hero' style='padding-bottom:0'><span class='eyebrow'>주제</span>"
         f"<h1>{e(t.name)}</h1><p class='lede'>{e(t.question)}</p>"
         f'<div class="gates"><span class="badge {cls}">{lab}</span></div></div>',
+        ans.topic_box(e, [a for a in answers if a["topic"] == t.id]),
         "<section style='padding-top:32px'><h2>1. 이 주제의 정책</h2>",
         f"<p class='muted'>모으는 방법: {COLLECT_KO[t.collect.method]} — {e(t.collect.note)}</p>",
         timeline_svg(t.events),
@@ -921,19 +942,17 @@ def topic_page(t, policies, issues, datasets, projects=(), answers=()) -> str:
             + "".join(proj.project_card(e, p, tb, up="../") for p in mine)
             + "</div></section>"
         )
-    mine_ans = [a for a in answers if a["topic"] == t.id]
-    if mine_ans:
-        tb = {t.id: t}
-        body.append(
-            "<section><h2>5. 이 주제의 분석 결과</h2><p class='sub'>판정, 인용해도 되는 문장, 쓴 데이터, 재현하는 법은 결과를 눌러 보세요.</p>"
-            '<div class="grid proj-grid">'
-            + "".join(ans.card(e, a, tb, up="../") for a in mine_ans)
-            + "</div></section>"
-        )
     if t.pitfalls:
         items = "".join(f"<li>{e(x)}</li>" for x in t.pitfalls)
         body.append(f"<section><h2>주의할 점</h2><ul>{items}</ul></section>")
-    return page(f"{t.name} · 정책 효과 분석 플랫폼", "\n".join(body), "index.html#topics", depth=1)
+    return page(
+        f"{t.name} · 정책 효과 분석 플랫폼",
+        "\n".join(body),
+        "index.html#topics",
+        depth=1,
+        desc=t.question,
+        path=f"topics/{t.id}.html",
+    )
 
 
 # ─── 빌드 ────────────────────────────────────────────────────────────────────
@@ -987,7 +1006,11 @@ def main() -> None:
     # 분석 결과: 목록 + 케이스별 답 페이지 (그림은 write_api 가 _site/cases/ 로 복사해 둠)
     (OUT / "results.html").write_text(
         page(
-            "분석 결과 · 정책 효과 분석 플랫폼", ans.index_body(e, answers, topics), "results.html"
+            "분석 결과 · 정책 효과 분석 플랫폼",
+            ans.index_body(e, answers, topics),
+            "results.html",
+            desc="공공데이터로 정책을 받은 곳과 안 받은 곳을 비교한 결과 — 쉬운 말 답, 인용 문장, 쓴 데이터, 재현 방법",
+            path="results.html",
         ),
         encoding="utf-8",
     )
@@ -995,15 +1018,20 @@ def main() -> None:
     tb = {t.id: t for t in topics}
     ds_by_url = {d.url: d for d in datasets}
     for a in answers:
+        fig = next((f for f in ("event_study.png", *a["figures"]) if f in a["figures"]), None)
         (OUT / a["page"]).write_text(
             page(
                 f"{a['title']} · 분석 결과",
                 ans.page_body(e, a, tb, ds_by_url),
                 "results.html",
                 depth=1,
+                desc=ans.share_text(a),
+                path=a["page"],
+                image=f"cases/{a['case']}/{fig}" if fig else None,
             ),
             encoding="utf-8",
         )
+    ans.write_csv(OUT, results)
     (OUT / "projects.html").write_text(
         page(
             "참여자 프로젝트 · 정책 효과 분석 플랫폼",
