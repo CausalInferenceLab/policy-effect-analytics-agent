@@ -1,6 +1,6 @@
 {
   "run": "exploration_20261028",
-  "generated_at": "2026-10-28T11:27:05.311245+00:00",
+  "generated_at": "2026-10-28T11:34:09.050646+00:00",
   "registration": {
     "commits": {
       "plan.yaml": "d52ca52e5a4cad25db0f146197f101bb9b0ed491",
@@ -25,7 +25,7 @@
       "historical_graph"
     ]
   },
-  "code_commit": "adcb3bdc318c5b8d55d83d7fe7ce99b5d42ffc93",
+  "code_commit": "fb7c85fead5c534fbfc6681b36eedd3cb3d81749",
   "source_manifest_sha256": "66b63fbe363057d545f1a33f47ce4d3744c8cc43cb8fe4862709cb7df9b84ca8",
   "environment_lock_sha256": "4484e32fee68d8277c22f1d710edc7710c8921b531495168437875eddcded3b6",
   "report_generator_sha256": "c75241d2110d766444d0b6892826326eb674fb3dc9c45fa348d4673e880514ee",
