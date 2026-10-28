@@ -100,7 +100,8 @@ def test_unknown_semantics_blocks_real_data():
     with pytest.raises(ValueError, match="0 속도"):
         speed_value(0, rules)
     assert speed_value(-9999, rules)[1] == "sentinel"
-    rules["sentinels"].append("9999")
+    rules["sentinels"].extend(["9999", "NULL"])
+    assert speed_value("NULL", rules)[1] == "sentinel"
     assert speed_value(9999.0, rules)[1] == "sentinel"
     assert speed_value(None, rules)[1] == "blank"
     assert speed_value(12.5, rules) == (12.5, "")

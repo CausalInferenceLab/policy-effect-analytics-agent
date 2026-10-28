@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+from concurrent.futures import ProcessPoolExecutor
 
 import pandas as pd
 from gangnam.common import (
@@ -22,7 +23,10 @@ def main():
     p = argparse.ArgumentParser(description=__doc__)
     p.add_argument("--scope", choices=["policy", "ml"], default="policy")
     p.add_argument("--metadata-only", action="store_true", help="속도값을 해석하지 않고 원본·메타데이터만 보관")
+    p.add_argument("--workers", type=int, default=1, help="월별 XLSX 읽기 프로세스 수 (1~4)")
     args = p.parse_args()
+    if not 1 <= args.workers <= 4:
+        p.error("--workers는 1~4여야 합니다")
     cfg, contract = read_yaml("corridors.yaml"), read_yaml("data_contract.yaml")
     if not args.metadata_only:
         real_data_gate()
@@ -32,14 +36,17 @@ def main():
     processed.mkdir(parents=True, exist_ok=True)
     summaries, catalog = [], {}
     rules = None if args.metadata_only else contract["checks"]["missing_values"]["value"]
-    with session() as s:
+    with session() as s, ProcessPoolExecutor(max_workers=args.workers) as pool:
+        pending = []
         for month in months:
             if month.year not in catalog:
                 catalog[month.year] = list_months(s, month.year)
             if month.month not in catalog[month.year]:
                 raise ValueError(f"TOPIS 목록에 {month} 파일이 없습니다")
             path, manifest = download(s, catalog[month.year][month.month], str(month), raw)
-            frame, meta = parse_month(path, str(month), cfg["candidate_roads"], rules)
+            pending.append((month, manifest, pool.submit(parse_month, path, str(month), cfg["candidate_roads"], rules)))
+        for month, manifest, future in pending:
+            frame, meta = future.result()
             meta["source_sha256"] = manifest["sha256"]
             write_json(CASE / f"data/metadata/{month}.json", meta)
             summaries.append(meta)

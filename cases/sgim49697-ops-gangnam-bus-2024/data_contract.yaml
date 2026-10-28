@@ -22,9 +22,9 @@ checks:
     note: 월별 XLSX에 적용되는 단위 확인 필요
   missing_values:
     status: assumed
-    value: {blank_is_missing: true, zero: missing, negative: missing, sentinels: []}
+    value: {blank_is_missing: true, zero: missing, negative: missing, sentinels: ['NULL']}
     source: https://topis.seoul.go.kr/refRoom/openRefRoom_1.do
-    note: 탐색 주 분석에서는 0·음수를 결측 처리한다. 실제 빈도와 0을 유효한 정체로 처리한 정책 민감도를 함께 보고한다.
+    note: 탐색 주 분석에서는 0·음수를 결측 처리한다. 2024-08 파일에서 발견한 문자열 NULL도 결측으로 처리한다. 실제 빈도와 0을 유효한 정체로 처리한 정책 민감도를 함께 보고한다.
   usage_terms:
     status: assumed
     value: null
