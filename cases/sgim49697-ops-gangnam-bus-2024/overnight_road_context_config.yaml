@@ -1,0 +1,34 @@
+# overnight_road_context_config.yaml - 버스와 같은 계절 창의 주변 도로·교통량을 기술적으로 비교
+recorded_at_utc: '2026-10-28T20:07:06Z'
+mode: exploratory_after_prior_2024_road_results
+base_config: directional_config.yaml
+months: ['2023-04', '2023-05', '2023-06', '2023-07', '2023-08', '2023-09', '2023-10', '2024-04', '2024-05', '2024-06', '2024-07', '2024-08', '2024-09', '2024-10']
+roads: [강남대로, 사평대로, 테헤란로, 봉은사로, 서초대로]
+speed_cache_manifest: results/overnight/forecast/extraction_development.json
+speed_selection: 두 연도 사전 기간 모두 관측률 80% 이상인 링크·시간 셀을 고정
+metadata: 전체 대상 월에서 도로명·시종점·방향·길이가 변한 링크는 제외하고 변형을 별도 보고
+speed_aggregations: [fixed_length_arithmetic, equal_cells]
+core:
+  south: ['1220025000', '1220021000', '1220016200']
+  north: ['1220016300', '1220021100', '1220025100']
+core_definition: 교보타워사거리~강남역~우성아파트~뱅뱅사거리의 기존 핵심 3개 링크와 반대 방향 3개; 메타데이터로만 확인
+volume:
+  source: https://topis.seoul.go.kr/refRoom/openRefRoom_2.do
+  points: [D-35, D-43]
+  labels: {D-35: 강남대로(강남역-신분당), D-43: 강남대로(신사역)}
+  hour: interval_start_kst
+  values: 공란은 미관측, 숫자 0은 별도 빈도를 보고하고 원본 값을 보존
+  aggregation: 같은 시간대의 관측 시간당 평균 교통량; 하루 전체 교통량으로 표현하지 않음
+bands_from: overnight_config.yaml
+minimum_pre_coverage: 0.80
+minimum_daily_coverage: 0.80
+minimum_days: 20
+maximum_coverage_gap: 0.10
+comparisons: [summer2023, summer2024, autumn2024]
+source_calendar: 전체 예정 평일·공휴일 달력; 원본에 없는 날을 제거해 관측률을 올리지 않음
+resources: {download_workers: 2, parser_workers: 2, minimum_free_gib: 25, file_limit_mib: 40}
+locked_year: 2026
+interpretation:
+  - 일반도로 속도와 버스의 기록시간 지수는 다른 자료·단위·공간 범위다.
+  - D-35·D-43 검지지점과 링크는 맥락 비교이며 개별 차량이나 정확히 같은 위치의 측정이 아니다.
+  - 인접 도로를 무처치 대조군으로 지정하거나 인과 효과·정체 이동을 확정하지 않는다.
