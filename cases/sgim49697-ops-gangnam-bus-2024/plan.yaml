@@ -1,0 +1,42 @@
+# 설계 후보를 실행 스키마로 고정한다. 자료 정의·비교군 검증은 별도 관문이다.
+case_id: sgim49697-ops-gangnam-bus-2024
+title: 강남대로 광역버스 분산 전후 일반도로 속도 변화
+question: 2024년 6월 29일 버스 운행 조정 이후 강남대로 하행 퇴근 시간대 속도지수가 비교 도로에 비해 어떻게 달라졌는가?
+synthetic_data: false
+unit: {name: 고정 방향 도로 구간, id_col: corridor_id}
+time: {col: day_idx, freq: day, start: 0, end: 88, datetime_col: date}
+treatment:
+  definition: 교보타워사거리→뱅뱅사거리 하행 3개 링크. 안내상 시행일 6월 29일, 7월 7일까지 전환기 제외
+  group_col: treated
+  treat_time: 40
+control:
+  definition: 동작대로·송파대로·시흥대로 후보 중 역사적 방향·비노출 근거·자료 품질을 통과한 도로 전체
+  rationale: 도로 특성·동시 충격을 검토할 후보이며 아직 유효한 반사실로 확인되지 않았다. 2곳 미만이면 비교 추정을 하지 않는다.
+outcomes:
+  - name: 퇴근 시간 길이가중 속도지수
+    col: speed_index
+    definition: 평일 공휴일 제외 17~20시, 고정 링크 길이가중 산술평균의 3시간 평균. 9개 관측 모두 필요. 실제 경로 평균속도와 다름
+    unit: km/h
+    primary: true
+    expected_direction: unknown
+estimator: {method: did, cluster_col: corridor_id, alpha: 0.05}
+assumptions:
+  - {name: 평행추세, description: 주별 사전 속도 격차를 진단하며 비유의성을 증거로 간주하지 않는다, check: pretrend_test}
+  - {name: 비교군 비노출, description: 버스 우회·차량 이동·동시 공사 영향을 당시 근거로 확인한다, check: manual}
+  - {name: 측정 일관성, description: 시간 표기·결측·링크 방향·택시 표본 변화 확인 전 실행하지 않는다, check: manual}
+refutations:
+  - {kind: placebo_time, params: {shift: 19}}
+abstention:
+  - {when: few_clusters, verdict: not_identified, note: 1개 처치 도로와 소수 비교 도로이므로 유의확률만으로 인과효과를 주장하지 않는다}
+  - {when: few_treated_clusters, verdict: not_identified, note: 링크를 독립 처치 도로로 늘려 세지 않는다}
+  - {when: pretrend_rejected, verdict: not_identified}
+  - {when: placebo_significant, verdict: not_identified}
+  - {when: ci_crosses_zero, verdict: conditional}
+thresholds: {pretrend_alpha: 0.10, min_clusters: 20, min_pre_periods: 20}
+data_sources:
+  - name: TOPIS 도로별 일자별 통행속도 월별 XLSX
+    provider: 서울특별시 TOPIS
+    url: https://topis.seoul.go.kr/refRoom/openRefRoom_1.do
+    license: other
+    path: data/panel.csv
+    notes: 개별 월별 원자료 이용 조건 미확인. 다른 통계·지도 자료의 공공누리 표시를 전용하지 않는다. data_contract.yaml 관문 충족 전 실행 금지

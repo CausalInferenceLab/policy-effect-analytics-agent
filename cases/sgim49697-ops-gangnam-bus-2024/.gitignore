@@ -1,0 +1,11 @@
+# 개인 분석의 원자료·학습 결과·환경은 공개하지 않는다.
+.venv/
+.cache/
+runs/
+checkpoints/
+*.pt
+*.ckpt
+*.cbm
+*.parquet
+*.xlsx
+*.pdf

@@ -1,0 +1,286 @@
+{
+  "description": "TOPIS 월별 원본 다운로드 기록. 원자료·속도 수치 없음. 이용 조건 미확인.",
+  "scope": "2023-01~2024-08",
+  "files": [
+    {
+      "month": "2023-01",
+      "source": "https://topis.seoul.go.kr/refRoom/openRefRoom_1.do",
+      "url": "https://topis.seoul.go.kr/downloadFileRefRoom.do",
+      "request": {
+        "apndFileNm": "2023년 1월 서울시 차량통행속도.xlsx",
+        "apndFilePathNm": "1675296544324133081230292766506.xlsx",
+        "bdwrSeq": "3128",
+        "blbdDivCd": "06"
+      },
+      "retrieved_at": "2026-10-28T08:08:39.306884+00:00",
+      "bytes": 36071891,
+      "sha256": "e0c56bdb7cf0b40e8bbe5df4eb96596fec95b6b25d0433e2b01da2b553d1f2c2"
+    },
+    {
+      "month": "2023-02",
+      "source": "https://topis.seoul.go.kr/refRoom/openRefRoom_1.do",
+      "url": "https://topis.seoul.go.kr/downloadFileRefRoom.do",
+      "request": {
+        "apndFileNm": "2023년 2월 서울시 차량통행속도.xlsx",
+        "apndFilePathNm": "16777153991977939838598595413.xlsx",
+        "bdwrSeq": "3180",
+        "blbdDivCd": "06"
+      },
+      "retrieved_at": "2026-10-28T08:13:17.674061+00:00",
+      "bytes": 32623334,
+      "sha256": "021c99c0fee68e9742501707ccc026fef54f7000ce156b3074a12a1024aca4d7"
+    },
+    {
+      "month": "2023-03",
+      "source": "https://topis.seoul.go.kr/refRoom/openRefRoom_1.do",
+      "url": "https://topis.seoul.go.kr/downloadFileRefRoom.do",
+      "request": {
+        "apndFileNm": "2023년 3월 서울시 차량통행속도.xlsx",
+        "apndFilePathNm": "168048257300510707012406602798.xlsx",
+        "bdwrSeq": "3264",
+        "blbdDivCd": "06"
+      },
+      "retrieved_at": "2026-10-28T08:13:32.387712+00:00",
+      "bytes": 36132167,
+      "sha256": "2f887f6433fd4706df0bf5f2a463b814e38003a6797df5154c94b78548fa16b9"
+    },
+    {
+      "month": "2023-04",
+      "source": "https://topis.seoul.go.kr/refRoom/openRefRoom_1.do",
+      "url": "https://topis.seoul.go.kr/downloadFileRefRoom.do",
+      "request": {
+        "apndFileNm": "2023년 4월 서울시 차량통행속도.xlsx",
+        "apndFilePathNm": "168299260851913217050934257155.xlsx",
+        "bdwrSeq": "3348",
+        "blbdDivCd": "06"
+      },
+      "retrieved_at": "2026-10-28T08:13:49.327948+00:00",
+      "bytes": 34969853,
+      "sha256": "c16e67d563847caebf4cc99b8197eb4b8ce4094bacc7c6ea22b41a9f9abe3be5"
+    },
+    {
+      "month": "2023-05",
+      "source": "https://topis.seoul.go.kr/refRoom/openRefRoom_1.do",
+      "url": "https://topis.seoul.go.kr/downloadFileRefRoom.do",
+      "request": {
+        "apndFileNm": "2023년 5월 서울시 차량통행속도.xlsx",
+        "apndFilePathNm": "168557981294315804255357375891.xlsx",
+        "bdwrSeq": "3420",
+        "blbdDivCd": "06"
+      },
+      "retrieved_at": "2026-10-28T08:14:05.598352+00:00",
+      "bytes": 36141475,
+      "sha256": "580949b4e60afe19ed794f60f4aeb5abb9de08665fa6add518e0d42aec648483"
+    },
+    {
+      "month": "2023-06",
+      "source": "https://topis.seoul.go.kr/refRoom/openRefRoom_1.do",
+      "url": "https://topis.seoul.go.kr/downloadFileRefRoom.do",
+      "request": {
+        "apndFileNm": "2023년 6월 서울시 차량통행속도.xlsx",
+        "apndFilePathNm": "16895539657801192669214581134.xlsx",
+        "bdwrSeq": "3511",
+        "blbdDivCd": "06"
+      },
+      "retrieved_at": "2026-10-28T08:14:21.721407+00:00",
+      "bytes": 34959227,
+      "sha256": "7cc330bcb8f17476d61602707db87c4f53491b275f4ae88c33382d77a4c2a74f"
+    },
+    {
+      "month": "2023-07",
+      "source": "https://topis.seoul.go.kr/refRoom/openRefRoom_1.do",
+      "url": "https://topis.seoul.go.kr/downloadFileRefRoom.do",
+      "request": {
+        "apndFileNm": "2023년 7월 서울시 차량통행속도.xlsx",
+        "apndFilePathNm": "16910244823102663185745053951.xlsx",
+        "bdwrSeq": "3551",
+        "blbdDivCd": "06"
+      },
+      "retrieved_at": "2026-10-28T08:14:37.776044+00:00",
+      "bytes": 36130329,
+      "sha256": "4bbc679275caede009512950b3ddb6aa1a0baca1792914e6aae52c086b599f4c"
+    },
+    {
+      "month": "2023-08",
+      "source": "https://topis.seoul.go.kr/refRoom/openRefRoom_1.do",
+      "url": "https://topis.seoul.go.kr/downloadFileRefRoom.do",
+      "request": {
+        "apndFileNm": "2023년 8월 서울시 차량통행속도.xlsx",
+        "apndFilePathNm": "16941378238015776527236030800.xlsx",
+        "bdwrSeq": "3611",
+        "blbdDivCd": "06"
+      },
+      "retrieved_at": "2026-10-28T08:14:54.853651+00:00",
+      "bytes": 36127358,
+      "sha256": "6e414261cbfb7a80a64dab62337ce341e36fc45ef3969c2a0759826046be56dc"
+    },
+    {
+      "month": "2023-09",
+      "source": "https://topis.seoul.go.kr/refRoom/openRefRoom_1.do",
+      "url": "https://topis.seoul.go.kr/downloadFileRefRoom.do",
+      "request": {
+        "apndFileNm": "2023년 9월 서울시 차량통행속도.xlsx",
+        "apndFilePathNm": "16965537368488192440283080284.xlsx",
+        "bdwrSeq": "3662",
+        "blbdDivCd": "06"
+      },
+      "retrieved_at": "2026-10-28T08:15:11.057394+00:00",
+      "bytes": 34968160,
+      "sha256": "c03004760822d7a4a3eeeb36a7daa9bd533d82a55204a98626f4c95012c3284f"
+    },
+    {
+      "month": "2023-10",
+      "source": "https://topis.seoul.go.kr/refRoom/openRefRoom_1.do",
+      "url": "https://topis.seoul.go.kr/downloadFileRefRoom.do",
+      "request": {
+        "apndFileNm": "2023년 10월 서울시 차량통행속도.xlsx",
+        "apndFilePathNm": "169899673338110635436815580228.xlsx",
+        "bdwrSeq": "3722",
+        "blbdDivCd": "06"
+      },
+      "retrieved_at": "2026-10-28T08:15:27.585550+00:00",
+      "bytes": 36153236,
+      "sha256": "2c77d0e9bead6ffabb3932fbdee05bcee7253ba5be4fed001b5ddb59ac45d96a"
+    },
+    {
+      "month": "2023-11",
+      "source": "https://topis.seoul.go.kr/refRoom/openRefRoom_1.do",
+      "url": "https://topis.seoul.go.kr/downloadFileRefRoom.do",
+      "request": {
+        "apndFileNm": "2023년 11월 서울시 차량통행속도.xlsx",
+        "apndFilePathNm": "170174225666113815960101338165.xlsx",
+        "bdwrSeq": "3812",
+        "blbdDivCd": "06"
+      },
+      "retrieved_at": "2026-10-28T08:15:43.483130+00:00",
+      "bytes": 35052338,
+      "sha256": "7c5e6740f5b09203ba0e3518bdcb9eb10cfa3842be4c928a7eb2dde1f1c10224"
+    },
+    {
+      "month": "2023-12",
+      "source": "https://topis.seoul.go.kr/refRoom/openRefRoom_1.do",
+      "url": "https://topis.seoul.go.kr/downloadFileRefRoom.do",
+      "request": {
+        "apndFileNm": "2023년 12월 서울시 차량통행속도.xlsx",
+        "apndFilePathNm": "170434131990216415023342260242.xlsx",
+        "bdwrSeq": "3875",
+        "blbdDivCd": "06"
+      },
+      "retrieved_at": "2026-10-28T08:15:59.376236+00:00",
+      "bytes": 36165157,
+      "sha256": "be34055b0d9bd3b8ec7e071238afc1e865f2c7c9c9bac6785113b6b13bb9029f"
+    },
+    {
+      "month": "2024-01",
+      "source": "https://topis.seoul.go.kr/refRoom/openRefRoom_1.do",
+      "url": "https://topis.seoul.go.kr/downloadFileRefRoom.do",
+      "request": {
+        "apndFileNm": "2024년 1월 서울시 차량통행속도.xlsx",
+        "apndFilePathNm": "170675241227818826115718090003.xlsx",
+        "bdwrSeq": "3919",
+        "blbdDivCd": "06"
+      },
+      "retrieved_at": "2026-10-28T08:16:16.500518+00:00",
+      "bytes": 36168220,
+      "sha256": "44406150335108f6e2439abef6d0d04cc2506d3549ee54b90b65f6996b2c1bee"
+    },
+    {
+      "month": "2024-02",
+      "source": "https://topis.seoul.go.kr/refRoom/openRefRoom_1.do",
+      "url": "https://topis.seoul.go.kr/downloadFileRefRoom.do",
+      "request": {
+        "apndFileNm": "2024년 2월 서울시 차량통행속도.xlsx",
+        "apndFilePathNm": "170951347586621152172458763119.xlsx",
+        "bdwrSeq": "3959",
+        "blbdDivCd": "06"
+      },
+      "retrieved_at": "2026-10-28T08:16:32.441970+00:00",
+      "bytes": 33858533,
+      "sha256": "2da7bb79c55beab6b5edb9ab6b9e207e74aed92de1d3d9167f68ed3729f0ac47"
+    },
+    {
+      "month": "2024-03",
+      "source": "https://topis.seoul.go.kr/refRoom/openRefRoom_1.do",
+      "url": "https://topis.seoul.go.kr/downloadFileRefRoom.do",
+      "request": {
+        "apndFileNm": "2024년 3월 서울시 차량통행속도_.xlsx",
+        "apndFilePathNm": "171212463805123763334643696926.xlsx",
+        "bdwrSeq": "4029",
+        "blbdDivCd": "06"
+      },
+      "retrieved_at": "2026-10-28T08:16:48.817605+00:00",
+      "bytes": 38600319,
+      "sha256": "4610874a6520c656886b4352c188f296d60578fbf608f384c2a9e182313e12e5"
+    },
+    {
+      "month": "2024-04",
+      "source": "https://topis.seoul.go.kr/refRoom/openRefRoom_1.do",
+      "url": "https://topis.seoul.go.kr/downloadFileRefRoom.do",
+      "request": {
+        "apndFileNm": "2024년 4월 서울시 차량통행속도.xlsx",
+        "apndFilePathNm": "171460945428426683150842563959.xlsx",
+        "bdwrSeq": "4097",
+        "blbdDivCd": "06"
+      },
+      "retrieved_at": "2026-10-28T07:59:23.651177+00:00",
+      "bytes": 35010334,
+      "sha256": "9814fc924e92dfa1175de2893ee557b1aded2502ccea08e50441605680e8e745"
+    },
+    {
+      "month": "2024-05",
+      "source": "https://topis.seoul.go.kr/refRoom/openRefRoom_1.do",
+      "url": "https://topis.seoul.go.kr/downloadFileRefRoom.do",
+      "request": {
+        "apndFileNm": "2024년 5월 서울시 차량통행속도.xlsx",
+        "apndFilePathNm": "171797962642129618306194536648.xlsx",
+        "bdwrSeq": "4171",
+        "blbdDivCd": "06"
+      },
+      "retrieved_at": "2026-10-28T07:59:43.806858+00:00",
+      "bytes": 36143947,
+      "sha256": "23096137e04f0cb3ba31b8008a948ce4a43ebc87f9c014f713313e2621649ed4"
+    },
+    {
+      "month": "2024-06",
+      "source": "https://topis.seoul.go.kr/refRoom/openRefRoom_1.do",
+      "url": "https://topis.seoul.go.kr/downloadFileRefRoom.do",
+      "request": {
+        "apndFileNm": "2024년 6월 서울시 차량통행속도.xlsx",
+        "apndFilePathNm": "17207495444602148159895891176.xlsx",
+        "bdwrSeq": "4233",
+        "blbdDivCd": "06"
+      },
+      "retrieved_at": "2026-10-28T08:00:00.226753+00:00",
+      "bytes": 34967245,
+      "sha256": "d5426b99f49ca1ca8beb911ffcda29261cc2dac2d85f56ee0311f457a2850b1c"
+    },
+    {
+      "month": "2024-07",
+      "source": "https://topis.seoul.go.kr/refRoom/openRefRoom_1.do",
+      "url": "https://topis.seoul.go.kr/downloadFileRefRoom.do",
+      "request": {
+        "apndFileNm": "2024년 7월 서울시 차량통행속도.xlsx",
+        "apndFilePathNm": "17224715376653866403129092769.xlsx",
+        "bdwrSeq": "4252",
+        "blbdDivCd": "06"
+      },
+      "retrieved_at": "2026-10-28T08:00:16.583380+00:00",
+      "bytes": 36151271,
+      "sha256": "5f9a9ba83746c5dd603dbb2289f2b947f980d242292097feccea89377f91ae86"
+    },
+    {
+      "month": "2024-08",
+      "source": "https://topis.seoul.go.kr/refRoom/openRefRoom_1.do",
+      "url": "https://topis.seoul.go.kr/downloadFileRefRoom.do",
+      "request": {
+        "apndFileNm": "2024년 8월 서울시 차량통행속도.xlsx",
+        "apndFilePathNm": "17252372342546635844204591789.xlsx",
+        "bdwrSeq": "4308",
+        "blbdDivCd": "06"
+      },
+      "retrieved_at": "2026-10-28T08:00:32.746919+00:00",
+      "bytes": 35865354,
+      "sha256": "722e7350e068ac60412bc2aec579cdfc5b2540cc2ea415f2d713f85cb6926867"
+    }
+  ]
+}
