@@ -1,0 +1,259 @@
+{
+  "description": "월별 시간대 카드와의 집계·중복 구분 대조용 서울 면허 일별 카드 원본",
+  "phase": "full",
+  "config_sha256": "a122b83affc446a4ef8bb6b0516884eab0d868e9f8c7e1c5b8cbd4447cfbdba1",
+  "files": [
+    {
+      "month": "2023-04",
+      "source": "https://data.seoul.go.kr/dataList/OA-12912/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "title": "BUS_STATION_BOARDING_MONTH_202304.csv",
+      "request": {
+        "infId": "OA-12912",
+        "infSeq": "3",
+        "seq": "121",
+        "seqNo": ""
+      },
+      "path": "data/overnight/daily_cards_full/card_daily_2023-04.csv",
+      "bytes": 139807804,
+      "sha256": "9dcd7553246e5a01a4b22c812bd1d83f1542be7f7f2263c70e13a36ad59b735a",
+      "encoding": "cp949",
+      "retrieved_at": "2026-10-28T20:04:53.393374+00:00"
+    },
+    {
+      "month": "2023-05",
+      "source": "https://data.seoul.go.kr/dataList/OA-12912/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "title": "BUS_STATION_BOARDING_MONTH_202305.csv",
+      "request": {
+        "infId": "OA-12912",
+        "infSeq": "3",
+        "seq": "122",
+        "seqNo": ""
+      },
+      "path": "data/overnight/daily_cards_full/card_daily_2023-05.csv",
+      "bytes": 144525465,
+      "sha256": "faf5150c9936f97a60c5c8c9160d61a46658185277d9c347d20e130be11b115a",
+      "encoding": "cp949",
+      "retrieved_at": "2026-10-28T20:04:48.592513+00:00"
+    },
+    {
+      "month": "2023-06",
+      "source": "https://data.seoul.go.kr/dataList/OA-12912/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "title": "BUS_STATION_BOARDING_MONTH_202306.csv",
+      "request": {
+        "infId": "OA-12912",
+        "infSeq": "3",
+        "seq": "123",
+        "seqNo": ""
+      },
+      "path": "data/overnight/daily_cards_full/card_daily_2023-06.csv",
+      "bytes": 139467635,
+      "sha256": "fd38d2fdc74083740fbbd82ff35ae2d910fdb36bcb641a3c260dd9083233d01b",
+      "encoding": "cp949",
+      "retrieved_at": "2026-10-28T20:05:10.230105+00:00"
+    },
+    {
+      "month": "2023-07",
+      "source": "https://data.seoul.go.kr/dataList/OA-12912/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "title": "BUS_STATION_BOARDING_MONTH_202307.csv",
+      "request": {
+        "infId": "OA-12912",
+        "infSeq": "3",
+        "seq": "124",
+        "seqNo": ""
+      },
+      "path": "data/overnight/daily_cards/card_daily_2023-07.csv",
+      "bytes": 144859460,
+      "sha256": "50d3fa69a3bc9eaebd34f5b7f4cd7c65871fd891257c75ce5811e88fbe9361b0",
+      "encoding": "cp949",
+      "retrieved_at": "2026-10-28T19:49:32.394704+00:00"
+    },
+    {
+      "month": "2023-08",
+      "source": "https://data.seoul.go.kr/dataList/OA-12912/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "title": "BUS_STATION_BOARDING_MONTH_202308.csv",
+      "request": {
+        "infId": "OA-12912",
+        "infSeq": "3",
+        "seq": "125",
+        "seqNo": ""
+      },
+      "path": "data/overnight/daily_cards_full/card_daily_2023-08.csv",
+      "bytes": 144801826,
+      "sha256": "75899ad694b31b92ab453945534736b0daddbb6de70d1f5c6645d4323166bc49",
+      "encoding": "cp949",
+      "retrieved_at": "2026-10-28T20:05:16.879607+00:00"
+    },
+    {
+      "month": "2023-09",
+      "source": "https://data.seoul.go.kr/dataList/OA-12912/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "title": "BUS_STATION_BOARDING_MONTH_202309.csv",
+      "request": {
+        "infId": "OA-12912",
+        "infSeq": "3",
+        "seq": "126",
+        "seqNo": ""
+      },
+      "path": "data/overnight/daily_cards_full/card_daily_2023-09.csv",
+      "bytes": 140093137,
+      "sha256": "5d34475243699aa32f05bb1c1c4f6e8ea3435c5c565dbb541eda761d0f3052a3",
+      "encoding": "cp949",
+      "retrieved_at": "2026-10-28T20:05:33.555792+00:00"
+    },
+    {
+      "month": "2023-10",
+      "source": "https://data.seoul.go.kr/dataList/OA-12912/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "title": "BUS_STATION_BOARDING_MONTH_202310.csv",
+      "request": {
+        "infId": "OA-12912",
+        "infSeq": "3",
+        "seq": "127",
+        "seqNo": ""
+      },
+      "path": "data/overnight/daily_cards_full/card_daily_2023-10.csv",
+      "bytes": 144882822,
+      "sha256": "aa222928c29fb000ffa6c8b27f40a2221630186cfdf1011e5af62b7efaa17912",
+      "encoding": "cp949",
+      "retrieved_at": "2026-10-28T20:05:42.479475+00:00"
+    },
+    {
+      "month": "2024-04",
+      "source": "https://data.seoul.go.kr/dataList/OA-12912/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "title": "BUS_STATION_BOARDING_MONTH_202404.csv",
+      "request": {
+        "infId": "OA-12912",
+        "infSeq": "3",
+        "seq": "133",
+        "seqNo": ""
+      },
+      "path": "data/overnight/daily_cards_full/card_daily_2024-04.csv",
+      "bytes": 142271259,
+      "sha256": "c3fd8e9c903a2c74fe2de86d843bf6a537e27e5511ab4e4b83b8fa7fd586503c",
+      "encoding": "cp949",
+      "retrieved_at": "2026-10-28T20:05:58.390601+00:00"
+    },
+    {
+      "month": "2024-05",
+      "source": "https://data.seoul.go.kr/dataList/OA-12912/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "title": "BUS_STATION_BOARDING_MONTH_202405.csv",
+      "request": {
+        "infId": "OA-12912",
+        "infSeq": "3",
+        "seq": "134",
+        "seqNo": ""
+      },
+      "path": "data/overnight/daily_cards/card_daily_2024-05.csv",
+      "bytes": 146948516,
+      "sha256": "bbd8a37fedc91a906a01232ec7134c73d7bfc80c247461969e1ffb82be824295",
+      "encoding": "cp949",
+      "retrieved_at": "2026-10-28T19:49:39.848561+00:00"
+    },
+    {
+      "month": "2024-06",
+      "source": "https://data.seoul.go.kr/dataList/OA-12912/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "title": "BUS_STATION_BOARDING_MONTH_202406.csv",
+      "request": {
+        "infId": "OA-12912",
+        "infSeq": "3",
+        "seq": "135",
+        "seqNo": ""
+      },
+      "path": "data/overnight/daily_cards_full/card_daily_2024-06.csv",
+      "bytes": 142088015,
+      "sha256": "2f8856d97f34b0c09f65541190b0a389683d7fd8a69629cfe9d0a6992e60e68b",
+      "encoding": "cp949",
+      "retrieved_at": "2026-10-28T20:06:02.380715+00:00"
+    },
+    {
+      "month": "2024-07",
+      "source": "https://data.seoul.go.kr/dataList/OA-12912/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "title": "BUS_STATION_BOARDING_MONTH_202407.csv",
+      "request": {
+        "infId": "OA-12912",
+        "infSeq": "3",
+        "seq": "136",
+        "seqNo": ""
+      },
+      "path": "data/overnight/daily_cards/card_daily_2024-07.csv",
+      "bytes": 147308061,
+      "sha256": "b64414798306f17da56233b45dabfd9474c471c8e87394aa78dfe0c811c1bebc",
+      "encoding": "cp949",
+      "retrieved_at": "2026-10-28T19:49:48.286631+00:00"
+    },
+    {
+      "month": "2024-08",
+      "source": "https://data.seoul.go.kr/dataList/OA-12912/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "title": "BUS_STATION_BOARDING_MONTH_202408.csv",
+      "request": {
+        "infId": "OA-12912",
+        "infSeq": "3",
+        "seq": "137",
+        "seqNo": ""
+      },
+      "path": "data/overnight/daily_cards_full/card_daily_2024-08.csv",
+      "bytes": 146985034,
+      "sha256": "a85012aca3d25f52d171f96f18a9719a5d6087ff289676f084a3b97940ed8062",
+      "encoding": "cp949",
+      "retrieved_at": "2026-10-28T20:06:25.733468+00:00"
+    },
+    {
+      "month": "2024-09",
+      "source": "https://data.seoul.go.kr/dataList/OA-12912/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "title": "BUS_STATION_BOARDING_MONTH_202409.csv",
+      "request": {
+        "infId": "OA-12912",
+        "infSeq": "3",
+        "seq": "138",
+        "seqNo": ""
+      },
+      "path": "data/overnight/daily_cards_full/card_daily_2024-09.csv",
+      "bytes": 141656251,
+      "sha256": "28f6b142a6dcbd6a7af343406641ee1c789043c1e8e50a40f0405bd0c06f54ba",
+      "encoding": "cp949",
+      "retrieved_at": "2026-10-28T20:06:25.877261+00:00"
+    },
+    {
+      "month": "2024-10",
+      "source": "https://data.seoul.go.kr/dataList/OA-12912/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "title": "BUS_STATION_BOARDING_MONTH_202410.csv",
+      "request": {
+        "infId": "OA-12912",
+        "infSeq": "3",
+        "seq": "139",
+        "seqNo": ""
+      },
+      "path": "data/overnight/daily_cards_full/card_daily_2024-10.csv",
+      "bytes": 146821812,
+      "sha256": "801cca5d5cb010b1ab83d229d6eb8bc47d7ab17594eeacc1416bf8207dad324b",
+      "encoding": "cp949",
+      "retrieved_at": "2026-10-28T20:06:36.605741+00:00"
+    }
+  ]
+}

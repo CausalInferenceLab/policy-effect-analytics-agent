@@ -1,0 +1,18 @@
+{
+  "code_sha256": "7a85c8455d5182dabddae774e59090a32cc635dbb4360de7dfebec84430b8df1",
+  "inputs": {
+    "results/overnight/mechanism/comparisons.csv": "9a89ee7560e0e29485d22309dc8bd303d4975718875abe16b48ecace1844d142",
+    "results/overnight/fare_trim/comparisons.csv": "295e8f325fe374623e21409a01b83d8474b71612cbe915dce959fdfbc6010ec1",
+    "results/overnight/card_records/daily_comparisons.csv": "324da9fffafe3f244fe4cae4f9f18969d6166c5c803a42c382ef95e1ae8fa028",
+    "results/overnight/card_records/monthly_hourly.csv": "315196d2f044b64f4b7a308879cf9a9b1546d924bce3aa223f0af64c0b130dff",
+    "results/overnight/road_context/comparisons.csv": "410e2551893b35cc0f2fc9e9f35ac6d9b56bb7c7490ded626c66a9ecce6aa379"
+  },
+  "outputs": {
+    "card_daily.png": "94344f1935944b1368d2a507676b644d6b873c47385ad37a0639ee1af5e7c2fb",
+    "card_hourly.png": "5df3ad08cca4c4f174917dca01df00992f04aa53ee374381ed55065d1131fc9f",
+    "fare_window.png": "70b8ea03ec33ee94b0a03e43eb64cc323bad404db54186314fc41b255b92d08c",
+    "mechanism_joint.png": "99f4689c22e03c3ec8f8534243e65806bc64e540b7a288f7dff2de7a8fc618c3",
+    "road_context_heatmap.png": "6ff7f5112993f56db6107b6d6d913cf3729bd805eea0a04282886ad3e2281a8b",
+    "road_core_volume.png": "4f7bbeb8f5d204ff8f02473bed98a4911f9a06df60dcab0f2b08f988e88b7a9b"
+  }
+}

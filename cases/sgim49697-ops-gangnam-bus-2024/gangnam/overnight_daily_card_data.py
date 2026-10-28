@@ -19,6 +19,15 @@ MANIFEST = CASE / "overnight-daily-card-sources.json"
 HEADERS = ["사용일자", "노선번호", "노선명", "표준버스정류장ID", "버스정류장ARS번호", "역명", "승차총승객수", "하차총승객수", "등록일자"]
 
 
+def locations(phase="probe"):
+    if phase == "probe":
+        return "overnight_daily_card_config.yaml", MANIFEST, RAW, OUT
+    if phase == "full":
+        return ("overnight_daily_card_full_config.yaml", CASE / "overnight-daily-card-full-sources.json",
+                CASE / "data/overnight/daily_cards_full", CASE / "results/overnight/daily_cards_full")
+    raise ValueError("일별 카드 단계는 probe 또는 full이어야 합니다")
+
+
 def validate(path, month):
     for encoding in ["cp949", "utf-8-sig"]:
         try:
@@ -43,16 +52,20 @@ def verify(entry):
     return path
 
 
-def collect():
-    cfg = read_yaml("overnight_daily_card_config.yaml")
+def collect(phase="probe"):
+    config_name, manifest, raw, _ = locations(phase)
+    cfg = read_yaml(config_name)
     if cfg["resources"]["download_workers"] not in {1, 2} or cfg["locked_year"] != 2026:
         raise ValueError("일별 카드 수집의 동시 작업·잠금 연도 설정 오류")
     months = cfg["months"]
     if len(months) != len(set(months)) or any(pd.Period(m, freq="M").year >= cfg["locked_year"] for m in months):
         raise ValueError("일별 카드 중복 월 또는 잠금 연도 요청")
-    RAW.mkdir(parents=True, exist_ok=True)
+    raw.mkdir(parents=True, exist_ok=True)
     entries = {}
-    for path in ([MANIFEST] if MANIFEST.exists() else []) + list(RAW.glob("*.source.json")):
+    sources = ([manifest] if manifest.exists() else []) + list(raw.glob("*.source.json"))
+    if cfg.get("reuse_manifest"):
+        sources.append(CASE / cfg["reuse_manifest"])
+    for path in sources:
         data = json.loads(path.read_text())
         for e in data["files"] if "files" in data else [data]:
             if e["month"] in entries and entries[e["month"]]["sha256"] != e["sha256"]:
@@ -73,11 +86,11 @@ def collect():
         title = f"BUS_STATION_BOARDING_MONTH_{month.replace('-', '')}.csv"
         jobs.append({"month": month, "source": source, "url": URL, "method": "POST", "title": title,
                      "request": download_request(response.text, cfg["dataset"], title),
-                     "path": str((RAW / f"card_daily_{month}.csv").relative_to(CASE))})
+                     "path": str((raw / f"card_daily_{month}.csv").relative_to(CASE))})
 
     def save():
-        write_json(MANIFEST, {"description": "월별 시간대 카드와의 집계·중복 구분 대조용 서울 면허 일별 카드 원본",
-                              "config_sha256": sha256(CASE / "overnight_daily_card_config.yaml"),
+        write_json(manifest, {"description": "월별 시간대 카드와의 집계·중복 구분 대조용 서울 면허 일별 카드 원본",
+                              "phase": phase, "config_sha256": sha256(CASE / config_name),
                               "files": sorted(entries.values(), key=lambda x: x["month"])})
 
     def fetch(spec):

@@ -12,7 +12,7 @@ import pandas as pd
 
 from .common import CASE, read_yaml, sha256, utcnow, write_json
 from .overnight_card import IDS, REGISTRY, RENAMES, hour_columns
-from .overnight_daily_card_data import HEADERS, MANIFEST, OUT, RAW, verify
+from .overnight_daily_card_data import HEADERS, locations, verify
 
 
 def select_rows(path, encoding, month, daily, stops):
@@ -94,15 +94,17 @@ def match_totals(daily, monthly):
     return result.rename(columns={"_merge": "source_membership"})
 
 
-def run():
-    cfg = read_yaml("overnight_daily_card_config.yaml")
-    sources = json.loads(MANIFEST.read_text())["files"]
+def run(phase="probe"):
+    config_name, manifest, raw, out = locations(phase)
+    cfg = read_yaml(config_name)
+    sources = json.loads(manifest.read_text())["files"]
     if {e["month"] for e in sources} != set(cfg["months"]):
         raise ValueError("일별 카드 수집 범위가 설정과 다릅니다")
     monthly = {x["month"]: x for x in json.loads((CASE / cfg["monthly_reference"]).read_text())["files"] if x["kind"] == "card"}
     stations = pd.read_csv(REGISTRY, dtype={"stop": str, "ars": str})
     stops = set(stations.stop)
-    OUT.mkdir(parents=True, exist_ok=True)
+    out.mkdir(parents=True, exist_ok=True)
+    raw.mkdir(parents=True, exist_ok=True)
     selected, audits, comparisons, variants = [], [], [], []
     for entry in sources:
         month = entry["month"]
@@ -123,21 +125,21 @@ def run():
         comparisons.append(compared)
         selected.append(daily_frame)
         print(f"일별·월별 카드 대조: {month} {len(daily_frame):,}행 / 월별 {len(monthly_frame):,}행", flush=True)
-    cache = RAW / "selected_daily.parquet"
+    cache = raw / "selected_daily.parquet"
     pd.concat(selected, ignore_index=True).to_parquet(cache, index=False)
     data = pd.concat(comparisons, ignore_index=True).merge(stations[["stop", "ars", "group"]], on="stop", validate="many_to_one")
-    data.to_csv(OUT / "monthly_reconciliation.csv", index=False)
-    pd.concat(variants, ignore_index=True).to_csv(OUT / "name_variants.csv", index=False)
+    data.to_csv(out / "monthly_reconciliation.csv", index=False)
+    pd.concat(variants, ignore_index=True).to_csv(out / "name_variants.csv", index=False)
     summary = data.groupby(["month", "group", "flow"]).agg(keys=("route_label", "size"), both_known=("both_known", "sum"),
                                                             exact_agreement=("exact_agreement", "sum"),
                                                             daily_record_sum=("record_sum_daily", complete_sum),
                                                             monthly_record_sum=("record_sum_monthly", complete_sum),
                                                             total_absolute_difference=("absolute_difference", complete_sum)).reset_index()
-    summary.to_csv(OUT / "reconciliation_summary.csv", index=False)
-    write_json(OUT / "audit.json", {"completed_at": utcnow(), "code_sha256": sha256(Path(__file__)),
-                                   "source_manifest_sha256": sha256(MANIFEST),
+    summary.to_csv(out / "reconciliation_summary.csv", index=False)
+    write_json(out / "audit.json", {"completed_at": utcnow(), "phase": phase, "code_sha256": sha256(Path(__file__)),
+                                   "source_manifest_sha256": sha256(manifest),
                                    "monthly_manifest_sha256": sha256(CASE / cfg["monthly_reference"]),
-                                   "config_sha256": sha256(CASE / "overnight_daily_card_config.yaml"),
+                                   "config_sha256": sha256(CASE / config_name),
                                    "files": audits, "selected_path": str(cache.relative_to(CASE)), "selected_sha256": sha256(cache),
-                                   "outputs": {p.name: sha256(p) for p in OUT.glob("*.csv")},
+                                   "outputs": {p.name: sha256(p) for p in out.glob("*.csv")},
                                    "scope": "명시적 기록 합계 대조이며 승객의 고유성·월중 이름 변형의 배타성을 단독으로 입증하지 않음. 중복 키를 지우지 않고 별도 표시."})
