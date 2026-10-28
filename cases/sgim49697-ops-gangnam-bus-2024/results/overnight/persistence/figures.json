@@ -1,0 +1,11 @@
+{
+  "code_sha256": "72418220df239598e68f2200a9d670326f0e4d8c57d2aadc10c49d9603dc001d",
+  "inputs": {
+    "comparisons.csv": "b1981069692cd320177098571ce1a082d239b726e40965c3fcbdfa82bb144553",
+    "pre2025_retention.csv": "e01a0772086a788bae7d2b1bbc437d6d326496e65d837a820036c0b75a4aaa05"
+  },
+  "outputs": {
+    "persistence_levels.png": "d7fbfa1b489e72658cfbce1c4cc6633e336141ae05c81db8404c991ec5147c85",
+    "persistence_retention.png": "be5cb7308090c4c189d283e5251aea342478ab6c331a8a0927c208d4fc20517a"
+  }
+}

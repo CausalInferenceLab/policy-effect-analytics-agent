@@ -1,0 +1,75 @@
+{
+  "description": "기준 예측 평가·2025년 지속성 탐색의 논문과 공식 맥락; 원본은 Git 제외.",
+  "files": [
+    {
+      "path": "data/overnight/probes/conformalized_quantile_regression_2019.pdf",
+      "url": "https://proceedings.neurips.cc/paper_files/paper/2019/file/5103c3584b063c431bd1268e9b5e76fb-Paper.pdf",
+      "bytes": 975107,
+      "sha256": "348d7f4ced8028de86d1c61f9c3da84e413cac2a0938c3dbc6ac62d21e994d97",
+      "retrieved_at": "2026-10-28T20:59:18.637401+00:00",
+      "finding": "학습과 보정 분리 및 분위수 잔차 보정; 시계열 교환가능성 보장으로 직접 전용하지 않음",
+      "status": "downloaded_and_relevant_local_text_checked",
+      "review_scope": "PDF 4~5쪽의 점수·교환가능성 조건 및 보정 순위"
+    },
+    {
+      "path": "data/overnight/probes/adaptive_conformal_time_series_2022.pdf",
+      "url": "https://proceedings.mlr.press/v162/zaffran22a/zaffran22a.pdf",
+      "bytes": 1416052,
+      "sha256": "7f908bcc760fd0bd5192ca7d7b255c861136aa7912638171ad58a50a2ec54cad",
+      "retrieved_at": "2026-10-28T20:59:17.581184+00:00",
+      "finding": "시계열 의존성과 적응 보정의 조건 검토; 이 프로젝트는 논문의 적응 알고리즘을 구현했다고 주장하지 않음",
+      "status": "downloaded_and_relevant_local_text_checked",
+      "review_scope": "초록·서론의 시계열 의존성과 교환가능성 한계"
+    },
+    {
+      "path": "data/overnight/probes/proper_scoring_rules_2007.pdf",
+      "url": "https://sites.stat.washington.edu/raftery/Research/PDF/Gneiting2007jasa.pdf",
+      "bytes": 556804,
+      "sha256": "d31a0c5f0ae8fec1a0a6544db5d056645b2d7296d71b44a2e8efb293c7d87ba2",
+      "retrieved_at": "2026-10-28T20:59:22.417432+00:00",
+      "finding": "예측구간 폭과 누락 벌점을 함께 평가하는 구간 점수",
+      "status": "downloaded_and_relevant_local_text_checked",
+      "review_scope": "6.2절 식 (43)의 구간 폭·누락 벌점"
+    },
+    {
+      "path": "data/overnight/probes/seoul_fare_history.html",
+      "url": "https://news.seoul.go.kr/traffic/archives/345",
+      "bytes": 113164,
+      "sha256": "da9723041e3b46c1a8008c4fa910d85259e6ef5449a24687fab0433f6279e4c5",
+      "retrieved_at": "2026-10-28T20:59:18.832048+00:00",
+      "finding": "2025-06-28 교통카드 지하철 일반 기본요금 1,400원에서 1,550원 변경",
+      "status": "downloaded_and_relevant_local_text_checked",
+      "review_scope": "지하철 요금조정 이력 표의 시행일·일반 교통카드 금액"
+    },
+    {
+      "path": "data/overnight/probes/temporary_holiday_20250603.html",
+      "url": "https://www.korea.kr/news/policyNewsView.do?newsId=148941443",
+      "bytes": 168513,
+      "sha256": "0a4781783d8d0317728ac795de5746a20e1d97cba9d7353fe736889230374f37",
+      "retrieved_at": "2026-10-28T20:59:19.462959+00:00",
+      "finding": "2025-04-08 발표한 6월 3일 임시공휴일",
+      "status": "downloaded_and_relevant_local_text_checked",
+      "review_scope": "부처합동 발표일·선거일 임시공휴일 지정"
+    },
+    {
+      "path": "data/overnight/probes/kpass_start_2024.html",
+      "url": "https://www.molit.go.kr/mtc/USR/N0201/m_36770/dtl.jsp?id=95089685&lcmspage=1",
+      "bytes": 35626,
+      "sha256": "e3af9f22e062bf475150af135f783b272c62ba4abf6bb8c5a2097d677c7dc0aa",
+      "retrieved_at": "2026-10-28T20:59:19.825033+00:00",
+      "finding": "2024-05-01 K-패스 혜택 적용; 월 카드 4~5월 기준 창이 시행 전후를 포함",
+      "status": "downloaded_and_relevant_local_text_checked",
+      "review_scope": "국토교통부 보도자료의 시행일"
+    },
+    {
+      "path": "data/overnight/probes/gyeonggi_pass_start_2024.html",
+      "url": "https://gnews.gg.go.kr/news/news_view.do?number=202404241436287416C109&s_code=C109&type_m=main",
+      "bytes": 56564,
+      "sha256": "a5fac86c3aafeaba6847342679f6fad6acfa9bdaf4b02b2969ef634edfebe9f4",
+      "retrieved_at": "2026-10-28T20:59:20.430601+00:00",
+      "finding": "K-패스 기반 더 경기패스 2024-05-01 시행",
+      "status": "downloaded_and_relevant_local_text_checked",
+      "review_scope": "경기도 공식 안내의 시행일·연계 범위"
+    }
+  ]
+}

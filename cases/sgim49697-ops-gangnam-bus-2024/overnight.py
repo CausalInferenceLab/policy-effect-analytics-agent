@@ -55,6 +55,9 @@ STAGES = {
     "forecast-plots": ("overnight_forecast_plots", "plot", []),
     "baseline-prepare": ("overnight_baseline_runner", "prepare", []),
     "baseline-evaluate": ("overnight_baseline_evaluate", "evaluate", []),
+    "baseline-plots": ("overnight_baseline_plots", "plot", []),
+    "persistence": ("overnight_persistence", "run", []),
+    "persistence-plots": ("overnight_persistence_plots", "plot", []),
 }
 
 

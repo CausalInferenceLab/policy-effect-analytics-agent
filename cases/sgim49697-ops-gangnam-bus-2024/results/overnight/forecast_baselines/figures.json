@@ -1,0 +1,12 @@
+{
+  "code_sha256": "f6c3875019c59ca5cc9d6d4f8da92f7dd64ea89b614d950d90e3fb25b4b2218b",
+  "inputs": {
+    "probability_metrics.csv": "ebba748af0fd88aa04ec52691064bfec0599861e495aa43ddf252595e5cd40a8",
+    "quantile_metrics.csv": "33555315799ec1cafcff0a2cde26dc54cdc882f864de33b04e70375c610d9447"
+  },
+  "outputs": {
+    "relative_baselines.png": "2165887fd6ec68818e96a59ee7495944d816815250908c9fc4f76f55b370653b",
+    "alert_budget.png": "9f312460224f1151c2acab369ebf4b437309d688545e84f1d8341cf0af9aaf7a",
+    "quantile_baselines.png": "a22bca1d07f6a284dee476dcfd3057dacf9892f8e3bd2d5016c4e19b6aae6358"
+  }
+}
