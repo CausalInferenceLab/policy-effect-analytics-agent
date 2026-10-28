@@ -1,0 +1,61 @@
+# overnight_forecast_baselines_config.yaml - 이미 공개한 시험의 상대 저속·분위수 기준 모델 사후 비교
+recorded_at_utc: '2026-10-28T20:34:00Z'
+mode: exploratory_baselines_after_frozen_test_was_observed
+base_config: overnight_forecast_config.yaml
+frozen_selection: results/overnight/forecast/selection_manifest.json
+output: results/overnight/forecast_baselines
+cache: data/overnight/forecast_baselines
+locked_year: 2026
+splits: 기존 train·tuning·calibration·decision·test의 날짜와 핵심 3개·전체 62개 링크를 유지
+training: 2023~2024년만 사용; 보정은 2025년 3월 핵심 3개, 경보 임계값은 4월 핵심 3개
+test: 2025년 5~8월은 기존에 결과를 본 자료이므로 새 독립 시험으로 표현하지 않음
+relative_probability:
+  label: label_q20
+  models:
+    - {name: seasonal_q20, family: seasonal, feature_set: calendar_only, smoothing_count: 20}
+    - {name: calendar_logistic_q20, family: logistic, feature_set: calendar_only, C: 1.0}
+    - {name: weekly_logistic_q20, family: logistic, feature_set: weekly_delayed, C: 1.0}
+  seed: 17
+  sampling: 기존 모델 함수와 링크당 최대 4000개 균등 표본; 계절 빈도는 전체 학습 관측 사용
+  calibration: 기존 sigmoid 보정 함수; 시험에서 재보정하지 않음
+  original_rule: 기존과 같은 4월 FPR 10% 이하에서 재현율 최대·동률이면 높은 임계값
+  additional_budget:
+    maximum_alerts_per_calendar_day: 2.0
+    maximum_false_positive_rate: 0.10
+    choice: 4월에서만 두 상한을 지키는 최대 재현율·동률이면 높은 임계값
+    scope: 핵심 3개 링크의 합계 링크·시간 경보 수; 하루 알림 메시지 수 또는 고유 사건 수가 아님
+    include_frozen_relative_model: 별도 예산 시나리오만 추가; 기존 임계값과 결과는 덮어쓰지 않음
+quantiles:
+  levels: [0.1, 0.5, 0.9]
+  baselines:
+    calendar_empirical:
+      groups: [link_id, weekday, hour]
+      minimum_group_rows: 30
+      fallback: 학습기 link_id·hour, 이어서 link_id, 이어서 전체 학습기의 경험 분위수
+      quantile_method: linear
+    weekly_empirical:
+      lag_columns: [speed_weekly_lag_168, speed_weekly_lag_336, speed_weekly_lag_504, speed_weekly_lag_672]
+      minimum_observed_lags: 3
+      fallback: 학습기 calendar_empirical
+      quantile_method: linear
+  comparator: 기존 동결 CatBoost 분위수 예측
+  calibration_sensitivity:
+    nominal_coverage: 0.80
+    period: calibration
+    scope: fixed_primary_three_links
+    score: max(q10-y, y-q90)
+    expansion: max(0, 정렬된 점수의 ceil((n+1)*0.80)번째 값)
+    apply: 세 방법의 보정 전·후 모두 공개; 사후 데이터로 보정 폭 변경 금지
+    note: 시간 의존성과 계절 이동이 있어 교환가능성을 가정한 분포무관 보장으로 표현하지 않음
+evaluation:
+  primary_scope: primary_three_links
+  slices: [all_hours, evening_17_19, per_link, per_month]
+  probability: [average_precision, brier, log_loss, precision, recall, false_positive_rate, alerts_per_day]
+  quantile: [mean_pinball, coverage, width, median_mae, interval_score_alpha_0.2, crossing_fraction]
+  paired_uncertainty: 동일 날짜·링크를 정렬한 달력 주 공동 재표집 1000회, seed 17
+  failure: 불완전한 키·해시·시간 범위는 중단; 실패한 방법을 임의 교체하거나 시험 점수로 설정 수정하지 않음
+resources: {cpu_threads: 6, maximum_training_hours: 1}
+references:
+  - https://proceedings.neurips.cc/paper_files/paper/2019/hash/5103c3584b063c431bd1268e9b5e76fb-Abstract.html
+  - https://proceedings.mlr.press/v162/zaffran22a.html
+  - https://sites.stat.washington.edu/raftery/Research/PDF/Gneiting2007jasa.pdf
