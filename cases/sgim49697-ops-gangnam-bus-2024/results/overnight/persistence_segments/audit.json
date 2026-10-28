@@ -1,0 +1,87 @@
+{
+  "completed_at": "2026-10-28T21:30:10.685548+00:00",
+  "configuration": {
+    "version": 1,
+    "mode": "exploratory_after_directional_persistence_results",
+    "locked_year": 2026,
+    "parent_config": "overnight_persistence_config.yaml",
+    "cohort": "frozen_pre2023_pre2024",
+    "subset": "other_or_unclassified",
+    "selection": "preserve_original_pre2023_pre2024_cells_and_baseline2024",
+    "segments": "same_direction_adjacent_registry_order_only",
+    "nonadjacent_cells": "audit_separately_do_not_reassign",
+    "minimum_segment_routes": 3,
+    "bands": [
+      "morning",
+      "midday",
+      "evening",
+      "late"
+    ],
+    "comparisons": {
+      "summer2024": [
+        "pre2024",
+        "post2024"
+      ],
+      "summer2025": [
+        "pre2025",
+        "post2025"
+      ],
+      "pre_year_over_year": [
+        "pre2024",
+        "pre2025"
+      ],
+      "post_year_over_year": [
+        "post2024",
+        "post2025"
+      ],
+      "post2025_from_pre2024": [
+        "pre2024",
+        "post2025"
+      ]
+    },
+    "aggregation": "equal_cells",
+    "minimum_coverage": 0.8,
+    "minimum_days": 20,
+    "maximum_coverage_gap": 0.1,
+    "bootstrap": {
+      "draws": 2000,
+      "seed": 20261029
+    },
+    "intervals": "segment_comparisons_evening_only",
+    "leave_one_out": {
+      "band": "evening",
+      "units": [
+        "segment",
+        "route"
+      ],
+      "selection": "remove_each_preselected_unit_once_no_result_based_removal",
+      "normalization": "preserve_remaining_original_baselines",
+      "minimum_remaining_routes": 3,
+      "interpretation": "구성 영향 진단이며 제외된 구간·노선의 인과 효과가 아님"
+    },
+    "station_labels": "registry_id_ars_and_order_historical_pairs_checked_not_historical_geometry_proof",
+    "interpretation": "구간별 기술적 지속성·집중도이며 최댓값을 사후 주 가설로 확정하지 않음"
+  },
+  "code_sha256": "5096ef6639f6db94cb2162d7e60301f697f55b5fe53acaadc8fb6cd6cbae130e",
+  "inputs": {
+    "results/overnight/persistence/audit.json": "2f5ffcf2ce480b265e3eb0232cf939b7df232eef57a0061beae9729dd0bdbe25",
+    "results/overnight/persistence/pre2025_retention.csv": "e01a0772086a788bae7d2b1bbc437d6d326496e65d837a820036c0b75a4aaa05",
+    "results/directional/station_registry.csv": "78c072f3d5496d385bfaf8a4be45ea5545d0e49d5324d54ee2e81ba65b571779",
+    "gangnam/overnight_sensitivity.py": "a490bc4d816deff003edf9537d293680af23c6e8b178062ea415f40af03079c6",
+    "gangnam/overnight_bus.py": "96c3cfb933ef99194a985b24c2ef12c95ed960f78db1fba0dd85c2f748b31a10",
+    "gangnam/overnight_bus_extract.py": "be3dae8d641f53574b624aaf841738797f7ec8f800eac188d4c1bbf97da24303",
+    "gangnam/directional.py": "e4f322a06c00154b6667f18cac83782b9f79e98105e492195d0d888613fd34c8"
+  },
+  "excluded_new_revisit_rows": 0,
+  "segment_comparisons": 280,
+  "segment_quality_pass": 280,
+  "leave_one_out_comparisons": 500,
+  "leave_one_out_quality_pass": 500,
+  "outputs": {
+    "segment_comparisons.csv": "4ca073975abe93f05ebdc0602619f19272886f99071e166e2c6170bbda30d3ee",
+    "daily_segments.csv": "610006fe7fc7826ad6fd0a66bcdc50fbc15351ad7141c542258dec8853b2ace7",
+    "selected_cells.csv": "9654c963b34e8c11253694f84d862a795339e7dadd757386b847717e220ba79a",
+    "excluded_nonadjacent.csv": "295da8401fc77d46f87cb7e614faa04cee28cb732928dd4cc9d47b41f0bee70b",
+    "leave_one_out.csv": "5e01025157d619c682466afe53acef60a25876ed7bc22baacf7ccaeea30c3aa2"
+  }
+}

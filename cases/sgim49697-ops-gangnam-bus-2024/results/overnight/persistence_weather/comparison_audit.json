@@ -1,0 +1,80 @@
+{
+  "completed_at": "2026-10-28T21:20:02.589201+00:00",
+  "configuration": {
+    "version": 1,
+    "mode": "exploratory_after_persistence_results",
+    "locked_year": 2026,
+    "months": [
+      "2025-05",
+      "2025-06",
+      "2025-07",
+      "2025-08"
+    ],
+    "weather_base_config": "overnight_config.yaml",
+    "stations": [
+      401,
+      400,
+      108
+    ],
+    "primary_station": 401,
+    "alignment_offsets_hours": [
+      -1,
+      0,
+      1
+    ],
+    "primary_alignment_offset": 0,
+    "primary_scheme": "rain_temperature",
+    "schemes": [
+      "weekday",
+      "rain",
+      "rain_temperature",
+      "rain_temperature_weekday"
+    ],
+    "temperature_edges_c": [
+      20,
+      25,
+      30
+    ],
+    "minimum_common_days": 20,
+    "minimum_retained_fraction": 0.8,
+    "minimum_days_per_stratum": 2,
+    "retention_denominator": "all_bus_quality_valid_days_in_each_period",
+    "unknown_precipitation": "keep_unknown",
+    "source_claim": "public_reference_observation_not_formal_historical_qc",
+    "bus_cohort": "frozen_pre2023_pre2024",
+    "bus_subsets": [
+      "all_preselected",
+      "other_or_unclassified"
+    ],
+    "aggregation": "equal_cells",
+    "periods_from": "overnight_persistence_config.yaml",
+    "outputs": "results/overnight/persistence_weather",
+    "raw_hourly": "data/overnight/persistence_weather/hourly.parquet",
+    "preserve_existing_weather_manifest": true,
+    "preserve_existing_weather_outputs": true,
+    "download_workers": 2,
+    "maximum_response_bytes": 2097152,
+    "failed_request": "preserve_error_and_missingness_do_not_accept_changed_timestamp",
+    "interpretation": "기상 분포 표준화는 기술 비교이며 동시 정책·노선 변경 등 모든 교란을 제거하지 않음"
+  },
+  "code_sha256": "f98c372462f900bd105610c5a1adc08327eaeb302d9f79687c82ea0f2d75c004",
+  "comparisons": 2304,
+  "usable": 1160,
+  "inputs": {
+    "results/overnight/persistence/audit.json": "2f5ffcf2ce480b265e3eb0232cf939b7df232eef57a0061beae9729dd0bdbe25",
+    "results/overnight/persistence/daily_equal_cells.csv": "b6fb2d41deb8d3cdc8618a330ca29165e80e364e4cb94183730fb04593db4365",
+    "results/overnight/persistence/comparisons.csv": "b1981069692cd320177098571ce1a082d239b726e40965c3fcbdfa82bb144553",
+    "results/overnight/weather/daily_bands.csv": "907817a58b21733ff15f7fa2272c2ef2de40ca05925fa0cb4475031935b1fceb",
+    "results/overnight/persistence_weather/daily_bands_2025.csv": "be69f6c726e3fa842f8e4746d9ca6e430e77f3c95082be2a75fa06f28116fca9",
+    "results/overnight/persistence_weather/preparation_audit.json": "2bcfd00077d43538e666cb66f313f3234090b4332c5d1170117b52a72e373a89",
+    "gangnam/overnight_weather_analysis.py": "f981f85e2977ea487718b4a7ed01ed72424601ae6c96235b485e568d282313a0",
+    "gangnam/directional.py": "e4f322a06c00154b6667f18cac83782b9f79e98105e492195d0d888613fd34c8"
+  },
+  "outputs": {
+    "comparisons.csv": "23527acaaa9c3d72fc16d4421a4e734a97ba1c2f4274fbba16761ef0bd024464",
+    "common_strata.csv": "80aab1ffe16014100cfe758c9fe602fff25ff440a6699044a50d17a992b95d93",
+    "period_weather.csv": "ff83d8a0b61344657757a27476cd163c2534d2e339563f17a1a4f7cfb4964b98"
+  },
+  "collection_complete": true,
+  "interpretation": "같은 관측 날씨 층의 기술적 표준화. 관측소·시각·층 선택의 실패도 보고하며 인과 조정을 주장하지 않음."
+}

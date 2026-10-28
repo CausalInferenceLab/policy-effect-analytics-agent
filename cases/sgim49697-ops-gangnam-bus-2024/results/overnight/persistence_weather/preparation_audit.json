@@ -1,0 +1,78 @@
+{
+  "overlap_rows": 4896,
+  "conflicting_keys_quarantined": 0,
+  "completed_at": "2026-10-28T21:19:50.227662+00:00",
+  "configuration": {
+    "version": 1,
+    "mode": "exploratory_after_persistence_results",
+    "locked_year": 2026,
+    "months": [
+      "2025-05",
+      "2025-06",
+      "2025-07",
+      "2025-08"
+    ],
+    "weather_base_config": "overnight_config.yaml",
+    "stations": [
+      401,
+      400,
+      108
+    ],
+    "primary_station": 401,
+    "alignment_offsets_hours": [
+      -1,
+      0,
+      1
+    ],
+    "primary_alignment_offset": 0,
+    "primary_scheme": "rain_temperature",
+    "schemes": [
+      "weekday",
+      "rain",
+      "rain_temperature",
+      "rain_temperature_weekday"
+    ],
+    "temperature_edges_c": [
+      20,
+      25,
+      30
+    ],
+    "minimum_common_days": 20,
+    "minimum_retained_fraction": 0.8,
+    "minimum_days_per_stratum": 2,
+    "retention_denominator": "all_bus_quality_valid_days_in_each_period",
+    "unknown_precipitation": "keep_unknown",
+    "source_claim": "public_reference_observation_not_formal_historical_qc",
+    "bus_cohort": "frozen_pre2023_pre2024",
+    "bus_subsets": [
+      "all_preselected",
+      "other_or_unclassified"
+    ],
+    "aggregation": "equal_cells",
+    "periods_from": "overnight_persistence_config.yaml",
+    "outputs": "results/overnight/persistence_weather",
+    "raw_hourly": "data/overnight/persistence_weather/hourly.parquet",
+    "preserve_existing_weather_manifest": true,
+    "preserve_existing_weather_outputs": true,
+    "download_workers": 2,
+    "maximum_response_bytes": 2097152,
+    "failed_request": "preserve_error_and_missingness_do_not_accept_changed_timestamp",
+    "interpretation": "기상 분포 표준화는 기술 비교이며 동시 정책·노선 변경 등 모든 교란을 제거하지 않음"
+  },
+  "expected_requests": 189,
+  "accepted_requests": 189,
+  "missing_request_keys": [],
+  "failures": [],
+  "collection_complete": true,
+  "hourly_rows": 8856,
+  "hourly_path": "data/overnight/persistence_weather/hourly.parquet",
+  "hourly_sha256": "320d773133110ceebedff5764d360be084a5cd1db2e0a67dd9a9b91e0e0d6ec8",
+  "source_manifest_sha256": "5ec3af428b21a67289d662c602b4efb9d6a03b6065713c4e2b36387a75aa3e01",
+  "code_sha256": "ab5c9ed47085d9b4b235f33baa450034fb464b9f35b3d5c2c7c03526e5b8294e",
+  "parser_sha256": "1ada1931e2dd3f26b9291ac3d2b960996e73935901f5e17d28f1cc93573ff159",
+  "outputs": {
+    "daily_bands_2025.csv": "be69f6c726e3fa842f8e4746d9ca6e430e77f3c95082be2a75fa06f28116fca9",
+    "hourly_quality.csv": "3860e3a8bbe68a187241b732abbb579fea4e0b5cbec7e18717829ca3272e6474",
+    "field_status_counts.csv": "e6103e682affbb5b4b7f4ef60641d6842c5320bc794e1da37b54abb1ece6523a"
+  }
+}

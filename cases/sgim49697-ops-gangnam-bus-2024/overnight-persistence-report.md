@@ -44,10 +44,24 @@
 
 ## 동시 변화와 다음 확인
 
+### 추가 지역 기상 비교
+
+[기상 연장 규칙](overnight_persistence_weather_config.yaml)을 `63d08ce`에 저장한 뒤 2025년 5~8월 서초(401)·강남(400)·서울(108)의 공개 AWS 시간 응답 189개를 추가했다. 요청 시각·지점·간격 검증 실패와 겹친 시각 수치 충돌은 0개였다. 예정 8,856개 관측소·시간 중 기온 8,848개, 시간 강수 8,815개가 수치로 관측됐다. 빈칸·비수치 표시는 0으로 채우지 않았다. 공식 역사 QC 파일이 아닌 [기상청 공개 참조 화면](https://www.weather.go.kr/w/weather/land/aws-obs.do)의 자료다.
+
+같은 2024년 기상과 결합해 비·기온 분류의 공통 층을 비교했다. 양쪽 최소 20일·유효 버스 날짜의 80% 유지 조건은 낮추지 않았다. **2024 사전→2025 사전의 저녁 비교는 3개 관측소×3개 시각 정렬 조합이 모두 통과**했다. 남행 −7.29~−5.66%, 북행 +12.07~+13.99%로 부호가 유지된다. 주 설정인 서초·시각 이동 0은 남행 −6.03%, 북행 +13.40%, 사용 날짜 27일·24일이다. 같은 자료의 민감도 9개이며 독립적인 9번의 재검증은 아니다.
+
+![기상 비교와 관측 조건](results/overnight/persistence_weather/weather_support.png)
+
+2025년 사전→여름은 주 설정에서 17일·26일만 공통 층에 남아 **실패**했다. 전체 9개 중 서초 −1시간 조합 하나만 통과했고 이를 주 결과로 바꾸지 않았다. 2024년 안의 계절 비교도 여전히 9개 중 1개만 통과한다. 여름끼리의 연도 비교는 7개가 통과하지만 북행 부호가 조합별로 달라 일관된 증가라고 해석하지 않는다. 전체 2,304개 비교 중 1,160개 통과와 모든 실패를 [기상 비교표](results/overnight/persistence_weather/comparisons.csv)에 남겼다.
+
+이 결과는 **관측한 비·기온 분류를 맞춰도 같은 계절의 방향별 수준 차이가 남는다**는 뜻이다. 관측되지 않은 기상·노선 구성·정책·수요 변화까지 제거했다는 뜻은 아니다. 원래 기상 출처·결과는 보존했으며 [추가 출처](overnight-persistence-weather-sources.json), [수집·준비 감사](results/overnight/persistence_weather/preparation_audit.json), [비교 감사](results/overnight/persistence_weather/comparison_audit.json)를 제공한다. 재현 단계는 `persistence-weather-collect`, `persistence-weather-prepare`, `persistence-weather`, `persistence-weather-plots`다.
+
+### 정책 맥락과 다음 구간 분석
+
 [서울시 요금 이력](https://news.seoul.go.kr/traffic/archives/345)에 따르면 2025년 6월 28일 지하철 교통카드 일반 기본요금이 1,400원에서 1,550원으로 바뀌었다. 2025년 계절 비교의 대안 설명으로 남기며 현재 자료로 버스 전환량을 계산하지 않는다.
 
 2024년은 [K-패스](https://www.molit.go.kr/mtc/USR/N0201/m_36770/dtl.jsp?id=95089685&lcmspage=1)와 [더 경기패스](https://gnews.gg.go.kr/news/news_view.do?number=202404241436287416C109&s_code=C109&type_m=main)가 5월 1일부터 시행됐다. 이번 일별 사전 창은 그 뒤지만 기존 월 카드 4~5월 기준은 시행 전후를 함께 포함한다. [구성역·기후동행카드 등 기존 동시 정책](overnight-context-report.md)과 함께 해석해야 한다.
 
-다음에는 같은 표본에서 구간별 지속성을 나누고 2025년 지역 기상을 추가해 공통 날씨 조건이 충분한지 확인한다. 현재 결과에 ‘기상 보정 완료’라는 표현을 붙이지 않는다. 북행 증가가 특정 구간·노선에 집중되는지도 확인할 가치가 있다.
+다음에는 같은 표본에서 구간별 지속성을 나누고 북행 증가가 특정 구간·노선에 집중되는지 확인한다. 모든 기간·관측소에서 조건을 통과한 것이 아니므로 전체 결과에 포괄적으로 ‘기상 보정 완료’라는 표현을 붙이지 않는다.
 
 사례 환경에서 `python overnight.py persistence`, `python overnight.py persistence-plots`로 재현한다. [관측 상태 분해](results/overnight/persistence/record_states.csv), [2025 사전 유지율](results/overnight/persistence/pre2025_retention.csv), [감사 명세](results/overnight/persistence/audit.json), [관련 출처](overnight-supplement-references.json)를 함께 제공한다. 기존 예측 모델·코드 동결과 2026년 잠금 자료는 유지했다.

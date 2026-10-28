@@ -58,6 +58,14 @@ STAGES = {
     "baseline-plots": ("overnight_baseline_plots", "plot", []),
     "persistence": ("overnight_persistence", "run", []),
     "persistence-plots": ("overnight_persistence_plots", "plot", []),
+    "persistence-weather-collect": ("overnight_persistence_weather_data", "collect", []),
+    "persistence-weather-prepare": ("overnight_persistence_weather_data", "prepare", []),
+    "persistence-weather": ("overnight_persistence_weather", "run", []),
+    "persistence-weather-plots": ("overnight_persistence_weather_plots", "plot", []),
+    "relative-ablation-prepare": ("overnight_relative_ablation", "prepare", []),
+    "relative-ablation-evaluate": ("overnight_relative_ablation", "evaluate", []),
+    "persistence-segments": ("overnight_persistence_segments", "run", []),
+    "persistence-segments-plots": ("overnight_persistence_segments_plots", "plot", []),
 }
 
 
