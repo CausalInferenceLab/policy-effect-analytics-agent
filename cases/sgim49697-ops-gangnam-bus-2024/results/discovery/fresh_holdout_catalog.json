@@ -1,0 +1,136 @@
+{
+  "checked_at": "2026-10-28T13:12:20.061009+00:00",
+  "source": "https://topis.seoul.go.kr/refroom/selectRefRoomListASC.do",
+  "method": "POST",
+  "request_common": {
+    "bdwrDivCd": "2026",
+    "mainBdwrRowNum": "12"
+  },
+  "blbdDivCd": {
+    "speed": "06",
+    "volume": "08"
+  },
+  "status": "catalog_only_no_observation_values_read",
+  "catalog": [
+    {
+      "type": "speed",
+      "year": 2026,
+      "files": [
+        {
+          "months": "01",
+          "apndFileNm": "2026년 1월 서울시 차량통행속도.xlsx",
+          "apndFilePathNm": "177016278078651557643311102739.xlsx",
+          "bdwrSeq": "5586"
+        },
+        {
+          "months": "02",
+          "apndFileNm": "2026년 2월 서울시 차량통행속도.xlsx",
+          "apndFilePathNm": "177249709403153895702695786010.xlsx",
+          "bdwrSeq": "5622"
+        },
+        {
+          "months": "03",
+          "apndFileNm": "2026년 3월 서울시 차량통행속도.xlsx",
+          "apndFilePathNm": "177543232483256830933496743021.xlsx",
+          "bdwrSeq": "5682"
+        },
+        {
+          "months": "04",
+          "apndFileNm": "2026년 4월 서울시 차량통행속도.xlsx",
+          "apndFilePathNm": "177802462786459423236528318119.xlsx",
+          "bdwrSeq": "5721"
+        },
+        {
+          "months": "05",
+          "apndFileNm": "2026년 5월 서울시 차량통행속도.xlsx",
+          "apndFilePathNm": "178036676416661765372830377737.xlsx",
+          "bdwrSeq": "5931"
+        },
+        {
+          "months": "06",
+          "apndFileNm": "2026년 6월 서울시 차량통행속도.xlsx",
+          "apndFilePathNm": "178286352966964262138333693046.xlsx",
+          "bdwrSeq": "6005"
+        },
+        {
+          "months": "07",
+          "apndFileNm": "2026년 7월 서울시 차량통행속도.xlsx",
+          "apndFilePathNm": "178571476178667109624311234303.xlsx",
+          "bdwrSeq": "6078"
+        },
+        {
+          "months": "08",
+          "apndFileNm": "2026년 8월 서울시 차량통행속도.xlsx",
+          "apndFilePathNm": "178823621635269631078877491194.xlsx",
+          "bdwrSeq": "6130"
+        },
+        {
+          "months": "09",
+          "apndFileNm": "2026년 9월 서울시 차량통행속도.xlsx",
+          "apndFilePathNm": "179081365631972212264984056071.xlsx",
+          "bdwrSeq": "6204"
+        }
+      ]
+    },
+    {
+      "type": "volume",
+      "year": 2026,
+      "files": [
+        {
+          "months": "01",
+          "apndFileNm": "01월 서울시 교통량 조사자료(2026).xlsx",
+          "apndFilePathNm": "177190928508253307893746335885.xlsx",
+          "bdwrSeq": "5609"
+        },
+        {
+          "months": "02",
+          "apndFileNm": "02월 서울시 교통량 조사자료(2026).xlsx",
+          "apndFilePathNm": "177520057663356599185297373501.xlsx",
+          "bdwrSeq": "5663"
+        },
+        {
+          "months": "03",
+          "apndFileNm": "03월 서울시 교통량 조사자료(2026).xlsx",
+          "apndFilePathNm": "177698699794458381860469048095.xlsx",
+          "bdwrSeq": "5707"
+        },
+        {
+          "months": "04",
+          "apndFileNm": "04월 서울시 교통량 조사자료(2026).xlsx",
+          "apndFilePathNm": "177925154884860650157513161658.xlsx",
+          "bdwrSeq": "5763"
+        },
+        {
+          "months": "05",
+          "apndFileNm": "05월 서울시 교통량 조사자료(2026).xlsx",
+          "apndFilePathNm": "178236402013863762628802881200.xlsx",
+          "bdwrSeq": "5997"
+        },
+        {
+          "months": "06",
+          "apndFileNm": "06월 서울시 교통량 조사자료(2026).xlsx",
+          "apndFilePathNm": "178461890821166013770736871554.xlsx",
+          "bdwrSeq": "6055"
+        },
+        {
+          "months": "07",
+          "apndFileNm": "07월 서울시 교통량 조사자료(2026).xlsx",
+          "apndFilePathNm": "178761876764469013630169431442.xlsx",
+          "bdwrSeq": "6114"
+        },
+        {
+          "months": "08",
+          "apndFileNm": "08월 서울시 교통량 조사자료(2026).xlsx",
+          "apndFilePathNm": "178962351810471018380629399354.xlsx",
+          "bdwrSeq": "6184"
+        },
+        {
+          "months": "09",
+          "apndFileNm": "09월 서울시 교통량 조사자료(2026).xlsx",
+          "apndFilePathNm": "179196448990373363098567641048.xlsx",
+          "bdwrSeq": "6230"
+        }
+      ]
+    }
+  ]
+}

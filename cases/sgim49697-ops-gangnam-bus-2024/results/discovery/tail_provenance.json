@@ -1,0 +1,60 @@
+{
+  "mode": "posthoc_exploratory",
+  "fit": {
+    "fit_start": "2023-01-01",
+    "fit_end": "2024-03-31",
+    "quantile": 0.1,
+    "groups": [
+      "link_id",
+      "hour",
+      "weekend"
+    ],
+    "models": [
+      "catboost",
+      "chronos2",
+      "weekly_naive",
+      "weekday_hour_mean"
+    ],
+    "splits": [
+      "pre_test",
+      "post_test"
+    ],
+    "horizons": [
+      1,
+      3
+    ],
+    "note": "학습 기간의 링크×시각×주말 여부별 하위 10% 속도. 절대 정체 판정이나 시험자료로 튜닝한 경보기가 아니다."
+  },
+  "threshold_groups": 4320,
+  "source_hashes": {
+    "data/processed/2023-01.parquet": "e149005833e1d8adccbe077a35a4de1ad7c373424a505f97efc17627e71fb382",
+    "data/processed/2023-02.parquet": "493296a44c67820b7fadb6a35ac433dae490e0ce2ff2bf9a96e5c43daa148495",
+    "data/processed/2023-03.parquet": "aa8d3bbdd6b8fa76153dd8a49141fd5e025227fc56cdfc498025e087d78e8a35",
+    "data/processed/2023-04.parquet": "48fbd1667ab5d9e156251b0ca26e76c1ca392bc0d386363b90bc9cf10a824f50",
+    "data/processed/2023-05.parquet": "188dff39036a060f0ba11703d57ab71e85a0f94a033a146f8ed431da242971b7",
+    "data/processed/2023-06.parquet": "4a2892cdc564044421e567b0f624517920c7837ba6c4eb3ba4870155808536e5",
+    "data/processed/2023-07.parquet": "57bd19c3a49331b6c47af3ce40e6f0aba3e6e946b28ffc75a78473793f152a36",
+    "data/processed/2023-08.parquet": "31ac716b08b55eb824f490ce575a94626cba337b7ae1534c018cef897e40c896",
+    "data/processed/2023-09.parquet": "1f70a724c0a2f7edb3c8b4a2bb25504ec5d093c61b008a9a6d7702be61316fcc",
+    "data/processed/2023-10.parquet": "a9c5194dce1cdef47f32f70b1e44434768f9f0eca9547b3634b2209464c8249e",
+    "data/processed/2023-11.parquet": "05c9dde2e040398eb56ed35d44e70bfafdea9435e5f377b494a73adb4dd44c49",
+    "data/processed/2023-12.parquet": "ec58b1cc5966255e67c0587a966f5e20d540900e7d41b924c42430ba54bdd5d0",
+    "data/processed/2024-01.parquet": "fd0acede1355d8107341727a093cb0205752fa2eda528015bc5856b45fb1c20e",
+    "data/processed/2024-02.parquet": "9bd80ac6b903ac962b77301997fdbd871841c51addea339494b321094bbb8147",
+    "data/processed/2024-03.parquet": "ed850ea74ffd80a095ec0fede10381121aa492e99aa6935a83f5e7e9a6dfb9ad",
+    "runs/exploration_20261028/catboost/pre_test-seed-17.parquet": "7dd9a9d7f89924887787ee23537b9233f8d7ad6726c03d9c0ee23e4311438443",
+    "runs/exploration_20261028/catboost/pre_test-seed-42.parquet": "74a790871975075a327b30f8da14b04fb87ee9acc9f50ac12dab7ec1f046891a",
+    "runs/exploration_20261028/catboost/pre_test-seed-2026.parquet": "0cada67737bcd960d46787571426472ba096ca99e19377a8e7611ebcbdec66ec",
+    "runs/exploration_20261028/catboost/post_test-seed-17.parquet": "f998015cb8ab428c5207942466166c764815a8ff6024a6c67f37b835e4d66dc1",
+    "runs/exploration_20261028/catboost/post_test-seed-42.parquet": "ed8d6c1349f77c36dc6be2cca7e22c277b17b57f69658176696771532850ebea",
+    "runs/exploration_20261028/catboost/post_test-seed-2026.parquet": "64ffbb9ff9bfc422df2b0b49077cebff7d53032ed0e28cb2b547804a0315e0a6",
+    "runs/exploration_20261028/chronos2/pre_test-seed-0.parquet": "804dc5661d7c4044df65e694106e99dacfcfb6deba46613fd8e3242b76c52b0e",
+    "runs/exploration_20261028/chronos2/post_test-seed-0.parquet": "d2d402c3f607349525674e91e290abf28dc4f6ab64f294db1faca0c57dc01145",
+    "runs/exploration_20261028/weekly_naive/pre_test-seed-0.parquet": "652a82b906341dea3f92d5c6ed7f1892cd7ca7d085ecf6ec8fed5483c2c5c72e",
+    "runs/exploration_20261028/weekly_naive/post_test-seed-0.parquet": "b5167c7ea3112570ff94bff01cf9f024ac0f1153bbdd3cc21b0b48cfabef2798",
+    "runs/exploration_20261028/weekday_hour_mean/pre_test-seed-0.parquet": "c96821156501efb9e61ca828ca914a13f20977683cd046578f87e182eaa2ecd8",
+    "runs/exploration_20261028/weekday_hour_mean/post_test-seed-0.parquet": "e2437ae9d7b7e8bd5045f31700941c89209ffec2d9f06a5f310b05915d5d987f"
+  },
+  "discovery_config_sha256": "1f0b06745710fc8f305ed9bff3e0df9205415648cc2dce4aad745ace4d1ff510",
+  "code_sha256": "bc4bf7bf86b5cbc96ca26de33b8d0295a0017210e1483dc24b516eee0759d6ad"
+}

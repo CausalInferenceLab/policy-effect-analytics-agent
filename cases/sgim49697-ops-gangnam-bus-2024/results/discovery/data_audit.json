@@ -1,0 +1,988 @@
+{
+  "mode": "posthoc_exploratory",
+  "bus": {
+    "master_valid_on_2024": "unverified",
+    "route_master_rows": 1540,
+    "stop_master_rows": 11503,
+    "box_stop_count": 251,
+    "samples": {
+      "bus_time_202405.zip": {
+        "member": "tpss_route_section_speedh_2024.05.20-05.26.csv",
+        "archive_members": [
+          "tpss_route_section_speedh_2024.05.06-05.12.csv",
+          "tpss_route_section_speedh_2024.05.13-05.19.csv",
+          "tpss_route_section_speedh_2024.05.20-05.26.csv",
+          "tpss_route_section_speedh_2024.05.27-06.02.csv"
+        ],
+        "rows": 563532,
+        "dates": [
+          "20240520",
+          "20240521",
+          "20240522",
+          "20240523",
+          "20240524",
+          "20240525",
+          "20240526"
+        ],
+        "routes": 1239,
+        "duplicate_full_keys": 64,
+        "route_zero_rows": 0,
+        "hours_profiled": [
+          17,
+          18,
+          19
+        ],
+        "missing_cells": 0,
+        "zero_cells": 216833,
+        "negative_cells": 0,
+        "route_master_matched_ids": 1239,
+        "stop_master_matched_row_fraction": 0.5293257525748316,
+        "box_rows": 11233,
+        "box_routes": 217,
+        "box_duplicate_full_keys": 0,
+        "box_identical_rows": 0,
+        "candidate_names_observed_in_box": [
+          {
+            "노선_ID": "236000237",
+            "노선_명칭": "3100N포천"
+          },
+          {
+            "노선_ID": "234001290",
+            "노선_명칭": "1551B화성"
+          },
+          {
+            "노선_ID": "234001241",
+            "노선_명칭": "M7412광주"
+          },
+          {
+            "노선_ID": "234001138",
+            "노선_명칭": "1551화성"
+          },
+          {
+            "노선_ID": "234000995",
+            "노선_명칭": "M4403화성"
+          },
+          {
+            "노선_ID": "234000884",
+            "노선_명칭": "1560A용인"
+          },
+          {
+            "노선_ID": "233000333",
+            "노선_명칭": "8502화성"
+          },
+          {
+            "노선_ID": "233000265",
+            "노선_명칭": "4403화성"
+          },
+          {
+            "노선_ID": "233000135",
+            "노선_명칭": "8501화성"
+          },
+          {
+            "노선_ID": "232000081",
+            "노선_명칭": "6427김포"
+          },
+          {
+            "노선_ID": "232000075",
+            "노선_명칭": "M6427김포"
+          },
+          {
+            "노선_ID": "229000111",
+            "노선_명칭": "G7426파주"
+          },
+          {
+            "노선_ID": "228000424",
+            "노선_명칭": "5003(예약)용인"
+          },
+          {
+            "노선_ID": "228000422",
+            "노선_명칭": "5001(예약)용인"
+          },
+          {
+            "노선_ID": "228000421",
+            "노선_명칭": "5001-1(예약)용인"
+          },
+          {
+            "노선_ID": "228000394",
+            "노선_명칭": "5002A용인"
+          },
+          {
+            "노선_ID": "228000183",
+            "노선_명칭": "5002B용인"
+          },
+          {
+            "노선_ID": "228000182",
+            "노선_명칭": "5003B용인"
+          },
+          {
+            "노선_ID": "228000177",
+            "노선_명칭": "5001-1B용인"
+          },
+          {
+            "노선_ID": "228000176",
+            "노선_명칭": "5001B용인"
+          },
+          {
+            "노선_ID": "219000026",
+            "노선_명칭": "9700고양"
+          },
+          {
+            "노선_ID": "216000096",
+            "노선_명칭": "3100N안산"
+          },
+          {
+            "노선_ID": "216000026",
+            "노선_명칭": "3100안산"
+          },
+          {
+            "노선_ID": "207000070",
+            "노선_명칭": "3100의정부"
+          },
+          {
+            "노선_ID": "165000303",
+            "노선_명칭": "9802인천"
+          },
+          {
+            "노선_ID": "165000164",
+            "노선_명칭": "9501인천"
+          },
+          {
+            "노선_ID": "165000163",
+            "노선_명칭": "9500인천"
+          }
+        ]
+      },
+      "bus_time_202407.zip": {
+        "member": "tpss_route_section_speedh_2024.07.08-07.14.csv",
+        "archive_members": [
+          "tpss_route_section_speedh_2024.07.01-07.07.csv",
+          "tpss_route_section_speedh_2024.07.08-07.14.csv",
+          "tpss_route_section_speedh_2024.07.15-07.21.csv",
+          "tpss_route_section_speedh_2024.07.22-07.28.csv",
+          "tpss_route_section_speedh_2024.07.29-08.04.csv"
+        ],
+        "rows": 567418,
+        "dates": [
+          "20240708",
+          "20240709",
+          "20240710",
+          "20240711",
+          "20240712",
+          "20240713",
+          "20240714"
+        ],
+        "routes": 1257,
+        "duplicate_full_keys": 100,
+        "route_zero_rows": 0,
+        "hours_profiled": [
+          17,
+          18,
+          19
+        ],
+        "missing_cells": 0,
+        "zero_cells": 227970,
+        "negative_cells": 0,
+        "route_master_matched_ids": 1257,
+        "stop_master_matched_row_fraction": 0.5258803915279389,
+        "box_rows": 11407,
+        "box_routes": 224,
+        "box_duplicate_full_keys": 0,
+        "box_identical_rows": 0,
+        "candidate_names_observed_in_box": [
+          {
+            "노선_ID": "236000237",
+            "노선_명칭": "3100N포천"
+          },
+          {
+            "노선_ID": "234001290",
+            "노선_명칭": "1551B화성"
+          },
+          {
+            "노선_ID": "234001241",
+            "노선_명칭": "M7412광주"
+          },
+          {
+            "노선_ID": "234001138",
+            "노선_명칭": "1551화성"
+          },
+          {
+            "노선_ID": "234000995",
+            "노선_명칭": "M4403화성"
+          },
+          {
+            "노선_ID": "234000884",
+            "노선_명칭": "1560A용인"
+          },
+          {
+            "노선_ID": "233000333",
+            "노선_명칭": "8502화성"
+          },
+          {
+            "노선_ID": "233000265",
+            "노선_명칭": "4403화성"
+          },
+          {
+            "노선_ID": "233000135",
+            "노선_명칭": "8501화성"
+          },
+          {
+            "노선_ID": "232000081",
+            "노선_명칭": "6427김포"
+          },
+          {
+            "노선_ID": "232000075",
+            "노선_명칭": "M6427김포"
+          },
+          {
+            "노선_ID": "229000111",
+            "노선_명칭": "G7426파주"
+          },
+          {
+            "노선_ID": "228000433",
+            "노선_명칭": "1560B용인"
+          },
+          {
+            "노선_ID": "228000431",
+            "노선_명칭": "5003A용인"
+          },
+          {
+            "노선_ID": "228000430",
+            "노선_명칭": "5001-1A용인"
+          },
+          {
+            "노선_ID": "228000429",
+            "노선_명칭": "5001A용인"
+          },
+          {
+            "노선_ID": "228000424",
+            "노선_명칭": "5003(예약)용인"
+          },
+          {
+            "노선_ID": "228000422",
+            "노선_명칭": "5001(예약)용인"
+          },
+          {
+            "노선_ID": "228000421",
+            "노선_명칭": "5001-1(예약)용인"
+          },
+          {
+            "노선_ID": "228000394",
+            "노선_명칭": "5002A용인"
+          },
+          {
+            "노선_ID": "228000183",
+            "노선_명칭": "5002B용인"
+          },
+          {
+            "노선_ID": "228000182",
+            "노선_명칭": "5003B용인"
+          },
+          {
+            "노선_ID": "228000177",
+            "노선_명칭": "5001-1B용인"
+          },
+          {
+            "노선_ID": "228000176",
+            "노선_명칭": "5001B용인"
+          },
+          {
+            "노선_ID": "219000026",
+            "노선_명칭": "9700고양"
+          },
+          {
+            "노선_ID": "216000096",
+            "노선_명칭": "3100N안산"
+          },
+          {
+            "노선_ID": "216000026",
+            "노선_명칭": "3100안산"
+          },
+          {
+            "노선_ID": "207000070",
+            "노선_명칭": "3100의정부"
+          },
+          {
+            "노선_ID": "165000303",
+            "노선_명칭": "9802인천"
+          },
+          {
+            "노선_ID": "165000164",
+            "노선_명칭": "9501인천"
+          },
+          {
+            "노선_ID": "165000163",
+            "노선_명칭": "9500인천"
+          }
+        ]
+      },
+      "bus_trips_202407.zip": {
+        "member": "tpss_sta_route_hturn_2024.07.08-07.14.csv",
+        "archive_members": [
+          "tpss_sta_route_hturn_2024.07.01-07.07.csv",
+          "tpss_sta_route_hturn_2024.07.08-07.14.csv",
+          "tpss_sta_route_hturn_2024.07.15-07.21.csv",
+          "tpss_sta_route_hturn_2024.07.22-07.28.csv",
+          "tpss_sta_route_hturn_2024.07.29-08.04.csv"
+        ],
+        "rows": 606134,
+        "dates": [
+          "20240708",
+          "20240709",
+          "20240710",
+          "20240711",
+          "20240712",
+          "20240713",
+          "20240714"
+        ],
+        "routes": 1264,
+        "duplicate_full_keys": 17,
+        "route_zero_rows": 5282,
+        "hours_profiled": [
+          17,
+          18,
+          19
+        ],
+        "missing_cells": 292875,
+        "zero_cells": 0,
+        "negative_cells": 0,
+        "route_master_matched_ids": 1263,
+        "stop_master_matched_row_fraction": 0.5122547159538979,
+        "box_rows": 11807,
+        "box_routes": 225,
+        "box_duplicate_full_keys": 0,
+        "box_identical_rows": 0,
+        "candidate_names_observed_in_box": [
+          {
+            "노선_ID": "236000237",
+            "노선_명칭": "3100N포천"
+          },
+          {
+            "노선_ID": "234001290",
+            "노선_명칭": "1551B화성"
+          },
+          {
+            "노선_ID": "234001241",
+            "노선_명칭": "M7412광주"
+          },
+          {
+            "노선_ID": "234001138",
+            "노선_명칭": "1551화성"
+          },
+          {
+            "노선_ID": "234000995",
+            "노선_명칭": "M4403화성"
+          },
+          {
+            "노선_ID": "234000884",
+            "노선_명칭": "1560A용인"
+          },
+          {
+            "노선_ID": "233000333",
+            "노선_명칭": "8502화성"
+          },
+          {
+            "노선_ID": "233000265",
+            "노선_명칭": "4403화성"
+          },
+          {
+            "노선_ID": "233000135",
+            "노선_명칭": "8501화성"
+          },
+          {
+            "노선_ID": "232000081",
+            "노선_명칭": "6427김포"
+          },
+          {
+            "노선_ID": "232000075",
+            "노선_명칭": "M6427김포"
+          },
+          {
+            "노선_ID": "229000111",
+            "노선_명칭": "G7426파주"
+          },
+          {
+            "노선_ID": "228000433",
+            "노선_명칭": "1560B용인"
+          },
+          {
+            "노선_ID": "228000431",
+            "노선_명칭": "5003A용인"
+          },
+          {
+            "노선_ID": "228000430",
+            "노선_명칭": "5001-1A용인"
+          },
+          {
+            "노선_ID": "228000429",
+            "노선_명칭": "5001A용인"
+          },
+          {
+            "노선_ID": "228000424",
+            "노선_명칭": "5003(예약)용인"
+          },
+          {
+            "노선_ID": "228000422",
+            "노선_명칭": "5001(예약)용인"
+          },
+          {
+            "노선_ID": "228000421",
+            "노선_명칭": "5001-1(예약)용인"
+          },
+          {
+            "노선_ID": "228000394",
+            "노선_명칭": "5002A용인"
+          },
+          {
+            "노선_ID": "228000183",
+            "노선_명칭": "5002B용인"
+          },
+          {
+            "노선_ID": "228000182",
+            "노선_명칭": "5003B용인"
+          },
+          {
+            "노선_ID": "228000177",
+            "노선_명칭": "5001-1B용인"
+          },
+          {
+            "노선_ID": "228000176",
+            "노선_명칭": "5001B용인"
+          },
+          {
+            "노선_ID": "219000026",
+            "노선_명칭": "9700고양"
+          },
+          {
+            "노선_ID": "216000096",
+            "노선_명칭": "3100N안산"
+          },
+          {
+            "노선_ID": "216000026",
+            "노선_명칭": "3100안산"
+          },
+          {
+            "노선_ID": "207000070",
+            "노선_명칭": "3100의정부"
+          },
+          {
+            "노선_ID": "165000303",
+            "노선_명칭": "9802인천"
+          },
+          {
+            "노선_ID": "165000164",
+            "노선_명칭": "9501인천"
+          },
+          {
+            "노선_ID": "165000163",
+            "노선_명칭": "9500인천"
+          }
+        ]
+      },
+      "bus_boardings_202407.zip": {
+        "member": "tpss_sta_route_hpasngr_2024.07.08-07.14.csv",
+        "archive_members": [
+          "tpss_sta_route_hpasngr_2024.07.01-07.07.csv",
+          "tpss_sta_route_hpasngr_2024.07.08-07.14.csv",
+          "tpss_sta_route_hpasngr_2024.07.15-07.21.csv",
+          "tpss_sta_route_hpasngr_2024.07.22-07.28.csv",
+          "tpss_sta_route_hpasngr_2024.07.29-08.04.csv"
+        ],
+        "rows": 606134,
+        "dates": [
+          "20240708",
+          "20240709",
+          "20240710",
+          "20240711",
+          "20240712",
+          "20240713",
+          "20240714"
+        ],
+        "routes": 1264,
+        "duplicate_full_keys": 0,
+        "route_zero_rows": 5282,
+        "hours_profiled": [
+          17,
+          18,
+          19
+        ],
+        "missing_cells": 1178141,
+        "zero_cells": 0,
+        "negative_cells": 0,
+        "route_master_matched_ids": 1263,
+        "stop_master_matched_row_fraction": 0.5122596653545256,
+        "box_rows": 11808,
+        "box_routes": 225,
+        "box_duplicate_full_keys": 0,
+        "box_identical_rows": 0,
+        "candidate_names_observed_in_box": [
+          {
+            "노선_ID": "236000237",
+            "노선_명칭": "3100N포천"
+          },
+          {
+            "노선_ID": "234001290",
+            "노선_명칭": "1551B화성"
+          },
+          {
+            "노선_ID": "234001241",
+            "노선_명칭": "M7412광주"
+          },
+          {
+            "노선_ID": "234001138",
+            "노선_명칭": "1551화성"
+          },
+          {
+            "노선_ID": "234000995",
+            "노선_명칭": "M4403화성"
+          },
+          {
+            "노선_ID": "234000884",
+            "노선_명칭": "1560A용인"
+          },
+          {
+            "노선_ID": "233000333",
+            "노선_명칭": "8502화성"
+          },
+          {
+            "노선_ID": "233000265",
+            "노선_명칭": "4403화성"
+          },
+          {
+            "노선_ID": "233000135",
+            "노선_명칭": "8501화성"
+          },
+          {
+            "노선_ID": "232000081",
+            "노선_명칭": "6427김포"
+          },
+          {
+            "노선_ID": "232000075",
+            "노선_명칭": "M6427김포"
+          },
+          {
+            "노선_ID": "229000111",
+            "노선_명칭": "G7426파주"
+          },
+          {
+            "노선_ID": "228000433",
+            "노선_명칭": "1560B용인"
+          },
+          {
+            "노선_ID": "228000431",
+            "노선_명칭": "5003A용인"
+          },
+          {
+            "노선_ID": "228000430",
+            "노선_명칭": "5001-1A용인"
+          },
+          {
+            "노선_ID": "228000429",
+            "노선_명칭": "5001A용인"
+          },
+          {
+            "노선_ID": "228000424",
+            "노선_명칭": "5003(예약)용인"
+          },
+          {
+            "노선_ID": "228000422",
+            "노선_명칭": "5001(예약)용인"
+          },
+          {
+            "노선_ID": "228000421",
+            "노선_명칭": "5001-1(예약)용인"
+          },
+          {
+            "노선_ID": "228000394",
+            "노선_명칭": "5002A용인"
+          },
+          {
+            "노선_ID": "228000183",
+            "노선_명칭": "5002B용인"
+          },
+          {
+            "노선_ID": "228000182",
+            "노선_명칭": "5003B용인"
+          },
+          {
+            "노선_ID": "228000177",
+            "노선_명칭": "5001-1B용인"
+          },
+          {
+            "노선_ID": "228000176",
+            "노선_명칭": "5001B용인"
+          },
+          {
+            "노선_ID": "219000026",
+            "노선_명칭": "9700고양"
+          },
+          {
+            "노선_ID": "216000096",
+            "노선_명칭": "3100N안산"
+          },
+          {
+            "노선_ID": "216000026",
+            "노선_명칭": "3100안산"
+          },
+          {
+            "노선_ID": "207000070",
+            "노선_명칭": "3100의정부"
+          },
+          {
+            "노선_ID": "165000303",
+            "노선_명칭": "9802인천"
+          },
+          {
+            "노선_ID": "165000164",
+            "노선_명칭": "9501인천"
+          },
+          {
+            "노선_ID": "165000163",
+            "노선_명칭": "9500인천"
+          }
+        ]
+      }
+    },
+    "join": {
+      "rows": 11407,
+      "keys": [
+        "기준_날짜",
+        "노선_ID",
+        "정류장_ID",
+        "정류장_순서"
+      ],
+      "trip_match_fraction": 0.999912334531428,
+      "boarding_match_fraction": 1.0,
+      "profiled_hour_cells": 34221,
+      "positive_time_and_trips_with_recorded_boardings_cells": 15908,
+      "positive_time_without_positive_departure_trip_cells": 112
+    },
+    "note": "현 마스터의 명칭·좌표는 2024년 유효성 미검증. 후보 노선 매칭은 정책 대상 확정이 아니다. 운행시간 단위·0·집계 분모 미확인으로 효과·승객시간은 계산하지 않는다."
+  },
+  "monthly_boarding": {
+    "202405": {
+      "rows": 42910,
+      "routes": 643,
+      "candidate_number_matches": [],
+      "time_grain": "month × route × stop × hour-of-day"
+    },
+    "202407": {
+      "rows": 42372,
+      "routes": 654,
+      "candidate_number_matches": [],
+      "time_grain": "month × route × stop × hour-of-day"
+    }
+  },
+  "volume": {
+    "202405": {
+      "selected_cells": 11904,
+      "points": [
+        {
+          "point": "D-24",
+          "direction": "유입",
+          "description": "독산사거리->시흥IC",
+          "cells": 744,
+          "missing": 744,
+          "zero": 0,
+          "negative": 0
+        },
+        {
+          "point": "D-24",
+          "direction": "유출",
+          "description": "시흥IC->독산사거리",
+          "cells": 744,
+          "missing": 96,
+          "zero": 0,
+          "negative": 0
+        },
+        {
+          "point": "D-26",
+          "direction": "유입",
+          "description": "구로디지털단지역->대림사거리",
+          "cells": 744,
+          "missing": 61,
+          "zero": 0,
+          "negative": 0
+        },
+        {
+          "point": "D-26",
+          "direction": "유출",
+          "description": "대림사거리->구로디지털단지역",
+          "cells": 744,
+          "missing": 744,
+          "zero": 0,
+          "negative": 0
+        },
+        {
+          "point": "D-31",
+          "direction": "유입",
+          "description": "경문고교->이수교차로",
+          "cells": 744,
+          "missing": 0,
+          "zero": 0,
+          "negative": 0
+        },
+        {
+          "point": "D-31",
+          "direction": "유출",
+          "description": "이수교차로->경문고교",
+          "cells": 744,
+          "missing": 0,
+          "zero": 0,
+          "negative": 0
+        },
+        {
+          "point": "D-35",
+          "direction": "유입",
+          "description": "뱅뱅사거리->강남역",
+          "cells": 744,
+          "missing": 0,
+          "zero": 0,
+          "negative": 0
+        },
+        {
+          "point": "D-35",
+          "direction": "유출",
+          "description": "강남역->뱅뱅사거리",
+          "cells": 744,
+          "missing": 0,
+          "zero": 0,
+          "negative": 0
+        },
+        {
+          "point": "D-36",
+          "direction": "유입",
+          "description": "삼호가든사거리->서울성모병원",
+          "cells": 744,
+          "missing": 744,
+          "zero": 0,
+          "negative": 0
+        },
+        {
+          "point": "D-36",
+          "direction": "유출",
+          "description": "서울성모병원->삼호가든사거리",
+          "cells": 744,
+          "missing": 744,
+          "zero": 0,
+          "negative": 0
+        },
+        {
+          "point": "D-42",
+          "direction": "유입",
+          "description": "선릉역->포스코사거리",
+          "cells": 744,
+          "missing": 744,
+          "zero": 0,
+          "negative": 0
+        },
+        {
+          "point": "D-42",
+          "direction": "유출",
+          "description": "포스코사거리->선릉역",
+          "cells": 744,
+          "missing": 744,
+          "zero": 0,
+          "negative": 0
+        },
+        {
+          "point": "D-43",
+          "direction": "유입",
+          "description": "논현역->신사역",
+          "cells": 744,
+          "missing": 0,
+          "zero": 0,
+          "negative": 0
+        },
+        {
+          "point": "D-43",
+          "direction": "유출",
+          "description": "신사역->논현역",
+          "cells": 744,
+          "missing": 0,
+          "zero": 0,
+          "negative": 0
+        },
+        {
+          "point": "D-45",
+          "direction": "유입",
+          "description": "송파역->석촌역",
+          "cells": 744,
+          "missing": 0,
+          "zero": 0,
+          "negative": 0
+        },
+        {
+          "point": "D-45",
+          "direction": "유출",
+          "description": "석촌역->송파역",
+          "cells": 744,
+          "missing": 0,
+          "zero": 0,
+          "negative": 0
+        }
+      ],
+      "unexpected_values": [],
+      "speed_join_rows": 1488,
+      "speed_time_key_match_fraction": 1.0,
+      "speed_valid_and_volume_numeric_rows": 1488,
+      "spatial_join_status": "corridor_context_only"
+    },
+    "202407": {
+      "selected_cells": 11904,
+      "points": [
+        {
+          "point": "D-24",
+          "direction": "유입",
+          "description": "독산사거리->시흥IC",
+          "cells": 744,
+          "missing": 0,
+          "zero": 0,
+          "negative": 0
+        },
+        {
+          "point": "D-24",
+          "direction": "유출",
+          "description": "시흥IC->독산사거리",
+          "cells": 744,
+          "missing": 0,
+          "zero": 0,
+          "negative": 0
+        },
+        {
+          "point": "D-26",
+          "direction": "유입",
+          "description": "구로디지털단지역->대림사거리",
+          "cells": 744,
+          "missing": 744,
+          "zero": 0,
+          "negative": 0
+        },
+        {
+          "point": "D-26",
+          "direction": "유출",
+          "description": "대림사거리->구로디지털단지역",
+          "cells": 744,
+          "missing": 744,
+          "zero": 0,
+          "negative": 0
+        },
+        {
+          "point": "D-31",
+          "direction": "유입",
+          "description": "경문고교->이수교차로",
+          "cells": 744,
+          "missing": 0,
+          "zero": 0,
+          "negative": 0
+        },
+        {
+          "point": "D-31",
+          "direction": "유출",
+          "description": "이수교차로->경문고교",
+          "cells": 744,
+          "missing": 24,
+          "zero": 0,
+          "negative": 0
+        },
+        {
+          "point": "D-35",
+          "direction": "유입",
+          "description": "뱅뱅사거리->강남역",
+          "cells": 744,
+          "missing": 0,
+          "zero": 0,
+          "negative": 0
+        },
+        {
+          "point": "D-35",
+          "direction": "유출",
+          "description": "강남역->뱅뱅사거리",
+          "cells": 744,
+          "missing": 0,
+          "zero": 0,
+          "negative": 0
+        },
+        {
+          "point": "D-36",
+          "direction": "유입",
+          "description": "삼호가든사거리->서울성모병원",
+          "cells": 744,
+          "missing": 744,
+          "zero": 0,
+          "negative": 0
+        },
+        {
+          "point": "D-36",
+          "direction": "유출",
+          "description": "서울성모병원->삼호가든사거리",
+          "cells": 744,
+          "missing": 744,
+          "zero": 0,
+          "negative": 0
+        },
+        {
+          "point": "D-42",
+          "direction": "유입",
+          "description": "선릉역->포스코사거리",
+          "cells": 744,
+          "missing": 744,
+          "zero": 0,
+          "negative": 0
+        },
+        {
+          "point": "D-42",
+          "direction": "유출",
+          "description": "포스코사거리->선릉역",
+          "cells": 744,
+          "missing": 744,
+          "zero": 0,
+          "negative": 0
+        },
+        {
+          "point": "D-43",
+          "direction": "유입",
+          "description": "논현역->신사역",
+          "cells": 744,
+          "missing": 0,
+          "zero": 0,
+          "negative": 0
+        },
+        {
+          "point": "D-43",
+          "direction": "유출",
+          "description": "신사역->논현역",
+          "cells": 744,
+          "missing": 0,
+          "zero": 0,
+          "negative": 0
+        },
+        {
+          "point": "D-45",
+          "direction": "유입",
+          "description": "송파역->석촌역",
+          "cells": 744,
+          "missing": 40,
+          "zero": 0,
+          "negative": 0
+        },
+        {
+          "point": "D-45",
+          "direction": "유출",
+          "description": "석촌역->송파역",
+          "cells": 744,
+          "missing": 0,
+          "zero": 0,
+          "negative": 0
+        }
+      ],
+      "unexpected_values": [],
+      "speed_join_rows": 1488,
+      "speed_time_key_match_fraction": 1.0,
+      "speed_valid_and_volume_numeric_rows": 1488,
+      "spatial_join_status": "corridor_context_only"
+    }
+  },
+  "source_manifest_sha256": "82f3fe299c5d1b6cc2573c12be0100c44166bebf9eeb3fbab06a287793127574",
+  "config_sha256": "1f0b06745710fc8f305ed9bff3e0df9205415648cc2dce4aad745ace4d1ff510",
+  "code_sha256": "bc4bf7bf86b5cbc96ca26de33b8d0295a0017210e1483dc24b516eee0759d6ad"
+}

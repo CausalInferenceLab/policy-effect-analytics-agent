@@ -1,0 +1,33 @@
+# 기존 결과를 본 뒤 추가한 자료 탐색·진단 규칙. 최초 실험의 사전 등록과 구분한다.
+mode: posthoc_exploratory
+created: '2026-10-28'
+original_run: exploration_20261028
+bus_samples:
+  bus_time_202405.zip: tpss_route_section_speedh_2024.05.20-05.26.csv
+  bus_time_202407.zip: tpss_route_section_speedh_2024.07.08-07.14.csv
+  bus_trips_202407.zip: tpss_sta_route_hturn_2024.07.08-07.14.csv
+  bus_boardings_202407.zip: tpss_sta_route_hpasngr_2024.07.08-07.14.csv
+hours: [17, 18, 19]
+# 현 다운로드 마스터의 좌표로 결합 가능성만 점검. 2024년 처치 구역 확정값이 아니다.
+stop_box:
+  latitude: [37.480, 37.525]
+  longitude: [127.018, 127.042]
+# 동명·예약·A/B·다른 지역 노선도 잡히는 후보 검색식. 정책 노선 판정에 쓰지 않는다.
+route_candidate_pattern: '^(?:1560|500[123]|950[01]|9802|M7412|9700|M6427|6427|G7426|3100|M4403|4403|1551|850[12])(?:[^0-9]|$)'
+volume_points: [D-24, D-26, D-31, D-35, D-36, D-42, D-43, D-45]
+core_links: ['1220025000', '1220021000', '1220016200']
+volume_join:
+  point: D-35
+  direction: 유출
+  links: ['1220021000', '1220016200']
+  status: corridor_context_only
+  note: 강남역→뱅뱅사거리 지점값을 인접 두 링크의 맥락으로 결합하며 링크별 교통량으로 나누지 않는다.
+tail_diagnostic:
+  fit_start: '2023-01-01'
+  fit_end: '2024-03-31'
+  quantile: 0.10
+  groups: [link_id, hour, weekend]
+  models: [catboost, chronos2, weekly_naive, weekday_hour_mean]
+  splits: [pre_test, post_test]
+  horizons: [1, 3]
+  note: 학습 기간의 링크×시각×주말 여부별 하위 10% 속도. 절대 정체 판정이나 시험자료로 튜닝한 경보기가 아니다.
