@@ -8,6 +8,8 @@
 
 ## 문서와 설정
 
+**최신 확장 분석:** [노선 이동·전년 비교·가을 지속성](directional-report.md)에서 2023년 4~8월과 2024년 9~10월을 추가했다. 북행 증가는 표본을 바꿔도 남았고, 남행의 큰 감소 구간은 계속 관측된 표본에서 가을에도 확인됐다. 남행 전체의 기록 누락과 부족한 기상 공통 표본 때문에 전체 정책 효과·날씨 보정 효과는 확정하지 않는다. 노선 이동표와 비교 그림 5장을 제공한다.
+
 **후속 분석 완료:** [정류장·방향별 결과](followup-report.md)에서 4~8월 버스·교통량 원본 20개와 주변 도로 88개 링크를 분석했다. 남행 강남역의 특정 구간에서 기록 운행시간 지수가 약 48% 낮아졌지만 북행은 다른 양상을 보였다. 단위·집계 정의가 미확인인 지수를 실제 분 단위나 인과 효과로 해석하지 않는다. [관련 논문 2편과 공식 자료 검토](literature.md), [추가 자료·저속 경보 후속 계획](followup-plan.md)을 함께 제공한다.
 
 | 파일 | 역할 |
@@ -16,6 +18,10 @@
 | [discussion.md](discussion.md) | 결과 해석·한계·계획에서 바뀐 것 |
 | [followup-plan.md](followup-plan.md) | 추가 자료의 실제 접근성·품질, 추천 주제 3개·다음 실행·외부 확인 질문 |
 | [followup-report.md](followup-report.md) | 정류장·방향·시간대별 버스 지수와 주변 도로·교통량의 실행 결과·그림 |
+| [directional-report.md](directional-report.md) | 노선 이동·전년 동기간·가을·날씨 공통 표본의 결과와 다음 분석 조건 |
+| [directional_config.yaml](directional_config.yaml) / [directional.py](directional.py) | 확장 탐색 규칙과 수집·추출·기상·분석·그림 진입점 |
+| [directional-sources.json](directional-sources.json) / [directional-weather-sources.json](directional-weather-sources.json) / [directional-history-sources.json](directional-history-sources.json) | 버스 39개·기상 화면 24개·역사적 정류장 CSV 2개의 출처·해시 |
+| [results/directional/run_manifest.json](results/directional/run_manifest.json) | 확장 분석 코드·입력·파생 결과의 무결성 기록 |
 | [literature.md](literature.md) | 2025년 관련 논문 2편·공식 분석자료의 적용과 한계 |
 | [followup_config.yaml](followup_config.yaml) / [followup-policy.yaml](followup-policy.yaml) | 후속 탐색 규칙·당시 노선군·정류장 번호와 현재 ID의 구분 |
 | [followup-sources.json](followup-sources.json) / [research-sources.json](research-sources.json) | 후속 원본 20개·문헌 출처와 해시 |

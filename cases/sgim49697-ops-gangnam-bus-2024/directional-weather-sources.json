@@ -1,0 +1,245 @@
+{
+  "description": "기상청 서울108 일별 숫자·일기현상 달력 원본. '-'는 결측으로 보존.",
+  "files": [
+    {
+      "month": "2023-04",
+      "obs": 1,
+      "source": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do",
+      "url": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do?stn=108&yy=2023&mm=4&obs=1",
+      "path": "data/directional/weather/seoul108_2023-04_obs1.html",
+      "sha256": "fd173d04253f5a2ae840df88ddb2a8c714e2d9005e500a3c44ea2f80044e6ea5",
+      "bytes": 111194,
+      "retrieved_at": "2026-10-28T15:24:08.501744+00:00"
+    },
+    {
+      "month": "2023-04",
+      "obs": 9,
+      "source": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do",
+      "url": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do?stn=108&yy=2023&mm=4&obs=9",
+      "path": "data/directional/weather/seoul108_2023-04_obs9.html",
+      "sha256": "bf44868df98ea83150e7148e5fccf115e8b1a4ab7e7f7325c971eefdaf2adf13",
+      "bytes": 87829,
+      "retrieved_at": "2026-10-28T15:24:08.768066+00:00"
+    },
+    {
+      "month": "2023-05",
+      "obs": 1,
+      "source": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do",
+      "url": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do?stn=108&yy=2023&mm=5&obs=1",
+      "path": "data/directional/weather/seoul108_2023-05_obs1.html",
+      "sha256": "bfd7292f9176a71796ad86618ecaec2a416e3f46be6650ca1ffdbc3d5e88f15d",
+      "bytes": 110242,
+      "retrieved_at": "2026-10-28T15:24:09.181365+00:00"
+    },
+    {
+      "month": "2023-05",
+      "obs": 9,
+      "source": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do",
+      "url": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do?stn=108&yy=2023&mm=5&obs=9",
+      "path": "data/directional/weather/seoul108_2023-05_obs9.html",
+      "sha256": "f45caee923682c2f5871d0408bf5cc19fc62cb0c2cd4619c87c2b9745f9007d0",
+      "bytes": 84726,
+      "retrieved_at": "2026-10-28T15:24:09.498544+00:00"
+    },
+    {
+      "month": "2023-06",
+      "obs": 1,
+      "source": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do",
+      "url": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do?stn=108&yy=2023&mm=6&obs=1",
+      "path": "data/directional/weather/seoul108_2023-06_obs1.html",
+      "sha256": "da3e559bde3dffc287c33727f714ccfa9ebedb5b27f377f32e584cf642db2e5c",
+      "bytes": 109379,
+      "retrieved_at": "2026-10-28T15:24:09.799781+00:00"
+    },
+    {
+      "month": "2023-06",
+      "obs": 9,
+      "source": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do",
+      "url": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do?stn=108&yy=2023&mm=6&obs=9",
+      "path": "data/directional/weather/seoul108_2023-06_obs9.html",
+      "sha256": "2bf6fe98a93159df685c639b5543ac13b6aa356d03226910bbccbbe070c473bd",
+      "bytes": 86356,
+      "retrieved_at": "2026-10-28T15:24:10.020047+00:00"
+    },
+    {
+      "month": "2023-07",
+      "obs": 1,
+      "source": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do",
+      "url": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do?stn=108&yy=2023&mm=7&obs=1",
+      "path": "data/directional/weather/seoul108_2023-07_obs1.html",
+      "sha256": "d8be17a1af32c07d8b4b030a3f60485c212c6227ba526936dc7bee6ccec4cd03",
+      "bytes": 112120,
+      "retrieved_at": "2026-10-28T15:24:10.362763+00:00"
+    },
+    {
+      "month": "2023-07",
+      "obs": 9,
+      "source": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do",
+      "url": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do?stn=108&yy=2023&mm=7&obs=9",
+      "path": "data/directional/weather/seoul108_2023-07_obs9.html",
+      "sha256": "4bd39fe919a2b4e228f4a89762d46d981660fe35005a1811cf8883e974b86b10",
+      "bytes": 87711,
+      "retrieved_at": "2026-10-28T15:24:10.628168+00:00"
+    },
+    {
+      "month": "2023-08",
+      "obs": 1,
+      "source": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do",
+      "url": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do?stn=108&yy=2023&mm=8&obs=1",
+      "path": "data/directional/weather/seoul108_2023-08_obs1.html",
+      "sha256": "b0ccc32ec85ed3735f3a0fce0801e30adbf0dbe17cdaf3dad290c3311b38cc65",
+      "bytes": 110260,
+      "retrieved_at": "2026-10-28T15:24:10.966691+00:00"
+    },
+    {
+      "month": "2023-08",
+      "obs": 9,
+      "source": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do",
+      "url": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do?stn=108&yy=2023&mm=8&obs=9",
+      "path": "data/directional/weather/seoul108_2023-08_obs9.html",
+      "sha256": "477b3f64426e94946d0296489299daf45831a03acdcecc7819f1ae27f039899f",
+      "bytes": 83368,
+      "retrieved_at": "2026-10-28T15:24:11.249463+00:00"
+    },
+    {
+      "month": "2024-04",
+      "obs": 1,
+      "source": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do",
+      "url": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do?stn=108&yy=2024&mm=4&obs=1",
+      "path": "data/directional/weather/seoul108_2024-04_obs1.html",
+      "sha256": "926f1abf42e6c45398e6a3074f1eb60e1c5a939ef49b5ec0f03a01e946aed9cd",
+      "bytes": 109346,
+      "retrieved_at": "2026-10-28T15:24:11.537613+00:00"
+    },
+    {
+      "month": "2024-04",
+      "obs": 9,
+      "source": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do",
+      "url": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do?stn=108&yy=2024&mm=4&obs=9",
+      "path": "data/directional/weather/seoul108_2024-04_obs9.html",
+      "sha256": "d869f843395187a907f83d1b710778c3ce624e5a9702a7f0c18b0e6c1ac0b58a",
+      "bytes": 85311,
+      "retrieved_at": "2026-10-28T15:24:11.751260+00:00"
+    },
+    {
+      "month": "2024-05",
+      "obs": 1,
+      "source": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do",
+      "url": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do?stn=108&yy=2024&mm=5&obs=1",
+      "path": "data/directional/weather/seoul108_2024-05_obs1.html",
+      "sha256": "0a51271906029fa62861b0a460c6d199a8ca2c5b271c4b872ddc192d4adfe219",
+      "bytes": 110238,
+      "retrieved_at": "2026-10-28T15:24:11.996086+00:00"
+    },
+    {
+      "month": "2024-05",
+      "obs": 9,
+      "source": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do",
+      "url": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do?stn=108&yy=2024&mm=5&obs=9",
+      "path": "data/directional/weather/seoul108_2024-05_obs9.html",
+      "sha256": "e33cb76aef22f9b2ae1a71eaaaf60a27f2113347a17204edcbfa58ee0872cd1f",
+      "bytes": 85012,
+      "retrieved_at": "2026-10-28T15:24:12.247980+00:00"
+    },
+    {
+      "month": "2024-06",
+      "obs": 1,
+      "source": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do",
+      "url": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do?stn=108&yy=2024&mm=6&obs=1",
+      "path": "data/directional/weather/seoul108_2024-06_obs1.html",
+      "sha256": "da2895a6e0b44e89aedc8460228ea51fb2e9288a2b2bc3b07ee7116f4438417d",
+      "bytes": 111209,
+      "retrieved_at": "2026-10-28T15:24:12.502969+00:00"
+    },
+    {
+      "month": "2024-06",
+      "obs": 9,
+      "source": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do",
+      "url": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do?stn=108&yy=2024&mm=6&obs=9",
+      "path": "data/directional/weather/seoul108_2024-06_obs9.html",
+      "sha256": "89d6057a2ca1c65cb4387fec8b56f57449b9e0584b06a4bb21e6d9cc84f9ce88",
+      "bytes": 86498,
+      "retrieved_at": "2026-10-28T15:24:12.791300+00:00"
+    },
+    {
+      "month": "2024-07",
+      "obs": 1,
+      "source": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do",
+      "url": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do?stn=108&yy=2024&mm=7&obs=1",
+      "path": "data/directional/weather/seoul108_2024-07_obs1.html",
+      "sha256": "218cd822bf5aca9440370462944fcae9eeabd7b347a3a25a9f655b0aa171a893",
+      "bytes": 110282,
+      "retrieved_at": "2026-10-28T15:24:13.061436+00:00"
+    },
+    {
+      "month": "2024-07",
+      "obs": 9,
+      "source": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do",
+      "url": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do?stn=108&yy=2024&mm=7&obs=9",
+      "path": "data/directional/weather/seoul108_2024-07_obs9.html",
+      "sha256": "856e38aed8a1a3a3acf8aa02b37e92cbd7d29e545b2eb30a7cc35c77c0eb3ebc",
+      "bytes": 86935,
+      "retrieved_at": "2026-10-28T15:24:13.333682+00:00"
+    },
+    {
+      "month": "2024-08",
+      "obs": 1,
+      "source": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do",
+      "url": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do?stn=108&yy=2024&mm=8&obs=1",
+      "path": "data/directional/weather/seoul108_2024-08_obs1.html",
+      "sha256": "f6cc84ae6b9b478731747e4ff593141300c697850098b1bfa5d7bb8255b43177",
+      "bytes": 110257,
+      "retrieved_at": "2026-10-28T15:24:13.631027+00:00"
+    },
+    {
+      "month": "2024-08",
+      "obs": 9,
+      "source": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do",
+      "url": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do?stn=108&yy=2024&mm=8&obs=9",
+      "path": "data/directional/weather/seoul108_2024-08_obs9.html",
+      "sha256": "37ed512671485cc9077b300b0e17ec23c91d1641ca7cef63bae37e0b2364ae30",
+      "bytes": 83652,
+      "retrieved_at": "2026-10-28T15:24:13.863012+00:00"
+    },
+    {
+      "month": "2024-09",
+      "obs": 1,
+      "source": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do",
+      "url": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do?stn=108&yy=2024&mm=9&obs=1",
+      "path": "data/directional/weather/seoul108_2024-09_obs1.html",
+      "sha256": "269b90e85a647cf728f5bc3a0c0605e01d48b3b8b7b5662a063ecf18e287acf3",
+      "bytes": 109370,
+      "retrieved_at": "2026-10-28T15:24:14.116923+00:00"
+    },
+    {
+      "month": "2024-09",
+      "obs": 9,
+      "source": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do",
+      "url": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do?stn=108&yy=2024&mm=9&obs=9",
+      "path": "data/directional/weather/seoul108_2024-09_obs9.html",
+      "sha256": "9f931382d445d5aa5b23a6ea1416c4a8174d12aa1ec6775eb2fb56039cd6f08a",
+      "bytes": 83772,
+      "retrieved_at": "2026-10-28T15:24:14.314996+00:00"
+    },
+    {
+      "month": "2024-10",
+      "obs": 1,
+      "source": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do",
+      "url": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do?stn=108&yy=2024&mm=10&obs=1",
+      "path": "data/directional/weather/seoul108_2024-10_obs1.html",
+      "sha256": "3160abe19dbcba2b9740853270ec186fd9dae9f618e7c0688316e8f74857621e",
+      "bytes": 110243,
+      "retrieved_at": "2026-10-28T15:24:14.593652+00:00"
+    },
+    {
+      "month": "2024-10",
+      "obs": 9,
+      "source": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do",
+      "url": "https://www.weather.go.kr/w/weather/land/past-obs/obs-by-day.do?stn=108&yy=2024&mm=10&obs=9",
+      "path": "data/directional/weather/seoul108_2024-10_obs9.html",
+      "sha256": "a4997a758f0d7a06c299ef0760167006092a7a2d117ed060b3aa6ac2c74e7f38",
+      "bytes": 84665,
+      "retrieved_at": "2026-10-28T15:24:14.818207+00:00"
+    }
+  ]
+}

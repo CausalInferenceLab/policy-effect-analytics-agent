@@ -1,0 +1,37 @@
+{
+  "description": "2023년 표준 정류장 ID·ARS 대조용 카드 월별 원본",
+  "files": [
+    {
+      "month": "202305",
+      "path": "data/directional/history/boarding_202305.csv",
+      "source": "https://data.seoul.go.kr/dataList/OA-12913/F/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-12913",
+        "infSeq": "3",
+        "seq": "71",
+        "seqNo": ""
+      },
+      "bytes": 15283273,
+      "sha256": "9b5cdbcab0ba4684b0ddb0e11430fd1ce5e03b220bb2f16e11d8bb3fc885be98",
+      "retrieved_at": "2026-10-28T15:28:43.292171+00:00"
+    },
+    {
+      "month": "202307",
+      "path": "data/directional/history/boarding_202307.csv",
+      "source": "https://data.seoul.go.kr/dataList/OA-12913/F/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-12913",
+        "infSeq": "3",
+        "seq": "73",
+        "seqNo": ""
+      },
+      "bytes": 15403192,
+      "sha256": "02c8d8cdd9dad4305ee42e40be30baa4e4aa7f2d6bda0bf1ac2be785e14978d4",
+      "retrieved_at": "2026-10-28T15:28:45.357048+00:00"
+    }
+  ]
+}

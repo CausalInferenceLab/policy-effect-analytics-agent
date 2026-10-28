@@ -1,0 +1,9 @@
+{
+  "days": 367,
+  "numeric_precipitation_days": 177,
+  "dash_unknown_days": 190,
+  "temperature_missing_days": 0,
+  "source_manifest_sha256": "9798fcb0a325e3cea648263d54d42f43b7037dc8d0c4b13c37044d7b51c5fb84",
+  "parser_sha256": "442157ed68f5db1bad97a0b7f573dfdac556522f12e1706b024a810d6568052f",
+  "note": "서울108 일자료. '-'를 무강수로 확정하지 않고 별도 층으로 보존. 일기현상은 보조 기록이며 강남 저녁의 비를 직접 측정하지 않음."
+}
