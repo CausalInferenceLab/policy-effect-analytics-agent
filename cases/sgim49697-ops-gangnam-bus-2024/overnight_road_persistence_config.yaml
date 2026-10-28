@@ -1,0 +1,35 @@
+# 2024년 사전 도로 표본을 2025년까지 연장하고 같은 지점의 교통량을 기술적으로 비교한다.
+version: 1
+mode: exploratory_after_2025_forecast_test_was_observed
+locked_year: 2026
+months: ['2024-05', '2024-06', '2024-07', '2024-08', '2025-05', '2025-06', '2025-07', '2025-08']
+speed_manifests: [results/overnight/forecast/extraction_development.json, results/overnight/forecast/extraction_test.json]
+original_selection: results/overnight/road_context/selected_cells.csv
+original_selection_audit: results/overnight/road_context/audit.json
+selection: 기존 2023·2024년 사전 관측으로 고정한 엄격 표본을 그대로 사용; 2025년 속도·관측률로 재선택하지 않음
+metadata: 원래 고정 링크의 도로명·시종점명·방향·길이를 2025년 모든 월과 대조; 불일치 시 해당 집단의 비교를 보류하고 고정 분모는 유지
+calendar_from: overnight_persistence_config.yaml
+comparisons:
+  summer2024: [pre2024, post2024]
+  summer2025: [pre2025, post2025]
+  pre_year_over_year: [pre2024, pre2025]
+  post_year_over_year: [post2024, post2025]
+  post2025_from_pre2024: [pre2024, post2025]
+speed_aggregations: [fixed_length_arithmetic, equal_cells]
+volume:
+  source: https://topis.seoul.go.kr/refRoom/openRefRoom_2.do
+  points: [D-35, D-43]
+  original_sources: overnight-road-context-sources.json
+  metadata: 지점·방향별 지점명과 방향 설명을 모든 월에서 대조; 변경 시 비교 보류
+  aggregation: 같은 시간대의 관측 시간당 평균; 0은 관측으로 유지하고 공란은 미관측
+minimum_daily_coverage: 0.80
+minimum_days: 20
+maximum_coverage_gap: 0.10
+bootstrap: {draws: 2000, seed: 20261029}
+intervals: 저녁의 길이 가중 도로 속도와 시간당 교통량에만 달력 주 재표집
+resources: {download_workers: 2, parser_workers: 2, minimum_free_gib: 25, file_limit_mib: 40}
+interpretation:
+  - 버스 기록 시간과 일반도로 속도는 다른 자료·단위·공간이다. 부호의 반대는 효과의 모순을 뜻하지 않는다.
+  - 버스와 도로·검지지점은 개별 차량 또는 실제 이동 여정으로 연결되지 않는다.
+  - 주변 도로를 무처치 대조군으로 지정하거나 정책 인과 효과·정체 이동을 확정하지 않는다.
+  - 2025년은 기존 예측에서 이미 관측한 기간이다. 새 독립 시험 또는 검증용 미사용 연도로 부르지 않는다.
