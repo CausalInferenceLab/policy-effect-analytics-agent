@@ -1,0 +1,121 @@
+{
+  "overlap_rows": 14196,
+  "conflicting_keys_quarantined": 0,
+  "raw_responses": 560,
+  "failed_requests": [
+    {
+      "station": 400,
+      "endpoint": "2023-06-30 23:00:00",
+      "error": "ValueError: 기상 응답의 시각·지점·간격이 요청과 다릅니다"
+    }
+  ],
+  "collection_complete": false,
+  "expected_hourly_rows": 26424,
+  "months": [
+    "2023-04",
+    "2023-05",
+    "2023-06",
+    "2023-07",
+    "2023-08",
+    "2024-04",
+    "2024-05",
+    "2024-06",
+    "2024-07",
+    "2024-08",
+    "2024-09",
+    "2024-10"
+  ],
+  "stations": [
+    401,
+    400,
+    108
+  ],
+  "configuration": {
+    "weather": {
+      "preferred": "historical_local_hourly_observation_with_metadata",
+      "fallback": "distinguish_observation_from_reanalysis",
+      "source": "https://www.weather.go.kr/w/weather/land/aws-obs.do",
+      "endpoint": "https://www.weather.go.kr/w/observation/land/aws-obs-data.do",
+      "help": "https://www.weather.go.kr/wnuri_help/html/observation/aws-obs.jsp",
+      "stations": [
+        401,
+        400,
+        108
+      ],
+      "primary_station": 401,
+      "months_from": "directional_config.yaml",
+      "request_stride_hours": 48,
+      "response_hours": 60,
+      "endpoint_delay_seconds": 0.4,
+      "alignment_offsets_hours": [
+        -1,
+        0,
+        1
+      ],
+      "hour_precipitation": "preceding_60_minutes_mm_verified_help",
+      "raw_fault_flag": "preserve_not_formal_historical_qc",
+      "station_coordinates": "require_historical_metadata_for_location_claim",
+      "minimum_common_days": 20,
+      "minimum_retained_fraction": 0.8,
+      "minimum_days_per_stratum": 2,
+      "temperature_edges_c": [
+        20,
+        25,
+        30
+      ],
+      "schemes": [
+        "weekday",
+        "rain",
+        "rain_temperature",
+        "rain_temperature_weekday"
+      ],
+      "retention_denominator": "all_bus_quality_valid_days_in_each_period",
+      "unknown_precipitation": "keep_unknown"
+    },
+    "bands": {
+      "morning": [
+        7,
+        8,
+        9
+      ],
+      "midday": [
+        11,
+        12,
+        13,
+        14
+      ],
+      "evening": [
+        17,
+        18,
+        19
+      ],
+      "late": [
+        20,
+        21,
+        22
+      ]
+    },
+    "months": [
+      "2023-04",
+      "2023-05",
+      "2023-06",
+      "2023-07",
+      "2023-08",
+      "2024-04",
+      "2024-05",
+      "2024-06",
+      "2024-07",
+      "2024-08",
+      "2024-09",
+      "2024-10"
+    ]
+  },
+  "source_manifest_sha256": "7250b8e0b9250a22cd61d83a831d4580b03064cfab9bf116e50c9a626b4224ce",
+  "code_sha256": "1ada1931e2dd3f26b9291ac3d2b960996e73935901f5e17d28f1cc93573ff159",
+  "config_sha256": "b706d347d6f387938c5b6649b00b8818f4ddab9a2e4bbc59d5a45c410c4da348",
+  "hourly_path": "data/overnight/weather/hourly.parquet",
+  "hourly_sha256": "cb1171a98267125a8c7ff9281d07a2a58feb2055f210b28358caae94439c50c5",
+  "band_rows": 13212,
+  "bands_sha256": "907817a58b21733ff15f7fa2272c2ef2de40ca05925fa0cb4475031935b1fceb",
+  "note": "웹 참조 관측자료. 공개 화면의 과거 시각을 검증했으나 공식 역사적 QC 파일은 미확보. 좌표는 별도 이력 확인 전 현재 응답 메타데이터로만 취급."
+}

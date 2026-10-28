@@ -8,12 +8,18 @@
 
 ## 문서와 설정
 
+**10시간 확장 탐색 진행:** [첫 결과: 시간대·관측 누락·지역 기상](overnight-observation-report.md)에서 북행의 저녁 증가와 남행 정책 후보의 관측 감소를 분리했다. 지역 시간별 강수 26,157개를 확보했지만 기상 공통 표본은 시간 정렬에 민감하다. [자료 정의·접근 근거](overnight-evidence.md), [전체 탐색 계획과 진행 기록](overnight-plan.md)을 함께 제공한다. 승객·노선군·주변 교통·다년·저속 경보는 이어서 탐색한다.
+
 **최신 확장 분석:** [노선 이동·전년 비교·가을 지속성](directional-report.md)에서 2023년 4~8월과 2024년 9~10월을 추가했다. 북행 증가는 표본을 바꿔도 남았고, 남행의 큰 감소 구간은 계속 관측된 표본에서 가을에도 확인됐다. 남행 전체의 기록 누락과 부족한 기상 공통 표본 때문에 전체 정책 효과·날씨 보정 효과는 확정하지 않는다. 노선 이동표와 비교 그림 5장을 제공한다.
 
 **후속 분석 완료:** [정류장·방향별 결과](followup-report.md)에서 4~8월 버스·교통량 원본 20개와 주변 도로 88개 링크를 분석했다. 남행 강남역의 특정 구간에서 기록 운행시간 지수가 약 48% 낮아졌지만 북행은 다른 양상을 보였다. 단위·집계 정의가 미확인인 지수를 실제 분 단위나 인과 효과로 해석하지 않는다. [관련 논문 2편과 공식 자료 검토](literature.md), [추가 자료·저속 경보 후속 계획](followup-plan.md)을 함께 제공한다.
 
 | 파일 | 역할 |
 |---|---|
+| [overnight-observation-report.md](overnight-observation-report.md) | 시간대·집계·누락 분해·지역 기상 비교의 첫 확장 결과와 그림 4장 |
+| [overnight-plan.md](overnight-plan.md) / [overnight_config.yaml](overnight_config.yaml) | 10시간 탐색의 12개 방향·판정 기준·진행 기록 |
+| [overnight-evidence.md](overnight-evidence.md) / [overnight-evidence-sources.json](overnight-evidence-sources.json) | 공식 자료 정의·접근성·잘못된 과거 기상 응답의 제외 근거 |
+| [overnight.py](overnight.py) / [overnight-weather-sources.json](overnight-weather-sources.json) | 확장 수집·분석 명령과 검증된 기상 응답 560개의 출처 |
 | [report.md](report.md) | 정책 비교·9개 모델 성능·그림·학습 자원 |
 | [discussion.md](discussion.md) | 결과 해석·한계·계획에서 바뀐 것 |
 | [followup-plan.md](followup-plan.md) | 추가 자료의 실제 접근성·품질, 추천 주제 3개·다음 실행·외부 확인 질문 |

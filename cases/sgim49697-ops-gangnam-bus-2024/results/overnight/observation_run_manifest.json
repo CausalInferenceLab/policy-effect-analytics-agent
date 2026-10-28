@@ -1,0 +1,51 @@
+{
+  "generated_at": "2026-10-28T17:07:27.801188+00:00",
+  "code": {
+    "overnight.py": "bb889b0e00901bb3f34608bf2eeef2caa79d26e232d6694e1dc2748501b01224",
+    "gangnam/overnight_bus.py": "96c3cfb933ef99194a985b24c2ef12c95ed960f78db1fba0dd85c2f748b31a10",
+    "gangnam/overnight_observation_plots.py": "2cbf220b94c943d67a3ff9889c8e117c5f611b848005fa2b72323aa7c889b1d5",
+    "gangnam/overnight_sensitivity.py": "a490bc4d816deff003edf9537d293680af23c6e8b178062ea415f40af03079c6",
+    "gangnam/overnight_weather.py": "1ada1931e2dd3f26b9291ac3d2b960996e73935901f5e17d28f1cc93573ff159",
+    "gangnam/overnight_weather_analysis.py": "f981f85e2977ea487718b4a7ed01ed72424601ae6c96235b485e568d282313a0"
+  },
+  "inputs": {
+    "overnight_config.yaml": "b706d347d6f387938c5b6649b00b8818f4ddab9a2e4bbc59d5a45c410c4da348",
+    "overnight-weather-sources.json": "7250b8e0b9250a22cd61d83a831d4580b03064cfab9bf116e50c9a626b4224ce",
+    "overnight-evidence-sources.json": "6616e78bd3f6c5dc802acf2770be10ba7767212d11532bc53fd74be5b22c0a22",
+    "directional_config.yaml": "d210fa938d2c8e60795569583d9f2b2cba3b6b26b09beb7ffd338f63540b03ca",
+    "results/directional/extraction_audit.json": "af18ab90fc75b1ed633c8b515b3075136834651093c4c791ee78abab62bf7f32",
+    "results/directional/station_registry.csv": "78c072f3d5496d385bfaf8a4be45ea5545d0e49d5324d54ee2e81ba65b571779",
+    "results/directional/route_movement.csv": "2c9ebf86792512bf6f53662bb164e2974ee223f93c0dc9a19a0573acc54e957d"
+  },
+  "artifacts": {
+    "north_weighting.png": "d9151081e83a7c18bc387e1961ef8fd2e9c1d7914a300bd5a27c135c5acb8907",
+    "observation_figures.json": "669a2dc436f99fe0133e5c444b729ee7ede9c6f5cdd0c07e90f332271cd60c9d",
+    "south_missingness.png": "01ffc42ad3f00d6a4abb0db3962eb4fa10bb680be8c743cb4010b83cc3c914fb",
+    "time_bands.png": "638e8896db49adf0bc77d84347682f4fdb7e65e464d9ac19bd1d580884ac3991",
+    "weather_alignment_support.png": "f892cedac952fa019d2b734fb214c9c82d7430eb52784fff2bd0fd3184922c9e",
+    "bus/aggregation_comparisons.csv": "723afc5162480d0aadec902dd16fe0c6bc12f8e71e9538f22804be10088cee62",
+    "bus/daily_indices_primary.csv": "a88417c68b0c53ae5a28f3885303c0b9832a4d2ba9e5ae637a7cde751bde3c21",
+    "bus/daily_record_states.csv": "97d574406e5b78a5a246d1b0256e4e3504843ae4cdec92ff2a5b5e94741aa1f5",
+    "bus/missingness_by_route_segment.csv": "8da99e743324356665b7646e3fe9d679df1b854eeca4cebcb706ba55e4008c9f",
+    "bus/panel_audit.json": "8254632bbb8f72a771ba1feb4a1572d0c511aa221fa163cf6320b053f7040c4f",
+    "bus/selected_cells.csv": "08cd7d2e4c8093dfb997f189c45a3bb5d4ef47ea33cc4a8583c7a0b306a77383",
+    "bus/sensitivity_audit.json": "be59ce7b4a125a62a5f6de8924a507c757718402b2921988815ea75ef5fe4b15",
+    "weather/audit.json": "37636f5f22169fd83957576b80e2b48bc22d11d1839891e345efb8c40f255e2e",
+    "weather/common_strata.csv": "1947e7f83666ff34ae56c6ce9e350b577edb795a5d2436513ca965e09e635cac",
+    "weather/comparisons.csv": "d050b5f4dff3b7e5dc20a3f8f54f287e6123a8b197f6f0c77ca49e7a686a3015",
+    "weather/comparison_audit.json": "0808c942d605b2cc261331d21ccc6dd5ab6590d659e7caeb3ac3cd5a1c134b2d",
+    "weather/daily_bands.csv": "907817a58b21733ff15f7fa2272c2ef2de40ca05925fa0cb4475031935b1fceb",
+    "weather/field_status_counts.csv": "5532c2ebdf17cd513d146fcbcfda9ebe21cd6159c7cecf8f05eec8e8aeff4078",
+    "weather/hourly_quality.csv": "74c82ebf59448abda8c4d8ebb1b6ab8e13709d24f7985b7603e029c15a70924d",
+    "weather/period_weather.csv": "c17d15900b4d017b8e968fa0db8088a3d3d292f99001416ff2da966119897c8f"
+  },
+  "versions": {
+    "pandas": "2.3.3",
+    "numpy": "2.5.2",
+    "matplotlib": "3.11.2",
+    "requests": "2.34.2",
+    "holidays": "0.107",
+    "pyarrow": "26.0.0"
+  },
+  "scope": "10시간 탐색의 1차 관측 분석. 기상 수집 시각 불일치 1건 제외·기록. 2026 시험값 미열람. 2025 예측·승객 분석은 후속 단계."
+}

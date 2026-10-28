@@ -37,13 +37,41 @@ bus_exploration:
   maximum_coverage_gap: 0.10
   survivor_samples: sensitivity_only_not_main_effect
   aggregations: [equal_cells, equal_routes, equal_segments, median_cells]
+  cohorts: [2024_pre_calendar, common_pre_source_days, summer_survivors_source_days]
+  coverage_experiment: primary_selection_at_080_then_daily_threshold_sensitivity
+  weighting: equal_routes_and_segments_require_within_unit_and_across_unit_coverage
+  weekend_minimum_days: 20
+  hourly_profile: fixed_pre_cells_at_080_each_hour
+  intervals: week_cluster_bootstrap_for_primary_comparisons_only
   weekend: separate_descriptive_panel_not_untreated_control
 weather:
   preferred: historical_local_hourly_observation_with_metadata
   fallback: distinguish_observation_from_reanalysis
+  source: https://www.weather.go.kr/w/weather/land/aws-obs.do
+  endpoint: https://www.weather.go.kr/w/observation/land/aws-obs-data.do
+  help: https://www.weather.go.kr/wnuri_help/html/observation/aws-obs.jsp
+  stations: [401, 400, 108]
+  primary_station: 401
+  months_from: directional_config.yaml
+  request_stride_hours: 48
+  response_hours: 60
+  endpoint_delay_seconds: 0.4
+  alignment_offsets_hours: [-1, 0, 1]
+  hour_precipitation: preceding_60_minutes_mm_verified_help
+  raw_fault_flag: preserve_not_formal_historical_qc
+  station_coordinates: require_historical_metadata_for_location_claim
   minimum_common_days: 20
   minimum_retained_fraction: 0.80
+  minimum_days_per_stratum: 2
+  temperature_edges_c: [20, 25, 30]
+  schemes: [weekday, rain, rain_temperature, rain_temperature_weekday]
+  retention_denominator: all_bus_quality_valid_days_in_each_period
   unknown_precipitation: keep_unknown
+passengers:
+  dataset: OA-21218
+  prefix: tpss_a18route_section
+  probe_months: ['2024-05', '2024-07']
+  definition_gate: no_person_time_or_load_factor_without_verified_denominator
 forecast:
   new_config_required_before_new_outcomes: true
   locked_2026_values: never_read

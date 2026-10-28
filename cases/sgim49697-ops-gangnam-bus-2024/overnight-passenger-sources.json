@@ -1,0 +1,39 @@
+{
+  "description": "구간별 총 승객수 스키마·결합 가능성 점검용 2024년 5월/7월 공개 원본. 분모 확정 전 승객 시간·혼잡률 계산에 쓰지 않음.",
+  "files": [
+    {
+      "kind": "bus_passengers",
+      "month": "2024-05",
+      "path": "data/overnight/passengers/bus_passengers_2024-05.zip",
+      "source": "https://data.seoul.go.kr/dataList/OA-21218/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21218",
+        "infSeq": "3",
+        "seq": "2405",
+        "seqNo": ""
+      },
+      "bytes": 37307254,
+      "sha256": "5830a367d60f6c29ee0f47d7823e44da3888952df11e9d3098d55d28b68ded4e",
+      "retrieved_at": "2026-10-28T16:54:36.584019+00:00"
+    },
+    {
+      "kind": "bus_passengers",
+      "month": "2024-07",
+      "path": "data/overnight/passengers/bus_passengers_2024-07.zip",
+      "source": "https://data.seoul.go.kr/dataList/OA-21218/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21218",
+        "infSeq": "3",
+        "seq": "2407",
+        "seqNo": ""
+      },
+      "bytes": 49294672,
+      "sha256": "a05448bd8b85cb7f08021761501b2b8b6d82d3f3c9f314006bdad936190bb938",
+      "retrieved_at": "2026-10-28T16:54:39.239229+00:00"
+    }
+  ]
+}

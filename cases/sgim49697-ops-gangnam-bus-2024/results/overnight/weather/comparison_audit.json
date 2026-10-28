@@ -1,0 +1,62 @@
+{
+  "rows": 3456,
+  "usable_rows": 1454,
+  "configuration": {
+    "preferred": "historical_local_hourly_observation_with_metadata",
+    "fallback": "distinguish_observation_from_reanalysis",
+    "source": "https://www.weather.go.kr/w/weather/land/aws-obs.do",
+    "endpoint": "https://www.weather.go.kr/w/observation/land/aws-obs-data.do",
+    "help": "https://www.weather.go.kr/wnuri_help/html/observation/aws-obs.jsp",
+    "stations": [
+      401,
+      400,
+      108
+    ],
+    "primary_station": 401,
+    "months_from": "directional_config.yaml",
+    "request_stride_hours": 48,
+    "response_hours": 60,
+    "endpoint_delay_seconds": 0.4,
+    "alignment_offsets_hours": [
+      -1,
+      0,
+      1
+    ],
+    "hour_precipitation": "preceding_60_minutes_mm_verified_help",
+    "raw_fault_flag": "preserve_not_formal_historical_qc",
+    "station_coordinates": "require_historical_metadata_for_location_claim",
+    "minimum_common_days": 20,
+    "minimum_retained_fraction": 0.8,
+    "minimum_days_per_stratum": 2,
+    "temperature_edges_c": [
+      20,
+      25,
+      30
+    ],
+    "schemes": [
+      "weekday",
+      "rain",
+      "rain_temperature",
+      "rain_temperature_weekday"
+    ],
+    "retention_denominator": "all_bus_quality_valid_days_in_each_period",
+    "unknown_precipitation": "keep_unknown"
+  },
+  "code_sha256": "f981f85e2977ea487718b4a7ed01ed72424601ae6c96235b485e568d282313a0",
+  "weather_bands_sha256": "907817a58b21733ff15f7fa2272c2ef2de40ca05925fa0cb4475031935b1fceb",
+  "bus_daily_sha256": "a88417c68b0c53ae5a28f3885303c0b9832a4d2ba9e5ae637a7cde751bde3c21",
+  "collection_complete": false,
+  "failed_requests": [
+    {
+      "station": 400,
+      "endpoint": "2023-06-30 23:00:00",
+      "error": "ValueError: 기상 응답의 시각·지점·간격이 요청과 다릅니다"
+    }
+  ],
+  "outputs": {
+    "comparisons.csv": "d050b5f4dff3b7e5dc20a3f8f54f287e6123a8b197f6f0c77ca49e7a686a3015",
+    "common_strata.csv": "1947e7f83666ff34ae56c6ce9e350b577edb795a5d2436513ca965e09e635cac",
+    "period_weather.csv": "c17d15900b4d017b8e968fa0db8088a3d3d292f99001416ff2da966119897c8f"
+  },
+  "note": "기상 분포 표준화는 기술 비교. 관측한 날씨가 정책 외 모든 교란을 제거하지 않음. 실패한 표본 조건도 모두 출력."
+}
