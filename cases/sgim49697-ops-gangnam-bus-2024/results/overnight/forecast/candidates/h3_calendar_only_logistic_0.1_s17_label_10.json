@@ -1,0 +1,29 @@
+{
+  "candidate": "h3_calendar_only_logistic_0.1_s17_label_10",
+  "horizon": 3,
+  "feature_set": "calendar_only",
+  "family": "logistic",
+  "parameter": 0.1,
+  "seed": 17,
+  "label": "label_10",
+  "signature": "8c9e4833ce6f7ff789c7084ce161f0a4776086985c76a79a272bd621ec10bb36",
+  "model_path": "data/overnight/forecast/models/h3_calendar_only_logistic_0.1_s17_label_10.joblib",
+  "model_sha256": "908d3344c7f54cf1bb66a288059bfa593de91b2bf42dccbd642ca48426494a7a",
+  "iterations": 22,
+  "training_rows": 248000,
+  "tuning_metrics": {
+    "rows": 4248,
+    "positives": 16,
+    "prevalence": 0.0037664782721549273,
+    "average_precision": 0.11057565891338192,
+    "brier": 0.003613490757189519,
+    "log_loss": 0.020272737447051315,
+    "roc_auc": 0.9140846526465027
+  },
+  "elapsed_seconds": 0.7547755180858076,
+  "created_at": "2026-10-28T18:01:35.407948+00:00",
+  "warnings": [],
+  "feature_sha256": "86d3b180ad76656071b7c2666f8615000ed7ba853aef5d191b473530c5a3f17d",
+  "model_code_sha256": "e1b0d12ec8dce7e8b1d27981045e79ff6ef4bdcaaf8db012591c4407ac52c031",
+  "runner_sha256": "fa8591b2fd70e0d49406b6e6eed0278198302f7671f231e0c68bdf71156ceade"
+}

@@ -15,16 +15,19 @@ from .overnight_bus_extract import load_wide
 from .overnight_forecast_data import BASE, OUT
 
 
-def group_features(panel, keys, source_days, train_end, value, prefix, nonnegative):
+def group_features(panel, keys, source_days, train_end, value, prefix, nonnegative, selected=None):
     """사전 관측률로만 셀을 고정하고 원본 날짜 부재를 0으로 표시하지 않는다."""
-    train_days = [d for d in source_days if d <= train_end]
-    train = panel[panel.date.le(train_end)]
-    recorded = train[value].ge(0) if nonnegative else train[value].gt(0)
-    counts = train.loc[recorded].groupby(keys, observed=True).size()
-    selected = counts[counts.ge(len(train_days) * .8)].rename("train_count").reset_index()
+    if selected is None:
+        train_days = [d for d in source_days if d <= train_end]
+        train = panel[panel.date.le(train_end)]
+        recorded = train[value].ge(0) if nonnegative else train[value].gt(0)
+        counts = train.loc[recorded].groupby(keys, observed=True).size()
+        selected = counts[counts.ge(len(train_days) * .8)].rename("train_count").reset_index()
+        selected["training_observation_fraction"] = selected.train_count / len(train_days)
+    elif selected.duplicated(keys).any() or selected[keys].isna().any().any():
+        raise ValueError("동결된 버스 셀 키 중복 또는 결측")
     if selected.empty:
         raise ValueError("학습기 버스 관측률 80%를 통과하는 고정 셀이 없습니다")
-    selected["training_observation_fraction"] = selected.train_count / len(train_days)
     data = panel.merge(selected[keys], on=keys, how="inner", validate="many_to_one")
     data["valid_value"] = data[value].where(data[value].ge(0) if nonnegative else data[value].gt(0))
     expected = selected.groupby(["group", "hour"], observed=True).size().rename("expected_cells")

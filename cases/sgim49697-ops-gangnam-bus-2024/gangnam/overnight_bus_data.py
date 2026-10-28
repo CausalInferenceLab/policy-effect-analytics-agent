@@ -19,6 +19,13 @@ BUS_DATASETS = {**DATASETS, "bus_passengers": ("OA-21218", "tpss_a18route_sectio
 def collect_requests(wanted, manifest_path, folder, description):
     if any(int(month[:4]) >= 2026 for kind, month in wanted):
         raise ValueError("2026년 잠금 자료 수집 금지")
+    later = {month for kind, month in wanted if month >= "2025-05"}
+    if later:
+        from .overnight_forecast_data import allowed_months
+
+        allowed = set(allowed_months("test", read_yaml("overnight_forecast_config.yaml")))
+        if not later.issubset(allowed):
+            raise ValueError("동결된 시험 기간 밖의 버스 수집 금지")
     folder.mkdir(parents=True, exist_ok=True)
     entries = {}
     for name in ["directional-sources.json", "followup-sources.json", "overnight-passenger-sources.json", manifest_path.name]:

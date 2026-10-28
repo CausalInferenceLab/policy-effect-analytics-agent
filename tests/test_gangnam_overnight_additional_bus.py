@@ -14,6 +14,8 @@ sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "cases/sgim49697-op
 extract = importlib.import_module("gangnam.overnight_bus_extract")
 passengers = importlib.import_module("gangnam.overnight_passengers")
 forecast = importlib.import_module("gangnam.overnight_forecast_bus")
+collector = importlib.import_module("gangnam.overnight_bus_data")
+road_data = importlib.import_module("gangnam.overnight_forecast_data")
 
 
 def test_passenger_zero_is_recorded_and_blank_stays_unknown():
@@ -67,3 +69,21 @@ def test_source_date_absence_is_distinct_from_missing_fixed_cell():
         ["2024-01-01", "2024-01-02", "2024-01-04"], "2024-01-02", "raw", "time", False)
     assert pd.isna(output.loc[pd.Timestamp("2024-01-03 17:00", tz="Asia/Seoul"), "bus_G_time_fraction"])
     assert output.loc[pd.Timestamp("2024-01-04 17:00", tz="Asia/Seoul"), "bus_G_time_fraction"] == 0.
+
+
+def test_test_bus_cannot_be_collected_or_parsed_before_model_freeze(tmp_path, monkeypatch):
+    monkeypatch.setattr(road_data, "OUT", tmp_path)
+    with pytest.raises(ValueError, match="동결 전"):
+        collector.collect_requests({("bus_time", "2025-05")}, tmp_path / "source.json", tmp_path / "raw", "시험")
+    with pytest.raises(ValueError, match="동결 전"):
+        extract.extract(({"kind": "bus_time", "month": "2025-05"}, ["S"], [17], "forecast_bus_test"))
+    assert not (tmp_path / "raw").exists()
+
+
+def test_test_bus_cannot_replace_training_selected_cells():
+    selected = pd.DataFrame({"group": ["G"], "route": ["R"], "hour": [17], "train_count": [100]})
+    panel = pd.DataFrame({"date": ["2025-05-01", "2025-05-01"], "group": "G", "route": ["R", "NEW"], "hour": 17, "raw": [2., 999.]})
+    output, chosen, _ = forecast.group_features(panel, ["group", "route", "hour"], ["2025-05-01"],
+        "2024-12-31", "raw", "time", False, selected=selected)
+    assert chosen.route.tolist() == ["R"]
+    assert output.iloc[0].bus_G_time_mean == 2.

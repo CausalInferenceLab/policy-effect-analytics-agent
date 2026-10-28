@@ -1,0 +1,29 @@
+{
+  "candidate": "h1_calendar_only_seasonal_fixed_s17_label_10",
+  "horizon": 1,
+  "feature_set": "calendar_only",
+  "family": "seasonal",
+  "parameter": "fixed",
+  "seed": 17,
+  "label": "label_10",
+  "signature": "02f60cb8930c89200911e81296a75f02a7ab54d48455878d3002db6094be3f07",
+  "model_path": "data/overnight/forecast/models/h1_calendar_only_seasonal_fixed_s17_label_10.joblib",
+  "model_sha256": "00710e4d7d264a305e07ede17fe4d36c96b822af98fbe18ce7dc671ad842f63a",
+  "iterations": null,
+  "training_rows": 1086533,
+  "tuning_metrics": {
+    "rows": 4248,
+    "positives": 16,
+    "prevalence": 0.0037664782721549273,
+    "average_precision": 0.08739308247117855,
+    "brier": 0.003948091123422352,
+    "log_loss": 0.017909496865159823,
+    "roc_auc": 0.9638099598298677
+  },
+  "elapsed_seconds": 4.483137511066161,
+  "created_at": "2026-10-28T17:54:16.656155+00:00",
+  "warnings": [],
+  "feature_sha256": "7165daedfd77360e45fbbdfb0edf682407e3d104532b548f40a7b448c2f5f49d",
+  "model_code_sha256": "e1b0d12ec8dce7e8b1d27981045e79ff6ef4bdcaaf8db012591c4407ac52c031",
+  "runner_sha256": "fa8591b2fd70e0d49406b6e6eed0278198302f7671f231e0c68bdf71156ceade"
+}

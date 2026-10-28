@@ -22,6 +22,13 @@ STAGES = {
     "forecast-bus-features": ("overnight_forecast_bus", "prepare", []),
     "forecast-features": ("overnight_forecast_features", "prepare", []),
     "forecast-train": ("overnight_forecast_train", "run", []),
+    "forecast-freeze": ("overnight_forecast_freeze", "freeze", []),
+    "forecast-test-collect": ("overnight_forecast_data", "collect", ["test"]),
+    "forecast-test-prepare": ("overnight_forecast_data", "prepare", ["test"]),
+    "forecast-test-bus-collect": ("overnight_forecast_test_bus", "collect", []),
+    "forecast-test-bus-prepare": ("overnight_forecast_test_bus", "prepare", []),
+    "forecast-test-features": ("overnight_forecast_features", "prepare", ["test"]),
+    "forecast-test-evaluate": ("overnight_forecast_evaluate", "evaluate", []),
 }
 
 

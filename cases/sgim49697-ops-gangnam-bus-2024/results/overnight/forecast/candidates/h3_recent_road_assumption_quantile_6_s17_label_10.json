@@ -1,0 +1,27 @@
+{
+  "candidate": "h3_recent_road_assumption_quantile_6_s17_label_10",
+  "horizon": 3,
+  "feature_set": "recent_road_assumption",
+  "family": "quantile",
+  "parameter": 6,
+  "seed": 17,
+  "label": "label_10",
+  "signature": "05545273d64302ddb4e78b887b9fe8257c250589489c0325fb889b0fc608e634",
+  "model_path": "data/overnight/forecast/models/h3_recent_road_assumption_quantile_6_s17_label_10.joblib",
+  "model_sha256": "14622f193eb44c9d0c3b06e1b5b5c19d1b24c99c069cb47a0b66fa467e17ca5a",
+  "iterations": 997,
+  "training_rows": 248000,
+  "tuning_metrics": {
+    "rows": 4248,
+    "mean_pinball": 0.5257821455025783,
+    "coverage": 0.786487758945386,
+    "width": 5.008817857091965,
+    "crossing_fraction": 0.0
+  },
+  "elapsed_seconds": 74.40511387295555,
+  "created_at": "2026-10-28T18:07:24.619534+00:00",
+  "warnings": [],
+  "feature_sha256": "86d3b180ad76656071b7c2666f8615000ed7ba853aef5d191b473530c5a3f17d",
+  "model_code_sha256": "e1b0d12ec8dce7e8b1d27981045e79ff6ef4bdcaaf8db012591c4407ac52c031",
+  "runner_sha256": "fa8591b2fd70e0d49406b6e6eed0278198302f7671f231e0c68bdf71156ceade"
+}

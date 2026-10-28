@@ -167,7 +167,7 @@ def prepare(scope="development"):
     else:
         chosen = json.loads(selected_path.read_text())
     matrix, exclusions = mask_changed_metadata(matrix, entries, chosen, cfg)
-    bus_path = BASE / "bus_hourly_features.parquet"
+    bus_path = BASE / ("bus_hourly_test_features.parquet" if scope == "test" else "bus_hourly_features.parquet")
     bus = None
     if bus_path.exists():
         info = json.loads(bus_path.with_suffix(".json").read_text())

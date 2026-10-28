@@ -1,0 +1,29 @@
+{
+  "candidate": "h1_delayed_bus_ablation_catboost_8_s42_label_10",
+  "horizon": 1,
+  "feature_set": "delayed_bus_ablation",
+  "family": "catboost",
+  "parameter": 8,
+  "seed": 42,
+  "label": "label_10",
+  "signature": "fa60464d7ef64f2b35cd1060da98ecbc8b22d4e3f526dc2581c767bc61c960e8",
+  "model_path": "data/overnight/forecast/models/h1_delayed_bus_ablation_catboost_8_s42_label_10.joblib",
+  "model_sha256": "ffb2b7312409bba386e2bddb40497702e6190cdf3abfcd246cf806a2adb604cf",
+  "iterations": 240,
+  "training_rows": 248000,
+  "tuning_metrics": {
+    "rows": 4248,
+    "positives": 16,
+    "prevalence": 0.0037664782721549273,
+    "average_precision": 0.153463955485718,
+    "brier": 0.0036586018977310783,
+    "log_loss": 0.016536328737386044,
+    "roc_auc": 0.9589880671077505
+  },
+  "elapsed_seconds": 21.28717089793645,
+  "created_at": "2026-10-28T17:57:37.238461+00:00",
+  "warnings": [],
+  "feature_sha256": "7165daedfd77360e45fbbdfb0edf682407e3d104532b548f40a7b448c2f5f49d",
+  "model_code_sha256": "e1b0d12ec8dce7e8b1d27981045e79ff6ef4bdcaaf8db012591c4407ac52c031",
+  "runner_sha256": "fa8591b2fd70e0d49406b6e6eed0278198302f7671f231e0c68bdf71156ceade"
+}

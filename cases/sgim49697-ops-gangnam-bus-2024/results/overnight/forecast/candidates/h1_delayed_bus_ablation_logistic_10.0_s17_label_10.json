@@ -1,0 +1,29 @@
+{
+  "candidate": "h1_delayed_bus_ablation_logistic_10.0_s17_label_10",
+  "horizon": 1,
+  "feature_set": "delayed_bus_ablation",
+  "family": "logistic",
+  "parameter": 10.0,
+  "seed": 17,
+  "label": "label_10",
+  "signature": "98a4a29c10eb7248ea47905c7406eb934c1c03d3ae3f60bae1a8200e423121e1",
+  "model_path": "data/overnight/forecast/models/h1_delayed_bus_ablation_logistic_10.0_s17_label_10.joblib",
+  "model_sha256": "0b791fe7a620676ffbedfa84bf36f8cf4fb4f903ea7c43da42823f089c901428",
+  "iterations": 94,
+  "training_rows": 248000,
+  "tuning_metrics": {
+    "rows": 4248,
+    "positives": 16,
+    "prevalence": 0.0037664782721549273,
+    "average_precision": 0.1324599590569133,
+    "brier": 0.003713778873501369,
+    "log_loss": 0.017324680789566935,
+    "roc_auc": 0.9522684310018903
+  },
+  "elapsed_seconds": 3.558252347051166,
+  "created_at": "2026-10-28T17:56:32.058492+00:00",
+  "warnings": [],
+  "feature_sha256": "7165daedfd77360e45fbbdfb0edf682407e3d104532b548f40a7b448c2f5f49d",
+  "model_code_sha256": "e1b0d12ec8dce7e8b1d27981045e79ff6ef4bdcaaf8db012591c4407ac52c031",
+  "runner_sha256": "fa8591b2fd70e0d49406b6e6eed0278198302f7671f231e0c68bdf71156ceade"
+}

@@ -54,7 +54,10 @@ def extract(job):
     if month < "2023-01":
         raise ValueError("2022년 버스 원본은 헤더·행 불일치 검증 전까지 별도 보류합니다")
     if month >= "2025-05":
-        raise ValueError("개발용 버스 추출은 2025년 4월까지 허용합니다")
+        from .overnight_forecast_data import allowed_months
+
+        if month not in allowed_months("test", read_yaml("overnight_forecast_config.yaml")):
+            raise ValueError("동결된 시험 기간 밖의 버스 추출 금지")
     path = CASE / entry["path"]
     if not path.resolve().is_relative_to((CASE / "data").resolve()) or sha256(path) != entry["sha256"]:
         raise ValueError("버스 원본 경로·해시 불일치")
