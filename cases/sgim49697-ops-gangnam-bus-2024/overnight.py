@@ -36,6 +36,8 @@ STAGES = {
     "fare-trim": ("overnight_fare_trim", "run", []),
     "road-context-collect": ("overnight_road_context_data", "collect", []),
     "road-context": ("overnight_road_context", "run", []),
+    "road-names": ("overnight_road_names", "run", []),
+    "road-names-plot": ("overnight_road_names_plot", "plot", []),
     "operations-plots": ("overnight_operations_plots", "plot", []),
     "forecast-collect": ("overnight_forecast_data", "collect", []),
     "forecast-prepare": ("overnight_forecast_data", "prepare", []),
@@ -51,6 +53,8 @@ STAGES = {
     "forecast-test-evaluate": ("overnight_forecast_evaluate", "evaluate", []),
     "forecast-test-diagnostics": ("overnight_forecast_diagnostics", "run", []),
     "forecast-plots": ("overnight_forecast_plots", "plot", []),
+    "baseline-prepare": ("overnight_baseline_runner", "prepare", []),
+    "baseline-evaluate": ("overnight_baseline_evaluate", "evaluate", []),
 }
 
 

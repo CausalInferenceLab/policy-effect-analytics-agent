@@ -1,0 +1,7 @@
+{
+  "code_sha256": "fb383b1c53c8787d0b87dac15b2edd503210d1dd8aa5afbb382680e4fad8d202",
+  "input": "results/overnight/road_names_sensitivity/strict_vs_names.csv",
+  "input_sha256": "c2d3182dcbe2e7e4f4c5a3b539de00d613390b3827bf3036ad1352481f5b5f9e",
+  "output": "results/overnight/road_names_sensitivity/names_sensitivity.png",
+  "output_sha256": "79c52748e75e8564822a768af85a2377294bde00edb9fc7b9acecda3f2889910"
+}

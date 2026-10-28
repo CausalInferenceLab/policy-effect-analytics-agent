@@ -1,0 +1,560 @@
+{
+  "prepared_at": "2026-10-28T20:47:28.562081+00:00",
+  "mode": "exploratory_baselines_after_frozen_test_was_observed",
+  "inputs": {
+    "results/overnight/forecast/feature_audit_development.json": "a054ea53d40e05b20b1259ee1f041c2a0d3660a087bf5b68180d9de8c0a02439",
+    "data/overnight/forecast/features_development_h1.parquet": "7165daedfd77360e45fbbdfb0edf682407e3d104532b548f40a7b448c2f5f49d",
+    "data/overnight/forecast/features_development_h3.parquet": "86d3b180ad76656071b7c2666f8615000ed7ba853aef5d191b473530c5a3f17d",
+    "overnight_forecast_baselines_config.yaml": "cbc11e37ef2976a1ff4e0528d1083ba17225db199c1ae7017984f571f5092ca3",
+    "overnight_forecast_config.yaml": "459e838c924c3bad0b189b6ab752db8842a0e2d6ef2688b2933d64e7f31317af",
+    "gangnam/overnight_baseline_methods.py": "fe59fb8820e1f7ad265218922a8d4b77b84a36c5f9277b05eecf7caae843c6a8",
+    "gangnam/overnight_baseline_runner.py": "5b7b4a2285fc4a9d6acec8bf052d7acc85fcdbe639bb08ba5e291792e20190ac",
+    "gangnam/overnight_baseline_evaluate.py": "5ec0fab2534eb3892c1d9902404978097a966cc3acf3819a750590d0f4d1649f",
+    "gangnam/overnight_forecast_models.py": "e1b0d12ec8dce7e8b1d27981045e79ff6ef4bdcaaf8db012591c4407ac52c031",
+    "gangnam/overnight_forecast_metrics.py": "22f47f299c98ee12646c1bbe42d9eea5717cb3ea3a7d3d6b952b94de40d07519",
+    "gangnam/overnight_forecast_diagnostics.py": "18308aa1a0d49b9acf6be0de9e263098d46b8cd5e62813f93dd7c91c54cbacf6",
+    "gangnam/common.py": "31722241f4dc00edd5e65dc0bf6bba0608e3a27c9b86cad55fcd2c5b1b9c5969",
+    "results/overnight/forecast/selection_manifest.json": "f6611a6fa8f2ee692318de3b126e1d5c7378dc6feb75a7765182cad372d7ab03",
+    "results/overnight/forecast/selected_models_development.json": "7cdbc5b90c803f05127c361ae8519b578aa48870737826361ccd29c173558e90",
+    "results/overnight/forecast/test_evaluation_audit.json": "d2f1c7ebe4327bff13555f77dda00fbcd890cfb21fd89c19fb07bb8aed6d176a"
+  },
+  "entries": [
+    {
+      "name": "seasonal_q20",
+      "horizon": 1,
+      "task": "relative_probability",
+      "family": "seasonal",
+      "frozen_comparator": false,
+      "calibrator": {
+        "intercept": 0.29714191692880076,
+        "slope": 1.288136615833265,
+        "rows": 2232,
+        "prevalence": 0.19802866876125336,
+        "C": 1000000.0
+      },
+      "model_path": "data/overnight/forecast_baselines/models/h1_seasonal_q20.joblib",
+      "model_sha256": "fafc6a13185f4c7a425269e70afb0806b546332c8a31ab65b97244b352c84f2d",
+      "original_rule": {
+        "threshold": 0.36934896011278967,
+        "decision_fpr": 0.09683098591549295,
+        "decision_recall": 0.7017543859649122,
+        "decision_rows": 2160,
+        "decision_prevalence": 0.21111111342906952
+      },
+      "budget_rule": {
+        "threshold": 0.8559120983605322,
+        "decision_recall": 0.11403508484363556,
+        "decision_fpr": 0.0029342723004694834,
+        "decision_alerts": 57,
+        "decision_calendar_days": 30,
+        "decision_alerts_per_day": 1.9
+      },
+      "decision_predictions": {
+        "path": "data/overnight/forecast_baselines/development_predictions/h1_seasonal_q20_decision.parquet",
+        "sha256": "54d1c681947198ee65bc514fa160e99bba9f68ba0672b92d3f5feb468704897a",
+        "rows": 2160
+      },
+      "calibration_predictions": {
+        "path": "data/overnight/forecast_baselines/development_predictions/h1_seasonal_q20_calibration.parquet",
+        "sha256": "6cf9bd6ef5501d6d14e90923779a9f4d851ee0883343a0241ad575cc75007413",
+        "rows": 2232
+      }
+    },
+    {
+      "name": "calendar_logistic_q20",
+      "horizon": 1,
+      "task": "relative_probability",
+      "family": "logistic",
+      "frozen_comparator": false,
+      "calibrator": {
+        "intercept": -0.37018313910626144,
+        "slope": 0.4938374585165999,
+        "rows": 2232,
+        "prevalence": 0.19802866876125336,
+        "C": 1000000.0
+      },
+      "model_path": "data/overnight/forecast_baselines/models/h1_calendar_logistic_q20.joblib",
+      "model_sha256": "637b5e863c93cb7d4ba62ecfff2604f5627ba42690cf5b0e3a8ab0716a3ea7a2",
+      "original_rule": {
+        "threshold": 0.3723453305898598,
+        "decision_fpr": 0.09859154929577464,
+        "decision_recall": 0.4276315789473684,
+        "decision_rows": 2160,
+        "decision_prevalence": 0.21111111342906952
+      },
+      "budget_rule": {
+        "threshold": 0.49840934527061176,
+        "decision_recall": 0.1184210553765297,
+        "decision_fpr": 0.0035211267605633804,
+        "decision_alerts": 60,
+        "decision_calendar_days": 30,
+        "decision_alerts_per_day": 2.0
+      },
+      "decision_predictions": {
+        "path": "data/overnight/forecast_baselines/development_predictions/h1_calendar_logistic_q20_decision.parquet",
+        "sha256": "f784533481b5d2b789ad991762d7ce282c5a80e5482a292d466a8820c4448cb9",
+        "rows": 2160
+      },
+      "calibration_predictions": {
+        "path": "data/overnight/forecast_baselines/development_predictions/h1_calendar_logistic_q20_calibration.parquet",
+        "sha256": "afb1a22aa9a43990d04ba919d28cb8218d1bb47b18819f853aabb455e6252312",
+        "rows": 2232
+      }
+    },
+    {
+      "name": "weekly_logistic_q20",
+      "horizon": 1,
+      "task": "relative_probability",
+      "family": "logistic",
+      "frozen_comparator": false,
+      "calibrator": {
+        "intercept": -0.135131552324141,
+        "slope": 0.8925806790304037,
+        "rows": 2232,
+        "prevalence": 0.19802866876125336,
+        "C": 1000000.0
+      },
+      "model_path": "data/overnight/forecast_baselines/models/h1_weekly_logistic_q20.joblib",
+      "model_sha256": "d6b1094d2abbb829783bdacaad5f084f8da307882fad20e53d81cec94fdb463a",
+      "original_rule": {
+        "threshold": 0.3756923056736357,
+        "decision_fpr": 0.09976525821596244,
+        "decision_recall": 0.6381578947368421,
+        "decision_rows": 2160,
+        "decision_prevalence": 0.21111111342906952
+      },
+      "budget_rule": {
+        "threshold": 0.776590232312459,
+        "decision_recall": 0.12938596308231354,
+        "decision_fpr": 0.0005868544600938967,
+        "decision_alerts": 60,
+        "decision_calendar_days": 30,
+        "decision_alerts_per_day": 2.0
+      },
+      "decision_predictions": {
+        "path": "data/overnight/forecast_baselines/development_predictions/h1_weekly_logistic_q20_decision.parquet",
+        "sha256": "13790cc8c41a2d0e05faa99111bbf8d3bb8300d75c6155131e922d9a094f0c4d",
+        "rows": 2160
+      },
+      "calibration_predictions": {
+        "path": "data/overnight/forecast_baselines/development_predictions/h1_weekly_logistic_q20_calibration.parquet",
+        "sha256": "d877c3d5f45e2de82ae2e31959d8606ee3a7016def215f62e36fa5586af2e3ec",
+        "rows": 2232
+      }
+    },
+    {
+      "name": "catboost_frozen_q20",
+      "horizon": 1,
+      "task": "relative_probability",
+      "family": "catboost",
+      "frozen_comparator": true,
+      "candidate": "h1_delayed_bus_ablation_catboost_8_s17_label_q20",
+      "calibrator": {
+        "intercept": 0.14735406476432164,
+        "slope": 1.069336830273707,
+        "rows": 2232,
+        "prevalence": 0.19802866876125336,
+        "C": 1000000.0
+      },
+      "model_path": "data/overnight/forecast/models/h1_delayed_bus_ablation_catboost_8_s17_label_q20.joblib",
+      "model_sha256": "3a814c212f82f0f546b75fc83c27d41afa02dbc6ee5371b8b21bce66ca084e56",
+      "original_decision": {
+        "threshold": 0.37522601320173815,
+        "decision_fpr": 0.09800469483568075,
+        "decision_recall": 0.7521929824561403,
+        "decision_rows": 2160,
+        "decision_prevalence": 0.21111111342906952
+      },
+      "original_rule": {
+        "threshold": 0.37522601320173815,
+        "decision_fpr": 0.09800469483568075,
+        "decision_recall": 0.7521929824561403,
+        "decision_rows": 2160,
+        "decision_prevalence": 0.21111111342906952
+      },
+      "budget_rule": {
+        "threshold": 0.9378912857452724,
+        "decision_recall": 0.125,
+        "decision_fpr": 0.0017605633802816902,
+        "decision_alerts": 60,
+        "decision_calendar_days": 30,
+        "decision_alerts_per_day": 2.0
+      },
+      "decision_predictions": {
+        "path": "data/overnight/forecast_baselines/development_predictions/h1_catboost_frozen_q20_decision.parquet",
+        "sha256": "c5ceedb91a226edf581a544128fd57dda73db70f0b231e82c8e2c1e93c1cc729",
+        "rows": 2160
+      },
+      "calibration_predictions": {
+        "path": "data/overnight/forecast_baselines/development_predictions/h1_catboost_frozen_q20_calibration.parquet",
+        "sha256": "1944755c448571d648487b5ea4e93c22cc94b0a0641db6a6604a7b874b1a1fff",
+        "rows": 2232
+      }
+    },
+    {
+      "name": "calendar_empirical",
+      "horizon": 1,
+      "task": "quantile",
+      "frozen_comparator": false,
+      "model_path": "data/overnight/forecast_baselines/models/h1_calendar_empirical.joblib",
+      "model_sha256": "8c955716578e0f5cd458214b649a6838593495568990fdf5d232b533bbb82882",
+      "calibration": {
+        "rows": 2232,
+        "rank": 1787,
+        "raw_score_quantile": -0.14899826049804688,
+        "expansion": 0.0,
+        "nominal_coverage": 0.8,
+        "raw_crossing_fraction": 0.0,
+        "fallback_rows": 0
+      },
+      "calibration_predictions": {
+        "path": "data/overnight/forecast_baselines/development_predictions/h1_calendar_empirical_calibration.parquet",
+        "sha256": "0db366c6b3280a695dca85287f09e7469743bf35fed3e8076a215c3ff0b73134",
+        "rows": 2232
+      }
+    },
+    {
+      "name": "weekly_empirical",
+      "horizon": 1,
+      "task": "quantile",
+      "frozen_comparator": false,
+      "model_path": "data/overnight/forecast_baselines/models/h1_calendar_empirical.joblib",
+      "model_sha256": "8c955716578e0f5cd458214b649a6838593495568990fdf5d232b533bbb82882",
+      "calibration": {
+        "rows": 2232,
+        "rank": 1787,
+        "raw_score_quantile": 1.002999877929689,
+        "expansion": 1.002999877929689,
+        "nominal_coverage": 0.8,
+        "raw_crossing_fraction": 0.0,
+        "fallback_rows": 0
+      },
+      "calibration_predictions": {
+        "path": "data/overnight/forecast_baselines/development_predictions/h1_weekly_empirical_calibration.parquet",
+        "sha256": "27649d34369594097d5cfbe6ac61a78e2422176ddfcc894e9d3ac86a9f927f0a",
+        "rows": 2232
+      }
+    },
+    {
+      "name": "catboost_frozen_quantile",
+      "horizon": 1,
+      "task": "quantile",
+      "frozen_comparator": true,
+      "candidate": "h1_recent_road_assumption_quantile_8_s17_label_10",
+      "model_path": "data/overnight/forecast/models/h1_recent_road_assumption_quantile_8_s17_label_10.joblib",
+      "model_sha256": "baede09372c5e2ac41894951447ab644969c3623d4d651d86be982102dbe863d",
+      "calibration": {
+        "rows": 2232,
+        "rank": 1787,
+        "raw_score_quantile": -0.14723520264385925,
+        "expansion": 0.0,
+        "nominal_coverage": 0.8,
+        "raw_crossing_fraction": 0.0,
+        "fallback_rows": 0
+      },
+      "calibration_predictions": {
+        "path": "data/overnight/forecast_baselines/development_predictions/h1_catboost_frozen_quantile_calibration.parquet",
+        "sha256": "69f44b08e58d04eb368573cfe287926e3d5079eef51f9a3ef23f822b08d3f3ec",
+        "rows": 2232
+      }
+    },
+    {
+      "name": "seasonal_q20",
+      "horizon": 3,
+      "task": "relative_probability",
+      "family": "seasonal",
+      "frozen_comparator": false,
+      "calibrator": {
+        "intercept": 0.29714191692880076,
+        "slope": 1.288136615833265,
+        "rows": 2232,
+        "prevalence": 0.19802866876125336,
+        "C": 1000000.0
+      },
+      "model_path": "data/overnight/forecast_baselines/models/h3_seasonal_q20.joblib",
+      "model_sha256": "fafc6a13185f4c7a425269e70afb0806b546332c8a31ab65b97244b352c84f2d",
+      "original_rule": {
+        "threshold": 0.36934896011278967,
+        "decision_fpr": 0.09683098591549295,
+        "decision_recall": 0.7017543859649122,
+        "decision_rows": 2160,
+        "decision_prevalence": 0.21111111342906952
+      },
+      "budget_rule": {
+        "threshold": 0.8559120983605322,
+        "decision_recall": 0.11403508484363556,
+        "decision_fpr": 0.0029342723004694834,
+        "decision_alerts": 57,
+        "decision_calendar_days": 30,
+        "decision_alerts_per_day": 1.9
+      },
+      "decision_predictions": {
+        "path": "data/overnight/forecast_baselines/development_predictions/h3_seasonal_q20_decision.parquet",
+        "sha256": "6ab3c2c34dec554a0d23fcfe1b1f2c195421fa23e8ac3f3b7b703ed1157c1693",
+        "rows": 2160
+      },
+      "calibration_predictions": {
+        "path": "data/overnight/forecast_baselines/development_predictions/h3_seasonal_q20_calibration.parquet",
+        "sha256": "fad46793c054a6dfafc59862c2dc21aee096520bd07973adad173627406bfc4d",
+        "rows": 2232
+      }
+    },
+    {
+      "name": "calendar_logistic_q20",
+      "horizon": 3,
+      "task": "relative_probability",
+      "family": "logistic",
+      "frozen_comparator": false,
+      "calibrator": {
+        "intercept": -0.37018313910626144,
+        "slope": 0.4938374585165999,
+        "rows": 2232,
+        "prevalence": 0.19802866876125336,
+        "C": 1000000.0
+      },
+      "model_path": "data/overnight/forecast_baselines/models/h3_calendar_logistic_q20.joblib",
+      "model_sha256": "637b5e863c93cb7d4ba62ecfff2604f5627ba42690cf5b0e3a8ab0716a3ea7a2",
+      "original_rule": {
+        "threshold": 0.3723453305898598,
+        "decision_fpr": 0.09859154929577464,
+        "decision_recall": 0.4276315789473684,
+        "decision_rows": 2160,
+        "decision_prevalence": 0.21111111342906952
+      },
+      "budget_rule": {
+        "threshold": 0.49840934527061176,
+        "decision_recall": 0.1184210553765297,
+        "decision_fpr": 0.0035211267605633804,
+        "decision_alerts": 60,
+        "decision_calendar_days": 30,
+        "decision_alerts_per_day": 2.0
+      },
+      "decision_predictions": {
+        "path": "data/overnight/forecast_baselines/development_predictions/h3_calendar_logistic_q20_decision.parquet",
+        "sha256": "2a03dbda11143006e4cd428821797f542b056253f9b017efcdde282a2d96e5e0",
+        "rows": 2160
+      },
+      "calibration_predictions": {
+        "path": "data/overnight/forecast_baselines/development_predictions/h3_calendar_logistic_q20_calibration.parquet",
+        "sha256": "b7038d6945a37f7fdbe180b3d479cf357b08d5a64db0c92a31dc6833665371b6",
+        "rows": 2232
+      }
+    },
+    {
+      "name": "weekly_logistic_q20",
+      "horizon": 3,
+      "task": "relative_probability",
+      "family": "logistic",
+      "frozen_comparator": false,
+      "calibrator": {
+        "intercept": -0.135131552324141,
+        "slope": 0.8925806790304037,
+        "rows": 2232,
+        "prevalence": 0.19802866876125336,
+        "C": 1000000.0
+      },
+      "model_path": "data/overnight/forecast_baselines/models/h3_weekly_logistic_q20.joblib",
+      "model_sha256": "d6b1094d2abbb829783bdacaad5f084f8da307882fad20e53d81cec94fdb463a",
+      "original_rule": {
+        "threshold": 0.3756923056736357,
+        "decision_fpr": 0.09976525821596244,
+        "decision_recall": 0.6381578947368421,
+        "decision_rows": 2160,
+        "decision_prevalence": 0.21111111342906952
+      },
+      "budget_rule": {
+        "threshold": 0.776590232312459,
+        "decision_recall": 0.12938596308231354,
+        "decision_fpr": 0.0005868544600938967,
+        "decision_alerts": 60,
+        "decision_calendar_days": 30,
+        "decision_alerts_per_day": 2.0
+      },
+      "decision_predictions": {
+        "path": "data/overnight/forecast_baselines/development_predictions/h3_weekly_logistic_q20_decision.parquet",
+        "sha256": "b0bece0c71091113995ef8813394464da9f00050921f8e416cbf85459fbb2d99",
+        "rows": 2160
+      },
+      "calibration_predictions": {
+        "path": "data/overnight/forecast_baselines/development_predictions/h3_weekly_logistic_q20_calibration.parquet",
+        "sha256": "1be51597cdc229371c88f8d30c3d83ce8ea037fbc7133fba9c267c01029b6ee5",
+        "rows": 2232
+      }
+    },
+    {
+      "name": "catboost_frozen_q20",
+      "horizon": 3,
+      "task": "relative_probability",
+      "family": "catboost",
+      "frozen_comparator": true,
+      "candidate": "h3_delayed_bus_ablation_catboost_8_s17_label_q20",
+      "calibrator": {
+        "intercept": 0.10211692085043138,
+        "slope": 1.0420500449605408,
+        "rows": 2232,
+        "prevalence": 0.19802866876125336,
+        "C": 1000000.0
+      },
+      "model_path": "data/overnight/forecast/models/h3_delayed_bus_ablation_catboost_8_s17_label_q20.joblib",
+      "model_sha256": "38ebeac20bff4c3da64c391ae8a09be282f6eb6e654675347894c343d9598d86",
+      "original_decision": {
+        "threshold": 0.34878862826280094,
+        "decision_fpr": 0.09741784037558686,
+        "decision_recall": 0.7214912280701754,
+        "decision_rows": 2160,
+        "decision_prevalence": 0.21111111342906952
+      },
+      "original_rule": {
+        "threshold": 0.34878862826280094,
+        "decision_fpr": 0.09741784037558686,
+        "decision_recall": 0.7214912280701754,
+        "decision_rows": 2160,
+        "decision_prevalence": 0.21111111342906952
+      },
+      "budget_rule": {
+        "threshold": 0.9111307510803088,
+        "decision_recall": 0.125,
+        "decision_fpr": 0.0017605633802816902,
+        "decision_alerts": 60,
+        "decision_calendar_days": 30,
+        "decision_alerts_per_day": 2.0
+      },
+      "decision_predictions": {
+        "path": "data/overnight/forecast_baselines/development_predictions/h3_catboost_frozen_q20_decision.parquet",
+        "sha256": "6cd487d6d418add4085cf6c9e89495dd76701bec69237150567d2a1fbe6e2427",
+        "rows": 2160
+      },
+      "calibration_predictions": {
+        "path": "data/overnight/forecast_baselines/development_predictions/h3_catboost_frozen_q20_calibration.parquet",
+        "sha256": "df9c5c0850c283ff651acc5adfa4a6135c9b528572cbc9b514cb83dfd04e3d15",
+        "rows": 2232
+      }
+    },
+    {
+      "name": "calendar_empirical",
+      "horizon": 3,
+      "task": "quantile",
+      "frozen_comparator": false,
+      "model_path": "data/overnight/forecast_baselines/models/h3_calendar_empirical.joblib",
+      "model_sha256": "8c955716578e0f5cd458214b649a6838593495568990fdf5d232b533bbb82882",
+      "calibration": {
+        "rows": 2232,
+        "rank": 1787,
+        "raw_score_quantile": -0.14899826049804688,
+        "expansion": 0.0,
+        "nominal_coverage": 0.8,
+        "raw_crossing_fraction": 0.0,
+        "fallback_rows": 0
+      },
+      "calibration_predictions": {
+        "path": "data/overnight/forecast_baselines/development_predictions/h3_calendar_empirical_calibration.parquet",
+        "sha256": "caf40d4e84aeee8ad97394ab29d304af448f6f28012ee879fb56ff361d4c4362",
+        "rows": 2232
+      }
+    },
+    {
+      "name": "weekly_empirical",
+      "horizon": 3,
+      "task": "quantile",
+      "frozen_comparator": false,
+      "model_path": "data/overnight/forecast_baselines/models/h3_calendar_empirical.joblib",
+      "model_sha256": "8c955716578e0f5cd458214b649a6838593495568990fdf5d232b533bbb82882",
+      "calibration": {
+        "rows": 2232,
+        "rank": 1787,
+        "raw_score_quantile": 1.002999877929689,
+        "expansion": 1.002999877929689,
+        "nominal_coverage": 0.8,
+        "raw_crossing_fraction": 0.0,
+        "fallback_rows": 0
+      },
+      "calibration_predictions": {
+        "path": "data/overnight/forecast_baselines/development_predictions/h3_weekly_empirical_calibration.parquet",
+        "sha256": "345d1ff2bb00f06c747b9919c2a74d25d16177f00454a2c1ff91e16ba27f1156",
+        "rows": 2232
+      }
+    },
+    {
+      "name": "catboost_frozen_quantile",
+      "horizon": 3,
+      "task": "quantile",
+      "frozen_comparator": true,
+      "candidate": "h3_recent_road_assumption_quantile_8_s17_label_10",
+      "model_path": "data/overnight/forecast/models/h3_recent_road_assumption_quantile_8_s17_label_10.joblib",
+      "model_sha256": "b3455b0e0fe33827436908a336abbcf9c9d9604d8266a5b75e8f51e5da39045a",
+      "calibration": {
+        "rows": 2232,
+        "rank": 1787,
+        "raw_score_quantile": -0.1671445031863108,
+        "expansion": 0.0,
+        "nominal_coverage": 0.8,
+        "raw_crossing_fraction": 0.0,
+        "fallback_rows": 0
+      },
+      "calibration_predictions": {
+        "path": "data/overnight/forecast_baselines/development_predictions/h3_catboost_frozen_quantile_calibration.parquet",
+        "sha256": "8e294f5aa61f2f5b3db6a6bfc03c28c0249f8a9c2b8e0a18d9b08607b3f25e10",
+        "rows": 2232
+      }
+    }
+  ],
+  "training_events": [
+    {
+      "name": "seasonal_q20",
+      "horizon": 1,
+      "training_rows": 1086533,
+      "elapsed_seconds": 5.605897093075328,
+      "iterations": null,
+      "warnings": []
+    },
+    {
+      "name": "calendar_logistic_q20",
+      "horizon": 1,
+      "training_rows": 248000,
+      "elapsed_seconds": 1.4225815049139783,
+      "iterations": 25,
+      "warnings": []
+    },
+    {
+      "name": "weekly_logistic_q20",
+      "horizon": 1,
+      "training_rows": 248000,
+      "elapsed_seconds": 1.3464304649969563,
+      "iterations": 78,
+      "warnings": []
+    },
+    {
+      "name": "seasonal_q20",
+      "horizon": 3,
+      "training_rows": 1086533,
+      "elapsed_seconds": 0.2517390688881278,
+      "iterations": null,
+      "warnings": []
+    },
+    {
+      "name": "calendar_logistic_q20",
+      "horizon": 3,
+      "training_rows": 248000,
+      "elapsed_seconds": 0.7688309910008684,
+      "iterations": 25,
+      "warnings": []
+    },
+    {
+      "name": "weekly_logistic_q20",
+      "horizon": 3,
+      "training_rows": 248000,
+      "elapsed_seconds": 1.313321906956844,
+      "iterations": 78,
+      "warnings": []
+    }
+  ],
+  "elapsed_seconds": 24.70746476703789,
+  "environment": {
+    "numpy": "2.5.2",
+    "pandas": "2.3.3",
+    "scikit-learn": "1.9.1",
+    "catboost": "1.2.10",
+    "joblib": "1.6.0"
+  },
+  "scope": "이미 관측한 2025년 시험의 사후 기준 비교; 새 독립 시험 또는 기존 모델 재선택이 아님"
+}

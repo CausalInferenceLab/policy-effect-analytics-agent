@@ -1,0 +1,155 @@
+{
+  "completed_at": "2026-10-28T20:38:42.090486+00:00",
+  "config_sha256": "c59d6704aa64b66294c769934c71afceb3d211fe1292430918f51dec2f05c394",
+  "base_config_sha256": "b559c81be0bac1f91b65a66258bd6241646ae1610375b2a9c7963df9202d7241",
+  "code_sha256": "f8bd75c3225c6795b99e80ed3d1c5eeee9389a9ebe511ebd3239a17f21f7dc47",
+  "shared_code_sha256": "9d4d8ef5d2ede600f966fd21977524bd0617964435a9e97add43a129d4847fe1",
+  "source_audit": {
+    "excluded_changed_links": [
+      "1210017800",
+      "1210017900",
+      "1210019600",
+      "1210019700",
+      "1220023300",
+      "1220023400",
+      "1220024000",
+      "1220024100",
+      "1220025200",
+      "1220025300",
+      "1220026000",
+      "1220026100",
+      "1220028200",
+      "1220028300",
+      "1220029000",
+      "1220029100",
+      "1220030000",
+      "1220030100",
+      "1220030800",
+      "1220030900",
+      "1220031600",
+      "1220031700"
+    ],
+    "stable_links": 66,
+    "sources": [
+      {
+        "month": "2023-04",
+        "path": "data/overnight/forecast/roads/processed/2023-04.parquet",
+        "sha256": "0962038c4d43d631cbbecd9df6c8781dd927b332b3fcca4000fd1c99cb7e466c",
+        "source_sha256": "c16e67d563847caebf4cc99b8197eb4b8ce4094bacc7c6ea22b41a9f9abe3be5"
+      },
+      {
+        "month": "2023-05",
+        "path": "data/overnight/forecast/roads/processed/2023-05.parquet",
+        "sha256": "319f8e4448f23f7e74af4ab8220cf9cceb2b49588de3fcfdace62dce888019dd",
+        "source_sha256": "580949b4e60afe19ed794f60f4aeb5abb9de08665fa6add518e0d42aec648483"
+      },
+      {
+        "month": "2023-06",
+        "path": "data/overnight/forecast/roads/processed/2023-06.parquet",
+        "sha256": "1e2221597b236af7cb013204a80f7c95cd1d5a456b185c7b23ee5dee0f03d6f8",
+        "source_sha256": "7cc330bcb8f17476d61602707db87c4f53491b275f4ae88c33382d77a4c2a74f"
+      },
+      {
+        "month": "2023-07",
+        "path": "data/overnight/forecast/roads/processed/2023-07.parquet",
+        "sha256": "a7cf257696fb145567f60c56ae65268bf917d422d677da13181450fedab7f668",
+        "source_sha256": "4bbc679275caede009512950b3ddb6aa1a0baca1792914e6aae52c086b599f4c"
+      },
+      {
+        "month": "2023-08",
+        "path": "data/overnight/forecast/roads/processed/2023-08.parquet",
+        "sha256": "9760480dc1907c088f36bb47bbd4e850aad9eda44af9e80779aa083b3d107291",
+        "source_sha256": "6e414261cbfb7a80a64dab62337ce341e36fc45ef3969c2a0759826046be56dc"
+      },
+      {
+        "month": "2023-09",
+        "path": "data/overnight/forecast/roads/processed/2023-09.parquet",
+        "sha256": "41bb1e695aa54ce6110b0d2c0d169c84f27b672ede53c302fd683fc797d2d6e5",
+        "source_sha256": "c03004760822d7a4a3eeeb36a7daa9bd533d82a55204a98626f4c95012c3284f"
+      },
+      {
+        "month": "2023-10",
+        "path": "data/overnight/forecast/roads/processed/2023-10.parquet",
+        "sha256": "6dd586ffd83e90b03a466dd3e8c9147e6c1ca1303aaebe201abd14fede17d8b1",
+        "source_sha256": "2c77d0e9bead6ffabb3932fbdee05bcee7253ba5be4fed001b5ddb59ac45d96a"
+      },
+      {
+        "month": "2024-04",
+        "path": "data/overnight/forecast/roads/processed/2024-04.parquet",
+        "sha256": "53e36f79f445812bd5238f81697ebe0d81cdba4bd3f24d7ae73c20c57dba6ab7",
+        "source_sha256": "9814fc924e92dfa1175de2893ee557b1aded2502ccea08e50441605680e8e745"
+      },
+      {
+        "month": "2024-05",
+        "path": "data/overnight/forecast/roads/processed/2024-05.parquet",
+        "sha256": "1bae56753b46592e91c5ca346025baf4418e91f038ad9710bcd615845d48a46c",
+        "source_sha256": "23096137e04f0cb3ba31b8008a948ce4a43ebc87f9c014f713313e2621649ed4"
+      },
+      {
+        "month": "2024-06",
+        "path": "data/overnight/forecast/roads/processed/2024-06.parquet",
+        "sha256": "31712b88618e7b3137204308aeff024096467434de4a8623a85f650baebef389",
+        "source_sha256": "d5426b99f49ca1ca8beb911ffcda29261cc2dac2d85f56ee0311f457a2850b1c"
+      },
+      {
+        "month": "2024-07",
+        "path": "data/overnight/forecast/roads/processed/2024-07.parquet",
+        "sha256": "60e1e489da54620fdb5d8269c3ea179ccc08e739ea6e120c6d146d9f40f9210f",
+        "source_sha256": "5f9a9ba83746c5dd603dbb2289f2b947f980d242292097feccea89377f91ae86"
+      },
+      {
+        "month": "2024-08",
+        "path": "data/overnight/forecast/roads/processed/2024-08.parquet",
+        "sha256": "463b1f6388929c81ddfb9e5b2abe3849b57f6dc348cc9151f18002f2a32ae623",
+        "source_sha256": "722e7350e068ac60412bc2aec579cdfc5b2540cc2ea415f2d713f85cb6926867"
+      },
+      {
+        "month": "2024-09",
+        "path": "data/overnight/forecast/roads/processed/2024-09.parquet",
+        "sha256": "e195af34eceb203a83b26fa434b1532c9da06234678523bc1f08daf336910268",
+        "source_sha256": "44222aea56760818c5f845ba27f8b665498c3348034310b967b16afa167c46a1"
+      },
+      {
+        "month": "2024-10",
+        "path": "data/overnight/forecast/roads/processed/2024-10.parquet",
+        "sha256": "d6f1b1299e4c10bce1d6a5060fd51c58d72631fcb9e8ae80765e8aed259d4fe5",
+        "source_sha256": "b0b25261e6f7f069523859621e1993d9c4a124a1a145d3380154829290bc6e6c"
+      }
+    ]
+  },
+  "additional_links": [
+    "1210017800",
+    "1210017900",
+    "1210019600",
+    "1210019700",
+    "1220023300",
+    "1220023400",
+    "1220024000",
+    "1220024100",
+    "1220025200",
+    "1220025300",
+    "1220026000",
+    "1220026100",
+    "1220028200",
+    "1220028300",
+    "1220029000",
+    "1220029100",
+    "1220030000",
+    "1220030100",
+    "1220030800",
+    "1220030900",
+    "1220031600",
+    "1220031700"
+  ],
+  "excluded_links": [],
+  "prior_comparisons_sha256": "410e2551893b35cc0f2fc9e9f35ac6d9b56bb7c7490ded626c66a9ecce6aa379",
+  "daily_all_path": "data/overnight/road_names_sensitivity/daily_all.parquet",
+  "daily_all_sha256": "20344b6c32a58e47c2259dc1d3bceecde17e18a2cd2503e9f440826defa83584",
+  "outputs": {
+    "comparisons.csv": "f060331da5f7661b1f7b128cb9714abf7bde8de61ddd5d73b17de1e8287591ab",
+    "links_names_allowed.csv": "a92ad80f6edf5628a93a317e1212f23e1a7faaf869127727100e6a5d6adbd04f",
+    "selected_cells.csv": "e7fbd1f88ba9ca01bc9a3e067e9cdb957c78524209216d5dce178eadb39c7385",
+    "strict_vs_names.csv": "c2d3182dcbe2e7e4f4c5a3b539de00d613390b3827bf3036ad1352481f5b5f9e"
+  },
+  "interpretation": "이름 변경이 실제 공간 변경이 아니라는 사실을 입증하지 못함; 두 표본 모두 기술적 맥락 비교이며 인과 대조군 아님"
+}
