@@ -1,0 +1,21 @@
+# overnight_daily_card_config.yaml - 월별 카드의 반복 행을 일별 합계와 대조하기 위한 탐색 규칙
+recorded_at_utc: '2026-10-28T19:45:52Z'
+mode: exploratory_after_monthly_quality_results
+dataset: OA-12912
+months: ['2023-07', '2024-05', '2024-07']
+purpose: 월별 노선표기·정류장의 이름·순번 변형이 일별 기록의 서로 다른 날짜/방향과 어떻게 대응하는지 검사
+selection: 기존 32개 정류장 ID 전체; 결과에 따라 정류장을 고르지 않음
+monthly_reference: overnight-auxiliary-sources.json
+comparison:
+  dimensions: [month, route_label, stop, flow]
+  aggregate: 명시적으로 관측된 승차·하차 수의 기록 합; 개인·고유 승객 수가 아님
+  primary_agreement: exact_integer_equality
+  relative_difference: 두 합계와 절대·상대 차이를 모두 공개; 허용 오차로 결과를 통과시키지 않음
+  duplicate_diagnostics: 식별 열 전체 중복과 날짜·노선표기·정류장 키 중복을 별도 기록
+  missing: 공란·음수·날짜 부재를 0으로 처리하지 않음
+  limits: 월별·일별 카탈로그의 카드 범위와 생성일 차이를 확인; 합계 일치만으로 중복 승객 부재를 입증하지 않음
+resources:
+  download_workers: 2
+  compressed_csv_limit_mib: 180
+  minimum_free_gib: 25
+locked_year: 2026
