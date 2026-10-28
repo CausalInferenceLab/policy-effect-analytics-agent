@@ -92,8 +92,10 @@ def test_hour_label_is_interval_start_not_next_day(day, label, expected):
 
 
 def test_unknown_semantics_blocks_real_data():
+    contract = copy.deepcopy(read_yaml("data_contract.yaml"))
+    contract["checks"]["hour_semantics"]["status"] = "pending"
     with pytest.raises(ValueError, match="공식 근거"):
-        require_data_contract(read_yaml("data_contract.yaml"))
+        require_data_contract(contract)
     rules = {"blank_is_missing": True, "zero": "unresolved", "negative": "missing", "sentinels": [-9999]}
     with pytest.raises(ValueError, match="0 속도"):
         speed_value(0, rules)

@@ -4,7 +4,7 @@
 
 작업 제안: [이슈 #53](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/issues/53).
 
-**실행 코드와 합성자료 검증을 완료했고, 실자료 분석은 근거 확인을 기다리는 단계다.** 월별 원본 20개를 확보했다. [계획 PR #54](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/54)와 구현 브랜치 `sgim49697-ops/gangnam-pipeline`을 분리했다. 실제 정책 효과와 모델 성능은 아직 계산하지 않았다. 시간 표기·결측·이용 조건·2023년 속성 변경·비교 도로 노출에 미해결 사항이 있다.
+**실행 코드와 합성자료 검증을 완료했고, 실자료 분석은 근거 확인을 기다리는 단계다.** 월별 원본 20개를 확보했다. [계획 PR #54](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/54)와 [구현 PR #55](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/55)를 분리했다. 현재 작업 브랜치는 `sgim49697-ops/gangnam-pipeline`이다. 실제 정책 효과와 모델 성능은 아직 계산하지 않았다. 시간 표기·결측·이용 조건·2023년 속성 변경·비교 도로 노출에 미해결 사항이 있다.
 
 ## 문서와 설정
 
