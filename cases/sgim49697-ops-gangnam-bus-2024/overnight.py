@@ -89,6 +89,10 @@ STAGES = {
     "followup-plots": ("overnight_followup_plots", "run", []),
     "alert-replay": ("overnight_alert_replay", "run", []),
     "segment-operations": ("overnight_segment_operations", "run", []),
+    "alert-plots": ("overnight_alert_plots", "run", []),
+    "segment-operations-plots": ("overnight_segment_operations_plots", "run", []),
+    "subway-probe": ("overnight_subway_data", "collect", ["probe"]),
+    "subway-collect": ("overnight_subway_data", "collect", []),
     "persistence-segments": ("overnight_persistence_segments", "run", []),
     "persistence-segments-plots": ("overnight_persistence_segments_plots", "plot", []),
 }

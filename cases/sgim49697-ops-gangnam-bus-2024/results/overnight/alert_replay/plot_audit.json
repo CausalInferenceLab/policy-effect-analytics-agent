@@ -1,0 +1,12 @@
+{
+  "completed_at": "2026-10-28T23:29:49.539240+00:00",
+  "code_sha256": "d0483ebdd23942a6e7de131601d90c3b130a37042623d59cfe038ecaeb7575b2",
+  "inputs": {
+    "metrics.csv": "d41a8e285d41553d7790806a5332bdc651dc8d493f6d24674a1a0adc2aaa5796",
+    "hourly.csv": "180eec8eb0be5e03072b407144c959e25f014374c4ad356e8f18a9356510b203"
+  },
+  "outputs": {
+    "alert_tradeoffs.png": "c6a6980356a02f94fff3ddb946d4df942296bab85d9c806fd0515c5dfc377db0",
+    "alert_hours.png": "aeb1f50a41bab9b9c4c159e90e14ce5f42073b13843d8a696451dd72b921fcdc"
+  }
+}

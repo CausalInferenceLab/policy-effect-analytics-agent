@@ -1,0 +1,542 @@
+{
+  "completed_at": "2026-10-28T23:25:29.384483+00:00",
+  "configuration": {
+    "version": 1,
+    "mode": "exploratory_after_original_test_results",
+    "locked_year": 2026,
+    "base_config": "overnight_forecast_config.yaml",
+    "selection": "results/overnight/forecast/selected_models_development.json",
+    "original_evaluation": "results/overnight/forecast/test_evaluation_audit.json",
+    "horizons": [
+      1,
+      3
+    ],
+    "labels": [
+      "label_10",
+      "label_q20"
+    ],
+    "roles": {
+      "label_10": "primary_selected",
+      "label_q20": "training_q20_label_sensitivity"
+    },
+    "family": "catboost",
+    "feature_set": "delayed_bus_ablation",
+    "seed": 17,
+    "warmup": [
+      "2025-04-01",
+      "2025-04-30"
+    ],
+    "threshold": "원래 4월 FPR 조건으로 고정한 임계값; 새 경보 정책에 맞춰 재선택하지 않음",
+    "policies": [
+      {
+        "name": "original",
+        "cooldown_hours": 0,
+        "daily_cap": null,
+        "consecutive_hours": 1
+      },
+      {
+        "name": "cap2",
+        "cooldown_hours": 0,
+        "daily_cap": 2,
+        "consecutive_hours": 1
+      },
+      {
+        "name": "cooldown3",
+        "cooldown_hours": 3,
+        "daily_cap": null,
+        "consecutive_hours": 1
+      },
+      {
+        "name": "cooldown3_cap2",
+        "cooldown_hours": 3,
+        "daily_cap": 2,
+        "consecutive_hours": 1
+      },
+      {
+        "name": "confirm2_cooldown3_cap2",
+        "cooldown_hours": 3,
+        "daily_cap": 2,
+        "consecutive_hours": 2
+      }
+    ],
+    "clock": "Asia/Seoul의 예측 원점 기준; 모델의 목표 시각과 구별",
+    "tie_order": "같은 원점에 알려진 확률 내림차순 후 링크 ID 오름차순; 미래 원점의 점수를 보지 않음",
+    "budget_scope": "핵심 3개 링크 합계에 원점 달력 날짜별 상한 적용",
+    "cooldown": "같은 링크의 마지막 실제 발행 이후 경과 시간; 억제된 후보는 시간을 다시 시작하지 않음",
+    "confirmation": "바로 앞 연속 원점에서도 같은 링크의 원래 임계값 초과 필요; 점수 부재·시간 공백이면 초기화",
+    "missing_outcome": "실제 속도가 없는 36개 행도 먼저 예측·발행 판단에 포함; 뒤에 평가 불가로 따로 집계",
+    "evaluation": {
+      "target_window": "원래 2025년 5~8월 목표 시각 창; 기존 유효 8820개 예측과 값·라벨·확률 일치 검사",
+      "episodes": "같은 링크에서 라벨 1이 연속한 목표 시각 묶음; 미관측 시각은 연결하지 않음",
+      "episode_hit": "해당 묶음의 관측된 양성 시각 중 하나 이상에 경보 발행",
+      "calendar_day_note": "3시간 예측의 원점은 목표 시각보다 2시간 앞서므로 목표 창 경계의 원점 날짜가 달라짐"
+    },
+    "interpretation": [
+      "이미 본 시험에서 고정 모델에 운영 규칙만 더한 사후 모의실험이며 실제 서비스 또는 새 독립 시험이 아님",
+      "경보 감소와 놓친 저속을 함께 공개하며 사용자가 감당할 경보량·손실 비용이 정해진 것으로 간주하지 않음",
+      "연속 저속 묶음은 사고·차량 대기행렬 등 외부 사건의 정답이 아님",
+      "실제 도로·버스 자료의 원점 가용성은 원래 가정이며 제공 이력이 검증되지 않음"
+    ]
+  },
+  "code_sha256": "6acb01d0b0acfb5288c9215bb8caca127c553bb121623f31488ac034cf69e4f7",
+  "inputs": {
+    "overnight_alert_replay_config.yaml": "042c8965f79accd6451c069228c699c95291ebee6ed6a85e898df0279a9b84fa",
+    "overnight_forecast_config.yaml": "459e838c924c3bad0b189b6ab752db8842a0e2d6ef2688b2933d64e7f31317af",
+    "results/overnight/forecast/selected_models_development.json": "7cdbc5b90c803f05127c361ae8519b578aa48870737826361ccd29c173558e90",
+    "results/overnight/forecast/test_evaluation_audit.json": "d2f1c7ebe4327bff13555f77dda00fbcd890cfb21fd89c19fb07bb8aed6d176a",
+    "gangnam/overnight_forecast_models.py": "e1b0d12ec8dce7e8b1d27981045e79ff6ef4bdcaaf8db012591c4407ac52c031",
+    "gangnam/overnight_baseline_runner.py": "5b7b4a2285fc4a9d6acec8bf052d7acc85fcdbe639bb08ba5e291792e20190ac",
+    "gangnam/overnight_forecast_diagnostics.py": "18308aa1a0d49b9acf6be0de9e263098d46b8cd5e62813f93dd7c91c54cbacf6",
+    "results/overnight/forecast/feature_audit_development.json": "a054ea53d40e05b20b1259ee1f041c2a0d3660a087bf5b68180d9de8c0a02439",
+    "data/overnight/forecast/features_development_h1.parquet": "7165daedfd77360e45fbbdfb0edf682407e3d104532b548f40a7b448c2f5f49d",
+    "results/overnight/forecast/feature_audit_test.json": "07202b6dd67998aa9fadaf5657a7ca4ae500f2427eaaafbbdd2a26a06d65032e",
+    "data/overnight/forecast/features_test_h1.parquet": "431c65ff538b7e825c07e49046a2ea2e167b50e152d404cdb53e81355256a557",
+    "data/overnight/forecast/models/h1_delayed_bus_ablation_catboost_8_s17_label_10.joblib": "59bdc36bf8492459ac09b22e31bd17538134bd1a5a470a54408fcc84f4f9e75b",
+    "data/overnight/forecast/test_predictions/h1_delayed_bus_ablation_catboost_8_s17_label_10.parquet": "b879af506485322ddc33f1d9b75646d9a71b2677d5a325549483551a2f0cb4fa",
+    "data/overnight/forecast/models/h1_delayed_bus_ablation_catboost_8_s17_label_q20.joblib": "3a814c212f82f0f546b75fc83c27d41afa02dbc6ee5371b8b21bce66ca084e56",
+    "data/overnight/forecast/test_predictions/h1_delayed_bus_ablation_catboost_8_s17_label_q20.parquet": "88a25e75bfa4134f0c002e7039f1eb56e949a59ebc00ea781e164df1debf6ff8",
+    "data/overnight/forecast/features_development_h3.parquet": "86d3b180ad76656071b7c2666f8615000ed7ba853aef5d191b473530c5a3f17d",
+    "data/overnight/forecast/features_test_h3.parquet": "5c43052bd444928fdedbf1f9d54a824412f8ffeff764ba7792fddbdb2071153b",
+    "data/overnight/forecast/models/h3_delayed_bus_ablation_catboost_8_s17_label_10.joblib": "7d43e6d4997943ea8d5fe1166a56acabe51408a1c4986446809f5ded17d265c7",
+    "data/overnight/forecast/test_predictions/h3_delayed_bus_ablation_catboost_8_s17_label_10.parquet": "970ab957c290bbb2dae19638f1225287b58e32541a7cdde8b0e41460fb051d0a",
+    "data/overnight/forecast/models/h3_delayed_bus_ablation_catboost_8_s17_label_q20.joblib": "38ebeac20bff4c3da64c391ae8a09be282f6eb6e654675347894c343d9598d86",
+    "data/overnight/forecast/test_predictions/h3_delayed_bus_ablation_catboost_8_s17_label_q20.parquet": "24f28d057209357f50ebfde3036a40c9588803c227d9a8b0e48d427d287bb250"
+  },
+  "checks": [
+    {
+      "horizon": 1,
+      "label": "label_10",
+      "candidate": "h1_delayed_bus_ablation_catboost_8_s17_label_10",
+      "threshold": 0.007462570717020792,
+      "policy": "original",
+      "maximum_full_origin_day_alerts": 10,
+      "daily_cap": null,
+      "original_known_probabilities_reproduced": 8820
+    },
+    {
+      "horizon": 1,
+      "label": "label_10",
+      "candidate": "h1_delayed_bus_ablation_catboost_8_s17_label_10",
+      "threshold": 0.007462570717020792,
+      "policy": "cap2",
+      "maximum_full_origin_day_alerts": 2,
+      "daily_cap": 2,
+      "original_known_probabilities_reproduced": 8820
+    },
+    {
+      "horizon": 1,
+      "label": "label_10",
+      "candidate": "h1_delayed_bus_ablation_catboost_8_s17_label_10",
+      "threshold": 0.007462570717020792,
+      "policy": "cooldown3",
+      "maximum_full_origin_day_alerts": 5,
+      "daily_cap": null,
+      "original_known_probabilities_reproduced": 8820
+    },
+    {
+      "horizon": 1,
+      "label": "label_10",
+      "candidate": "h1_delayed_bus_ablation_catboost_8_s17_label_10",
+      "threshold": 0.007462570717020792,
+      "policy": "cooldown3_cap2",
+      "maximum_full_origin_day_alerts": 2,
+      "daily_cap": 2,
+      "original_known_probabilities_reproduced": 8820
+    },
+    {
+      "horizon": 1,
+      "label": "label_10",
+      "candidate": "h1_delayed_bus_ablation_catboost_8_s17_label_10",
+      "threshold": 0.007462570717020792,
+      "policy": "confirm2_cooldown3_cap2",
+      "maximum_full_origin_day_alerts": 2,
+      "daily_cap": 2,
+      "original_known_probabilities_reproduced": 8820
+    },
+    {
+      "horizon": 1,
+      "label": "label_q20",
+      "candidate": "h1_delayed_bus_ablation_catboost_8_s17_label_q20",
+      "threshold": 0.37522601320173815,
+      "policy": "original",
+      "maximum_full_origin_day_alerts": 34,
+      "daily_cap": null,
+      "original_known_probabilities_reproduced": 8820
+    },
+    {
+      "horizon": 1,
+      "label": "label_q20",
+      "candidate": "h1_delayed_bus_ablation_catboost_8_s17_label_q20",
+      "threshold": 0.37522601320173815,
+      "policy": "cap2",
+      "maximum_full_origin_day_alerts": 2,
+      "daily_cap": 2,
+      "original_known_probabilities_reproduced": 8820
+    },
+    {
+      "horizon": 1,
+      "label": "label_q20",
+      "candidate": "h1_delayed_bus_ablation_catboost_8_s17_label_q20",
+      "threshold": 0.37522601320173815,
+      "policy": "cooldown3",
+      "maximum_full_origin_day_alerts": 14,
+      "daily_cap": null,
+      "original_known_probabilities_reproduced": 8820
+    },
+    {
+      "horizon": 1,
+      "label": "label_q20",
+      "candidate": "h1_delayed_bus_ablation_catboost_8_s17_label_q20",
+      "threshold": 0.37522601320173815,
+      "policy": "cooldown3_cap2",
+      "maximum_full_origin_day_alerts": 2,
+      "daily_cap": 2,
+      "original_known_probabilities_reproduced": 8820
+    },
+    {
+      "horizon": 1,
+      "label": "label_q20",
+      "candidate": "h1_delayed_bus_ablation_catboost_8_s17_label_q20",
+      "threshold": 0.37522601320173815,
+      "policy": "confirm2_cooldown3_cap2",
+      "maximum_full_origin_day_alerts": 2,
+      "daily_cap": 2,
+      "original_known_probabilities_reproduced": 8820
+    },
+    {
+      "horizon": 3,
+      "label": "label_10",
+      "candidate": "h3_delayed_bus_ablation_catboost_8_s17_label_10",
+      "threshold": 0.008848667993527631,
+      "policy": "original",
+      "maximum_full_origin_day_alerts": 5,
+      "daily_cap": null,
+      "original_known_probabilities_reproduced": 8820
+    },
+    {
+      "horizon": 3,
+      "label": "label_10",
+      "candidate": "h3_delayed_bus_ablation_catboost_8_s17_label_10",
+      "threshold": 0.008848667993527631,
+      "policy": "cap2",
+      "maximum_full_origin_day_alerts": 2,
+      "daily_cap": 2,
+      "original_known_probabilities_reproduced": 8820
+    },
+    {
+      "horizon": 3,
+      "label": "label_10",
+      "candidate": "h3_delayed_bus_ablation_catboost_8_s17_label_10",
+      "threshold": 0.008848667993527631,
+      "policy": "cooldown3",
+      "maximum_full_origin_day_alerts": 3,
+      "daily_cap": null,
+      "original_known_probabilities_reproduced": 8820
+    },
+    {
+      "horizon": 3,
+      "label": "label_10",
+      "candidate": "h3_delayed_bus_ablation_catboost_8_s17_label_10",
+      "threshold": 0.008848667993527631,
+      "policy": "cooldown3_cap2",
+      "maximum_full_origin_day_alerts": 2,
+      "daily_cap": 2,
+      "original_known_probabilities_reproduced": 8820
+    },
+    {
+      "horizon": 3,
+      "label": "label_10",
+      "candidate": "h3_delayed_bus_ablation_catboost_8_s17_label_10",
+      "threshold": 0.008848667993527631,
+      "policy": "confirm2_cooldown3_cap2",
+      "maximum_full_origin_day_alerts": 2,
+      "daily_cap": 2,
+      "original_known_probabilities_reproduced": 8820
+    },
+    {
+      "horizon": 3,
+      "label": "label_q20",
+      "candidate": "h3_delayed_bus_ablation_catboost_8_s17_label_q20",
+      "threshold": 0.34878862826280094,
+      "policy": "original",
+      "maximum_full_origin_day_alerts": 36,
+      "daily_cap": null,
+      "original_known_probabilities_reproduced": 8820
+    },
+    {
+      "horizon": 3,
+      "label": "label_q20",
+      "candidate": "h3_delayed_bus_ablation_catboost_8_s17_label_q20",
+      "threshold": 0.34878862826280094,
+      "policy": "cap2",
+      "maximum_full_origin_day_alerts": 2,
+      "daily_cap": 2,
+      "original_known_probabilities_reproduced": 8820
+    },
+    {
+      "horizon": 3,
+      "label": "label_q20",
+      "candidate": "h3_delayed_bus_ablation_catboost_8_s17_label_q20",
+      "threshold": 0.34878862826280094,
+      "policy": "cooldown3",
+      "maximum_full_origin_day_alerts": 14,
+      "daily_cap": null,
+      "original_known_probabilities_reproduced": 8820
+    },
+    {
+      "horizon": 3,
+      "label": "label_q20",
+      "candidate": "h3_delayed_bus_ablation_catboost_8_s17_label_q20",
+      "threshold": 0.34878862826280094,
+      "policy": "cooldown3_cap2",
+      "maximum_full_origin_day_alerts": 2,
+      "daily_cap": 2,
+      "original_known_probabilities_reproduced": 8820
+    },
+    {
+      "horizon": 3,
+      "label": "label_q20",
+      "candidate": "h3_delayed_bus_ablation_catboost_8_s17_label_q20",
+      "threshold": 0.34878862826280094,
+      "policy": "confirm2_cooldown3_cap2",
+      "maximum_full_origin_day_alerts": 2,
+      "daily_cap": 2,
+      "original_known_probabilities_reproduced": 8820
+    }
+  ],
+  "predictions": [
+    {
+      "horizon": 1,
+      "label": "label_10",
+      "candidate": "h1_delayed_bus_ablation_catboost_8_s17_label_10",
+      "threshold": 0.007462570717020792,
+      "policy": "original",
+      "path": "data/overnight/alert_replay/h1_label_10_original.parquet",
+      "sha256": "e452ca13c5fe26fb21f93180a5e56ca3c2ac0a649f368b9dfd6001d777365460",
+      "rows": 11016,
+      "test_rows": 8856
+    },
+    {
+      "horizon": 1,
+      "label": "label_10",
+      "candidate": "h1_delayed_bus_ablation_catboost_8_s17_label_10",
+      "threshold": 0.007462570717020792,
+      "policy": "cap2",
+      "path": "data/overnight/alert_replay/h1_label_10_cap2.parquet",
+      "sha256": "61c3c048e801ef0bcb52249e8ae1087b6be6ba071f4f3b4371f3595db3925987",
+      "rows": 11016,
+      "test_rows": 8856
+    },
+    {
+      "horizon": 1,
+      "label": "label_10",
+      "candidate": "h1_delayed_bus_ablation_catboost_8_s17_label_10",
+      "threshold": 0.007462570717020792,
+      "policy": "cooldown3",
+      "path": "data/overnight/alert_replay/h1_label_10_cooldown3.parquet",
+      "sha256": "15c31b99b2ee5a7643cd7a58ca4913df8066e5766c036afa0cb17bfbd388cde8",
+      "rows": 11016,
+      "test_rows": 8856
+    },
+    {
+      "horizon": 1,
+      "label": "label_10",
+      "candidate": "h1_delayed_bus_ablation_catboost_8_s17_label_10",
+      "threshold": 0.007462570717020792,
+      "policy": "cooldown3_cap2",
+      "path": "data/overnight/alert_replay/h1_label_10_cooldown3_cap2.parquet",
+      "sha256": "2f3992861ef54382225d3de1049de71ab5c69e097cf5272019d37aed859262ff",
+      "rows": 11016,
+      "test_rows": 8856
+    },
+    {
+      "horizon": 1,
+      "label": "label_10",
+      "candidate": "h1_delayed_bus_ablation_catboost_8_s17_label_10",
+      "threshold": 0.007462570717020792,
+      "policy": "confirm2_cooldown3_cap2",
+      "path": "data/overnight/alert_replay/h1_label_10_confirm2_cooldown3_cap2.parquet",
+      "sha256": "5f00447700253e692b48cc3ce76d4780e37c505a0e6be4cae1f866746b38e271",
+      "rows": 11016,
+      "test_rows": 8856
+    },
+    {
+      "horizon": 1,
+      "label": "label_q20",
+      "candidate": "h1_delayed_bus_ablation_catboost_8_s17_label_q20",
+      "threshold": 0.37522601320173815,
+      "policy": "original",
+      "path": "data/overnight/alert_replay/h1_label_q20_original.parquet",
+      "sha256": "822684fee14eca38190bd459aa9837a33c2711ee27b09abce4eeb6ce97444f68",
+      "rows": 11016,
+      "test_rows": 8856
+    },
+    {
+      "horizon": 1,
+      "label": "label_q20",
+      "candidate": "h1_delayed_bus_ablation_catboost_8_s17_label_q20",
+      "threshold": 0.37522601320173815,
+      "policy": "cap2",
+      "path": "data/overnight/alert_replay/h1_label_q20_cap2.parquet",
+      "sha256": "be96c054e1d5f58118fb4caf5b30e0e5dcf9e587fb6cb9fe2f764b773e0f680d",
+      "rows": 11016,
+      "test_rows": 8856
+    },
+    {
+      "horizon": 1,
+      "label": "label_q20",
+      "candidate": "h1_delayed_bus_ablation_catboost_8_s17_label_q20",
+      "threshold": 0.37522601320173815,
+      "policy": "cooldown3",
+      "path": "data/overnight/alert_replay/h1_label_q20_cooldown3.parquet",
+      "sha256": "e73bdf4eee2b7e6409476a0ad043e55be0b8ddf6e51d46d8298374d9e52cad8a",
+      "rows": 11016,
+      "test_rows": 8856
+    },
+    {
+      "horizon": 1,
+      "label": "label_q20",
+      "candidate": "h1_delayed_bus_ablation_catboost_8_s17_label_q20",
+      "threshold": 0.37522601320173815,
+      "policy": "cooldown3_cap2",
+      "path": "data/overnight/alert_replay/h1_label_q20_cooldown3_cap2.parquet",
+      "sha256": "1d0919eb63cce15ccef457c470649c7a31ac7ecb76e9446410d32f7b63f5e60a",
+      "rows": 11016,
+      "test_rows": 8856
+    },
+    {
+      "horizon": 1,
+      "label": "label_q20",
+      "candidate": "h1_delayed_bus_ablation_catboost_8_s17_label_q20",
+      "threshold": 0.37522601320173815,
+      "policy": "confirm2_cooldown3_cap2",
+      "path": "data/overnight/alert_replay/h1_label_q20_confirm2_cooldown3_cap2.parquet",
+      "sha256": "f1a2486bc48fe1142fb0d3f83ce4e99c91a25127ff57a7f4b107edac77f5d6d1",
+      "rows": 11016,
+      "test_rows": 8856
+    },
+    {
+      "horizon": 3,
+      "label": "label_10",
+      "candidate": "h3_delayed_bus_ablation_catboost_8_s17_label_10",
+      "threshold": 0.008848667993527631,
+      "policy": "original",
+      "path": "data/overnight/alert_replay/h3_label_10_original.parquet",
+      "sha256": "697d5f62ec49fada3687a17c7076159260d09ce1c02460bc12cbaa60b1bd1b90",
+      "rows": 11016,
+      "test_rows": 8856
+    },
+    {
+      "horizon": 3,
+      "label": "label_10",
+      "candidate": "h3_delayed_bus_ablation_catboost_8_s17_label_10",
+      "threshold": 0.008848667993527631,
+      "policy": "cap2",
+      "path": "data/overnight/alert_replay/h3_label_10_cap2.parquet",
+      "sha256": "f7179eaef2b66cb4ac9e70df79af52b6392340f37419924dd5cf2c6c5e99984c",
+      "rows": 11016,
+      "test_rows": 8856
+    },
+    {
+      "horizon": 3,
+      "label": "label_10",
+      "candidate": "h3_delayed_bus_ablation_catboost_8_s17_label_10",
+      "threshold": 0.008848667993527631,
+      "policy": "cooldown3",
+      "path": "data/overnight/alert_replay/h3_label_10_cooldown3.parquet",
+      "sha256": "05a5e1d35b7f55d08b95d78f09ac6860889fa33545b6ece285af6d36a1ab43c1",
+      "rows": 11016,
+      "test_rows": 8856
+    },
+    {
+      "horizon": 3,
+      "label": "label_10",
+      "candidate": "h3_delayed_bus_ablation_catboost_8_s17_label_10",
+      "threshold": 0.008848667993527631,
+      "policy": "cooldown3_cap2",
+      "path": "data/overnight/alert_replay/h3_label_10_cooldown3_cap2.parquet",
+      "sha256": "038089f3422343d5aebf3a04c243d84320fec8ff26a9e1b10d1e025ee253d363",
+      "rows": 11016,
+      "test_rows": 8856
+    },
+    {
+      "horizon": 3,
+      "label": "label_10",
+      "candidate": "h3_delayed_bus_ablation_catboost_8_s17_label_10",
+      "threshold": 0.008848667993527631,
+      "policy": "confirm2_cooldown3_cap2",
+      "path": "data/overnight/alert_replay/h3_label_10_confirm2_cooldown3_cap2.parquet",
+      "sha256": "2e9cc8668965f3b80c3ce57444c235bf07ac3ab2c7a2feb6ef6c5c81e367f17b",
+      "rows": 11016,
+      "test_rows": 8856
+    },
+    {
+      "horizon": 3,
+      "label": "label_q20",
+      "candidate": "h3_delayed_bus_ablation_catboost_8_s17_label_q20",
+      "threshold": 0.34878862826280094,
+      "policy": "original",
+      "path": "data/overnight/alert_replay/h3_label_q20_original.parquet",
+      "sha256": "675126c7a285df1b8e8f55b499b77d4be0fdb772216f9c1572b86457448e2aba",
+      "rows": 11016,
+      "test_rows": 8856
+    },
+    {
+      "horizon": 3,
+      "label": "label_q20",
+      "candidate": "h3_delayed_bus_ablation_catboost_8_s17_label_q20",
+      "threshold": 0.34878862826280094,
+      "policy": "cap2",
+      "path": "data/overnight/alert_replay/h3_label_q20_cap2.parquet",
+      "sha256": "7f44ba82891db3ee103361390f753b8bd283472fa8ca9a631a6241fd34461d1e",
+      "rows": 11016,
+      "test_rows": 8856
+    },
+    {
+      "horizon": 3,
+      "label": "label_q20",
+      "candidate": "h3_delayed_bus_ablation_catboost_8_s17_label_q20",
+      "threshold": 0.34878862826280094,
+      "policy": "cooldown3",
+      "path": "data/overnight/alert_replay/h3_label_q20_cooldown3.parquet",
+      "sha256": "f825851ed20dc0bf3321d8ed5cbb110f271da28b3439e5426a14650ff9581df4",
+      "rows": 11016,
+      "test_rows": 8856
+    },
+    {
+      "horizon": 3,
+      "label": "label_q20",
+      "candidate": "h3_delayed_bus_ablation_catboost_8_s17_label_q20",
+      "threshold": 0.34878862826280094,
+      "policy": "cooldown3_cap2",
+      "path": "data/overnight/alert_replay/h3_label_q20_cooldown3_cap2.parquet",
+      "sha256": "06930ff94b4280d7e2b2b3e44d2e281dd781b20e635793e22211650cc9a00a62",
+      "rows": 11016,
+      "test_rows": 8856
+    },
+    {
+      "horizon": 3,
+      "label": "label_q20",
+      "candidate": "h3_delayed_bus_ablation_catboost_8_s17_label_q20",
+      "threshold": 0.34878862826280094,
+      "policy": "confirm2_cooldown3_cap2",
+      "path": "data/overnight/alert_replay/h3_label_q20_confirm2_cooldown3_cap2.parquet",
+      "sha256": "d2ad7c01f462594261dbe34876614c8b2347e7516e138718f34f184a1d2ad456",
+      "rows": 11016,
+      "test_rows": 8856
+    }
+  ],
+  "outputs": {
+    "metrics.csv": "d41a8e285d41553d7790806a5332bdc651dc8d493f6d24674a1a0adc2aaa5796",
+    "daily.csv": "f332d215d80675b9c44800cf4331807fffb8ca00835d121e053775e65d6fa082",
+    "hourly.csv": "180eec8eb0be5e03072b407144c959e25f014374c4ad356e8f18a9356510b203",
+    "suppression_reasons.csv": "75b8259edee4d968a70e91d31152ad184f006014faa6a7ea8c7f6cad04f5218c",
+    "episodes.csv": "ac120684554fc7a2cbe8d85b0dd049da54101b145e67185d84c6889577bccf54"
+  },
+  "interpretation": [
+    "이미 본 시험에서 고정 모델에 운영 규칙만 더한 사후 모의실험이며 실제 서비스 또는 새 독립 시험이 아님",
+    "경보 감소와 놓친 저속을 함께 공개하며 사용자가 감당할 경보량·손실 비용이 정해진 것으로 간주하지 않음",
+    "연속 저속 묶음은 사고·차량 대기행렬 등 외부 사건의 정답이 아님",
+    "실제 도로·버스 자료의 원점 가용성은 원래 가정이며 제공 이력이 검증되지 않음"
+  ]
+}

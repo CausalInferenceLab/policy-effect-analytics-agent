@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-28T23:21:47.179089+00:00",
+  "checked_at": "2026-10-28T23:34:10.840333+00:00",
   "references": [
     {
       "title": "Stepwise Multiple Testing as Formalized Data Snooping",
@@ -32,6 +32,14 @@
       "url": "https://data.seoul.go.kr/dataList/OA-13315/A/1/datasetView.do",
       "review_scope": "시간범위·갱신주기 실시간, 파일 없음 확인. 과거 이력 요청 인자와 원본 미확보.",
       "application": "현재 API 존재를 2023~2025년 사고·통제 정답 확보로 간주하지 않음."
+    },
+    {
+      "title": "시간대별 돌발및우회 통계(API), T Data 1076",
+      "url": "https://t-data.seoul.go.kr/dataprovide/trafficdataviewopenapi.do?data_id=1076",
+      "review_scope": "월 1회 갱신, 기준일자 stdrDe·인증키 필수. 화면 소개는 노선·정류장이라 설명하나 실제 출력 명세와 샘플은 areaCd 자치구·수집시간대·돌발/우회 건수. 개별 구간·사건 ID가 출력 목록에 없음.",
+      "application": "과거 날짜 인자는 있으나 실제 제공 범위·원본 미확보. 강남대로 개별 사건 정답으로 직접 연결할 수 없으며 주변 구 단위 맥락 후보로만 기록. 새 인증·신청 미수행.",
+      "local_path": "data/overnight/probes/tdata_bus_incidents_page.html",
+      "sha256": "98559b9e39f2d38c1559ccef68c0a34a9c3c08e3f212a3b435fbd68ac672142f"
     }
   ]
 }
