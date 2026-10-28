@@ -10,14 +10,16 @@ import pandas as pd
 import torch
 from torch import nn
 
-from .common import require_checks, sha256
+from .common import exploratory, require_checks, sha256
 
 
 def load_graph(path, links, contract, cfg):
-    require_checks(contract, "historical_graph")
+    require_checks(contract, "historical_graph", allow_assumed=True)
     path = Path(path)
     evidence = json.loads(path.with_suffix(".source.json").read_text(encoding="utf-8"))
-    if not evidence.get("verified") or not evidence.get("source") or evidence["sha256"] != sha256(path):
+    accepted = evidence.get("verified") or (exploratory(contract) and evidence.get("status") == "assumed"
+                                            and evidence.get("method") == "stable_metadata_endpoints")
+    if not accepted or not evidence.get("source") or evidence["sha256"] != sha256(path):
         raise ValueError("도로 연결표의 근거·해시 검증 실패")
     if (pd.Timestamp(evidence["valid_from"]) > pd.Timestamp(cfg["splits"]["train"][0])
             or pd.Timestamp(evidence["valid_to"]) < pd.Timestamp(cfg["splits"]["post_test"][1])):

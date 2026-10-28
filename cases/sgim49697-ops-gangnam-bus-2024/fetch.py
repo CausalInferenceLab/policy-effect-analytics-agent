@@ -44,7 +44,8 @@ def main():
             write_json(CASE / f"data/metadata/{month}.json", meta)
             summaries.append(meta)
             if not args.metadata_only:
-                check_metadata(summaries)
+                check_metadata(summaries, contract.get("metadata_policy"))
+                frame = frame[~frame.link_id.isin(contract.get("metadata_policy", {}).get("excluded_links", []))]
                 target = processed / f"{month}.parquet"
                 temp = target.with_suffix(".parquet.tmp")
                 frame.to_parquet(temp, index=False)
@@ -56,7 +57,7 @@ def main():
     if args.metadata_only:
         print("메타데이터 수집 완료. 속도 수치·효과·모델 점수는 계산하지 않았습니다.")
         return
-    check_metadata(summaries)
+    check_metadata(summaries, contract.get("metadata_policy"))
     if args.scope == "policy":
         days = holiday_dates(cfg["pre"][0], cfg["post"][1])
         panel, quality = build_panel(read_hourly(processed, verify=True), cfg, days)

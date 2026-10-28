@@ -123,6 +123,10 @@ def train_neural(name, data, params, seed, folder, adjacency=None):
     if min(len(train_keys), len(val_keys)) == 0:
         raise ValueError("학습·검증 창이 부족합니다")
     batch_size = data.cfg["training"]["batch_size"]
+    val_truth = data.targets(val_keys)[:, 0]
+    settings = data.cfg["training"]
+    max_steps = settings.get("model_max_steps", {}).get(name, settings["max_steps"])
+    inference_batch = settings.get("graph_inference_batch_size" if name in GRAPH_MODELS else "inference_batch_size", batch_size)
     attempts = []
     while True:
         seed_all(seed)
@@ -160,16 +164,17 @@ def train_neural(name, data, params, seed, folder, adjacency=None):
                     torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
                     optimizer.step()
                     step += 1
-                    last = offset + batch_size >= len(order) or step >= settings["max_steps"]
-                    if step % 250 == 0 or last:
-                        pred = neural_predict(model, name, data, val_keys, device, batch_size)
-                        metric = float(np.abs(pred[:, 0] - data.targets(val_keys)[:, 0]).mean())
+                    last = offset + batch_size >= len(order) or step >= max_steps
+                    if step % settings.get("validation_interval", 250) == 0 or last:
+                        pred = neural_predict(model, name, data, val_keys, device, inference_batch)
+                        metric = float(np.abs(pred[:, 0] - val_truth).mean())
+                        print(f"{name} seed={seed} step={step} validation_mae_h1={metric:.4f}", flush=True)
                         if metric < best:
                             best, stale = metric, 0
                             state = {k: v.detach().cpu().clone() for k, v in model.state_dict().items()}
                         else:
                             stale += 1
-                        if stale >= settings["early_stopping_patience"] or step >= settings["max_steps"]:
+                        if stale >= settings["early_stopping_patience"] or step >= max_steps:
                             stop = True
                             break
                 if stop:
@@ -189,6 +194,7 @@ def train_neural(name, data, params, seed, folder, adjacency=None):
             if batch_size == 1:
                 raise
             batch_size = max(1, batch_size // 2)
+            inference_batch = max(1, inference_batch // 2)
         finally:
             tx = ty = tm = pred = loss = state = None
             del optimizer, model
@@ -196,9 +202,21 @@ def train_neural(name, data, params, seed, folder, adjacency=None):
                 torch.cuda.empty_cache()
 
 
+def sampled_train_keys(data):
+    keys = data.keys("train")
+    settings = data.cfg["training"]
+    limit = settings.get("catboost_max_train_windows", len(keys))
+    if limit <= 0:
+        raise ValueError("학습 창 상한은 양수여야 합니다")
+    if len(keys) > limit:
+        rng = np.random.default_rng(settings.get("sample_seed", settings["selection_seed"]))
+        keys = keys[np.sort(rng.choice(len(keys), size=limit, replace=False))]
+    return keys
+
+
 def train_catboost(data, params, seed, folder, holiday_dates):
     from catboost import CatBoostRegressor
-    train, valid = data.keys("train"), data.keys("validation")
+    train, valid = sampled_train_keys(data), data.keys("validation")
     if min(len(train), len(valid)) == 0:
         raise ValueError("학습·검증 창이 부족합니다")
     folder.mkdir(parents=True, exist_ok=True)
@@ -209,11 +227,12 @@ def train_catboost(data, params, seed, folder, holiday_dates):
         model.fit(features(data, train, h, holiday_dates), data.targets(train)[:, h - 1], cat_features=["link_id"],
                   eval_set=(features(data, valid, h, holiday_dates), data.targets(valid)[:, h - 1]), use_best_model=True)
         model.save_model(str(folder / f"h{h}.cbm"))
+        print(f"catboost seed={seed} horizon={h} trees={model.tree_count_} validation_mae={model.best_score_['validation']['MAE']:.4f}", flush=True)
         trees[str(h)] = model.tree_count_
         if h == 1:
             best_score = float(model.best_score_["validation"]["MAE"])
     return {"validation_mae_h1": best_score, "seconds": time.perf_counter() - started,
-            "peak_vram_bytes": 0, "trees": trees}
+            "peak_vram_bytes": 0, "trees": trees, "training_windows": len(train)}
 
 
 def train_model(name, data, root, holiday_dates, registration, adjacency=None, graph_evidence=None):
@@ -282,7 +301,7 @@ def predict_model(name, data, keys, folder, seed, holiday_dates, adjacency=None,
         spec = info["params"]
         pipeline = Chronos2Pipeline.from_pretrained(spec["model_id"], revision=spec["revision"], device_map=device)
         telemetry["parameters"] = sum(p.numel() for p in pipeline.model.parameters())
-        batch_size, offset = data.cfg["training"]["batch_size"], 0
+        batch_size, offset = data.cfg["training"].get("chronos_inference_batch_size", data.cfg["training"]["batch_size"]), 0
         out = np.empty((len(keys), 3), dtype="float32")
         while offset < len(keys):
             part = keys[offset:offset + batch_size]
@@ -303,7 +322,8 @@ def predict_model(name, data, keys, folder, seed, holiday_dates, adjacency=None,
     model = network(name, info["params"], data.cfg, adjacency).to(device)
     model.load_state_dict(torch.load(folder / f"seed-{seed}/weights.pt", map_location=device, weights_only=True))
     telemetry["parameters"] = sum(p.numel() for p in model.parameters())
-    batch_size = info["final_stats"][str(seed)]["batch_size"]
+    batch_size = data.cfg["training"].get("graph_inference_batch_size" if name in GRAPH_MODELS else "inference_batch_size",
+                                         info["final_stats"][str(seed)]["batch_size"])
     while True:
         try:
             out = neural_predict(model, name, data, keys, device, batch_size)

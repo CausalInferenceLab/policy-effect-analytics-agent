@@ -43,8 +43,14 @@ def utcnow():
     return datetime.now(UTC).isoformat()
 
 
-def require_checks(contract, *names):
-    missing = [n for n in names if contract["checks"][n]["status"] != "verified"
+def exploratory(contract):
+    execution = contract.get("execution", {})
+    return execution.get("mode") == "exploratory" and bool(execution.get("authorization"))
+
+
+def require_checks(contract, *names, allow_assumed=False):
+    accepted = {"verified", "assumed"} if allow_assumed and exploratory(contract) else {"verified"}
+    missing = [n for n in names if contract["checks"][n]["status"] not in accepted
                or not contract["checks"][n].get("source")]
     if missing:
         raise ValueError("공식 근거 확인이 필요합니다: " + ", ".join(missing))
@@ -52,7 +58,8 @@ def require_checks(contract, *names):
 
 def require_data_contract(contract):
     require_checks(contract, "hour_semantics", "speed_unit", "missing_values", "usage_terms",
-                   "measurement_consistency", "holidays")
+                   "measurement_consistency", "holidays", allow_assumed=True)
+    require_checks(contract, "holidays")
     checks = contract["checks"]
     if checks["hour_semantics"]["value"] != "interval_end_label":
         raise ValueError("확인된 시간 표기에 맞춰 파서를 수정해야 합니다")
@@ -84,10 +91,14 @@ def require_registration(case=CASE, now=None):
         time = datetime.fromisoformat(stamp)
         latest = max(latest, time) if latest else time
         commits[name] = commit
-    ready = latest + timedelta(hours=24)
+    contract = read_yaml("data_contract.yaml", case) or {}
+    immediate = exploratory(contract)
+    ready = latest if immediate else latest + timedelta(hours=24)
     if (now or datetime.now(UTC)) < ready:
         raise ValueError(f"최종 설정 커밋 후 24시간 대기: 실자료 분석 가능 시각 {ready.isoformat()}")
-    return {"commits": commits, "hashes": protocol_identity(case), "ready_at": ready.isoformat()}
+    return {"commits": commits, "hashes": protocol_identity(case), "ready_at": ready.isoformat(),
+            "mode": "exploratory" if immediate else "preregistered",
+            "assumptions": [k for k, v in contract.get("checks", {}).items() if v["status"] == "assumed"]}
 
 
 def real_data_gate(case=CASE):

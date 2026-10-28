@@ -375,3 +375,41 @@ def test_forecast_cli_train_evaluate_compare_with_synthetic_inputs(tmp_path, mon
     report = json.loads((tmp_path / "runs/synthetic/comparison-pre_test.json").read_text())
     assert {r["model"] for r in report["results"]} == {"last_value", "weekly_naive"}
     assert report["common_keys"] == 46 * 3 * 2
+
+
+def test_exploratory_assumptions_are_explicit_and_do_not_verify_evidence():
+    contract = copy.deepcopy(read_yaml('data_contract.yaml'))
+    require_data_contract(contract)
+    assert contract['checks']['hour_semantics']['status'] == 'assumed'
+    contract['execution'].pop('authorization')
+    with pytest.raises(ValueError, match='공식 근거'):
+        require_data_contract(contract)
+
+
+def test_metadata_allowlist_cannot_hide_direction_change(tmp_path):
+    path = tmp_path / 'month.xlsx'
+    workbook(path)
+    _, one = parse_month(path, '2024-02', ['강남대로'])
+    other = copy.deepcopy(one)
+    other['metadata'][0]['차선수'] = 7
+    result = check_metadata([one, other], {'allowed_changed_fields': ['차선수']})
+    assert result['allowed_changes'][0]['field'] == '차선수'
+    other['metadata'][0]['방향'] = '상행'
+    with pytest.raises(ValueError, match='메타데이터 변경'):
+        check_metadata([one, other], {'allowed_changed_fields': ['차선수']})
+
+
+def test_train_subsample_is_stable_and_excludes_holdouts(hourly, small_config):
+    from gangnam.models import sampled_train_keys
+    small_config['training']['catboost_max_train_windows'] = 31
+    data = prepare(hourly, small_config)
+    keys = sampled_train_keys(data)
+    assert len(keys) == 31
+    np.testing.assert_array_equal(keys, sampled_train_keys(data))
+    _, end = bounds(small_config, 'train')
+    assert (data.times[keys[:, 0] + 2] < end).all()
+    past, _, _ = data.batch(keys, scaled=False)
+    actual = features(data, keys, 3, set())
+    np.testing.assert_allclose(actual.lag168, past[:, 0])
+    np.testing.assert_allclose(actual.mean24, past[:, -24:].mean(axis=1))
+    np.testing.assert_array_equal(actual.hour, data.times[keys[:, 0] + 2].hour)

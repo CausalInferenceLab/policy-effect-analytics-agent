@@ -188,21 +188,31 @@ def parse_month(path, month, roads, rules=None):
     return frame, summary
 
 
-def check_metadata(summaries):
+def check_metadata(summaries, policy=None):
     """선택 도로의 링크 속성 변경을 감지하여 같은 링크로 조용히 합치지 않는다."""
-    by_link = {}
+    by_link, allowed_changes = {}, {}
+    policy = policy or {}
+    excluded = set(policy.get("excluded_links", []))
+    allowed = set(policy.get("allowed_changed_fields", []))
     for summary in summaries:
         for row in summary["metadata"]:
-            attributes = {k: row[k] for k in META[2:]}
+            if row["링크아이디"] in excluded:
+                continue
+            attributes = {k: row[k] for k in META[2:] if k not in allowed}
             by_link.setdefault(row["링크아이디"], set()).add(digest(attributes))
+            for field in allowed:
+                allowed_changes.setdefault((row["링크아이디"], field), set()).add(str(row[field]))
     changed = sorted(link for link, signatures in by_link.items() if len(signatures) > 1)
     if changed:
         raise ValueError(f"메타데이터 변경 링크를 확인하고 범위를 다시 고정하세요: {changed}")
+    return {"excluded_links": sorted(excluded), "allowed_changes": [
+        {"link_id": link, "field": field, "values": sorted(values)}
+        for (link, field), values in sorted(allowed_changes.items()) if len(values) > 1]}
 
 
 def check_corridors(summaries, cfg):
     for name, spec in cfg["corridors"].items():
-        if spec["status"] != "verified":
+        if spec["status"] != "verified" and not (cfg.get("analysis_mode") == "exploratory" and spec["status"] == "assumed"):
             continue
         links = spec["links"]
         if not links or len({x["id"] for x in links}) != len(links):
@@ -231,7 +241,7 @@ def read_hourly(folder, verify=False):
                     or info["parquet_sha256"] != sha256(path)):
                 raise ValueError(f"설정 변경 또는 가공 파일 무결성 오류: {path}")
         summaries = [json.loads((Path(folder).parent / "metadata" / f"{p.stem}.json").read_text(encoding="utf-8")) for p in paths]
-        check_metadata(summaries)
+        check_metadata(summaries, contract.get("metadata_policy"))
         check_corridors(summaries, read_yaml("corridors.yaml"))
     frame = pd.concat([pd.read_parquet(p) for p in paths], ignore_index=True)
     if frame.duplicated(["link_id", "interval_start_kst"]).any():

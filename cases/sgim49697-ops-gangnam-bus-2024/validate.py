@@ -35,17 +35,20 @@ def main():
             test()
         except ValueError as e:
             blockers.append(str(e))
-    if any(v["status"] != "verified" for v in cfg["corridors"].values()):
+    accepted = {"verified", "assumed"} if cfg.get("analysis_mode") == "exploratory" else {"verified"}
+    if any(v["status"] not in accepted for v in cfg["corridors"].values()):
         blockers.append("처치·비교 도로의 역사적 노출 근거 검증 미완료")
     paths = sorted((CASE / "data/metadata").glob("*.json"))
     summaries = [json.loads(p.read_text(encoding="utf-8")) for p in paths]
     if summaries:
         try:
-            check_metadata(summaries)
+            check_metadata(summaries, read_yaml("data_contract.yaml").get("metadata_policy"))
             check_corridors(summaries, cfg)
         except ValueError as e:
             blockers.append(str(e))
     print(json.dumps({"schema": "passed", "metadata_months": len(paths), "real_analysis_ready": not blockers,
+                      "mode": cfg.get("analysis_mode", "preregistered"),
+                      "assumptions": [k for k, v in read_yaml("data_contract.yaml")["checks"].items() if v["status"] == "assumed"],
                       "blockers": blockers}, ensure_ascii=False, indent=2))
     return 0 if args.structural_only or not blockers else 2
 

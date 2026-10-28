@@ -58,9 +58,11 @@ class Prepared:
 
     def batch(self, keys, scaled=True):
         c, h = self.cfg["context_hours"], self.cfg["output_hours"]
-        x = np.stack([self.filled[i - c:i, j] for i, j in keys]).astype("float32")
-        y = np.stack([self.raw[i:i + h, j] for i, j in keys]).astype("float32")
-        mask = np.stack([self.observed[i - c:i, j] for i, j in keys])
+        rows, cols = keys[:, :1], keys[:, 1:2]
+        past = rows + np.arange(-c, 0)
+        x = self.filled[past, cols].astype("float32")
+        y = self.raw[rows + np.arange(h), cols].astype("float32")
+        mask = self.observed[past, cols]
         j = keys[:, 1]
         if scaled:
             x = (x - self.means[j, None]) / self.scales[j, None]
@@ -68,7 +70,7 @@ class Prepared:
         return x, y, mask
 
     def targets(self, keys):
-        return np.stack([self.raw[i:i + self.cfg["output_hours"], j] for i, j in keys])
+        return self.raw[keys[:, :1] + np.arange(self.cfg["output_hours"]), keys[:, 1:2]]
 
 
 def prepare(hourly, cfg):
@@ -139,36 +141,37 @@ def baseline(name, data, keys):
 
 
 def features(data, keys, horizon, holiday_dates):
-    rows = []
-    for i, j in keys:
-        past = data.filled[i - 168:i, j]
-        seen = data.observed[i - 168:i, j]
-        target = data.times[i] + timedelta(hours=horizon - 1)
-        rows.append([data.links[j], *past[[-1, -2, -3, -24, -168]],
-                     *[past[-n:].mean() for n in (3, 24, 168)],
-                     *[past[-n:].std() for n in (24, 168)],
-                     float(seen.mean()), *seen[[-1, -2, -3, -24, -168]].astype(int),
-                     target.hour, target.weekday(), int(str(target.date()) in holiday_dates)])
-    columns = ["link_id", "lag1", "lag2", "lag3", "lag24", "lag168", "mean3", "mean24", "mean168",
-               "std24", "std168", "observed_fraction", "mask1", "mask2", "mask3", "mask24", "mask168",
-               "hour", "weekday", "holiday"]
-    return pd.DataFrame(rows, columns=columns)
+    frames = []
+    for offset in range(0, len(keys), 8192):
+        part = keys[offset:offset + 8192]
+        past, _, seen = data.batch(part, scaled=False)
+        target = data.times[part[:, 0] + horizon - 1]
+        values = {"link_id": np.asarray(data.links)[part[:, 1]]}
+        values.update({f"lag{n}": past[:, -n] for n in (1, 2, 3, 24, 168)})
+        values.update({f"mean{n}": past[:, -n:].mean(axis=1) for n in (3, 24, 168)})
+        values.update({f"std{n}": past[:, -n:].std(axis=1) for n in (24, 168)})
+        values["observed_fraction"] = seen.mean(axis=1)
+        values.update({f"mask{n}": seen[:, -n].astype(int) for n in (1, 2, 3, 24, 168)})
+        values.update({"hour": target.hour, "weekday": target.weekday,
+                       "holiday": target.strftime("%Y-%m-%d").isin(holiday_dates).astype(int)})
+        frames.append(pd.DataFrame(values))
+    return pd.concat(frames, ignore_index=True)
 
 
 def prediction_frame(data, keys, predictions, model, seed, split):
     if predictions.shape != (len(keys), 3):
         raise ValueError("예측 형태가 공통 평가 창과 다릅니다")
     truth = data.targets(keys)
-    records = []
-    for k, (i, j) in enumerate(keys):
-        for horizon in data.cfg["horizons"]:
-            value = predictions[k, horizon - 1]
-            if not np.isfinite(value):
-                raise ValueError("예측 실패 값을 평가에서 조용히 제외할 수 없습니다")
-            records.append((model, seed, split, data.links[j], data.times[i], horizon,
-                            data.times[i + horizon - 1], truth[k, horizon - 1], value))
-    return pd.DataFrame(records, columns=["model", "seed", "split", "link_id", "issue_time_kst", "horizon",
-                                          "target_start_kst", "y_true", "y_pred"])
+    horizons = np.asarray(data.cfg["horizons"])
+    values = predictions[:, horizons - 1].reshape(-1)
+    if not np.isfinite(values).all():
+        raise ValueError("예측 실패 값을 평가에서 조용히 제외할 수 없습니다")
+    return pd.DataFrame({"model": model, "seed": seed, "split": split,
+        "link_id": np.repeat(np.asarray(data.links)[keys[:, 1]], len(horizons)),
+        "issue_time_kst": data.times[np.repeat(keys[:, 0], len(horizons))],
+        "horizon": np.tile(horizons, len(keys)),
+        "target_start_kst": data.times[(keys[:, :1] + horizons - 1).reshape(-1)],
+        "y_true": truth[:, horizons - 1].reshape(-1), "y_pred": values})
 
 
 def score(frame, required_links):

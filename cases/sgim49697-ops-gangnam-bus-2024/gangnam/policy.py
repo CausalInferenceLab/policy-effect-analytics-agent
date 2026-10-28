@@ -45,7 +45,8 @@ def build_panel(hourly, cfg, holidays):
         raise ValueError("처치 도로는 정확히 하나여야 합니다")
     treated = treated_ids[0]
     for name, spec in cfg["corridors"].items():
-        if spec["status"] != "verified" or not spec.get("source") or not spec.get("direction"):
+        accepted = {"verified", "assumed"} if cfg.get("analysis_mode") == "exploratory" else {"verified"}
+        if spec["status"] not in accepted or not spec.get("source") or not spec.get("direction"):
             quality[name] = {"eligible": False, "reason": "historical_evidence_pending"}
             continue
         s = daily_index(hourly, spec, cfg["hours"], holidays)
@@ -131,8 +132,12 @@ def sensitivities(hourly, cfg, holidays, controls, weather=None):
     first_week = copy.deepcopy(cfg)
     first_week["post"][0] = cfg["sensitivities"]["include_first_week_from"]
     variants["include_first_week"] = first_week
+    for shift in (-1, 1):
+        shifted = copy.deepcopy(cfg)
+        shifted["hours"] = [h + shift for h in cfg["hours"]]
+        variants[f"hour_shift_{shift:+d}"] = shifted
     results = {}
-    if cfg["extension"]["status"] == "verified":
+    if cfg["extension"]["status"] == "verified" or (cfg.get("analysis_mode") == "exploratory" and cfg["extension"]["status"] == "assumed"):
         extended = copy.deepcopy(cfg)
         treated = next(v for v in extended["corridors"].values() if v["treated"])
         treated["links"].append(extended["extension"]["link"])
@@ -165,4 +170,14 @@ def sensitivities(hourly, cfg, holidays, controls, weather=None):
                                    "days": p.date.nunique()}
         except ValueError as e:
             results["dry_days"] = {"status": "blocked", "reason": str(e)}
+    zero_valid = hourly.copy()
+    zeros = zero_valid.invalid_reason == "zero"
+    zero_valid.loc[zeros, "speed_kmh"] = 0.0
+    zero_valid.loc[zeros, "is_valid"] = True
+    p, q = build_panel(zero_valid, cfg, holidays)
+    if q["comparative"] and set(q["selected_controls"]) == set(controls):
+        results["zero_as_valid"] = {"status": "ok", "did_kmh": did_point(p, cfg["policy_date"])[0],
+                                    "restored_observations": int(zeros.sum())}
+    else:
+        results["zero_as_valid"] = {"status": "blocked", "reason": "고정 비교군·공통 날짜 기준 미달"}
     return results
