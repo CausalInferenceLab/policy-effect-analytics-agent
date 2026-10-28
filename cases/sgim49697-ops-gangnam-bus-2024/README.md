@@ -8,7 +8,7 @@
 
 ## 문서와 설정
 
-**10시간 확장 탐색 진행:** [첫 결과: 시간대·관측 누락·지역 기상](overnight-observation-report.md)에서 북행의 저녁 증가와 남행 정책 후보의 관측 감소를 분리했다. 지역 시간별 강수 26,157개를 확보했지만 기상 공통 표본은 시간 정렬에 민감하다. [자료 정의·접근 근거](overnight-evidence.md), [전체 탐색 계획과 진행 기록](overnight-plan.md)을 함께 제공한다. 승객·노선군·주변 교통·다년·저속 경보는 이어서 탐색한다.
+**10시간 확장 탐색 진행:** [노선군 분리·시간대·승객 기록](overnight-route-report.md)에서 사전 관측으로 고정한 정책 후보 밖 집단의 저녁 남행 −7.32%, 북행 +11.89%를 확인했다. 4개 집계 방식에서 부호가 유지되지만 인과 효과는 아니다. 승객 가중치는 수록 범위가 부족해 24개 비교를 모두 보류했다. [첫 결과: 관측 누락·지역 기상](overnight-observation-report.md), [자료 정의·접근 근거](overnight-evidence.md), [전체 탐색 계획과 진행 기록](overnight-plan.md)을 함께 제공한다. [2025년 저속 경보](overnight-forecast-plan.md)는 시험 자료를 열기 전에 규칙을 고정하고 진행 중이다.
 
 **최신 확장 분석:** [노선 이동·전년 비교·가을 지속성](directional-report.md)에서 2023년 4~8월과 2024년 9~10월을 추가했다. 북행 증가는 표본을 바꿔도 남았고, 남행의 큰 감소 구간은 계속 관측된 표본에서 가을에도 확인됐다. 남행 전체의 기록 누락과 부족한 기상 공통 표본 때문에 전체 정책 효과·날씨 보정 효과는 확정하지 않는다. 노선 이동표와 비교 그림 5장을 제공한다.
 
@@ -16,6 +16,9 @@
 
 | 파일 | 역할 |
 |---|---|
+| [overnight-route-report.md](overnight-route-report.md) | 노선군·시간·날짜·기상 민감도, 승객 가중 실패와 추가 원본 형식 점검 |
+| [overnight-forecast-plan.md](overnight-forecast-plan.md) / [overnight_forecast_config.yaml](overnight_forecast_config.yaml) | 2025 저속 경보의 시간 분할·지연 조건·모델 선택·시험 전 동결 규칙 |
+| [requirements-overnight.txt](requirements-overnight.txt) | 기존 CPU 환경에 확률 경보 평가용 scikit-learn을 추가한 고정 의존성 |
 | [overnight-observation-report.md](overnight-observation-report.md) | 시간대·집계·누락 분해·지역 기상 비교의 첫 확장 결과와 그림 4장 |
 | [overnight-plan.md](overnight-plan.md) / [overnight_config.yaml](overnight_config.yaml) | 10시간 탐색의 12개 방향·판정 기준·진행 기록 |
 | [overnight-evidence.md](overnight-evidence.md) / [overnight-evidence-sources.json](overnight-evidence-sources.json) | 공식 자료 정의·접근성·잘못된 과거 기상 응답의 제외 근거 |

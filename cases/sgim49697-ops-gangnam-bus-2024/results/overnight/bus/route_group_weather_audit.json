@@ -1,0 +1,55 @@
+{
+  "configuration": {
+    "preferred": "historical_local_hourly_observation_with_metadata",
+    "fallback": "distinguish_observation_from_reanalysis",
+    "source": "https://www.weather.go.kr/w/weather/land/aws-obs.do",
+    "endpoint": "https://www.weather.go.kr/w/observation/land/aws-obs-data.do",
+    "help": "https://www.weather.go.kr/wnuri_help/html/observation/aws-obs.jsp",
+    "stations": [
+      401,
+      400,
+      108
+    ],
+    "primary_station": 401,
+    "months_from": "directional_config.yaml",
+    "request_stride_hours": 48,
+    "response_hours": 60,
+    "endpoint_delay_seconds": 0.4,
+    "alignment_offsets_hours": [
+      -1,
+      0,
+      1
+    ],
+    "hour_precipitation": "preceding_60_minutes_mm_verified_help",
+    "raw_fault_flag": "preserve_not_formal_historical_qc",
+    "station_coordinates": "require_historical_metadata_for_location_claim",
+    "minimum_common_days": 20,
+    "minimum_retained_fraction": 0.8,
+    "minimum_days_per_stratum": 2,
+    "temperature_edges_c": [
+      20,
+      25,
+      30
+    ],
+    "schemes": [
+      "weekday",
+      "rain",
+      "rain_temperature",
+      "rain_temperature_weekday"
+    ],
+    "retention_denominator": "all_bus_quality_valid_days_in_each_period",
+    "unknown_precipitation": "keep_unknown"
+  },
+  "code_sha256": "c587a870b7f7f727a14425e78e9bff87ff9e2a5b41591608513176c7ebd0012a",
+  "cohort": "common_pre_source_days",
+  "comparisons": 3456,
+  "inputs": {
+    "results/overnight/bus/route_group_daily.csv": "1ec1c914780eeabc6b6f50eccbb2d5dfc7b9ff08ab896b2a93cee030f2bac177",
+    "results/overnight/bus/route_group_comparisons.csv": "6e5e4b037d4f68b017d50a2dc7ea3741e35880b27037d4acf55f4482c11fc44e",
+    "results/overnight/weather/daily_bands.csv": "907817a58b21733ff15f7fa2272c2ef2de40ca05925fa0cb4475031935b1fceb"
+  },
+  "outputs": {
+    "route_group_weather.csv": "94328e60c4d1cc6b8d11cf9cd095970738cb2df8791a34d9a6ed0bd2c3dcdbea",
+    "route_group_weather_strata.csv": "b6364744abd43915b87ae6f397208d5bd78c69f19f26a10952ab987f80c030a2"
+  }
+}

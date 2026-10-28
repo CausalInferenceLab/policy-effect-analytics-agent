@@ -71,6 +71,10 @@ passengers:
   dataset: OA-21218
   prefix: tpss_a18route_section
   probe_months: ['2024-05', '2024-07']
+  analysis_months: ['2024-04', '2024-05', '2024-06', '2024-07', '2024-08']
+  candidate_weight_coverage_minimum: 0.80
+  passenger_weights: pre_period_only_if_join_coverage_passes
+  whole_corridor_passenger_sum: prohibited_overlapping_segments_are_not_unique_riders
   definition_gate: no_person_time_or_load_factor_without_verified_denominator
 forecast:
   new_config_required_before_new_outcomes: true

@@ -1,0 +1,177 @@
+{
+  "status": "excluded_pending_source_schema_verification",
+  "files": [
+    {
+      "kind": "bus_time",
+      "month": "2022-04",
+      "path": "data/overnight/multiyear/bus_time_2022-04.zip",
+      "source": "https://data.seoul.go.kr/dataList/OA-21217/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21217",
+        "infSeq": "3",
+        "seq": "2204",
+        "seqNo": ""
+      },
+      "bytes": 85592981,
+      "sha256": "a87e8436b508751b6d146c02994a34f87acaf664dcab28253672cd3873916b50",
+      "retrieved_at": "2026-10-28T17:28:36.556436+00:00"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2022-05",
+      "path": "data/overnight/multiyear/bus_time_2022-05.zip",
+      "source": "https://data.seoul.go.kr/dataList/OA-21217/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21217",
+        "infSeq": "3",
+        "seq": "2205",
+        "seqNo": ""
+      },
+      "bytes": 26921948,
+      "sha256": "87d9a513b8e3aec290ae11a65fd68bdcdc3ea6abb57beaa07011935a34f47cc8",
+      "retrieved_at": "2026-10-28T17:28:28.943548+00:00"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2022-06",
+      "path": "data/overnight/multiyear/bus_time_2022-06.zip",
+      "source": "https://data.seoul.go.kr/dataList/OA-21217/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21217",
+        "infSeq": "3",
+        "seq": "2206",
+        "seqNo": ""
+      },
+      "bytes": 38668725,
+      "sha256": "f6069433e031ba09ba35ced194e3b2ee7f9d3d9014f17795dc44f814c931b0ed",
+      "retrieved_at": "2026-10-28T17:28:35.856684+00:00"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2022-07",
+      "path": "data/overnight/multiyear/bus_time_2022-07.zip",
+      "source": "https://data.seoul.go.kr/dataList/OA-21217/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21217",
+        "infSeq": "3",
+        "seq": "2207",
+        "seqNo": ""
+      },
+      "bytes": 51305668,
+      "sha256": "aeeac956d861476c56878fa6d93e11f0125b7398492a8b2f4c7308f670b59b39",
+      "retrieved_at": "2026-10-28T17:28:42.659480+00:00"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2022-08",
+      "path": "data/overnight/multiyear/bus_time_2022-08.zip",
+      "source": "https://data.seoul.go.kr/dataList/OA-21217/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21217",
+        "infSeq": "3",
+        "seq": "2208",
+        "seqNo": ""
+      },
+      "bytes": 1598,
+      "sha256": "0bbda504a6dd56f5a90244f4a22d6cb9877a1cbc343a147ab3cdb68f1537e281",
+      "retrieved_at": "2026-10-28T17:28:36.766050+00:00"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2022-04",
+      "path": "data/overnight/multiyear/bus_trips_2022-04.zip",
+      "source": "https://data.seoul.go.kr/dataList/OA-21220/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21220",
+        "infSeq": "3",
+        "seq": "2204",
+        "seqNo": ""
+      },
+      "bytes": 47857509,
+      "sha256": "ead7826226b2e924852146390be8810491d138499701f29bca111c81267a2016",
+      "retrieved_at": "2026-10-28T17:31:05.901038+00:00"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2022-05",
+      "path": "data/overnight/multiyear/bus_trips_2022-05.zip",
+      "source": "https://data.seoul.go.kr/dataList/OA-21220/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21220",
+        "infSeq": "3",
+        "seq": "2205",
+        "seqNo": ""
+      },
+      "bytes": 50392492,
+      "sha256": "acbe440a1da4bfb7451c6b70bfb10b8420f462baee8437b6ba7d2aedca582f76",
+      "retrieved_at": "2026-10-28T17:31:11.779271+00:00"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2022-06",
+      "path": "data/overnight/multiyear/bus_trips_2022-06.zip",
+      "source": "https://data.seoul.go.kr/dataList/OA-21220/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21220",
+        "infSeq": "3",
+        "seq": "2206",
+        "seqNo": ""
+      },
+      "bytes": 49436159,
+      "sha256": "5029165a14d42b0859dee7a07ee445ad1ff40d633c296c5f09878ce6548ae576",
+      "retrieved_at": "2026-10-28T17:31:17.211434+00:00"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2022-07",
+      "path": "data/overnight/multiyear/bus_trips_2022-07.zip",
+      "source": "https://data.seoul.go.kr/dataList/OA-21220/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21220",
+        "infSeq": "3",
+        "seq": "2207",
+        "seqNo": ""
+      },
+      "bytes": 50249792,
+      "sha256": "55380b3eac55b40e6c6bfef88a8f9da7217f71324f417128f33bd8ef80435f53",
+      "retrieved_at": "2026-10-28T17:31:16.866945+00:00"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2022-08",
+      "path": "data/overnight/multiyear/bus_trips_2022-08.zip",
+      "source": "https://data.seoul.go.kr/dataList/OA-21220/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21220",
+        "infSeq": "3",
+        "seq": "2208",
+        "seqNo": ""
+      },
+      "bytes": 52914337,
+      "sha256": "499ed969386ca950ed066c1dfc59276ab4326612577c4c14826bd92a940cb23d",
+      "retrieved_at": "2026-10-28T17:31:23.708980+00:00"
+    }
+  ],
+  "reason": "2022년 4월 일부 주간 CSV는 헤더 31개/데이터 33개, 5월은 첫 헤더 손상 및 빈 파일 발견. 자동 열 이동으로 복구하지 않음.",
+  "previous_generated_2022_caches": "어떠한 패널·집계·학습에도 사용하지 않음"
+}

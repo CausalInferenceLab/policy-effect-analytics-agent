@@ -1,0 +1,52 @@
+{
+  "created_at": "2026-10-28T18:03:57.546111+00:00",
+  "description": "노선군·날짜·기상 공통 표본·승객 가중 조건·추가 버스 추출 단계. 경보 학습은 별도 기록.",
+  "code": {
+    "overnight_routes.py": "656ae895a0ccabeff155f3947a8547a18d381c2331be5f04ae7598e749b3092d",
+    "overnight_route_weather.py": "c587a870b7f7f727a14425e78e9bff87ff9e2a5b41591608513176c7ebd0012a",
+    "overnight_passengers.py": "4b7b43856cb06508a93363e47c9cd1a4b793f4dc04aecd432e802ccc1b28a5e9",
+    "overnight_bus_extract.py": "91d9037f785f7f082e1d789d0f1e13aef4244b392551cbd3ecc06bd826c63a26",
+    "overnight_bus_data.py": "0be0020cf66bfddb8dd22381e336e39a811422986f9fa7ccff817b5dd1753d0e",
+    "overnight_routes_plots.py": "5882d5cadcdf12ec4ea577f09080f6a4e63d5f668035249d15eb78a2f4a946c4"
+  },
+  "inputs": {
+    "overnight_config.yaml": "83734c07d3e58c4c58b7a3b3d915618cefc126718852deb057713bc2d31f148f",
+    "overnight_route_config.yaml": "831bdec58d344144ffcf8f1ee03d53e1a8ca073d20908ec7e0ec8bab672c9169",
+    "overnight_multiyear_config.yaml": "fab6c33161ff7319881c20801b2457d687b05cc4841fa59b08a39670cbda1aeb",
+    "overnight-passenger-sources.json": "563e5ce5d0c5d9624847341eec1f896951cf71ec2f7eb2bb86768f432ea8b4a3",
+    "overnight-multiyear-sources.json": "de7bf831090383d137ba3c6239bf7a85d453d449a3c4c6480c78a5b5f029cbf6",
+    "results/overnight/bus/panel_audit.json": "8254632bbb8f72a771ba1feb4a1572d0c511aa221fa163cf6320b053f7040c4f",
+    "results/overnight/bus/selected_cells.csv": "08cd7d2e4c8093dfb997f189c45a3bb5d4ef47ea33cc4a8583c7a0b306a77383",
+    "results/overnight/weather/daily_bands.csv": "907817a58b21733ff15f7fa2272c2ef2de40ca05925fa0cb4475031935b1fceb"
+  },
+  "outputs": {
+    "results/overnight/bus/hourly_comparisons.csv": "2ab6dbf9dd815ef6f4ab159c3e6711c0bc687add8eb481613d54a0d3c5caa107",
+    "results/overnight/bus/route_group_audit.json": "74adfcfa3df81d47e576fb449617d78f1e0f778b4a7d3d523716fe09d82fa28c",
+    "results/overnight/bus/route_group_comparisons.csv": "6e5e4b037d4f68b017d50a2dc7ea3741e35880b27037d4acf55f4482c11fc44e",
+    "results/overnight/bus/route_group_daily.csv": "1ec1c914780eeabc6b6f50eccbb2d5dfc7b9ff08ab896b2a93cee030f2bac177",
+    "results/overnight/bus/route_group_weather.csv": "94328e60c4d1cc6b8d11cf9cd095970738cb2df8791a34d9a6ed0bd2c3dcdbea",
+    "results/overnight/bus/route_group_weather_audit.json": "b8a7cf92d116a498844c77e10d6904652fcbb616c8e80c7bd7cc0f5aa0c15b0c",
+    "results/overnight/bus/route_group_weather_strata.csv": "b6364744abd43915b87ae6f397208d5bd78c69f19f26a10952ab987f80c030a2",
+    "results/overnight/bus/timing_sensitivity.csv": "2d626c8c9358f792c25751f743cc739de56010b135f75fe3800ec204b1ddc93a",
+    "results/overnight/multiyear/extraction_audit.json": "be678e8827bbfeb48564b2e64398f913b77db01d7f384791418bd438335af1b0",
+    "results/overnight/multiyear/held_2022_schema.json": "b44b25760c7fee89037e8212f829b027cadf2b942f580ab7c5c4f04a77256e80",
+    "results/overnight/passenger_weight_coverage.png": "d1d0e332b42ef0a35a01f1dc1de8c06e3ef4925fcce6056c0b4db3dead0e1ac5",
+    "results/overnight/passengers/extraction_audit.json": "9e0f2b0738e10d3fd98d5822b8febc2dcc0e6d92d1ba8b168efdc3e6de20d8bd",
+    "results/overnight/passengers/fixed_pre_weights.csv": "52f239dfa4bbe3115daf3dde8d3f6423ca0af463b40bda267688bfcb6e889f39",
+    "results/overnight/passengers/fixed_weight_comparisons.csv": "3a4be2bd73b24c48c152acc123b05204ef7c4613ecc29911f3f45ad64a6890a3",
+    "results/overnight/passengers/fixed_weight_daily.csv": "34b0e4d8762d135ab784e09194fc28317459224d71d4216ec32dc29a0f1624fd",
+    "results/overnight/passengers/join_coverage_daily.csv": "fd64aa6f21ffabb84800c1c8b19e7503e20168a9e8c0667301081abf1a6019d8",
+    "results/overnight/passengers/passenger_audit.json": "7b3358df1cf916bca8dffdc39b51559ca05501f66c98c68fdb2ebdfbbeba2dad",
+    "results/overnight/route_figures.json": "df05c4673ec683148e1056de37008385259cbc9aab46098333ea8050d183ac06",
+    "results/overnight/route_remaining_bands.png": "4e4cc3346699a19fdb316555915c0d77b3451fa0394499ba39ae6236907d2bec",
+    "results/overnight/route_remaining_weights.png": "427c6883a41449cd4107c8a63e7267cd8511cb6f05f19d7b85fc43f1fed1292e",
+    "results/overnight/route_timing_sensitivity.png": "79eded6b9a8d835a0a825813eec56d0d5bd176549dd55047cbe1469f49c5f17c"
+  },
+  "versions": {
+    "numpy": "2.5.2",
+    "pandas": "2.3.3",
+    "holidays": "0.107",
+    "pyarrow": "26.0.0"
+  },
+  "python": "3.12.12"
+}

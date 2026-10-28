@@ -1,22 +1,36 @@
 """10시간 확장 탐색의 수집·분석 단계를 명시적으로 실행한다."""
 
 import argparse
+import importlib
+
+STAGES = {
+    "weather-collect": ("overnight_weather", "collect", []),
+    "weather-prepare": ("overnight_weather", "prepare", []),
+    "bus-prepare": ("overnight_bus", "prepare", []),
+    "bus-sensitivity": ("overnight_sensitivity", "run", []),
+    "weather-analysis": ("overnight_weather_analysis", "run", []),
+    "routes": ("overnight_routes", "run", []),
+    "route-weather": ("overnight_route_weather", "run", []),
+    "route-plots": ("overnight_routes_plots", "plot", []),
+    "passenger-collect": ("overnight_bus_data", "passengers", []),
+    "passenger-prepare": ("overnight_bus_extract", "prepare", ["passengers"]),
+    "passenger-analysis": ("overnight_passengers", "run", []),
+    "multiyear-collect": ("overnight_bus_data", "multiyear", []),
+    "multiyear-prepare": ("overnight_bus_extract", "prepare", ["multiyear"]),
+    "forecast-collect": ("overnight_forecast_data", "collect", []),
+    "forecast-prepare": ("overnight_forecast_data", "prepare", []),
+    "forecast-bus-features": ("overnight_forecast_bus", "prepare", []),
+    "forecast-features": ("overnight_forecast_features", "prepare", []),
+    "forecast-train": ("overnight_forecast_train", "run", []),
+}
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("stage", choices=["weather-collect", "weather-prepare", "bus-prepare", "bus-sensitivity", "weather-analysis"])
+    parser.add_argument("stage", choices=list(STAGES))
     args = parser.parse_args()
-    from gangnam import (
-        overnight_bus,
-        overnight_sensitivity,
-        overnight_weather,
-        overnight_weather_analysis,
-    )
-
-    {"weather-collect": overnight_weather.collect, "weather-prepare": overnight_weather.prepare,
-     "bus-prepare": overnight_bus.prepare, "bus-sensitivity": overnight_sensitivity.run,
-     "weather-analysis": overnight_weather_analysis.run}[args.stage]()
+    module, function, arguments = STAGES[args.stage]
+    getattr(importlib.import_module("gangnam." + module), function)(*arguments)
 
 
 if __name__ == "__main__":

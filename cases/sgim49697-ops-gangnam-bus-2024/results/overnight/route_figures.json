@@ -1,0 +1,14 @@
+{
+  "code_sha256": "5882d5cadcdf12ec4ea577f09080f6a4e63d5f668035249d15eb78a2f4a946c4",
+  "figures": {
+    "route_remaining_bands.png": "4e4cc3346699a19fdb316555915c0d77b3451fa0394499ba39ae6236907d2bec",
+    "route_remaining_weights.png": "427c6883a41449cd4107c8a63e7267cd8511cb6f05f19d7b85fc43f1fed1292e",
+    "route_timing_sensitivity.png": "79eded6b9a8d835a0a825813eec56d0d5bd176549dd55047cbe1469f49c5f17c",
+    "passenger_weight_coverage.png": "d1d0e332b42ef0a35a01f1dc1de8c06e3ef4925fcce6056c0b4db3dead0e1ac5"
+  },
+  "inputs": {
+    "bus/route_group_comparisons.csv": "6e5e4b037d4f68b017d50a2dc7ea3741e35880b27037d4acf55f4482c11fc44e",
+    "bus/timing_sensitivity.csv": "2d626c8c9358f792c25751f743cc739de56010b135f75fe3800ec204b1ddc93a",
+    "passengers/fixed_weight_comparisons.csv": "3a4be2bd73b24c48c152acc123b05204ef7c4613ecc29911f3f45ad64a6890a3"
+  }
+}

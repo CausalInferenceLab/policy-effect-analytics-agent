@@ -1,0 +1,17 @@
+{
+  "recorded_at": "2026-10-28T18:03:59.442171+00:00",
+  "python": "3.12.12",
+  "packages": {
+    "numpy": "2.5.2",
+    "pandas": "2.3.3",
+    "scipy": "1.18.1",
+    "scikit-learn": "1.9.1",
+    "catboost": "1.2.10",
+    "joblib": "1.6.0",
+    "holidays": "0.107",
+    "pyarrow": "26.0.0"
+  },
+  "torch_used": false,
+  "processing": "CPU",
+  "thread_limit": 6
+}
