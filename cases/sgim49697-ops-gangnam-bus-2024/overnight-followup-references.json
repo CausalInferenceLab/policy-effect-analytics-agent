@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-28T23:34:10.840333+00:00",
+  "checked_at": "2026-10-28T23:59:34.818169+00:00",
   "references": [
     {
       "title": "Stepwise Multiple Testing as Formalized Data Snooping",
@@ -40,6 +40,23 @@
       "application": "과거 날짜 인자는 있으나 실제 제공 범위·원본 미확보. 강남대로 개별 사건 정답으로 직접 연결할 수 없으며 주변 구 단위 맥락 후보로만 기록. 새 인증·신청 미수행.",
       "local_path": "data/overnight/probes/tdata_bus_incidents_page.html",
       "sha256": "98559b9e39f2d38c1559ccef68c0a34a9c3c08e3f212a3b435fbd68ac672142f"
+    },
+    {
+      "title": "정류장 운행 통계(API), T Data 1083",
+      "url": "https://t-data.seoul.go.kr/dataprovide/trafficdataviewopenapi.do?data_id=1083",
+      "review_scope": "공식 출력 명세의 노선·정류장·구간 ID, 여행시간, 개문/통과 누계, 검출 건수 확인. 필수 stdrDe와 인증키. stpcarTimeAcmtl 설명은 통과 시간 누계 건수이나 공개 CSV 헤더는 정차시간누계로 표현이 다름. 단위·분모·시간 집계·과거 범위 미확정.",
+      "application": "정차·개문 과정의 후속 수집 후보. 원래 OA-21217 평균 운행시간과 동일 자료 정의로 전용하지 않음. 신규 인증·신청·기관 연락 없음."
+    },
+    {
+      "title": "정류장 운행 통계 파일, T Data 83",
+      "url": "https://t-data.seoul.go.kr/dataprovide/trafficdataviewfile.do?data_id=83",
+      "review_scope": "공식 목록의 파일 ID 10276 한 개. HEAD 200, 110140610 bytes. 스트림 첫 두 줄 759 bytes에서 헤더 34열과 첫 행 기간 키만 확인. 첫 기준일 20261025여서 수치 분석·원본 저장·전체 다운로드를 하지 않음.",
+      "application": "현재 공개 파일은 2023~2025년 이력을 확보했다는 근거가 아니다. 과거 API의 실제 응답과 집계 정의가 필요.",
+      "local_evidence": {
+        "data/overnight/probes/tdata_stop_operations_page.html": "316c5cba6acdca3d50b26963372238605d53bab60268c27444f0c9df1f6c4545",
+        "data/overnight/probes/tdata_stop_operations_head.json": "2490904efdc4d342164c7524e13f2a5907dca5bc9134cb5d0fe79548b9ca767e",
+        "data/overnight/probes/tdata_stop_operations_schema.json": "6a491de4c9f77ee68cf274e73ecdf483f3bb560b250497ab5dd3f77f0b3b2b41"
+      }
     }
   ]
 }

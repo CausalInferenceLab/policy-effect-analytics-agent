@@ -17,6 +17,11 @@ route_selection: every_preselected_route_in_the_two_previously_highlighted_segme
 aggregations: [equal_cells, median_cells]
 minimum_daily_cell_coverage: 0.80
 calendar: weekday_exclude_verified_Korean_holidays_keep_absent_dates_in_denominator
+holiday_extension_dates: ['2024-12-25', '2025-01-01', '2025-01-27', '2025-01-28', '2025-01-29', '2025-01-30', '2025-03-01', '2025-03-03']
+holiday_extension_sources:
+  regular_2024: https://astro.kasi.re.kr/file/astro_almanac_pdf/20231023135218580.pdf
+  regular_2025: https://www.kasi.re.kr/publication/post/newsMaterial/30071?cPage=8
+  temporary_2025_january: https://www.mpm.go.kr/mpm/comm/noti/mpmNotice/?boardId=bbs_0000000000000205&category=&cntId=904&mode=view&pageIdx=3
 weekly:
   convention: Monday_to_Sunday
   minimum_valid_days: 3
