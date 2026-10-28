@@ -1,0 +1,23 @@
+# overnight_segment_operations_config.yaml - 기존 공통 운영 셀을 구간별로 나눠 2025년까지 연결하는 탐색 규칙
+version: 1
+mode: exploratory_after_segment_and_direction_results
+locked_year: 2026
+source_config: overnight_operations_persistence_config.yaml
+source_audit: results/overnight/operations_persistence/analysis_audit.json
+selection: results/overnight/operations_persistence/selected_cells.csv
+time_only_selection: results/overnight/persistence_segments/selected_cells.csv
+time_only_audit: results/overnight/persistence_segments/audit.json
+band: evening
+endpoint_alignments: [arrival, departure]
+primary_endpoint: arrival
+metrics: [time, trips, boardings, boardings_per_recorded_trip]
+minimum_routes_per_segment: 3
+highlighted_ars_pairs: [['22011', '22009'], ['22008', '22010']]
+selection_rule: 원래 2023·2024 사전 공동 관측으로 선택한 셀 유지; 2025년·구간별 결과로 재선택하지 않음
+baseline_rule: 원래 셀별 2024년 사전 평균 유지; 승차/운행 비율은 구간의 일별 합계 비율의 사전 평균으로 기준화
+uncertainty: 원래 기간·주 재표집 설정 유지, 모든 구간과 실패를 공개, 확정 다중 검정으로 사용하지 않음
+interpretation:
+  - 같은 방향 평균에서 보인 시간·수요 변화가 강조 구간에도 함께 나타나는지 확인하는 사후 탐색
+  - 도착·출발 정류장의 같은 시간대 횟수 연결이며 같은 차량·승객·실제 대기열을 매칭한 결과가 아님
+  - 승차/운행은 집계 기록 비율로 차량별 탑승 인원·점유율·정차 시간과 구별
+  - 시간 전용 표본 대비 공통 셀 보존율과 관측 실패를 공개하며 전체 구간 효과로 일반화하지 않음

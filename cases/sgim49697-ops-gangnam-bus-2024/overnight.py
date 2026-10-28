@@ -87,6 +87,8 @@ STAGES = {
     "weather-performance": ("overnight_weather_performance", "run", []),
     "segment-uncertainty": ("overnight_segment_uncertainty", "run", []),
     "followup-plots": ("overnight_followup_plots", "run", []),
+    "alert-replay": ("overnight_alert_replay", "run", []),
+    "segment-operations": ("overnight_segment_operations", "run", []),
     "persistence-segments": ("overnight_persistence_segments", "run", []),
     "persistence-segments-plots": ("overnight_persistence_segments_plots", "plot", []),
 }

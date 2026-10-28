@@ -1,5 +1,5 @@
 {
-  "checked_at": "2026-10-28T23:18:09.515675+00:00",
+  "checked_at": "2026-10-28T23:21:47.179089+00:00",
   "references": [
     {
       "title": "Stepwise Multiple Testing as Formalized Data Snooping",
@@ -13,7 +13,13 @@
       "title": "기상자료개방포털 단기예보",
       "url": "https://data.kma.go.kr/data/rmt/rmtList.do?code=420&pgmNo=572",
       "review_scope": "자료 설명: 2010년 6월부터 조회 전일까지, 조회 UTC, 2021년 시간 세분화·2024년 11월 예보기간 변경 확인. 개별 예보 파일 미확보.",
-      "application": "과거 발표 예보 수집 후보. 실제 파일의 발표·발효·공개 시각과 격자 검증 후 연결."
+      "application": "과거 발표 예보 수집 후보. 실제 파일의 발표·발효·공개 시각과 격자 검증 후 연결.",
+      "access_check": "공개 페이지의 다운로드 함수는 세션 확인 후 로그인 또는 용도 선택·자료 생성으로 이동. 신규 로그인·자료 신청을 실행하지 않음.",
+      "public_script": "https://data.kma.go.kr/resources/js/irods_4xx.js",
+      "local_evidence": {
+        "data/overnight/probes/kma_short_forecast_page.html": "16a82d17e38512ce8795112d6b445f78a36a4735313786c933d2911b02b28080",
+        "data/overnight/probes/irods_4xx.js": "7c72481db53f78ae315f6c57f7ce50f66226d54b16efd3c55821cae2465b1e38"
+      }
     },
     {
       "title": "기상청 API허브 동네예보 격자자료",
