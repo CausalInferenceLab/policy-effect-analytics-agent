@@ -1,0 +1,47 @@
+name: 교차 재현 기록
+description: 다른 사람의 분석을 내 컴퓨터에서 다시 돌려 본 결과를 남깁니다 (짝 리뷰)
+title: "[재현] "
+labels: ["reproduction"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        작성자가 아닌 사람이 같은 명령으로 같은 판정을 얻으면, 그 결과는 사이트 답 페이지에 **교차 재현됨**으로 표시됩니다.
+        다르게 나와도 좋은 기록입니다. 무엇이 달랐는지가 다음 수정의 출발점입니다. API 키는 적지 마세요.
+  - type: input
+    id: case
+    attributes:
+      label: 케이스 폴더
+      placeholder: cases/buildergarlic-changwon-integration
+    validations:
+      required: true
+  - type: input
+    id: commit
+    attributes:
+      label: 돌린 커밋
+      description: "`git rev-parse --short HEAD` 결과"
+      placeholder: 92bb216
+    validations:
+      required: true
+  - type: dropdown
+    id: same
+    attributes:
+      label: 판정이 같았나요?
+      options:
+        - 같음 (판정·주 지표 추정치가 소수 둘째 자리까지 같음)
+        - 판정은 같고 숫자가 조금 다름
+        - 다름
+        - 실행하지 못함
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: 실행한 명령과 다른 점
+      description: fetch.py 가 받은 날짜, 막힌 곳, 숫자 차이 등
+      render: bash
+  - type: textarea
+    id: review
+    attributes:
+      label: 리뷰 한 줄
+      description: 계획(plan.yaml)과 해석(discussion.md)을 읽고 가장 궁금하거나 걱정되는 점 하나

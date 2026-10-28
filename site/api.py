@@ -8,7 +8,8 @@
     api/datasets.json       데이터 지도 (역할 · 단위 · 받는 법 · 이용 조건)
     api/legal/<주제>.json   법제처에서 모은 법령·행정규칙·조례 목록 (메타데이터)
     api/lineage.json        데이터 계보 그래프 (이슈 → 정책 → 데이터 → 가공 → 지표 → 분석)
-    api/results.json        분석 결과 (cases/*/flow_log.json: 판정 · 추정치 · 신뢰구간 · 그림)
+    api/results.json        분석 결과 (cases/*/flow_log.json: 판정 · 추정치 · 신뢰구간 · 배제 범위 · 그림)
+    api/results.csv         같은 결과를 지표 한 줄씩 (엑셀용, UTF-8 BOM)
 
 apps/<내ID>-<서비스>/ 의 정적 파일(html·css·js·json·이미지)은 _site/apps/<같은 이름>/ 으로 복사되어
 https://causalinferencelab.github.io/policy-effect-analytics-agent/apps/<이름>/ 에서 열립니다.
@@ -68,14 +69,27 @@ def _dump(path: Path, obj) -> None:
 
 
 # ─── 분석 결과 ────────────────────────────────────────────────────────────────
+def _projects() -> list[dict]:
+    """참여자 프로젝트 목록 (트랙 C 서비스용). 열린 PR 정보는 빼고 레포에 있는 것만."""
+    from projects import load_projects
+
+    return [{k: v for k, v in p.items() if k != "open_prs"} for p in load_projects()]
+
+
 def case_results(out: Path) -> list[dict]:
     """cases/*/flow_log.json 을 서비스가 쓰기 쉬운 모양으로. 그림은 _site/cases/<케이스>/ 로 복사."""
     from core.discovery.lineage import load_lineages
+    from core.report import interpret
     from core.schema.plan import load_plan
 
     topic_of = {Path(p).name: t for t, p in _sample_cases().items()} | {
         c: lin.topic for lin in load_lineages() for s in lin.steps for c in s.used_by
     }
+    from projects import load_registry
+    from quality import prereg
+
+    reg = load_registry()
+    topic_of |= {c: m["topic"] for c, m in reg.items() if m.get("topic")}
     rows = []
     for log_path in sorted(CASES.glob("*/flow_log.json")):
         case = log_path.parent
@@ -94,6 +108,7 @@ def case_results(out: Path) -> list[dict]:
                 "synthetic": plan.synthetic_data,
             }
             names = {o.col: o.name for o in plan.outcomes}
+            units = {o.col: o.unit for o in plan.outcomes}
         except Exception:  # 계획이 바뀌는 중이어도 결과 목록은 만든다
             meta, names = (
                 {
@@ -103,6 +118,7 @@ def case_results(out: Path) -> list[dict]:
                 },
                 {},
             )
+            units = {}
         figs = []
         dest = out / "cases" / case.name
         for f in sorted((case / "figures").glob("*.png")):
@@ -128,11 +144,26 @@ def case_results(out: Path) -> list[dict]:
                         "n_obs": r.get("n_obs"),
                         "verdict": r.get("verdict"),
                         "warnings": r.get("warnings", []),
+                        "unit": units.get(r.get("outcome")),
+                        # 판정을 넘지 않는 문장: rule_out(배제 범위, '크기를 판별하지 못함'일 때만)
+                        "said": interpret.statements(
+                            r.get("verdict"),
+                            names.get(r.get("outcome"), r.get("outcome")),
+                            r.get("ci_low"),
+                            r.get("ci_high"),
+                            r.get("outcome") or "",
+                            units.get(r.get("outcome")),
+                        ),
                     }
                     for r in log.get("results", [])
                 ],
                 "figures": figs,
                 "source": f"cases/{case.name}",
+                "page": f"answers/{case.name}.html",
+                "record": {
+                    "preregistration": (prereg(case) or {}).get("label"),
+                    "reproduced_by": list(reg.get(case.name, {}).get("reproduced_by") or []),
+                },
             }
         )
     return rows
@@ -178,6 +209,7 @@ def write_api(out: Path, topics, issues, datasets, legal_summary) -> dict:
         "datasets.json": [d.model_dump(mode="json") for d in datasets],
         "lineage.json": graph(),
         "results.json": case_results(out),
+        "projects.json": _projects(),
     }
     for name, obj in files.items():
         _dump(api / name, obj)
@@ -190,7 +222,7 @@ def write_api(out: Path, topics, issues, datasets, legal_summary) -> dict:
     index = {
         "generated_at": datetime.now(UTC).isoformat(timespec="seconds"),
         "terms": TERMS,
-        "endpoints": sorted(files) + legal,
+        "endpoints": sorted(files) + ["results.csv"] + legal,
         "counts": {
             k: len(v) if isinstance(v, list) else len(v.get("lineages", []))
             for k, v in files.items()

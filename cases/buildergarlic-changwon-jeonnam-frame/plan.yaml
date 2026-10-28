@@ -1,0 +1,186 @@
+# 사전 등록 분석계획 — 결과를 보기 전에 이 파일을 먼저 커밋합니다.
+#
+# 이 케이스는 한국은행 광주전남본부·목포본부 「전남·광주 행정통합에 따른 지역경제 영향 분석」(2026.7)이 쓴
+# 목표·지표·성공기준·모델(framework.md)을 2010년 마산·창원·진해 통합에 그대로 적용합니다.
+# 같은 통합을 다룬 cases/buildergarlic-changwon-integration(PR #35, 인구·순이동·재정자립도)과는 별개의 케이스이며
+# 경계 재구성·대조군·전환연도 처리 규칙은 같게 두어 두 케이스를 나란히 읽을 수 있게 했습니다.
+#
+# 핵심 지표(아래 outcomes, 2001~2023 균형 패널)는 make flow 가 추정하고, 보고서의 나머지 지표(청년·고령 인구비율,
+# 청년 순이동률, 재정자주도, 고용률·실업률, 고부가 서비스 비중 등 — 수록 기간이 짧거나 통계표 ID 확인이 필요한 것)는
+# indicators.yaml 에 미리 적어 두고 scorecard.py 가 같은 추정기로 돌립니다. 성공/실패의 종합 규칙도 indicators.yaml 에
+# 결과를 보기 전에 적었습니다.
+#
+# KOSIS 통계표 ID 중 '확인됨'은 PR #35 실수집으로 확인된 것이고, 나머지는 후보입니다(fetch.py --probe 로 확인).
+# 실수집에서 ID·기간을 고치면 이 머리글과 discussion.md '계획에서 바뀐 것'에 적습니다.
+#
+# 실수집에서 바뀐 것(2026-10-22): 후보로 적었던 전국사업체조사 표(DT_1K52B03/C03, DT_1KB2B03)는 KOSIS OpenAPI 에서 시도 단위뿐이고
+# (시군구 행 없음; DT_1KB2B03 은 존재하지 않음), e-지방지표의 사업체·종사자 표도 시군구는 2017년부터라, 사업체수·종사자수·제조업
+# 종사자수는 고용노동부 「사업체노동실태현황」 시군구별(9개도)·산업별·규모별 표(산재보험 적용 사업체 기준, DT_SAUP120 ·
+# DT_118N_SAUP17/37/57/78 · DT_118N_SAUPN78, 1999~2023)로 바꿨습니다. 지표의 정의(전산업 종사자수·사업체수·제조업 비중)와
+# 처치·대조·추정·판정 규칙은 그대로이고 측정 출처만 바뀌었습니다. 수준은 전국사업체조사보다 낮습니다(창원 2017 종사자 36.8만 vs 45.1만).
+case_id: buildergarlic-changwon-jeonnam-frame
+title: "전남·광주 행정통합 영향분석(한국은행 2026.7)의 지표와 프레임으로 본 마산·창원·진해 통합(2010)의 성과"
+question: >
+  2010년 7월 1일 마산·창원·진해가 통합 창원시로 합쳐진 뒤, 경계가 바뀌지 않은 전국의 다른 기초 시들과 비교해
+  (통합 전 3개 시를 합산해 같은 경계로 맞춘) 창원의 사업체 종사자수·사업체수·제조업 종사자 비중·재정자립도가
+  한국은행 전남·광주 보고서가 통합의 목표로 둔 방향(고용·기업 유치 확대, 산업구조 고도화, 지방재정 확대)으로
+  달라졌는가?
+synthetic_data: false
+
+unit: {name: 기초 시(통합 경계 재구성), id_col: region_id}
+time: {col: year, freq: year, start: 2001, end: 2023}   # 2010(전환연도)은 fetch.py 가 모든 시에서 제외
+
+treatment:
+  definition: >
+    「경상남도 창원시 설치 및 지원특례에 관한 법률」(법률 제10052호, 2010.3.12 공포)에 따라 2010.7.1 출범한
+    통합 창원시. 통합 전(≤2009)은 마산·창원·진해 3개 시 값을 합산(비율은 합산 뒤 재계산)해 같은 경계로 맞춤.
+    2010년은 반년만 통합된 전환연도라 제외하고 2011년을 첫 사후연도로 둠. 통합에 딸린 재정 인센티브
+    (보통교부세 추가 교부 등)는 '통합 패키지'의 일부로 보고 분리하지 않음.
+  group_col: treated
+  treat_time: 2011
+control:
+  definition: >
+    2001~2023년 사이 행정구역 통합·분리·승격이 없었던 전국 기초 시 62곳(fetch.py 의 DONOR_CITIES,
+    PR #35 케이스와 같은 목록). 통합·경계변경이 있었던 청주·공주·논산·계룡·제주·서귀포·화성·광주·양주·포천·
+    당진·여주·울산·세종과 창원에 접한 김해·밀양은 제외.
+  rationale: >
+    보고서(표 2-6)가 지역을 '전국·타 광역시·여타 도 평균'과 견주듯, 같은 전국 경기·산업정책·지방재정제도를
+    받는 기초 시 집단을 '통합이 없었다면'의 추세로 쓴다. 처치 단위가 하나라 무작위화 추론(placebo-in-space)으로
+    p값·신뢰구간을 내고, scorecard.py 가 인구 50만 이상 대도시·경남 내 시 두 소집단과의 단순 전후 비교를 덧붙인다.
+
+outcomes:
+  - name: 사업체 종사자수(로그)
+    col: log_employees
+    definition: >
+      log(전산업 종사자수, 시 단위 — 사업체노동실태현황(고용노동부, 산재보험 적용 사업체) 총종사자수; 계획의 전국사업체조사
+      표는 KOSIS 에 시군구 단위가 없어 바꿈). 통합 전은 3개 시 종사자수 합계의 로그.
+      보고서의 '종사자수'·'고용유발효과'에 대응(framework.md 2-3, 2-5)
+    unit: "log 명"
+    primary: true
+    expected_direction: increase     # 보고서 목표 G5(기업·투자 유치, 고용 창출)
+  - name: 사업체수(로그)
+    col: log_establishments
+    definition: "log(전산업 사업체수 — 사업체노동실태현황). 통합 전은 3개 시 사업체수 합계의 로그. 보고서의 '사업체수'에 대응"
+    unit: "log 개"
+    expected_direction: increase     # G5
+  - name: 제조업 종사자 비중
+    col: manufacturing_emp_share
+    definition: >
+      제조업(8차 D, 9·10차 C) 종사자수 ÷ 전산업 종사자수 × 100 (사업체노동실태현황). 통합 전은 3개 시 분자·분모를 각각 합산한 뒤 계산.
+      보고서의 '산업별 종사자수 비중'(표 2-3)에 대응. 보고서는 고부가 서비스·첨단 제조로의 고도화를 바라지만
+      창원은 제조업 도시라 방향을 정하지 않음
+    unit: "%"
+    expected_direction: unknown
+  - name: 재정자립도
+    col: fiscal_independence
+    definition: >
+      e-지방지표 재정자립도(%) = (지방세 + 세외수입) ÷ 일반회계 세입 × 100, '세입과목개편전' 계열.
+      통합 전은 3개 시의 주민등록인구 가중 평균(근사). 보고서 경로 1위 '행정 효율화·지방재정 확대'(G3·G4)에 대응
+    unit: "%"
+    expected_direction: increase
+
+estimator:
+  method: event_study
+  cluster_col: region_id
+  ref_period: -2          # 2010(상대시점 -1)은 전환연도로 제외하므로 2009(상대시점 -2)를 기준
+  window: [-8, 10]        # 2003~2021 을 개별 계수, 그 밖은 양끝에 묶음
+  alpha: 0.05
+
+assumptions:
+  - name: 평행추세
+    description: "통합이 없었다면 통합 경계 창원과 비교 시들의 결과 추세가 같았을 것. 2001~2009 사전 계수의 무작위화 추론 결합검정"
+    check: pretrend_test
+  - name: 선반영 없음
+    description: "통합 논의(2009 주민여론조사)·국회 통과(2010.3) 전에 사업체·고용이 미리 반응했는지 가짜 시점(2008) 검정"
+    check: placebo_time
+  - name: 파급효과 없음(SUTVA)
+    description: "김해·밀양 등 인접 시로 사업체·세원이 옮겨가면 대조군이 오염됨 → 인접 시 제외. 나머지 전국 시로의 파급은 작다고 가정"
+    check: manual
+  - name: 통계 조사 방식 변경의 공통성
+    description: "사업체노동실태현황의 표 분리(1999~2001 · 2002~2003 · 2004~2006 · 2007~2016 · 2017~)와 산업분류 개정(2007 9차, 2017 10차)은 모든 시에 같이 적용되어 연도 고정효과로 흡수된다고 가정. 창원에만 다르게 적용된 변경은 수동 점검"
+    check: manual
+
+refutations:
+  - kind: placebo_time
+    params: {shift: 3}     # 사전 구간(2001~2009)만으로 2008 을 가짜 통합연도로 두고 재추정
+
+abstention:
+  - when: pretrend_rejected
+    verdict: not_identified
+    note: "통합 전부터 추세가 달랐다면 통합 효과로 보고하지 않는다"
+  - when: few_treated_clusters
+    verdict: conditional
+    note: "처치 단위가 1개 — p값·신뢰구간은 무작위화 추론"
+  - when: placebo_significant
+    verdict: conditional
+  - when: ci_crosses_zero
+    verdict: conditional
+    note: "효과 없음이 아니라 '판별 불가'로 보고"
+  - when: short_pre_period
+    verdict: conditional
+
+thresholds: {pretrend_alpha: 0.10, min_clusters: 20, min_pre_periods: 5}
+
+data_sources:
+  - name: "시군구별(9개도)·산업별·규모별 사업체수 및 종사자수 — 사업체노동실태현황 2001~2001 (KOSIS DT_SAUP120, 확인됨, 산업분류 8차)"
+    provider: "고용노동부 · KOSIS 국가통계포털"
+    url: "https://kosis.kr/statHtml/statHtml.do?orgId=118&tblId=DT_SAUP120"
+    license: KOGL-1
+    adapter: kosis
+    query: {orgId: "118", tblId: DT_SAUP120, itmId: ALL, objL1: ALL, prdSe: Y, startPrdDe: "2001", endPrdDe: "2001"}
+    notes: >
+      KOSIS_API_KEY 필요(무료). 시군구(9개도) × 산업 × 규모 표에서 '전산업/전체'·'제조업' 행과 규모 '전규모' 행만 받는다(fetch.py 가 메타정보로 코드를 고름). 성별이 분류(objL2)에 있고 항목은 사업체수·총종사자수 등 6개. 1999~2001 수록, 2001 만 씀
+  - name: "시군구별(9개도)·산업별·규모별 사업체수 및 종사자수 — 사업체노동실태현황 2002~2003 (KOSIS DT_118N_SAUP17, 확인됨, 산업분류 8차)"
+    provider: "고용노동부 · KOSIS 국가통계포털"
+    url: "https://kosis.kr/statHtml/statHtml.do?orgId=118&tblId=DT_118N_SAUP17"
+    license: KOGL-1
+    adapter: kosis
+    query: {orgId: "118", tblId: DT_118N_SAUP17, itmId: ALL, objL1: ALL, prdSe: Y, startPrdDe: "2002", endPrdDe: "2003"}
+    notes: >
+      KOSIS_API_KEY 필요(무료). 시군구(9개도) × 산업 × 규모 표에서 '전산업/전체'·'제조업' 행과 규모 '전규모' 행만 받는다(fetch.py 가 메타정보로 코드를 고름). 항목 사업체수·총종사자수_계/남자/여자
+  - name: "시군구별(9개도)·산업별·규모별 사업체수 및 종사자수 — 사업체노동실태현황 2004~2006 (KOSIS DT_118N_SAUP37, 확인됨, 산업분류 8차)"
+    provider: "고용노동부 · KOSIS 국가통계포털"
+    url: "https://kosis.kr/statHtml/statHtml.do?orgId=118&tblId=DT_118N_SAUP37"
+    license: KOGL-1
+    adapter: kosis
+    query: {orgId: "118", tblId: DT_118N_SAUP37, itmId: ALL, objL1: ALL, prdSe: Y, startPrdDe: "2004", endPrdDe: "2006"}
+    notes: >
+      KOSIS_API_KEY 필요(무료). 시군구(9개도) × 산업 × 규모 표에서 '전산업/전체'·'제조업' 행과 규모 '전규모' 행만 받는다(fetch.py 가 메타정보로 코드를 고름).
+  - name: "시군구별(9개도)·산업별·규모별 사업체수 및 종사자수 — 사업체노동실태현황 2007~2011 (KOSIS DT_118N_SAUP57, 확인됨, 산업분류 9차)"
+    provider: "고용노동부 · KOSIS 국가통계포털"
+    url: "https://kosis.kr/statHtml/statHtml.do?orgId=118&tblId=DT_118N_SAUP57"
+    license: KOGL-1
+    adapter: kosis
+    query: {orgId: "118", tblId: DT_118N_SAUP57, itmId: ALL, objL1: ALL, prdSe: Y, startPrdDe: "2007", endPrdDe: "2011"}
+    notes: >
+      KOSIS_API_KEY 필요(무료). 시군구(9개도) × 산업 × 규모 표에서 '전산업/전체'·'제조업' 행과 규모 '전규모' 행만 받는다(fetch.py 가 메타정보로 코드를 고름). 2010 부터 '창원시' 행이 통합 경계(마산·진해 행은 결측). 2009 세 시 합계 32,744 ≈ 2010 창원 32,726 사업체로 확인
+  - name: "시군구별(9개도)·산업별·규모별 사업체수 및 종사자수 — 사업체노동실태현황 2012~2016 (KOSIS DT_118N_SAUP78, 확인됨, 산업분류 9차)"
+    provider: "고용노동부 · KOSIS 국가통계포털"
+    url: "https://kosis.kr/statHtml/statHtml.do?orgId=118&tblId=DT_118N_SAUP78"
+    license: KOGL-1
+    adapter: kosis
+    query: {orgId: "118", tblId: DT_118N_SAUP78, itmId: ALL, objL1: ALL, prdSe: Y, startPrdDe: "2012", endPrdDe: "2016"}
+    notes: >
+      KOSIS_API_KEY 필요(무료). 시군구(9개도) × 산업 × 규모 표에서 '전산업/전체'·'제조업' 행과 규모 '전규모' 행만 받는다(fetch.py 가 메타정보로 코드를 고름).
+  - name: "시군구별(9개도)·산업별·규모별 사업체수 및 종사자수 — 사업체노동실태현황 2017~2023 (KOSIS DT_118N_SAUPN78, 확인됨, 산업분류 10차)"
+    provider: "고용노동부 · KOSIS 국가통계포털"
+    url: "https://kosis.kr/statHtml/statHtml.do?orgId=118&tblId=DT_118N_SAUPN78"
+    license: KOGL-1
+    adapter: kosis
+    query: {orgId: "118", tblId: DT_118N_SAUPN78, itmId: ALL, objL1: ALL, prdSe: Y, startPrdDe: "2017", endPrdDe: "2023"}
+    notes: >
+      KOSIS_API_KEY 필요(무료). 시군구(9개도) × 산업 × 규모 표에서 '전산업/전체'·'제조업' 행과 규모 '전규모' 행만 받는다(fetch.py 가 메타정보로 코드를 고름). 고부가 서비스 비중은 9차·10차 표(2007~)의 대분류 J·K·M 합
+  - name: "재정자립도(시도/시/군/구) — e-지방지표 (KOSIS DT_1YL20921, 확인됨)"
+    provider: "행정안전부 · KOSIS e-지방지표"
+    url: "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1YL20921"
+    license: KOGL-1
+    adapter: kosis
+    query: {orgId: "101", tblId: DT_1YL20921, itmId: ALL, objL1: ALL, prdSe: Y, startPrdDe: "2001", endPrdDe: "2023"}
+    notes: "'세입과목개편전' 계열(2001~2023). 광주·전남 시의 지역코드는 7자리. PR #35 실수집으로 ID 확인"
+  - name: "행정구역(시군구)별 성별 인구수 — 주민등록인구현황 (KOSIS DT_1B040A3, 확인됨)"
+    provider: "행정안전부 · KOSIS 국가통계포털"
+    url: "https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1B040A3"
+    license: KOGL-1
+    adapter: kosis
+    query: {orgId: "101", tblId: DT_1B040A3, itmId: T20, objL1: ALL, prdSe: Y, startPrdDe: "2001", endPrdDe: "2023"}
+    notes: "총인구(T20). 재정자립도의 통합 전 가중 평균과 인구 천명당 지표의 분모로 쓴다(결과변수 아님)"

@@ -1,6 +1,8 @@
 """정적 대시보드가 모든 주제 페이지를 만들고, 로컬 경로·개인정보를 담지 않는지."""
 
 import importlib.util
+import json
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -51,7 +53,7 @@ def test_home_has_chat_and_catalog(tmp_path, monkeypatch):
     ).group(1)
     cat = json.loads(raw.replace("<\\/", "</"))
     assert {"repo", "topics", "issues", "datasets"} <= cat.keys()
-    assert "요즘 궁금해하는 주제" in home
+    assert 'id="topics"' in home and '<script src="ask.js"></script>' in home
     assert "공식 평가가 아닙니다" in home
     # 개별 참여로 바뀌었으므로 조 단위 안내가 남아 있으면 안 됨
     for f in out.rglob("*.html"):
@@ -133,7 +135,8 @@ def test_tracks_api_and_apps(tmp_path, monkeypatch):
     assert (out / "apps" / "_template" / "index.html").exists()
     assert not (out / "apps" / "_template" / "app.yaml").exists()
     nav = (out / "index.html").read_text(encoding="utf-8")
-    assert "데이터 계보" in nav and "서비스" in nav and "데이터 온톨로지" in nav
+    assert "데이터 계보" in nav and "서비스" in nav
+    assert "데이터 온톨로지" in (out / "projects.html").read_text(encoding="utf-8")
 
 
 def test_apps_have_meta_and_no_secrets():
@@ -149,3 +152,101 @@ def test_apps_have_meta_and_no_secrets():
                 assert not re.search(r"sk-[A-Za-z0-9_-]{20,}|AKIA[0-9A-Z]{16}", text), (
                     f"{f}: 비밀값처럼 보임"
                 )
+
+
+def test_projects_page_lists_every_case(tmp_path, monkeypatch):
+    """참여자 프로젝트 화면: cases/ 의 모든 케이스가 나오고, 명단(projects.yaml)은 있는 폴더·주제만 가리킨다."""
+    import yaml
+
+    mod = _load_build()
+    monkeypatch.setattr(mod, "OUT", tmp_path / "_site")
+    mod.main()
+    out = tmp_path / "_site"
+    page = (out / "projects.html").read_text(encoding="utf-8")
+    root = Path(__file__).resolve().parents[1]
+    reg = yaml.safe_load((root / "catalog" / "projects.yaml").read_text(encoding="utf-8"))
+    topics = {
+        t["id"]
+        for t in yaml.safe_load((root / "catalog" / "topics.yaml").read_text(encoding="utf-8"))[
+            "topics"
+        ]
+    }
+    for p in reg["projects"]:
+        assert p["track"] in {"A", "B", "C"}, p["case"]
+        assert p.get("topic") in topics, p["case"]
+    for case in (root / "cases").iterdir():
+        if case.is_dir() and not case.name.startswith("_") and (case / "plan.yaml").exists():
+            assert f"cases/{case.name}" in page, case.name
+    projects = json.loads((out / "api" / "projects.json").read_text(encoding="utf-8"))
+    assert all({"case", "owner", "stages", "topic"} <= p.keys() for p in projects)
+    assert "projects.html" in (out / "index.html").read_text(encoding="utf-8")
+
+
+def test_answer_pages_for_users(tmp_path, monkeypatch):
+    """분석 결과 화면: 결과가 있는 케이스마다 답 페이지가 있고, 판단 불가 결과는 숫자를 진단용으로 표시한다."""
+    mod = _load_build()
+    monkeypatch.setattr(mod, "OUT", tmp_path / "_site")
+    mod.main()
+    out = tmp_path / "_site"
+    root = Path(__file__).resolve().parents[1]
+    results = json.loads((out / "api" / "results.json").read_text(encoding="utf-8"))
+    assert results and (out / "results.html").exists()
+    for r in results:
+        page = (out / r["page"]).read_text(encoding="utf-8")
+        assert "이 결과를 쓰려면" in page and "인용문" in page and "직접 돌려 보기" in page
+        assert f"make flow CASE=cases/{r['case']}" in page
+        assert "이 결과를 얼마나 믿을 수 있나" in page
+        assert 'property="og:url"' in page and (out / "answers" / f"{r['case']}.csv").exists()
+        if r["verdict"] == "not_identified":
+            assert "진단용" in page
+    for case in (root / "cases").glob("*/flow_log.json"):
+        if not case.parent.name.startswith("_"):
+            assert (out / "answers" / f"{case.parent.name}.html").exists(), case.parent.name
+    home = (out / "index.html").read_text(encoding="utf-8")
+    cat = json.loads(
+        re.search(r'<script type="application/json" id="catalog">(.*?)</script>', home, re.S)
+        .group(1)
+        .replace("<\\/", "</")
+    )
+    assert cat["results"] and all("page" in x for x in cat["results"])
+    # 첫 화면: 질문 → 이미 나온 답 → 주제·이슈 → 다음에 할 수 있는 것
+    assert home.index('id="ask"') < home.index('id="answers"') < home.index('id="topics"')
+    assert 'id="next"' in home and "results.html#reuse" in home and "impact.html" in home
+    assert 'id="reuse"' in (out / "results.html").read_text(encoding="utf-8")
+    # 주제 페이지는 '지금 말할 수 있는 것'으로 시작하고, 결과 CSV는 엑셀용 BOM 을 붙인다
+    for t in (out / "topics").glob("*.html"):
+        assert 'id="now"' in t.read_text(encoding="utf-8"), t.name
+    raw = (out / "api" / "results.csv").read_bytes()
+    assert raw.startswith(b"\xef\xbb\xbf") and b"rule_out" in raw.splitlines()[0]
+
+
+def test_impact_page_and_tracking(tmp_path, monkeypatch):
+    """성과 화면: 측정 못 한 칸은 '측정 전', 이벤트 이름은 사이트 버튼과 같고, 통계 코드가 없으면 추적하지 않는다."""
+    mod = _load_build()
+    monkeypatch.setattr(mod, "OUT", tmp_path / "_site")
+    monkeypatch.delenv("GOATCOUNTER_CODE", raising=False)
+    mod.main()
+    out = tmp_path / "_site"
+    page = (out / "impact.html").read_text(encoding="utf-8")
+    for sec in ("쓰임", "외부 검증", "결과의 질", "참여"):
+        assert f"<h2>{sec}</h2>" in page
+    kpi = json.loads((out / "api" / "metrics.json").read_text(encoding="utf-8"))
+    assert kpi["quality"]["all"] >= kpi["quality"]["results"] > 0
+    assert (out / "track.js").exists() and "data-gc" not in (out / "index.html").read_text(
+        encoding="utf-8"
+    )
+    import sys
+
+    sys.path.insert(0, str(ROOT / "site"))
+    import impact
+
+    used = set()
+    for f in out.rglob("*.html"):
+        used |= set(re.findall(r'data-track="([a-z-]+)"', f.read_text(encoding="utf-8")))
+    js = (ROOT / "site" / "ask.js").read_text(encoding="utf-8")
+    used |= set(re.findall(r'track\("([a-z-]+)"', js))
+    assert used - {"propose-case"} <= set(impact.EVENTS), used - set(impact.EVENTS)
+    monkeypatch.setenv("GOATCOUNTER_CODE", "policy-effect")
+    assert 'data-gc="policy-effect"' in mod.page("t", "", "index.html")
+    monkeypatch.setenv("GOATCOUNTER_CODE", 'bad code"><script>')
+    assert "data-gc" not in mod.page("t", "", "index.html")

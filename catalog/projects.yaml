@@ -1,0 +1,59 @@
+# 참여자 프로젝트 명단 — 사이트의 '프로젝트' 화면과 주제 페이지가 이 파일로 cases/ 폴더를 주제·트랙·작업 제안 이슈와 잇습니다.
+# 새 케이스를 만들면 여기에 한 줄 추가합니다(없어도 사이트에는 '주제 미지정'으로 나옵니다).
+# 진행 단계(계획 → 수집 → 분석 → 해석)와 판정은 폴더 안의 파일에서 자동으로 읽습니다:
+#   plan.yaml → 계획 · fetch.py → 수집 · flow_log.json → 분석 · discussion.md(템플릿과 다르면) → 해석
+# reproduced_by: [GitHub ID, ...] — 다른 참여자가 make flow 로 같은 판정을 얻었으면 재현 이슈를 확인하고 추가합니다.
+#   답 페이지의 '이 결과를 얼마나 믿을 수 있나'와 카드의 '교차 재현됨' 배지로 나옵니다.
+version: 1
+projects:
+  - case: YoungjaeKang-retail-hours
+    owner: YoungjaeKang
+    track: B
+    topic: retail-hours
+
+  - case: jgkim1008-daegu-mart-holiday
+    owner: jgkim1008
+    track: B
+    topic: retail-hours
+    issue: 30
+
+  - case: ingyeoking13-seoul-birth-support
+    owner: ingyeoking13
+    track: B
+    topic: birth-marriage
+
+  - case: hyun2-land-permit-spillover-2020
+    owner: Hyun2
+    track: B
+    topic: housing-regulation
+
+  - case: yesolee-green-traffic
+    owner: yesolee
+    track: B
+    topic: air-quality
+    issue: 20
+
+  - case: buildergarlic-changwon-integration
+    owner: buildergarlic
+    track: B
+    topic: local-gov-merger
+    issue: 27
+
+  - case: buildergarlic-changwon-jeonnam-frame
+    owner: buildergarlic
+    track: B
+    topic: local-gov-merger
+    issue: 27
+
+  # 멘토 예시 (mentor: true) — 프로젝트 화면 맨 아래에 따로 보입니다
+  - case: t3-climate-card-seongnam
+    owner: jsshin2022
+    track: B
+    topic: public-transit
+    mentor: true
+
+  - case: t3-land-permit-2025
+    owner: jsshin2022
+    track: B
+    topic: housing-regulation
+    mentor: true

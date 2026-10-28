@@ -43,9 +43,9 @@ STATUS_BADGE = {
     "skipped": ("SKIPPED", "gray"),
 }
 VERDICT_LABEL = {
-    "identified": ("식별됨", "green"),
-    "conditional": ("조건부", "orange"),
-    "not_identified": ("식별 불가", "red"),
+    "identified": ("효과 근거 있음", "green"),
+    "conditional": ("크기를 판별하지 못함", "orange"),
+    "not_identified": ("판단 불가", "red"),
 }
 LLM_KEY_ENVS = ("OPENAI_API_KEY", "ANTHROPIC_API_KEY", "OPENAI_BASE_URL")
 
@@ -59,7 +59,11 @@ def list_cases(root: Path | None = None) -> list[Path]:
     root = root or cases_dir()
     if not root.is_dir():
         return []
-    return sorted(p for p in root.iterdir() if p.is_dir() and (p / "plan.yaml").exists())
+    return sorted(
+        p
+        for p in root.iterdir()
+        if p.is_dir() and p.name != "_template" and (p / "plan.yaml").exists()
+    )
 
 
 def llm_available() -> bool:

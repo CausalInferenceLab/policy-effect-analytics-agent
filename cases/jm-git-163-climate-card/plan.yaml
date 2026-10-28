@@ -1,0 +1,116 @@
+# 멘토 스키마로 옮긴 계획서입니다.
+# 원래 도시 비교 계획은 개인 저장소 plan_v2.yaml, commit 87f5222에 기록했습니다.
+# 서울·부산 결과는 이미 본 상태였지만 대구·광주·대전 값은 보기 전에 계획 2를 커밋했습니다.
+# 따라서 이 파일을 새로운 사전등록이라고 부르지 않고, 기존 계획의 형식 변환이라고 밝힙니다.
+case_id: jm-git-163-climate-card
+title: "서울 기후동행카드 시범사업 전후 지하철 승차 흐름 비교"
+question: >-
+  서울 기후동행카드 시범사업(2024-01-27) 전후로 서울교통공사 1~8호선의
+  평일 승차 흐름은 부산·대구·광주·대전 도시철도와 비교해 어떻게 달랐으며,
+  공개 자료만으로 그 차이를 정책 효과라고 판단할 수 있는가?
+synthetic_data: false
+
+unit: {name: 도시철도 운영기관(도시), id_col: city}
+time: {col: month_idx, freq: month, start: 0, end: 21, datetime_col: month}
+
+treatment:
+  definition: >-
+    서울교통공사 1~8호선. 기후동행카드는 2024-01-23 판매를 시작했고
+    2024-01-27 시범 이용을 시작했다. 2024-01은 전환 월이라 빼고,
+    한 달 전체가 사후 기간인 2024-02(month_idx 19)를 첫 처치 월로 둔다.
+  group_col: treated
+  treat_time: 19
+
+control:
+  definition: >-
+    부산교통공사, 대구교통공사, 광주교통공사, 대전교통공사 도시철도.
+    분석 기간에 기후동행카드를 사용할 수 없었던 네 도시다.
+  rationale: >-
+    전국 공통 계절성과 코로나 이후 회복 흐름을 함께 받는 도시철도라는 점을 이용한다.
+    다만 도시 규모와 요금 정책이 달라 완전한 대조군은 아니며, 이 한계를 판정에 반영한다.
+
+outcomes:
+  - name: 평일 하루 평균 승차 인원(로그)
+    col: log_weekday
+    definition: "도시별 균형 역 표본의 월별 평일 하루 평균 승차 합계에 자연로그를 적용"
+    unit: "log 명/일"
+    primary: true
+    expected_direction: unknown
+  - name: 주말 하루 평균 승차 인원(로그)
+    col: log_weekend
+    definition: "같은 역 표본의 월별 토·일 하루 평균 승차 합계에 자연로그를 적용"
+    unit: "log 명/일"
+    primary: false
+    expected_direction: unknown
+
+estimator:
+  method: event_study
+  cluster_col: city
+  ref_period: -2
+  window: [-8, 2]
+  alpha: 0.05
+
+assumptions:
+  - name: 평행추세
+    description: "정책이 없었다면 서울과 비교 도시의 승차 흐름이 비슷하게 움직였을 것"
+    check: pretrend_test
+  - name: 미리 반응하지 않음
+    description: "2023년 발표 이후 시행 전부터 서울 승차가 별도로 움직이지 않았을 것"
+    check: placebo_time
+  - name: 동시기 다른 정책의 영향이 제한적임
+    description: >-
+      대구·대전의 2024년 1월 요금 인상, 부산 동백패스 등 다른 변화가 있어
+      부산·광주만 남긴 민감도 분석을 기존 분석에서 별도로 확인했다.
+    check: manual
+
+refutations:
+  - kind: placebo_time
+    params: {shift: 6}
+
+abstention:
+  - when: pretrend_rejected
+    verdict: not_identified
+    note: "도입 전 흐름이 다르면 정책 효과로 해석하지 않는다"
+  - when: placebo_significant
+    verdict: not_identified
+    note: "가짜 시점에서도 차이가 크면 정책 효과로 해석하지 않는다"
+  - when: ci_crosses_zero
+    verdict: conditional
+    note: "효과 없음이 아니라 이 자료로 크기를 구분하기 어렵다고 쓴다"
+  - when: few_treated_clusters
+    verdict: conditional
+    note: "처치 도시가 서울 한 곳뿐이다"
+  - when: few_clusters
+    verdict: conditional
+    note: "전체 도시가 다섯 곳뿐이다"
+  - when: short_pre_period
+    verdict: conditional
+
+thresholds: {pretrend_alpha: 0.10, min_clusters: 20, min_pre_periods: 3}
+
+data_sources:
+  - name: "서울교통공사 1~8호선 역별 일별 시간대별 승하차인원"
+    provider: "서울교통공사·공공데이터포털"
+    url: "https://www.data.go.kr/data/15099330/fileData.do"
+    license: other
+    notes: "이용허락범위 제한 없음. 반기 파일. 원자료는 커밋하지 않음."
+  - name: "부산교통공사 시간대별 승하차인원"
+    provider: "부산교통공사·공공데이터포털"
+    url: "https://www.data.go.kr/data/3057229/fileData.do"
+    license: other
+    notes: "이용허락범위 제한 없음. 연도별 파일."
+  - name: "대구교통공사 역별일별시간별승하차인원현황"
+    provider: "대구교통공사·공공데이터포털"
+    url: "https://www.data.go.kr/data/15002503/fileData.do"
+    license: other
+    notes: "이용허락범위 제한 없음."
+  - name: "광주교통공사 역일시간대별 승하차량"
+    provider: "광주교통공사·공공데이터포털"
+    url: "https://www.data.go.kr/data/15060048/fileData.do"
+    license: other
+    notes: "이용허락범위 제한 없음."
+  - name: "대전교통공사 시간대별 승하차인원"
+    provider: "대전교통공사·공공데이터포털"
+    url: "https://www.data.go.kr/data/15060591/fileData.do"
+    license: other
+    notes: "이용허락범위 제한 없음."

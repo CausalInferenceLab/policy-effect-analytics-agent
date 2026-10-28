@@ -92,9 +92,13 @@
     const iss = issues.length
       ? `<p>이 주제에서 지금 이슈인 정책은 ${issues.length}개입니다.</p><ul>${issues.map((i) => `<li><a href="issues.html#${i.id}">${esc(i.name)}</a> <span class="muted small">(${esc(i.effective)})</span></li>`).join("")}</ul>`
       : "";
+    const found = (CAT.results || []).filter((r) => r.topic === tp.id);
+    const res = found.length
+      ? `<p><b>이미 나온 분석 ${found.length}개</b> — 판정과 인용해도 되는 문장, 쓴 데이터가 정리돼 있습니다.</p><ul>${found.map((r) => `<li><a href="${esc(r.page)}">${esc(r.title)}</a> <span class="badge">${esc(r.verdict)}</span>${r.example ? ' <span class="muted small">(예시)</span>' : ""}<div class="muted small">${esc(r.line)}</div></li>`).join("")}</ul>`
+      : `<p class="muted small">이 주제는 아직 나온 분석 결과가 없습니다. 아래에서 계획 초안을 만들어 제안할 수 있습니다.</p>`;
     say(
       `<p><b>${esc(tp.name)}</b> 주제로 보입니다. <span class="muted small">(찾은 말: ${m.hits.map(esc).join(", ")})</span></p>
-       <p>질문 하나만 보지 않고, 이 주제의 정책을 모두 모아 비교합니다. ${esc(tp.question)}</p>${iss}
+       ${res}<p>질문 하나만 보지 않고, 이 주제의 정책을 모두 모아 비교합니다. ${esc(tp.question)}</p>${iss}
        ${legal}<p>분석 전에 확인할 세 가지:</p><ul>${gates}</ul>
        <p>받을 수 있는 데이터 ${ds.length}개 — 처치 ${cnt("treatment")} · 결과 ${cnt("outcome")} · 통제 ${cnt("covariate")}</p>
        <p>무엇부터 해볼까요?</p>`,
@@ -275,6 +279,7 @@ ${JSON.stringify(compact)}`;
     fields.conversation = shortConvo;
     const cut = shortConvo !== convo || fields.proposal !== prop;
     if (cut && navigator.clipboard) navigator.clipboard.writeText(convo + (prop ? "\n\n---\n" + prop : "")).catch(() => {});
+    if (window.track) window.track("propose");
     window.open(issueUrl(fields), "_blank", "noopener");
     say("GitHub 이슈 작성 화면을 새 창으로 열었습니다. 내용을 확인하고 제출하면 멘토와 멘티가 검토해 카탈로그와 분석에 반영합니다. (GitHub 로그인이 필요합니다)" +
       (cut ? " 대화가 길어 앞부분을 줄였습니다. 전체 대화는 클립보드에 복사해 두었으니 이슈 본문에 붙여 넣어 주세요." : ""));
@@ -284,6 +289,7 @@ ${JSON.stringify(compact)}`;
   async function send(text) {
     text = text.trim();
     if (!text) return;
+    if (window.track) window.track("ask");
     bubble("user", esc(text));
     state.messages.push({ role: "user", content: text });
     input.value = "";

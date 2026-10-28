@@ -58,7 +58,7 @@ def test_flow_page_renders_existing_log(cases_root):
     assert not at.exception, at.exception
     text = _text(at)
     assert "SYNTHETIC" in text
-    assert "식별됨" in text  # verdict label, not raw "identified"
+    assert "효과 근거 있음" in text  # verdict label, not raw "identified"
     assert "과잉해석 표현 1건" in text  # guard finding highlighted
     assert "FIXTURE-REPORT-BODY" in text  # report preview
     assert len(at.expander) >= 6

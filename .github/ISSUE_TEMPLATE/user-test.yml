@@ -1,0 +1,59 @@
+name: 사용자 과업 테스트 기록
+description: 레포 밖 사람이 사이트에서 과업을 해 본 결과 (docs/ops/user-test.md 순서대로)
+title: "[사용자 테스트] "
+labels: ["user-test"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        참가자 이름·연락처는 적지 않습니다. 역할(예: 기자, 구청 주무관, 대학원생)만 적어 주세요.
+        진행 방법과 과업은 [docs/ops/user-test.md](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/blob/main/docs/ops/user-test.md)에 있습니다.
+  - type: input
+    id: role
+    attributes:
+      label: 참가자 역할
+      placeholder: 지역 언론 기자
+    validations:
+      required: true
+  - type: dropdown
+    id: t1
+    attributes:
+      label: "과업 1 — 대형마트 의무휴업에 대한 결과를 찾았나요?"
+      options: [혼자 찾음, 힌트 받고 찾음, 못 찾음]
+    validations:
+      required: true
+  - type: dropdown
+    id: t2
+    attributes:
+      label: "과업 2 — 그 결과를 한 문장으로 바르게 말했나요? (판정을 넘어서는 주장 없이)"
+      options: [바르게 말함, 과장함(효과 있다·없다로 단정), 말하지 못함]
+    validations:
+      required: true
+  - type: dropdown
+    id: t3
+    attributes:
+      label: "과업 3 — 어떤 데이터를 썼는지, 어디서 받는지 찾았나요?"
+      options: [찾음, 힌트 받고 찾음, 못 찾음]
+    validations:
+      required: true
+  - type: dropdown
+    id: t4
+    attributes:
+      label: "과업 4 — 자기 관심 정책을 대화창에 물어 주제·데이터를 받았나요?"
+      options: [받음, 엉뚱한 주제로 연결됨, 포기함]
+    validations:
+      required: true
+  - type: dropdown
+    id: t5
+    attributes:
+      label: "과업 5 — '판단 불가' 결과가 무슨 뜻인지 설명했나요?"
+      options: [바르게 설명, 효과 없음으로 오해, 모르겠다고 함]
+    validations:
+      required: true
+  - type: textarea
+    id: stuck
+    attributes:
+      label: 막힌 곳 · 참가자가 한 말
+      description: 가장 오래 머뭇거린 화면, 그대로 받아 적은 말 (가장 중요한 칸)
+    validations:
+      required: true
