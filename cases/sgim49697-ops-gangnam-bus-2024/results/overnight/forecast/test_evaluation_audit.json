@@ -1,0 +1,160 @@
+{
+  "completed_at": "2026-10-28T18:30:43.667379+00:00",
+  "code_sha256": "ccaf2586d9105bd9ba315550428f770e6391a494fc351c35e0cd37aef3b681b7",
+  "selection_manifest_sha256": "f6611a6fa8f2ee692318de3b126e1d5c7378dc6feb75a7765182cad372d7ab03",
+  "feature_audit_sha256": "07202b6dd67998aa9fadaf5657a7ca4ae500f2427eaaafbbdd2a26a06d65032e",
+  "models_evaluated": 24,
+  "predictions": [
+    {
+      "candidate": "h1_calendar_only_seasonal_fixed_s17_label_10",
+      "path": "data/overnight/forecast/test_predictions/h1_calendar_only_seasonal_fixed_s17_label_10.parquet",
+      "sha256": "ffb3a6b23e546eeef06c6d6fcc6292cc40e814a05adeaa5f346d185ecaad1353",
+      "rows": 182265
+    },
+    {
+      "candidate": "h1_calendar_only_logistic_0.1_s17_label_10",
+      "path": "data/overnight/forecast/test_predictions/h1_calendar_only_logistic_0.1_s17_label_10.parquet",
+      "sha256": "36d6e60c352829b1db9a9c85f0f7ba8f986ea0e24edb31e92f26ab68b5f1a5e8",
+      "rows": 182265
+    },
+    {
+      "candidate": "h1_calendar_only_catboost_8_s17_label_10",
+      "path": "data/overnight/forecast/test_predictions/h1_calendar_only_catboost_8_s17_label_10.parquet",
+      "sha256": "c28266c4439eb2acd168d9e63a3d7a3e70736c995e4e25bb1abd8a2a5cc3ee9f",
+      "rows": 182265
+    },
+    {
+      "candidate": "h1_weekly_delayed_logistic_1.0_s17_label_10",
+      "path": "data/overnight/forecast/test_predictions/h1_weekly_delayed_logistic_1.0_s17_label_10.parquet",
+      "sha256": "b78ed36a5bd1dcf4fa61833214897fd04adf2605882568e019abd96c1cf496bd",
+      "rows": 182265
+    },
+    {
+      "candidate": "h1_weekly_delayed_catboost_8_s17_label_10",
+      "path": "data/overnight/forecast/test_predictions/h1_weekly_delayed_catboost_8_s17_label_10.parquet",
+      "sha256": "fac0667bc116deff8c4b1693b62d74b89c2cad942e0734bd30f6ba88399d1413",
+      "rows": 182265
+    },
+    {
+      "candidate": "h1_recent_road_assumption_logistic_10.0_s17_label_10",
+      "path": "data/overnight/forecast/test_predictions/h1_recent_road_assumption_logistic_10.0_s17_label_10.parquet",
+      "sha256": "054604a5a0601490fb631138918def23b8bf6b349906af3d76f83624f5a89a36",
+      "rows": 182265
+    },
+    {
+      "candidate": "h1_recent_road_assumption_catboost_6_s17_label_10",
+      "path": "data/overnight/forecast/test_predictions/h1_recent_road_assumption_catboost_6_s17_label_10.parquet",
+      "sha256": "d6a20134fc232175763530de2df919b9f9f25943a971a2ec5f104b91c7b200c7",
+      "rows": 182265
+    },
+    {
+      "candidate": "h1_delayed_bus_ablation_logistic_10.0_s17_label_10",
+      "path": "data/overnight/forecast/test_predictions/h1_delayed_bus_ablation_logistic_10.0_s17_label_10.parquet",
+      "sha256": "d708cb67a93d9982819d2b14cf2bfdf033126ba51fb10e290aa99a620065ea00",
+      "rows": 182265
+    },
+    {
+      "candidate": "h1_delayed_bus_ablation_catboost_8_s17_label_10",
+      "path": "data/overnight/forecast/test_predictions/h1_delayed_bus_ablation_catboost_8_s17_label_10.parquet",
+      "sha256": "b879af506485322ddc33f1d9b75646d9a71b2677d5a325549483551a2f0cb4fa",
+      "rows": 182265
+    },
+    {
+      "candidate": "h1_delayed_bus_ablation_catboost_8_s42_label_10",
+      "path": "data/overnight/forecast/test_predictions/h1_delayed_bus_ablation_catboost_8_s42_label_10.parquet",
+      "sha256": "726513100e96cf519ed716994695d07c86bebe8e6af5f2b0c0682f541bbf3b44",
+      "rows": 182265
+    },
+    {
+      "candidate": "h1_delayed_bus_ablation_catboost_8_s17_label_q20",
+      "path": "data/overnight/forecast/test_predictions/h1_delayed_bus_ablation_catboost_8_s17_label_q20.parquet",
+      "sha256": "88a25e75bfa4134f0c002e7039f1eb56e949a59ebc00ea781e164df1debf6ff8",
+      "rows": 182265
+    },
+    {
+      "candidate": "h1_recent_road_assumption_quantile_8_s17_label_10",
+      "path": "data/overnight/forecast/test_predictions/h1_recent_road_assumption_quantile_8_s17_label_10.parquet",
+      "sha256": "2acc2ad6226b113a9d494821473dae9ca5bda91e9ffcb7a6cefb5056ae9c36f8",
+      "rows": 182265
+    },
+    {
+      "candidate": "h3_calendar_only_seasonal_fixed_s17_label_10",
+      "path": "data/overnight/forecast/test_predictions/h3_calendar_only_seasonal_fixed_s17_label_10.parquet",
+      "sha256": "6e70add3ce3522c4c6249c4635b5f664896cfbbe58aee0b6197ea64655a87c0b",
+      "rows": 182265
+    },
+    {
+      "candidate": "h3_calendar_only_logistic_0.1_s17_label_10",
+      "path": "data/overnight/forecast/test_predictions/h3_calendar_only_logistic_0.1_s17_label_10.parquet",
+      "sha256": "e5cea3bc2f2cbc865afbf9603a2044418c75caea5b0457e1355585db59db8d07",
+      "rows": 182265
+    },
+    {
+      "candidate": "h3_calendar_only_catboost_8_s17_label_10",
+      "path": "data/overnight/forecast/test_predictions/h3_calendar_only_catboost_8_s17_label_10.parquet",
+      "sha256": "bdcb6c791072039d17142192b60f914bdab1e119d48dfb26cb2ae52e8552b090",
+      "rows": 182265
+    },
+    {
+      "candidate": "h3_weekly_delayed_logistic_1.0_s17_label_10",
+      "path": "data/overnight/forecast/test_predictions/h3_weekly_delayed_logistic_1.0_s17_label_10.parquet",
+      "sha256": "345effe728565f86b3f8ae36ec3f48d74f7d8a25b148c830975c15d9d6f26bcd",
+      "rows": 182265
+    },
+    {
+      "candidate": "h3_weekly_delayed_catboost_8_s17_label_10",
+      "path": "data/overnight/forecast/test_predictions/h3_weekly_delayed_catboost_8_s17_label_10.parquet",
+      "sha256": "b2465606e33ee544b365e1d240ca134d322225cd2145d4f02834e7a8110d1aae",
+      "rows": 182265
+    },
+    {
+      "candidate": "h3_recent_road_assumption_logistic_10.0_s17_label_10",
+      "path": "data/overnight/forecast/test_predictions/h3_recent_road_assumption_logistic_10.0_s17_label_10.parquet",
+      "sha256": "6ff06bfb702473b4e77db8262b14c191229c24c4e52ac37f8c7375b62e209b20",
+      "rows": 182265
+    },
+    {
+      "candidate": "h3_recent_road_assumption_catboost_6_s17_label_10",
+      "path": "data/overnight/forecast/test_predictions/h3_recent_road_assumption_catboost_6_s17_label_10.parquet",
+      "sha256": "6bf0741ee4393401b05df968ad25c78761c2731b30802ae9aef80efd7b9550c5",
+      "rows": 182265
+    },
+    {
+      "candidate": "h3_delayed_bus_ablation_logistic_10.0_s17_label_10",
+      "path": "data/overnight/forecast/test_predictions/h3_delayed_bus_ablation_logistic_10.0_s17_label_10.parquet",
+      "sha256": "d586a28155f7b3b6cd0c65d30653c938aa70845956fa7f7b9f0e2e800b71a2af",
+      "rows": 182265
+    },
+    {
+      "candidate": "h3_delayed_bus_ablation_catboost_8_s17_label_10",
+      "path": "data/overnight/forecast/test_predictions/h3_delayed_bus_ablation_catboost_8_s17_label_10.parquet",
+      "sha256": "970ab957c290bbb2dae19638f1225287b58e32541a7cdde8b0e41460fb051d0a",
+      "rows": 182265
+    },
+    {
+      "candidate": "h3_delayed_bus_ablation_catboost_8_s42_label_10",
+      "path": "data/overnight/forecast/test_predictions/h3_delayed_bus_ablation_catboost_8_s42_label_10.parquet",
+      "sha256": "f42800b5bc4a09f661565c48bd7b75375290128ce4e4603509c9ca4c3bbe6f2e",
+      "rows": 182265
+    },
+    {
+      "candidate": "h3_delayed_bus_ablation_catboost_8_s17_label_q20",
+      "path": "data/overnight/forecast/test_predictions/h3_delayed_bus_ablation_catboost_8_s17_label_q20.parquet",
+      "sha256": "24f28d057209357f50ebfde3036a40c9588803c227d9a8b0e48d427d287bb250",
+      "rows": 182265
+    },
+    {
+      "candidate": "h3_recent_road_assumption_quantile_8_s17_label_10",
+      "path": "data/overnight/forecast/test_predictions/h3_recent_road_assumption_quantile_8_s17_label_10.parquet",
+      "sha256": "a656994d52923f27a08fd3ae08fa0810849ac929857ba0884544556ece82ca75",
+      "rows": 182265
+    }
+  ],
+  "outputs": {
+    "test_metrics.csv": "1d95c2f346cfda478daf59d5e40e485a3af60239237d8091d56235204b825d40",
+    "test_week_bootstrap.csv": "a42c375bb5530744aedcec3a30eef362f534d845d3f7431a9e0faec828e12b36",
+    "test_primary_daily_events.csv": "56533b1275525f76fa799e5db94c273eddc3dca03c7b5754e2531be914d6d063"
+  },
+  "bootstrap": "달력 주를 모든 링크·시간에 공동 적용. 1,000회, 시드 17, 유한 지표가 없는 재표집 횟수도 공개.",
+  "scope": "회고 시험. 실제 API 지연·버스 승객 도착시간·정책 반사실 성능을 검증한 것이 아님."
+}

@@ -1,0 +1,15 @@
+{
+  "code_sha256": "82519ef53559a8823a2150e0755e0ad6b34cad44de8797f403d512ef64957fa8",
+  "configuration_sha256": "edbbff46ebbed9a984ef2374daa2fab6017073460c1acd9b40a89c7029611c1b",
+  "selection_sha256": "52f239dfa4bbe3115daf3dde8d3f6423ca0af463b40bda267688bfcb6e889f39",
+  "panel_sha256": "caf8a678a619961a76e35798c5231e8e87fe4d9ebc317a7216fc120dedd93015",
+  "outputs": {
+    "covered_comparisons.csv": "1b33a47ba838611301cde69dff98f4767ee667b9627fdd8c71692a12f410e46b",
+    "covered_daily.csv": "f808a0abc2aa83df39814e37d3892c99dfafb248c0bfb5533f2de80bc27544bc",
+    "covered_eligibility.csv": "f494b39a1101526371a538aeeca33a3cd74fdc2849cd2ec6b7830575f7767fe4"
+  },
+  "comparisons": 96,
+  "selection": "기존 사전 고정 값만으로 추가 선택하며 사후 관측량을 선택에 사용하지 않음.",
+  "scope": "사전 승객 기록이 충분한 제한 집단의 기술 비교. 전체 버스·승객 통행시간·혼잡률·정책 효과로 일반화하지 않음.",
+  "paired_dates": "require_both_equal_and_weighted_valid_on_same_dates"
+}

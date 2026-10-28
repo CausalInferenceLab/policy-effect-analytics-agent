@@ -15,6 +15,8 @@ STAGES = {
     "passenger-collect": ("overnight_bus_data", "passengers", []),
     "passenger-prepare": ("overnight_bus_extract", "prepare", ["passengers"]),
     "passenger-analysis": ("overnight_passengers", "run", []),
+    "passenger-covered": ("overnight_covered_passengers", "run", []),
+    "passenger-covered-plot": ("overnight_passenger_plots", "plot", []),
     "multiyear-collect": ("overnight_bus_data", "multiyear", []),
     "multiyear-prepare": ("overnight_bus_extract", "prepare", ["multiyear"]),
     "forecast-collect": ("overnight_forecast_data", "collect", []),
@@ -29,6 +31,8 @@ STAGES = {
     "forecast-test-bus-prepare": ("overnight_forecast_test_bus", "prepare", []),
     "forecast-test-features": ("overnight_forecast_features", "prepare", ["test"]),
     "forecast-test-evaluate": ("overnight_forecast_evaluate", "evaluate", []),
+    "forecast-test-diagnostics": ("overnight_forecast_diagnostics", "run", []),
+    "forecast-plots": ("overnight_forecast_plots", "plot", []),
 }
 
 

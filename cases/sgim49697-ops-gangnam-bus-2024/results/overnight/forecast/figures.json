@@ -1,0 +1,15 @@
+{
+  "code_sha256": "cb971d4abba7dd682c4976dbb7cbd77eca5f479e7646d3ebb4eba8bc56fb3193",
+  "inputs": {
+    "test_metrics.csv": "1d95c2f346cfda478daf59d5e40e485a3af60239237d8091d56235204b825d40",
+    "test_week_bootstrap.csv": "a42c375bb5530744aedcec3a30eef362f534d845d3f7431a9e0faec828e12b36",
+    "test_confusion_counts.csv": "b3aed9c55b6b800e160063c2aa9c3382168c1ab06f602caf3866dc0d430fd8c7",
+    "test_event_support.csv": "f41fd608cd9e59bf36ec22ccd48f57a52c2815f32de8d5f42c33db25ebc12eea"
+  },
+  "figures": {
+    "forecast_model_comparison.png": "9400c1e544a170b8bd567a1530098e185015e00bee0f04474275c496f88cf039",
+    "forecast_alert_burden.png": "d29458a214419b9e8cf7a948a61db83c208b69682f86c83782fbb86c4514d543",
+    "forecast_relative_warning.png": "8a9ce9564a5cb5beb8b0c780ff95774c952b202895c10307ba9337e422483cf1",
+    "forecast_quantile_coverage.png": "5cdb265392aab87fe113bd64174c4905be432080d811220b93a0bcc3024b8842"
+  }
+}

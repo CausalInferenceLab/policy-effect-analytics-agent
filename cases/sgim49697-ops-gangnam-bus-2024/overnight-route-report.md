@@ -53,6 +53,25 @@
 
 네 시간대·두 집단·세 방향의 **24개 가중 비교가 전부 80% 범위 조건에 실패**했다. 비어 있는 노선의 승객 수를 0으로 넣어 전체 버스의 승객 가중 효과를 만들지 않는다. 별도 후속 질문은 ‘승객 자료가 사전에 충분히 관측된 제한된 집단의 변화’이며, 전체 정책 효과와 다른 표본임을 분명히 해야 한다. 구간 합계를 더해 고유 승객 수를 만들거나, 미확정 통행시간 단위에 곱해 승객 분을 계산하지 않는다.
 
+## 후속: 사전 승객 기록이 있는 제한 집단
+
+전체 가중 비교의 실패를 유지한 채 별도 질문을 실행했다. [새 규칙](overnight_covered_passengers_config.yaml)에 따라 기존 사전 승객 가중치가 있는 셀만 고정하고, **같은 셀·같은 유효 날짜**의 단순 평균과 사전 승객 가중 평균을 비교했다. 정책 이후 승객 수로 가중치를 다시 고르지 않았다.
+
+저녁은 남행 315개·북행 318개 셀이다. 전체 사전 셀의 각각 47.87%, 63.60%라 전체 대표성이 생긴 것은 아니다. 선택된 셀은 모두 ‘기타·분류 미확정’에 속한다. 따라서 전체 사전 후보에서 시작한 결과와 정책 후보 밖에서 시작한 결과는 **같은 하위 표본**이며 두 번의 독립 확인으로 세지 않는다. 가로변은 해당 셀이 없어 계속 보류다.
+
+| 제한 집단의 저녁 비교 | 남행 | 북행 |
+|---|---:|---:|
+| 여름, 같은 셀 평균 | −9.51% | +9.91% |
+| 여름, 사전 승객 기록 가중 | −7.87% | +6.33% |
+| 가을, 같은 셀 평균 | −9.14% | +12.42% |
+| 가을, 사전 승객 기록 가중 | −7.94% | +9.09% |
+
+여름은 사전 27일·사후 29일, 가을은 사전 27일·사후 37일이다. 80% 관측·20일·관측률 차이 10%p 조건을 통과했다. 상위 10개 셀의 가중치 비중은 남행 10.39%, 북행 12.11%다. 이는 기록 가중치의 집중도이며 고유 승객 점유율이 아니다.
+
+![사전 승객 관측 하위 표본의 가중 비교](results/overnight/passengers/covered_weight_comparison.png)
+
+4개 시간대·두 기간·두 집계법·중앙 양방향에서 비교 조건을 통과했고, 같은 표본에서 여름 남행 감소·북행 증가의 부호가 유지됐다. [전체 비교 표](results/overnight/passengers/covered_comparisons.csv)의 96행 중 64행 통과·32행 가로변 보류지만, 시작 집단별 중복 결과를 포함한 행 수다. 이 결과는 **관측된 제한 집단의 지수 비교**로 채택하며, 전체 승객의 이동시간·혼잡률·정책 편익 추정은 계속 보류한다.
+
 ## 추가 연도 원본의 품질
 
 2022년 4~8월과 2023년 1월~2025년 4월의 운행시간·운행횟수 66개 월 ZIP을 확보했다. 이 중 26개는 해시가 같은 기존 원본을 재사용했다. 2022년 원본 10개는 분석 보류다. 일부 주간 파일에서 헤더 31개에 데이터 33개, 손상된 첫 열 이름, 헤더만 있는 파일을 확인했다. 뒤에 붙은 두 필드는 원문에 날짜시각과 숫자가 있지만 의미를 확인하기 전에 임의로 열을 맞추지 않았다.
@@ -69,6 +88,8 @@
 .venv/bin/python overnight.py passenger-collect
 .venv/bin/python overnight.py passenger-prepare
 .venv/bin/python overnight.py passenger-analysis
+.venv/bin/python overnight.py passenger-covered
+.venv/bin/python overnight.py passenger-covered-plot
 .venv/bin/python overnight.py route-plots
 .venv/bin/python overnight.py multiyear-collect
 .venv/bin/python overnight.py multiyear-prepare
@@ -76,4 +97,4 @@
 
 핵심 산출물은 [노선군 비교](results/overnight/bus/route_group_comparisons.csv), [시간별 비교](results/overnight/bus/hourly_comparisons.csv), [기상 조합 전체](results/overnight/bus/route_group_weather.csv), [승객 가중 조건](results/overnight/passengers/fixed_weight_comparisons.csv)다. 설정은 [노선군·시점](overnight_route_config.yaml), [다년 수집](overnight_multiyear_config.yaml)에 남겼다.
 
-현재 채택할 방향은 **관측 구성이 안정적인 노선군의 남행·북행 차이를 구간별로 설명하는 분석**이다. 날씨 보정 전체 효과와 전체 승객 부담 추정은 보류한다. 2025년 저속 경보는 [별도 규약](overnight-forecast-plan.md)에 따라 학습·보정·시험을 분리해 진행 중이며 이 보고서의 정책 효과 증거로 쓰지 않는다.
+현재 채택할 방향은 **관측 구성이 안정적인 노선군의 남행·북행 차이를 구간별로 설명하는 분석**이다. 날씨 보정 전체 효과와 전체 승객 부담 추정은 보류한다. 2025년 저속 경보는 [고정 시험 보고서](overnight-forecast-report.md)에 별도로 완료했으며 이 보고서의 정책 효과 증거로 쓰지 않는다.

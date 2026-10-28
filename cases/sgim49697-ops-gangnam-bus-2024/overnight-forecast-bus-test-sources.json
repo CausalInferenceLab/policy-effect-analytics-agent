@@ -1,0 +1,141 @@
+{
+  "description": "모델·보정기·경보 기준을 동결한 뒤 수집한 2025년 5~8월 버스 시험 특징 원본.",
+  "files": [
+    {
+      "kind": "bus_time",
+      "month": "2025-05",
+      "path": "data/overnight/forecast/bus_test_raw/bus_time_2025-05.zip",
+      "source": "https://data.seoul.go.kr/dataList/OA-21217/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21217",
+        "infSeq": "3",
+        "seq": "2505",
+        "seqNo": ""
+      },
+      "bytes": 117264665,
+      "sha256": "25826d016e923428930307332b44681ac45a3e72819915ce005bebf457905d7d",
+      "retrieved_at": "2026-10-28T18:28:26.181380+00:00"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2025-06",
+      "path": "data/overnight/forecast/bus_test_raw/bus_time_2025-06.zip",
+      "source": "https://data.seoul.go.kr/dataList/OA-21217/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21217",
+        "infSeq": "3",
+        "seq": "2506",
+        "seqNo": ""
+      },
+      "bytes": 132702768,
+      "sha256": "3bb5a5768ef2503bef9ab1e3bb0523f99ee4265a3b3b9c529e75b5ccc8f7e229",
+      "retrieved_at": "2026-10-28T18:28:29.165040+00:00"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2025-07",
+      "path": "data/overnight/forecast/bus_test_raw/bus_time_2025-07.zip",
+      "source": "https://data.seoul.go.kr/dataList/OA-21217/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21217",
+        "infSeq": "3",
+        "seq": "2507",
+        "seqNo": ""
+      },
+      "bytes": 118594120,
+      "sha256": "cbac409094788d4ed8b5b2715079b7659c09725f2ea3683294e3094e766469f5",
+      "retrieved_at": "2026-10-28T18:28:43.753815+00:00"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2025-08",
+      "path": "data/overnight/forecast/bus_test_raw/bus_time_2025-08.zip",
+      "source": "https://data.seoul.go.kr/dataList/OA-21217/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21217",
+        "infSeq": "3",
+        "seq": "2508",
+        "seqNo": ""
+      },
+      "bytes": 118311845,
+      "sha256": "228232698ee56ed82bec92c592add68b1012cde5239e11bc1c5a675f2bfa7ac4",
+      "retrieved_at": "2026-10-28T18:28:48.569058+00:00"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2025-05",
+      "path": "data/overnight/forecast/bus_test_raw/bus_trips_2025-05.zip",
+      "source": "https://data.seoul.go.kr/dataList/OA-21220/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21220",
+        "infSeq": "3",
+        "seq": "2505",
+        "seqNo": ""
+      },
+      "bytes": 52192334,
+      "sha256": "89e82c6f56f059d30452cef880634880d500a22f0a452e0e6c0cea7cee2bae96",
+      "retrieved_at": "2026-10-28T18:28:52.361899+00:00"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2025-06",
+      "path": "data/overnight/forecast/bus_test_raw/bus_trips_2025-06.zip",
+      "source": "https://data.seoul.go.kr/dataList/OA-21220/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21220",
+        "infSeq": "3",
+        "seq": "2506",
+        "seqNo": ""
+      },
+      "bytes": 59875256,
+      "sha256": "cba6ac9689d5366a2ab423a5236e453a46c5105870e40231ca5934f879cf345c",
+      "retrieved_at": "2026-10-28T18:29:00.445876+00:00"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2025-07",
+      "path": "data/overnight/forecast/bus_test_raw/bus_trips_2025-07.zip",
+      "source": "https://data.seoul.go.kr/dataList/OA-21220/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21220",
+        "infSeq": "3",
+        "seq": "2507",
+        "seqNo": ""
+      },
+      "bytes": 52628278,
+      "sha256": "d2d31709f6d68e1bfd72e2cb2758667f7f49d6d3d0fa58a8148cfd1bd69dd446",
+      "retrieved_at": "2026-10-28T18:29:00.733264+00:00"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2025-08",
+      "path": "data/overnight/forecast/bus_test_raw/bus_trips_2025-08.zip",
+      "source": "https://data.seoul.go.kr/dataList/OA-21220/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21220",
+        "infSeq": "3",
+        "seq": "2508",
+        "seqNo": ""
+      },
+      "bytes": 52235824,
+      "sha256": "b13d63f07691e1f83a9e7a558a623416ad145e91059042e1e11b67c8a2502e5b",
+      "retrieved_at": "2026-10-28T18:29:05.425571+00:00"
+    }
+  ]
+}

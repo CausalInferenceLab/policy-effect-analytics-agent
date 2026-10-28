@@ -1,0 +1,15 @@
+# 전체 승객 가중 실패 후, 사전 재차인원이 관측된 제한 집단의 동일 표본 집계만 비교한다.
+version: 1
+mode: exploratory_after_full_population_weight_coverage_failure
+selection_file: results/overnight/passengers/fixed_pre_weights.csv
+selection: common_pre_source_days_and_2024_pre_passenger_nonnegative_coverage_80pct
+weight: fixed_2024_pre_recorded_passenger_mean_not_actual_post_passengers
+subsets: [all_preselected, other_or_unclassified]
+bands: [morning, midday, evening, late]
+comparisons: [summer2024, autumn2024]
+daily_cell_coverage: 0.80
+daily_weight_coverage: 0.80
+minimum_days: 20
+maximum_coverage_gap: 0.10
+paired_dates: require_both_equal_and_weighted_valid_on_same_dates
+interpretation: 사전 승객 기록이 충분한 제한 집단의 기술 비교. 전체 버스·승객 통행시간·혼잡률·정책 효과로 일반화하지 않음.

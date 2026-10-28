@@ -468,6 +468,70 @@
       "sha256": "9e6b1b0cbe33321ed20875528d6c43f06bb744224670f54e8c2c6c851eac63a7",
       "path": "data/overnight/forecast/roads/raw/2025-04.xlsx",
       "kind": "road_speed"
+    },
+    {
+      "month": "2025-05",
+      "source": "https://topis.seoul.go.kr/refRoom/openRefRoom_1.do",
+      "url": "https://topis.seoul.go.kr/downloadFileRefRoom.do",
+      "request": {
+        "apndFileNm": "2025년 5월 서울시 차량통행속도.xlsx",
+        "apndFilePathNm": "174899590675130394515416139884.xlsx",
+        "bdwrSeq": "4992",
+        "blbdDivCd": "06"
+      },
+      "retrieved_at": "2026-10-28T18:27:59.183396+00:00",
+      "bytes": 36196396,
+      "sha256": "446acbbeb4d3c888f8a18af2812525feb06e8ca083b1df6afb8400ac72c39eb6",
+      "path": "data/overnight/forecast/roads/raw/2025-05.xlsx",
+      "kind": "road_speed"
+    },
+    {
+      "month": "2025-06",
+      "source": "https://topis.seoul.go.kr/refRoom/openRefRoom_1.do",
+      "url": "https://topis.seoul.go.kr/downloadFileRefRoom.do",
+      "request": {
+        "apndFileNm": "2025년 6월 서울시 차량통행속도.xlsx",
+        "apndFilePathNm": "175160535429233000216817552926.xlsx",
+        "bdwrSeq": "5097",
+        "blbdDivCd": "06"
+      },
+      "retrieved_at": "2026-10-28T18:27:59.674085+00:00",
+      "bytes": 35016972,
+      "sha256": "3b9e8ceee023ce10b017f3cc2b48579d0e8e1f4f344c255fd7a805537f59e691",
+      "path": "data/overnight/forecast/roads/raw/2025-06.xlsx",
+      "kind": "road_speed"
+    },
+    {
+      "month": "2025-07",
+      "source": "https://topis.seoul.go.kr/refRoom/openRefRoom_1.do",
+      "url": "https://topis.seoul.go.kr/downloadFileRefRoom.do",
+      "request": {
+        "apndFileNm": "2025년 7월 서울시 차량통행속도.xlsx",
+        "apndFilePathNm": "175435343889735748301422649860.xlsx",
+        "bdwrSeq": "5175",
+        "blbdDivCd": "06"
+      },
+      "retrieved_at": "2026-10-28T18:28:04.389350+00:00",
+      "bytes": 36039163,
+      "sha256": "bb612e191ea03a3e3da3d0d302652024ec2c46a43c53e3deced6397c1e1694d3",
+      "path": "data/overnight/forecast/roads/raw/2025-07.xlsx",
+      "kind": "road_speed"
+    },
+    {
+      "month": "2025-08",
+      "source": "https://topis.seoul.go.kr/refRoom/openRefRoom_1.do",
+      "url": "https://topis.seoul.go.kr/downloadFileRefRoom.do",
+      "request": {
+        "apndFileNm": "2025년 8월 서울시 차량통행속도.xlsx",
+        "apndFilePathNm": "175677566679938170529324971110.xlsx",
+        "bdwrSeq": "5251",
+        "blbdDivCd": "06"
+      },
+      "retrieved_at": "2026-10-28T18:28:06.252706+00:00",
+      "bytes": 36194714,
+      "sha256": "859b24986cdf70f362ba48e0ec14c012335a92e6698ae6954903cbb9f90b914f",
+      "path": "data/overnight/forecast/roads/raw/2025-08.xlsx",
+      "kind": "road_speed"
     }
   ]
 }
