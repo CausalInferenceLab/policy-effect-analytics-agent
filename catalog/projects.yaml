@@ -6,6 +6,12 @@
 #   답 페이지의 '이 결과를 얼마나 믿을 수 있나'와 카드의 '교차 재현됨' 배지로 나옵니다.
 version: 1
 projects:
+  - case: sgim49697-ops-gangnam-bus-2024
+    owner: sgim49697-ops
+    track: B
+    topic: traffic-operations
+    issue: 53
+
   - case: YoungjaeKang-retail-hours
     owner: YoungjaeKang
     track: B
