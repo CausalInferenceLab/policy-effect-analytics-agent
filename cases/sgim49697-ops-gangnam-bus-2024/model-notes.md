@@ -12,7 +12,7 @@
 | DCRNN | [원 논문 구현](https://github.com/liyaguang/DCRNN), MIT | 개인 PyTorch 구현. 정·역방향 random walk 2단계, 확산 GRU encoder/decoder 2층, 자기회귀 3시간 출력 |
 | STGCN | [원 논문 구현](https://github.com/VeritasYin/STGCN_IJCAI-18), BSD-2-Clause | 개인 PyTorch 구현. 대칭화·정규화 라플라시안, Chebyshev K=3, 시간 GLU 2블록, 마지막 시간 표현의 직접 출력 |
 
-DCRNN·STGCN 코드를 원 저장소에서 복사하거나 TensorFlow 구버전을 설치하지 않았다. 구조를 참고한 교육용 구현이며, DCRNN의 curriculum learning 등 원 논문의 모든 학습 장치를 재현하지 않는다. 지도상 가까운 링크를 임의로 연결한 그래프를 실제 실험에 쓰지 않는다.
+DCRNN·STGCN 코드를 원 저장소에서 복사하거나 TensorFlow 구버전을 설치하지 않았다. 구조를 참고한 교육용 구현이며, DCRNN의 curriculum learning 등 원 논문의 모든 학습 장치를 재현하지 않는다. 이번 탐색 실행에서는 전체 월에 안정적인 동일 도로·방향의 종점명→시점명 연결을 사용한다. 90개 노드·82개 방향 연결이며 실제 회전 가능성은 검증하지 않았다. `status: assumed`, `verified: false`를 유지한다.
 
 NeuralForecast의 네트워크 `forward`를 사용하고 일반 PyTorch 학습 루프에서 손실·창·조기 종료를 관리한다. 세 출력이 모두 실측인 창만 학습한다. 입력 결측 마스크는 보존하여 창 선택·CatBoost·그래프 모델에 사용한다. DLinear·PatchTST·Chronos2는 인과적으로 채운 속도 입력을 사용하며 별도 마스크 채널을 지원한다고 주장하지 않는다. 표준화는 학습 구간에서만 맞추고, 검증 시 원래 km/h로 되돌려 1시간 MAE를 선택 기준으로 쓴다.
 
@@ -23,3 +23,9 @@ WSL의 Python 3.12.12, NVIDIA RTX 5070 Ti(연산 능력 12.0, 드라이버 610.8
 2026-10-28 합성자료 점검에서 단순 기준선 3개, CatBoost, DLinear·PatchTST 각 100 step, DCRNN·STGCN 각 2 step의 학습·저장·재로딩·추론, Chronos2 고정 revision 추론이 통과했다. 합성 입력이므로 이 기록을 실제 데이터의 성능이나 처리량으로 해석하지 않는다. 그래프 점검도 합성 연결표만 사용했으며 역사적 그래프 확보를 대신하지 않는다.
 
 실제 실행에서는 선택한 설정, 세 seed, 학습·추론 시간, OOM 재시도, 최대 VRAM, 신경망 파라미터 수, CatBoost 트리 수, 평가 키 수를 `runs/<실험명>/`에 남긴다. 실행 폴더는 덮어쓰지 않는다. Chronos2의 외부 사전학습 데이터와 평가기간 중첩 여부는 미확인으로 표시한다.
+
+## 이번 실자료 실험의 계산 예산
+
+DLinear·PatchTST·STGCN은 최대 1,000 step, DCRNN은 300 step이다. CatBoost는 train에서 고정 seed 17로 고른 최대 20만 창과 800회로 제한한다. 검증 기준은 1시간 MAE이며 3시간 성능에 별도로 최적인 설정을 고르지 않았다. 후보 탐색은 seed 17, 선택된 설정의 반복은 17·42·2026이다. 모두 FP32 학습이며 BF16 장비 점검과 구분한다. Chronos2는 재학습 없이 중앙값을 추론한다.
+
+평가 시각마다 최신 과거 168시간의 실측·인과적 대체 입력을 사용한다. 평가기간 관측값이 이후 시각의 과거 입력이 되는 rolling 예측이다. 모델 가중치는 다시 학습하지 않는다. seed 표준편차는 세 학습 실행의 변동이며 통계적 신뢰구간이 아니다. 전체 성능과 자원 사용은 [report.md](report.md)에 기록한다.

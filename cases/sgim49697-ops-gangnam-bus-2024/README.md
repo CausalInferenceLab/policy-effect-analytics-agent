@@ -4,12 +4,15 @@
 
 작업 제안: [이슈 #53](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/issues/53).
 
-**20개월 실자료를 사용해 정책 전후 비교와 9개 예측 모델의 탐색 분석을 실행한다.** [계획 PR #54](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/54), [구현·결과 PR #55](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/55)를 분리했으며 작업 브랜치는 `sgim49697-ops/gangnam-pipeline`이다. 사용자 요청에 따라 24시간 대기 대신 명시적 탐색 모드를 사용한다. 시간 표기·0값·측정 일관성·비교 도로 노출·그래프는 검증된 사실과 구별해 가정으로 남긴다.
+**20개월 실자료의 수집·정책 비교·5개 모델의 3개 시드 학습·9개 모델의 세 기간 평가를 완료했다.** [결과 보고서](report.md)와 [해석·한계](discussion.md)를 먼저 읽으면 된다. [계획 PR #54](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/54), [구현·결과 PR #55](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/55)를 분리했으며 작업 브랜치는 `sgim49697-ops/gangnam-pipeline`이다. 사용자 요청에 따라 24시간 대기 대신 명시적 탐색 모드를 사용한다. 시간 표기·0값·측정 일관성·비교 도로 노출·그래프는 검증된 사실과 구별해 가정으로 남긴다.
 
 ## 문서와 설정
 
 | 파일 | 역할 |
 |---|---|
+| [report.md](report.md) | 정책 비교·9개 모델 성능·그림·학습 자원 |
+| [discussion.md](discussion.md) | 결과 해석·한계·계획에서 바뀐 것 |
+| [results/forecast_metrics.csv](results/forecast_metrics.csv) | 3개 시험 기간·3개 평가 집단·1/3시간 오차 집계 |
 | [plan.md](plan.md) | 범위·고정 규칙·단계별 완료 조건·진행 기록 |
 | [plan.yaml](plan.yaml) | 저장소 공통 엔진 스키마의 정책 분석 계획 |
 | [corridors.yaml](corridors.yaml) | 링크·방향·가중치·기간·품질 기준 |

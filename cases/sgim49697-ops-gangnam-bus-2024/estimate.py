@@ -37,14 +37,25 @@ def main():
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
+    fig, axes = plt.subplots(1, 2, figsize=(12, 4.5), sharex=True)
+    calendar = pd.date_range(cfg["pre"][0], cfg["post"][1])
     for name, data in panel.groupby("corridor_id"):
-        plt.plot(data.date, data.speed_index, label=name, alpha=0.75)
-    plt.axvline(pd.Timestamp(cfg["policy_date"]), color="black", linestyle="--")
-    plt.ylabel("Fixed length-weighted speed index (km/h)")
-    plt.legend()
-    plt.tight_layout()
-    plt.savefig(out / "daily_speed.png", dpi=160)
-    plt.close()
+        series = data.set_index("date").speed_index.reindex(calendar)
+        mean_pre = data.loc[data.date < cfg["policy_date"], "speed_index"].mean()
+        axes[0].plot(calendar, series, label=name, marker=".", markersize=3, alpha=0.8)
+        axes[1].plot(calendar, series - mean_pre, label=name, marker=".", markersize=3, alpha=0.8)
+    for ax in axes:
+        ax.axvline(pd.Timestamp(cfg["policy_date"]), color="black", linestyle="--")
+        ax.axvspan(pd.Timestamp(cfg["policy_date"]), pd.Timestamp(cfg["post"][0]), color="grey", alpha=0.15)
+        ax.grid(alpha=0.15)
+        ax.legend(fontsize=8)
+    axes[0].set(title="Fixed length-weighted speed", ylabel="km/h")
+    axes[1].set(title="Change from each road's pre-period mean", ylabel="km/h")
+    axes[1].axhline(0, color="black", linewidth=0.7)
+    fig.autofmt_xdate()
+    fig.tight_layout()
+    fig.savefig(out / "daily_speed.png", dpi=160)
+    plt.close(fig)
     (out / "report.md").write_text(
         "# 강남대로 정책 전후 비교\n\n판정: **not_identified**. 처치 도로는 1곳이다.\n\n"
         + (f"동일 날짜 패널의 이중차분: {result['did_kmh']:.3f} km/h.\n\n" if "did_kmh" in result else "비교 설계 기준 미달.\n\n")
