@@ -1,0 +1,11 @@
+# CPU 수집·정책 분석·기준모델 환경 (Python 3.12).
+numpy==2.5.2
+pandas==2.3.3
+PyYAML==6.0.3
+pydantic==2.14.1
+requests==2.34.2
+openpyxl==3.1.5
+pyarrow==26.0.0
+holidays==0.107
+catboost==1.2.10
+matplotlib==3.11.2

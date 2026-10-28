@@ -18,7 +18,7 @@ NeuralForecast의 네트워크 `forward`를 사용하고 일반 PyTorch 학습 �
 
 ## 장비 검증과 실험 기록
 
-WSL의 Python 3.12.12, NVIDIA RTX 5070 Ti(연산 능력 12.0, 드라이버 610.88)에서 PyTorch 2.13.0/cu130·`sm_120`·BF16 행렬 연산을 확인했다. 현재 인터프리터의 `Python.h`·`pyconfig.h`가 존재했고 native JIT를 끄지 않았다. 정확한 설치 목록은 구현 PR의 `requirements-gpu.lock`에 남긴다. 다른 장비에서는 같은 CUDA 인덱스를 무조건 사용하지 않는다.
+WSL의 Python 3.12.12, NVIDIA RTX 5070 Ti(연산 능력 12.0, 드라이버 610.88)에서 PyTorch 2.13.0/cu130·`sm_120`·BF16 행렬 연산을 확인했다. 현재 인터프리터의 `Python.h`·`pyconfig.h`가 존재했고 native JIT를 끄지 않았다. 정확한 설치 목록은 [requirements-gpu.lock](requirements-gpu.lock)에 남겼다. 다른 장비에서는 같은 CUDA 인덱스를 무조건 사용하지 않는다.
 
 2026-10-28 합성자료 점검에서 단순 기준선 3개, CatBoost, DLinear·PatchTST 각 100 step, DCRNN·STGCN 각 2 step의 학습·저장·재로딩·추론, Chronos2 고정 revision 추론이 통과했다. 합성 입력이므로 이 기록을 실제 데이터의 성능이나 처리량으로 해석하지 않는다. 그래프 점검도 합성 연결표만 사용했으며 역사적 그래프 확보를 대신하지 않는다.
 

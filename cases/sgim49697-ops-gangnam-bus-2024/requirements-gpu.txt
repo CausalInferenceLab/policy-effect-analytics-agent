@@ -1,0 +1,10 @@
+# RTX 5070 Ti용 사전 빌드 휠. 다른 장비에서는 호환성부터 확인한다.
+--index-url https://download.pytorch.org/whl/cu130
+--extra-index-url https://pypi.org/simple
+--only-binary :all:
+-r requirements.txt
+torch==2.13.0
+torchvision==0.28.0
+torchaudio==2.11.0
+neuralforecast==3.3.0
+chronos-forecasting==2.3.2
