@@ -1,0 +1,43 @@
+# 원래 공통 버스 셀의 시간·운행·승차 관계가 2025년에도 남는지 고정 표본으로 탐색한다.
+version: 1
+mode: exploratory_after_directional_and_2025_time_results
+locked_year: 2026
+months: ['2025-05', '2025-06', '2025-07', '2025-08']
+boarding_download_months: ['2025-04', '2025-05', '2025-06', '2025-07', '2025-08']
+boundary_reason: 주간 CSV의 월 경계 중복을 검증하고 5월 초의 누락을 줄이기 위한 4월 원본; 결과 창은 기존 날짜를 유지
+kind: bus_boardings
+source_scope: operations_persistence
+time_and_trips_scope: forecast_bus_test
+calendar_from: overnight_persistence_config.yaml
+selection_path: results/overnight/mechanism/selected_cells.csv
+selection_audit: results/overnight/mechanism/audit.json
+selection: 기존 2023·2024년 사전 시간·운행·승차 관측으로 고정한 셀을 유지하고 2025년 자료로 다시 고르지 않음
+groups: [central_south, central_north]
+subset: other_or_unclassified
+endpoint_alignments: [arrival, departure]
+primary_endpoint: arrival
+hour_alignment: 같은 기록 시간의 정류장 집계 연결; 실제 차량·회차 매칭 아님
+normalization: 모든 연도의 시간·운행·승차를 원래 셀별 2024년 사전 평균으로 정규화
+comparisons:
+  summer2024: [pre2024, post2024]
+  summer2025: [pre2025, post2025]
+  pre_year_over_year: [pre2024, pre2025]
+  post_year_over_year: [post2024, post2025]
+  post2025_from_pre2024: [pre2024, post2025]
+metrics: [time, trips, boardings]
+aggregate: 같은 셀·날짜에 세 기록 모두 관측된 경우만 사용하는 셀 동일 가중 평균
+additional_ratio: 일별 같은 공통 셀의 승차 합 / 운행횟수 합; 사전 기간의 일별 비율 평균=100으로 별도 정규화
+ratio_interpretation: 시간 집계의 운행 기록당 승차 비율이며 차량별 탑승자·재차인원·승객 부담·정차 시간으로 해석하지 않음
+ratio_zero_denominator: 총 운행횟수 0이면 비율 결측; 운행 0·승차 양수인 셀은 별도로 빈도를 보고하고 비율을 보류
+calendar: 전체 예정 평일·공휴일 달력; 원본 부재를 제거해 분모를 줄이지 않음
+missingness: 공란·음수·반복 방문 제외, 숫자 0은 횟수의 유효 관측, 행·날짜 부재는 0으로 대체하지 않음
+minimum_daily_coverage: 0.80
+minimum_days: 20
+maximum_coverage_gap: 0.10
+bootstrap: {draws: 2000, seed: 20261029}
+intervals: 도착 정렬·저녁·방향별 지수와 추가 비율에만 달력 주 재표집
+resources: {download_workers: 2, parser_workers: 2, minimum_free_gib: 25}
+interpretation:
+  - 원래 공통 관측 제한 집단의 지속성 탐색이며 전체 버스·전체 승객을 대표하지 않는다.
+  - 시간·횟수·승차의 동시 변화는 원인·매개 효과를 식별하지 않는다.
+  - 2025년 선택 생존 표본으로 재선택하거나 실패한 행을 유리한 기간으로 바꾸지 않는다.
