@@ -84,6 +84,9 @@ STAGES = {
     "card-persistence-plots": ("overnight_card_persistence_plots", "plot", []),
     "conditional-margin-prepare": ("overnight_conditional_margin", "prepare", []),
     "conditional-margin-evaluate": ("overnight_conditional_margin", "evaluate", []),
+    "weather-performance": ("overnight_weather_performance", "run", []),
+    "segment-uncertainty": ("overnight_segment_uncertainty", "run", []),
+    "followup-plots": ("overnight_followup_plots", "run", []),
     "persistence-segments": ("overnight_persistence_segments", "run", []),
     "persistence-segments-plots": ("overnight_persistence_segments_plots", "plot", []),
 }

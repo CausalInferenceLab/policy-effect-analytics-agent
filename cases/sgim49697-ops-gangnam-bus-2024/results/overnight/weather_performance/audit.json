@@ -1,0 +1,90 @@
+{
+  "completed_at": "2026-10-28T22:58:35.310942+00:00",
+  "configuration": {
+    "version": 1,
+    "mode": "exploratory_after_overall_test_metrics",
+    "locked_year": 2026,
+    "horizons": [
+      1,
+      3
+    ],
+    "weather_audit": "results/overnight/persistence_weather/preparation_audit.json",
+    "forecast_audit": "results/overnight/forecast_baselines/evaluation_audit.json",
+    "quantile_models": [
+      "catboost_frozen_quantile",
+      "weekly_empirical"
+    ],
+    "quantile_variants": {
+      "catboost_frozen_quantile": "raw",
+      "weekly_empirical": "calibration_expanded"
+    },
+    "primary_station": 401,
+    "stations": [
+      401,
+      400,
+      108
+    ],
+    "alignment_offset_hours": 0,
+    "weather_alignment": "예측 대상 구간 시작 시각에 표시된 공개 1시간 강수·기온; 관측 집계 귀속의 대안 정렬은 다음 조건",
+    "rain_groups": {
+      "dry": "precipitation_equals_zero",
+      "wet": "precipitation_strictly_positive",
+      "unknown": "missing"
+    },
+    "heat_threshold_c": 30,
+    "heat_groups": {
+      "below_30": "temperature_below_30",
+      "at_least_30": "temperature_at_least_30",
+      "unknown": "missing"
+    },
+    "slices": [
+      "all_hours",
+      "evening_17_19"
+    ],
+    "minimum_rows_for_comparison": 100,
+    "minimum_calendar_weeks_for_comparison": 8,
+    "bootstrap": {
+      "calendar_weeks": 1000,
+      "seed": 17
+    },
+    "comparison": "동일 날씨·동일 관측에서 CatBoost와 보정한 주간 경험 분위수의 짝 손실 차이",
+    "interpretation": [
+      "실제 기상은 시험 오류의 사후 분류에만 쓰며 예측 입력에 추가하거나 날씨 예보를 확보한 것으로 간주하지 않음",
+      "강수·고온 집단은 시간대·월·다른 교통 조건도 달라 날씨의 인과 효과로 해석하지 않음",
+      "기상 결측을 건조·비고온으로 대체하지 않고 미상 집단을 보고",
+      "관측소별 비교는 같은 도로 예측의 반복 분류이며 독립적인 시험이 아님",
+      "공식 역사적 기상 품질 플래그와 버스/도로 자료의 실제 공개 지연은 미확보"
+    ]
+  },
+  "code_sha256": "4e23a2d0a1b1eb21e09116edf22d32b38abab61dd5ec37325e80b256bcc58855",
+  "inputs": {
+    "results/overnight/forecast_baselines/evaluation_audit.json": "98ae19c2560933e40c208c966fcb8233311b42869c97c268c8814aeecaa8056b",
+    "results/overnight/persistence_weather/preparation_audit.json": "2bcfd00077d43538e666cb66f313f3234090b4332c5d1170117b52a72e373a89",
+    "data/overnight/persistence_weather/hourly.parquet": "320d773133110ceebedff5764d360be084a5cd1db2e0a67dd9a9b91e0e0d6ec8",
+    "overnight_weather_performance_config.yaml": "8ff8270a943e07f492ddede889684552e29acc206c24b2d4f02064afc440406d",
+    "gangnam/overnight_baseline_methods.py": "fe59fb8820e1f7ad265218922a8d4b77b84a36c5f9277b05eecf7caae843c6a8",
+    "gangnam/overnight_forecast_metrics.py": "22f47f299c98ee12646c1bbe42d9eea5717cb3ea3a7d3d6b952b94de40d07519",
+    "gangnam/overnight_forecast_diagnostics.py": "18308aa1a0d49b9acf6be0de9e263098d46b8cd5e62813f93dd7c91c54cbacf6",
+    "data/overnight/forecast_baselines/test_predictions/h1_catboost_frozen_quantile_raw.parquet": "999d7a8b7d0def68e35e30cb4dffc948035529987bf2b26638b8c28734492bf2",
+    "data/overnight/forecast_baselines/test_predictions/h1_weekly_empirical_calibration_expanded.parquet": "dc7a86c39b31b6c319e8d0f04c4340032523bcfbd0dec4114faa9094d3d8b17b",
+    "data/overnight/forecast_baselines/test_predictions/h3_catboost_frozen_quantile_raw.parquet": "76cd82e910d0f7c2b033f17ec1a8ea757f899c7c6e499bcddc6ca7b17eb4f585",
+    "data/overnight/forecast_baselines/test_predictions/h3_weekly_empirical_calibration_expanded.parquet": "a06445ace0d407dd38401ce7acb9d5dff8783f0135bc5ae86c1a60279879c4c9"
+  },
+  "metrics": 144,
+  "paired_metrics": 396,
+  "weather_groups": 72,
+  "groups_passing_comparison": 44,
+  "outputs": {
+    "metrics.csv": "da13959989da83c2ebde12fc2d35ddf08f45cf51c34943341bdee21eee338f43",
+    "paired_comparisons.csv": "328506ccbc2cdb80b2ffe2d4783c09d884d9852e5a2a42a7eb3810c2b0771c18",
+    "support.csv": "c4420ca5174b9418854de1f808f144a7be51a92b248095cdcc79b9b404a4e9c9",
+    "stratum_months.csv": "c4f74276bcb2f5bfc9008fb50071bf6c89cf3df59f2f429d14116ba8141c9140"
+  },
+  "interpretation": [
+    "실제 기상은 시험 오류의 사후 분류에만 쓰며 예측 입력에 추가하거나 날씨 예보를 확보한 것으로 간주하지 않음",
+    "강수·고온 집단은 시간대·월·다른 교통 조건도 달라 날씨의 인과 효과로 해석하지 않음",
+    "기상 결측을 건조·비고온으로 대체하지 않고 미상 집단을 보고",
+    "관측소별 비교는 같은 도로 예측의 반복 분류이며 독립적인 시험이 아님",
+    "공식 역사적 기상 품질 플래그와 버스/도로 자료의 실제 공개 지연은 미확보"
+  ]
+}

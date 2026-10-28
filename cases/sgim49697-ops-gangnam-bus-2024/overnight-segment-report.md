@@ -49,3 +49,24 @@
 공개 경기 광역버스 승하차 [목록](https://www.data.go.kr/data/15163060/openapi.do)은 필요한 항목을 설명하지만 과거 제공 기간이 비어 있다. 연결된 서비스 화면은 일부 탭에서 응답이 중단됐고 다른 탭은 존재하지 않는 서비스로 응답했다. 2024년 원본 확보 가능성은 미확정으로 남기며 가입·활용신청·외부 문의를 실행하지 않았다.
 
 원본·검증 캐시가 있는 사례 환경에서 `python overnight.py persistence-segments`, `python overnight.py persistence-segments-plots`로 재현한다. 그림은 커밋된 표로 다시 만들 수 있다. [구간 비교](results/overnight/persistence_segments/segment_comparisons.csv), [모든 단일 제외 결과](results/overnight/persistence_segments/leave_one_out.csv), [감사 명세](results/overnight/persistence_segments/audit.json), [문헌 접근 범위](overnight-bottleneck-references.json)를 함께 제공한다. 정책 후보 밖 집단은 무처치 대조군이 아니며 전체 버스·승객의 인과 효과로 일반화하지 않는다.
+
+## 여러 구간·비교를 함께 고려한 추가 진단
+
+개별 범위만 보고 큰 값 두 개를 고르는 문제를 줄이기 위해, 저녁 **14개 구간×5개 비교=70개**를 하나의 묶음으로 다시 살폈다. 기존 일별 지수·기간·표본을 그대로 사용했다. 각 기간의 6개 달력 주를 5,000회 재표집하면서 모든 구간에 같은 주 가중치를 주고, 같은 기간을 쓰는 비교에도 같은 추출을 재사용했다. 기간 사이 추출은 독립이다. 로그 평균비의 중심화 오차를 각 비교의 재표집 표준편차로 나눈 뒤, 70개 최대 절댓값의 95백분위(3.2644)를 공통 범위 계수로 사용했다. 유효 추출 5,000개, 무효 0개다.
+
+이는 **기술적 동시 변동 범위**이며 보장된 95% 동시 신뢰구간이나 정식 다중 검정이 아니다. 기간마다 주가 6개뿐이고 기간 사이 독립·주 단위 재표집의 근사, 사후 탐색이라는 한계가 있다. [Romano·Wolf(2005)](https://www.econ.uzh.ch/dam/jcr%3Affffffff-935a-b0d6-ffff-ffffa286d4d1/etca.pdf)의 공동 의존·표준화 논의를 참고했지만 단계적 검정이나 재표집별 표준오차 추정을 구현한 것이 아니다. 그 논문의 보장을 이 범위에 옮기지 않는다.
+
+| 비교 | 기존 개별 범위가 0을 제외 | 새 공동 범위가 0을 제외 |
+|---|---:|---:|
+| 2024 사전→여름 | 8 / 14 | 7 / 14 |
+| 2025 사전→여름 | 4 / 14 | **0 / 14** |
+| 2024 사전→2025 사전 | 9 / 14 | 7 / 14 |
+| 2024 여름→2025 여름 | 5 / 14 | 3 / 14 |
+| 2024 사전→2025 여름 | 11 / 14 | 6 / 14 |
+| 합계 | 37 / 70 | **23 / 70** |
+
+![공동 변동 범위](results/overnight/segment_uncertainty/joint_ranges.png)
+
+핵심 두 구간의 2024 사전→2025 여름 범위는 남행 −43.98% [−53.55, −32.43]%, 북행 +36.02% [+11.83, +65.43]%다. 범위가 넓어져도 반대 변화는 남는다. 반면 2025년 안의 사전→여름 변화는 남행 +1.67% [−17.49, +25.28]%, 북행 +2.06% [−16.77, +25.14]%로 두 구간 모두 0을 포함한다. **새 급변보다 달라진 수준의 지속을 중심 주장으로 삼는 것이 적절하다.**
+
+[계산 규칙](overnight_segment_uncertainty_config.yaml)은 결과 전에 저장했다. `python overnight.py segment-uncertainty`, `followup-plots`로 재현하며 [전체 70개 범위](results/overnight/segment_uncertainty/comparisons.csv), [기간별 표본](results/overnight/segment_uncertainty/period_support.csv), [감사 명세](results/overnight/segment_uncertainty/audit.json)를 제공한다.

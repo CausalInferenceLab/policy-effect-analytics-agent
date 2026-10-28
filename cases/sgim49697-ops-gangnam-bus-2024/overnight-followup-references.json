@@ -1,0 +1,31 @@
+{
+  "checked_at": "2026-10-28T23:18:09.515675+00:00",
+  "references": [
+    {
+      "title": "Stepwise Multiple Testing as Formalized Data Snooping",
+      "authors": "Joseph P. Romano, Michael Wolf",
+      "year": 2005,
+      "url": "https://www.econ.uzh.ch/dam/jcr%3Affffffff-935a-b0d6-ffff-ffffa286d4d1/etca.pdf",
+      "review_scope": "공식 저자 소속기관 PDF의 초록·서론과 표준화 절 관련 부분(PDF 16~19쪽) 확인. 전체 증명 검토는 아님.",
+      "application": "공동 의존·표준화에 대한 문제의식 참고. 이번 70개 변동 범위는 단계적 검정·재표집별 표준오차 추정이 아니며 원 논문의 오차율 보장을 주장하지 않음."
+    },
+    {
+      "title": "기상자료개방포털 단기예보",
+      "url": "https://data.kma.go.kr/data/rmt/rmtList.do?code=420&pgmNo=572",
+      "review_scope": "자료 설명: 2010년 6월부터 조회 전일까지, 조회 UTC, 2021년 시간 세분화·2024년 11월 예보기간 변경 확인. 개별 예보 파일 미확보.",
+      "application": "과거 발표 예보 수집 후보. 실제 파일의 발표·발효·공개 시각과 격자 검증 후 연결."
+    },
+    {
+      "title": "기상청 API허브 동네예보 격자자료",
+      "url": "https://apihub.kma.go.kr/apiList.do?seqApi=10&seqApiSub=286",
+      "review_scope": "단기예보 tmfc 발표·tmef 발효 시각 KST, authKey 필요. 초단기 POP는 2026년 6월 이후라는 변수 이력 확인.",
+      "application": "과거 분석에서 현재 제공 항목을 소급 가정하지 않음. 별도 등록·신청·인증 수행 없음."
+    },
+    {
+      "title": "서울시 실시간 돌발 정보 OA-13315",
+      "url": "https://data.seoul.go.kr/dataList/OA-13315/A/1/datasetView.do",
+      "review_scope": "시간범위·갱신주기 실시간, 파일 없음 확인. 과거 이력 요청 인자와 원본 미확보.",
+      "application": "현재 API 존재를 2023~2025년 사고·통제 정답 확보로 간주하지 않음."
+    }
+  ]
+}

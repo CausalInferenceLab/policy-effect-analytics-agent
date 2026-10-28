@@ -1,0 +1,10 @@
+{
+  "completed_at": "2026-10-28T23:15:50.045017+00:00",
+  "code_sha256": "40a95ba355f3c4be4ff33f51dd1dab7400cd59a211b80c5b1bcad3aa3226dfeb",
+  "inputs": {
+    "results/overnight/weather_performance/metrics.csv": "da13959989da83c2ebde12fc2d35ddf08f45cf51c34943341bdee21eee338f43"
+  },
+  "output": {
+    "rain_coverage.png": "eac9f6efd98c2e75398e6f2dad3300cbc8e2e054f6d0a5ac41be9a2f44f16651"
+  }
+}

@@ -49,6 +49,23 @@
 
 ## 판단과 재현
 
-이 결과로 모든 조건부 저속 예측이 불가능하다고 결론내리지 않는다. **현재의 고정 설정 이진 분류를 경보 도구로 채택하지 않는다는 판단**이다. 기존 분위수 속도 예측과 달력 임계값의 차이를 점수로 쓰는 후속 방법을 별도 설정으로 고정한다. 새 시험 결과를 보고 라벨·학습 규칙을 바꾸어 원래 결과를 대체하지 않는다.
+이 결과로 모든 조건부 저속 예측이 불가능하다고 결론내리지 않는다. **현재의 고정 설정 이진 분류를 경보 도구로 채택하지 않는다는 판단**이다. 아래의 기존 속도 예측을 활용한 후속 비교는 같은 라벨의 별도 탐색 결과다. 새 시험 결과를 보고 원래 라벨·학습 규칙·평가를 대체하지 않았다.
 
 사례 환경에서 `python overnight.py conditional-low-prepare`, `conditional-low-evaluate`, `conditional-low-review`를 실행한다. [144개 지표](results/overnight/conditional_low/metrics.csv), [144개 짝 비교](results/overnight/conditional_low/paired_comparisons.csv), [평가 명세](results/overnight/conditional_low/evaluation_audit.json)를 제공한다. AP처럼 경보 규칙과 무관한 지표가 두 규칙에 반복 기록되므로 독립 결과 수로 합산하지 않는다. 대용량 원본·특징·모델·예측 캐시는 Git에서 제외되며 새 체크아웃에서 재현하려면 앞선 수집·특징·모델 준비가 필요하다. 2026년 잠금 결과는 읽지 않았다.
+
+## 기존 속도 예측을 활용한 차이 점수
+
+새 분류기를 늘리는 대신 이미 고정한 최근 도로 분위수 모델의 중앙값 `q50`을 사용했다. 같은 요일·시간의 학습 임계값에서 `q50`을 뺀 원차이와, 이를 `max(q90-q10, 0.1km/h)`로 나눈 점수를 각각 3월 시그모이드로 보정했다. 실제 미래 속도는 점수 계산에 쓰지 않는다. 회귀 재학습은 없으며 시험에서 폭 하한을 적용한 행도 0개였다. [설정](overnight_conditional_margin_config.yaml)과 입력 23개 해시·개발 예측을 포함한 [준비 명세](results/overnight/conditional_margin/preparation_manifest.json)를 `de04d7a`에 고정한 뒤 평가했다.
+
+| 점수 | 전체 AP: 1시간 / 3시간 | 4월 예산 규칙의 시험 정밀도 | 시험 재현율 | 하루 평균 경보 |
+|---|---:|---:|---:|---:|
+| 중앙값 원차이 | 0.497 / 0.466 | 0.668 / 0.622 | 0.139 / 0.135 | 4.36 / 4.52 |
+| 폭으로 나눈 차이 | **0.506 / 0.475** | **0.691 / 0.629** | **0.141 / 0.130** | **4.26 / 4.33** |
+
+![같은 라벨의 차이 점수 비교](results/overnight/conditional_margin/margin_comparison.png)
+
+폭으로 나눈 점수의 전체 AP는 최근 도로 이진 분류보다 1시간 +0.1457 [0.1180, 0.1766], 3시간 +0.1286 [0.0979, 0.1623] 높았다. 원차이보다도 +0.0098 [0.0024, 0.0169], +0.0090 [0.0024, 0.0150] 높았으나 절대 차이는 작다. 같은 주를 공유하는 짝 재표집 구간이며 여러 후속 실험 뒤의 확정 검정으로 쓰지 않는다. 저녁 AP는 0.416·0.355로 전체보다 낮다.
+
+**다음 예측 연구의 후보로는 남기되 경보 도구로 완성됐다고 보지 않는다.** 4월 평균 하루 2개 제한은 시험에서 약 4.3개가 됐고, 조건부 저속 시각의 약 86~87%를 놓친다. 원래 FPR 규칙을 쓰면 재현율 약 34~35%·하루 13~14개 경보이며 시험 FPR은 약 12~13%로 개발의 10% 조건을 넘는다. 점수 이동과 비용 절충을 드러내는 결과다. 실제 경보 수 상한은 순차 발행 규칙을 별도로 평가해야 한다.
+
+`python overnight.py conditional-margin-prepare`, `conditional-margin-evaluate`, `followup-plots`로 재현한다. [72개 지표](results/overnight/conditional_margin/metrics.csv), [144개 짝 비교](results/overnight/conditional_margin/paired_comparisons.csv), [평가 감사](results/overnight/conditional_margin/evaluation_audit.json)를 함께 제공한다.
