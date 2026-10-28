@@ -1,9 +1,9 @@
 {
   "case_id": "YoungjaeKang-retail-hours",
-  "started_at": "2026-10-28T11:54:58+00:00",
-  "finished_at": "2026-10-28T11:55:03+00:00",
-  "git_sha": "226d7e095dcd1dbe4ee59d27a7452aaf3243fc99",
-  "git_dirty": true,
+  "started_at": "2026-10-28T11:57:00+00:00",
+  "finished_at": "2026-10-28T11:57:16+00:00",
+  "git_sha": "b8a9ad467fc589f46df6bf2b0023c7d1a776b991",
+  "git_dirty": false,
   "plan_sha256": "65a42ab745f5065c20785262689390899dd7183925e252b74e3d97f38e26f9a2",
   "data_sha256": "053314944c2842d4a63df6eab0d32ef9351ddb4dde46c5b980c08a47fcdf6221",
   "data_path": "data/panel.csv",
