@@ -93,6 +93,7 @@ STAGES = {
     "segment-operations-plots": ("overnight_segment_operations_plots", "run", []),
     "subway-probe": ("overnight_subway_data", "collect", ["probe"]),
     "subway-collect": ("overnight_subway_data", "collect", []),
+    "subway-analysis": ("overnight_subway", "run", []),
     "persistence-segments": ("overnight_persistence_segments", "run", []),
     "persistence-segments-plots": ("overnight_persistence_segments_plots", "plot", []),
 }

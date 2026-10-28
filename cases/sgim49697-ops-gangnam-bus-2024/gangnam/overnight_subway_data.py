@@ -48,6 +48,15 @@ def columns(header, kind):
     return result
 
 
+def normalized_row(row, header):
+    """공식 일별 CSV에서 확인한 단 하나의 빈 끝 칸만 허용한다. 값이 있는 초과 칸은 거부한다."""
+    if len(row) == len(header):
+        return row, False
+    if len(row) == len(header) + 1 and row[-1] == "":
+        return row[:-1], True
+    raise ValueError("지하철 CSV의 헤더·행 폭 불일치")
+
+
 def validate(path, month, kind):
     """숫자 결과를 읽기 전에 기간 키를 확인하고 비선택 역을 포함한 모든 CSV 행 폭을 검사한다."""
     if kind not in {"daily", "hourly_month"} or not re.fullmatch(r"202[345]-(0[1-9]|1[0-2])", month):
@@ -59,10 +68,10 @@ def validate(path, month, kind):
                 header = next(reader, [])
                 spec = columns(header, kind)
                 period_pos, line_pos, station_pos = [header.index(spec[k]) for k in ["period", "line", "station_name"]]
-                rows, dates, lines = 0, set(), set()
+                rows, dates, lines, trailing_empty_rows = 0, set(), set(), 0
                 for row in reader:
-                    if len(row) != len(header):
-                        raise ValueError("지하철 CSV의 헤더·행 폭 불일치")
+                    row, extra = normalized_row(row, header)
+                    trailing_empty_rows += extra
                     period = row[period_pos]
                     fmt = r"\d{8}" if kind == "daily" else r"\d{6}"
                     if not re.fullmatch(fmt, period) or period[:6] != month.replace("-", ""):
@@ -76,8 +85,11 @@ def validate(path, month, kind):
                 raise ValueError("지하철 CSV에 관측 행이 없습니다")
             if kind == "daily":
                 pd.to_datetime(sorted(dates), format="%Y%m%d", errors="raise")
-            return {"encoding": encoding, "rows": rows, "header": header, "columns": spec,
-                    "period_keys": sorted(dates), "observed_lines": sorted(lines)}
+            result = {"encoding": encoding, "rows": rows, "header": header, "columns": spec,
+                      "period_keys": sorted(dates), "observed_lines": sorted(lines)}
+            if trailing_empty_rows:
+                result["trailing_empty_field_rows"] = trailing_empty_rows
+            return result
         except UnicodeError:
             continue
     raise ValueError("지하철 CSV 인코딩을 확인할 수 없습니다")

@@ -20,6 +20,14 @@ def test_csv_validates_nonselected_rows_and_never_accepts_another_month(tmp_path
             csv.writer(f).writerows([header, *values])
     write(rows)
     assert module.validate(path, "2024-05", "daily")["rows"] == 2
+    write([rows[0] + [""], rows[1]])
+    assert module.validate(path, "2024-05", "daily")["trailing_empty_field_rows"] == 1
+    write([rows[0], rows[1] + ["99"]])
+    with pytest.raises(ValueError, match="행 폭"):
+        module.validate(path, "2024-05", "daily")
+    write([rows[0], rows[1] + ["", ""]])
+    with pytest.raises(ValueError, match="행 폭"):
+        module.validate(path, "2024-05", "daily")
     write([rows[0], rows[1][:-1]])
     with pytest.raises(ValueError, match="행 폭"):
         module.validate(path, "2024-05", "daily")
