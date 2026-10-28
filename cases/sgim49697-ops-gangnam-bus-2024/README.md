@@ -8,13 +8,18 @@
 
 ## 문서와 설정
 
-**후속 조사:** [버스가 빨라진 곳, 정체가 남은 곳](followup-plan.md)에서 더 흥미로운 다음 질문을 정리했다. 공식 원본 11개를 추가 수집해 버스 운행시간·운행횟수·승객·교통량의 결합 가능성을 확인했고, 기존 예측이 상대 저속 상황을 얼마나 놓쳤는지도 진단했다. 추천은 정류장·차로별 변화 분석을 먼저 하고 저속 경보 모델을 붙이는 순서다.
+**후속 분석 완료:** [정류장·방향별 결과](followup-report.md)에서 4~8월 버스·교통량 원본 20개와 주변 도로 88개 링크를 분석했다. 남행 강남역의 특정 구간에서 기록 운행시간 지수가 약 48% 낮아졌지만 북행은 다른 양상을 보였다. 단위·집계 정의가 미확인인 지수를 실제 분 단위나 인과 효과로 해석하지 않는다. [관련 논문 2편과 공식 자료 검토](literature.md), [추가 자료·저속 경보 후속 계획](followup-plan.md)을 함께 제공한다.
 
 | 파일 | 역할 |
 |---|---|
 | [report.md](report.md) | 정책 비교·9개 모델 성능·그림·학습 자원 |
 | [discussion.md](discussion.md) | 결과 해석·한계·계획에서 바뀐 것 |
 | [followup-plan.md](followup-plan.md) | 추가 자료의 실제 접근성·품질, 추천 주제 3개·다음 실행·외부 확인 질문 |
+| [followup-report.md](followup-report.md) | 정류장·방향·시간대별 버스 지수와 주변 도로·교통량의 실행 결과·그림 |
+| [literature.md](literature.md) | 2025년 관련 논문 2편·공식 분석자료의 적용과 한계 |
+| [followup_config.yaml](followup_config.yaml) / [followup-policy.yaml](followup-policy.yaml) | 후속 탐색 규칙·당시 노선군·정류장 번호와 현재 ID의 구분 |
+| [followup-sources.json](followup-sources.json) / [research-sources.json](research-sources.json) | 후속 원본 20개·문헌 출처와 해시 |
+| [followup.py](followup.py) / [results/followup/audit.json](results/followup/audit.json) | 추가 수집·추출·분석·그림의 진입점과 품질 감사 |
 | [discovery-sources.json](discovery-sources.json) | 추가 공식 원본 11개의 요청·크기·해시 |
 | [discovery_config.yaml](discovery_config.yaml) | 결과를 본 뒤 정한 표본·결합·상대 저속 진단 규칙 |
 | [discover.py](discover.py) | 추가 원본 수집·주간 품질 점검·저장된 예측의 저속 진단 |

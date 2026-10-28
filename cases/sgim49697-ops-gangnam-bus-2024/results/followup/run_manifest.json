@@ -1,0 +1,58 @@
+{
+  "generated_at": "2026-10-28T14:32:18.076427+00:00",
+  "code": {
+    "followup.py": "66184d518091d799efd88003c9eff17b6af7de2d4fc4c34e323173759d38ee3a",
+    "gangnam/followup.py": "45d5a53d1954b26b0039ecec35b0f325035e9963e6ac9a8af47ba18772fc50ac",
+    "gangnam/followup_data.py": "63faf03aa0ffacd37be3e51cb391070f2366c29b513a09d7088fe442b0b94009",
+    "gangnam/followup_plots.py": "b14791d5d042087179b8d04490757461784bfb07d4ca9ac32e131be5cf385d27",
+    "gangnam/topis.py": "2e7453542ee268882adcdd6beb989e6bcdc0932c2852e354aabc62ab64e7f147",
+    "gangnam/common.py": "31722241f4dc00edd5e65dc0bf6bba0608e3a27c9b86cad55fcd2c5b1b9c5969"
+  },
+  "inputs": {
+    "followup_config.yaml": "758cf7adef35ed061f640c30fb844272833a675383830f0e6c891fe3ad1fc170",
+    "followup-policy.yaml": "3537dc831545049d5c861daa987b366029aa2e75b54e5022952366b23d125bda",
+    "followup-sources.json": "6b898a69826232c85d558a0eefb5b733bcba8b5b7d23423c54b8d81e3e1e6a66",
+    "research-sources.json": "ba99b1be561431c1f90bef4323d170aeb7ff695a1b9b30403657b54a694e831c",
+    "discovery-sources.json": "82f3fe299c5d1b6cc2573c12be0100c44166bebf9eeb3fbab06a287793127574",
+    "source-manifest.json": "66b63fbe363057d545f1a33f47ce4d3744c8cc43cb8fe4862709cb7df9b84ca8",
+    "data_contract.yaml": "035f7a70caad6d33f5d4f48e7b457a89d84c72dc489af35512488a80f8416d47"
+  },
+  "artifacts": {
+    "audit.json": "42630c0930b5a64f045dc25b2cf01a11c16e2c248891b255cc870f6791199a43",
+    "bus_daily.csv": "fd9ab764f3095feedf792a1b196a1204996f2afae55c3cdfabc1db1e5f7c68ff",
+    "bus_hour_profile.csv": "6ad64d16e182d4e77ae566a3882dcc4fa37a127471f21d363e847adbb5ec0c6b",
+    "bus_hour_profile.png": "6e959685a4b1c7b5558a9d9269f00d87102aa20146ebbbead2f926c2793ce8da",
+    "bus_segments.csv": "3dc572b12924beb97e98576db275ae7f102c65a9daed787b3580fc754add57f8",
+    "bus_segments.png": "aa807b9efeea06ae6f6d28561357ecdf80bd82253bf91c8f39739f8f2cd20b69",
+    "bus_selected_cells.csv": "df89ff86e65dee1941fa3e49c815292ef3af7a8d3702447a43bb188d3b9c1c32",
+    "bus_summary.csv": "ead417a64f46a7330b7b9991ed11482885a65583d2bb87aefea9f6cde9cb07cb",
+    "candidate_route_presence.csv": "7eb9cfaaba835f184b67b66085b34be073a300b5daca73afe16679311422dda9",
+    "extraction_audit.json": "76d4b15251feea0ba3b9791a03238990c107b84c7021192b9cfa79e705791047",
+    "gangnam_speed_volume.csv": "5b3ec419a80b6b03d25fa9cd5a5b340fed39c85a3a3ec966fe613ab2dad30369",
+    "policy_family_coverage.csv": "d768cd762f9da545b4f743bc64f4e50f930da1a01f697f9496a5d18b7fd96abf",
+    "quality_bus_boardings.csv": "89311f5a71430aee8fe3931693fc7a1749fe044cc9084e9fa3723a8240835bf2",
+    "quality_bus_time.csv": "204cb3af916b761b8e65020976af6a74a18980cbaf268af90703b35d81d77a3b",
+    "quality_bus_trips.csv": "aa09e91f8f5b70020be000066c70a37e35edc20396ac1f31c09ea6d9c784ee71",
+    "road_context.png": "3814ee4f39b1d50a801cfdfd86c0ed6bbfaf77764fc234558ad48dea59476bba",
+    "road_daily.csv": "a32b9f808240023f98f5b41b503d98d375ff02dc1ad6007d6879eaadcaebf663",
+    "road_links.csv": "dbf8e139f2643243fda6ce704bd6b25668665033433fdb98fe64a054b1acad53",
+    "road_summary.csv": "64fed072bdde0357796759b4b57902f09c3fe5b5bcc6f214eea69278c2a36a05",
+    "speed_volume.png": "9a3f477b305ae44fdaf6b05d5252e05931c5be50bba2db403740cd153b6d0696",
+    "station_counts.png": "06bc63f407d7f7a6670e17be0b8376c6793e0cde400fd2d6d00588096629115e",
+    "station_counts_daily.csv": "705fcbd1b4cb0c0f6fbecf4a20e3bb5e595f00ff0b1ed36b165862b69fe1bb39",
+    "station_recorded_counts.csv": "4214443828c562f1b9e3bc94633dcb6892379554c86f3e61b38427babb898d68",
+    "station_registry.csv": "a814142ac8e5adbf87f4150da62ae3c37aa21b3be096dd008a8da439129a8b91",
+    "volume_daily.csv": "e165871dc8069ca17cbf933d29acf5b8cabfa191c587f25c7b4f49ec55d8fd83",
+    "volume_quality.csv": "dd622510c29bfc1266cdd2719257117c758b9088b4bbfa2ba7a837c1ea5f1e26",
+    "volume_summary.csv": "f0301db095fc29d5dae5405a861089ee844cfcf31f87e976d1db0e299cb27068"
+  },
+  "versions": {
+    "pandas": "2.3.3",
+    "numpy": "2.5.2",
+    "matplotlib": "3.11.2",
+    "openpyxl": "3.1.5",
+    "pyarrow": "26.0.0",
+    "requests": "2.34.2"
+  },
+  "scope": "2024년 자료의 후속 탐색. 새 예측 모델 학습·인과 효과 식별은 포함하지 않음"
+}

@@ -1,0 +1,40 @@
+{
+  "sources": [
+    {
+      "title": "국토교통부 강남·명동 광역버스 노선 조정",
+      "url": "https://www.molit.go.kr/USR/NEWS/m_71/dtl.jsp?id=95089865",
+      "published": "2024-06-17",
+      "reviewed": "4~6쪽 노선·정류장 번호와 변경 순서",
+      "download_url": "https://www.molit.go.kr/LCMS/DWN.jsp?fold=koreaNews/mobile/file&fileName=240618%28%EC%A1%B0%EA%B0%84%29_6%EC%9B%94_29%EC%9D%BC%EB%B6%80%ED%84%B0_%EA%B0%95%EB%82%A8_%EB%AA%85%EB%8F%99%EC%9D%84_%ED%86%B5%EA%B3%BC%ED%95%98%EB%8A%94_22%EA%B0%9C_%EA%B4%91%EC%97%AD%EB%B2%84%EC%8A%A4_%EB%85%B8%EC%84%A0_%EC%A0%95%EB%A5%98%EC%9E%A5_%EC%A1%B0%EC%A0%95%28%EA%B4%91%EC%97%AD%EB%B2%84%EC%8A%A4%EA%B3%BC%29.pdf",
+      "local_path": "data/followup/research/molit_june.pdf",
+      "bytes": 1930269,
+      "sha256": "a864f7341d8d548bc0773df1c7d014bdd642effd45101f0fcc4a0c5a5b93c430",
+      "retrieved_on": "2026-10-28",
+      "redistribution": "원문은 Git 제외, 서지·자체 요약만 공개"
+    },
+    {
+      "title": "박수진·양재환: Soft-DTW 기반 클러스터링을 활용한 중앙버스전용차로 정류장 정체 유형 분석",
+      "url": "https://www.jkst.or.kr/articles/article/2XzE/",
+      "published": "2025-12-31",
+      "reviewed": "765~768쪽 대상 선정·통행시간 정의·15분 자료·군집 검증",
+      "download_url": "https://www.jkst.or.kr/articles/pdf/2XzE/kst-2025-043-06-5.pdf",
+      "local_path": "data/followup/research/softdtw_2025.pdf",
+      "bytes": 1373341,
+      "sha256": "f7e2bb310bad3ed61b3bf5c82f12042ffa5a0f036b0754d6280ea5d408cef0f6",
+      "retrieved_on": "2026-10-28",
+      "redistribution": "원문은 Git 제외, 서지·자체 요약만 공개"
+    },
+    {
+      "title": "하희동·김도경·최영우: 대기행렬 기반 중앙버스전용차로 정류장 운영전략 개발",
+      "url": "http://www.ijhe.or.kr/journal/article.php?code=95282",
+      "published": "2025-08",
+      "reviewed": "전체 HTML 본문, 3장 자료·모형과 승객 추가 보행·대기 부담",
+      "download_url": "http://www.ijhe.or.kr/journal/article.php?code=95282",
+      "local_path": "data/followup/research/queue_2025.html",
+      "bytes": 117734,
+      "sha256": "1fa6d522f599d2e4048dfcfc3c272bef8275d57946555d63a4e7117f713364ce",
+      "retrieved_on": "2026-10-28",
+      "redistribution": "원문은 Git 제외, 서지·자체 요약만 공개"
+    }
+  ]
+}
