@@ -1,0 +1,21 @@
+# overnight_segment_uncertainty_config.yaml - 여러 구간·기간 비교를 함께 고려하는 기술적 재표집 범위
+version: 1
+mode: exploratory_after_segment_results
+locked_year: 2026
+source_audit: results/overnight/persistence_segments/audit.json
+daily_source: results/overnight/persistence_segments/daily_segments.csv
+comparison_source: results/overnight/persistence_segments/segment_comparisons.csv
+calendar_from: overnight_persistence_config.yaml
+band: evening
+family: 기존 인접 14개 구간과 사전 고정 5개 기간 비교의 70개 로그 평균비 전체
+selection: 기존 사전 셀·일별 지수·유효 날짜를 보존하며 결과 크기로 비교 가족을 줄이지 않음
+bootstrap: {draws: 5000, seed: 20261029, quantile: 0.95}
+resampling: 각 원래 기간의 달력 주를 복원 추출; 한 추출의 주 가중치를 모든 구간에 공동 적용
+dependence: 같은 기간을 공유하는 비교에는 같은 재표집 평균을 재사용; 서로 다른 기간의 주 추출은 독립
+statistic: 로그 평균비의 재표집 표준편차로 중심화 오차를 표준화하고 70개 절댓값의 최댓값 95% 분위수 사용
+transformation: 관측 로그 평균비 ± 공통 임계값×재표집 표준편차를 변화율로 역변환
+minimum_weeks: 4
+interpretation:
+  - 소수 주·기간 간 독립 근사에 의존하는 기술적 동시 변동 범위이며 엄밀한 95% 보장 또는 정책 인과 검정이 아님
+  - 같은 결과를 보고 만든 사후 분석이므로 사전 등록된 확증 가설·새 독립 검증으로 부르지 않음
+  - 원래 개별 구간과 새 동시 범위를 함께 공개하며 불리한 결과를 제거하지 않음

@@ -1,0 +1,25 @@
+# overnight_conditional_margin_config.yaml - 고정 속도 예측과 달력 임계값의 차이를 경보 점수로 비교
+version: 1
+mode: exploratory_after_conditional_classifier_test_failure
+locked_year: 2026
+horizons: [1, 3]
+target_config: overnight_conditional_low_config.yaml
+target_manifest: results/overnight/conditional_low/development_manifest.json
+threshold_table: results/overnight/conditional_low/training_thresholds.csv
+quantile_manifest: results/overnight/interval_calibration/preparation_manifest.json
+base_config: overnight_forecast_config.yaml
+regression: 원래 학습·선택한 최근 도로 분위수 모델과 예측값을 그대로 사용; 새 회귀 학습 없음
+scores:
+  median_gap: calendar_q20_threshold_minus_predicted_q50
+  scaled_median_gap: calendar_q20_threshold_minus_predicted_q50_divided_by_max_q90_minus_q10_and_floor
+width_floor_kmh: 0.1
+calibration: 고정 2025년 3월 새 라벨·점수의 시그모이드 보정; 보정 전 점수를 확률로 부르지 않음
+decision: 고정 4월 FPR 0.10 이하 최대 재현율·동률 높은 임계값; 평균 하루 2개 이하 규칙도 병기
+comparison: 각 점수를 같은 최근 도로 정보의 새 이진 분류 모델과 짝 비교; 정규화 점수와 원점수도 비교
+bootstrap: {calendar_weeks: 1000, seed: 17}
+evaluation: 기존 2025년 5~8월 핵심 3개 링크의 모든 시각·저녁·링크·월; 모든 설정 공개
+interpretation:
+  - 이미 본 시험에서 이진 분류의 실패를 확인한 후 제안한 방법이며 독립 검증 또는 최종 배포 성능이 아님
+  - 2023~2024년 같은 요일·시간보다 낮은 속도라는 라벨을 유지하고 시험 결과로 임계값을 바꾸지 않음
+  - 최근 도로 자료가 원점에 제공된다는 원래 가정은 남으며 실제 실시간 제공 이력은 미검증
+  - 회귀 점수의 보정·경보 규칙을 개발 기간에서 고정하고 코드·명세를 커밋한 뒤 추가 시험을 계산

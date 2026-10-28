@@ -25,7 +25,10 @@ def locations(phase="probe"):
     if phase == "full":
         return ("overnight_daily_card_full_config.yaml", CASE / "overnight-daily-card-full-sources.json",
                 CASE / "data/overnight/daily_cards_full", CASE / "results/overnight/daily_cards_full")
-    raise ValueError("일별 카드 단계는 probe 또는 full이어야 합니다")
+    if phase == "persistence":
+        return ("overnight_card_persistence_config.yaml", CASE / "overnight-card-persistence-sources.json",
+                CASE / "data/overnight/daily_cards_persistence", CASE / "results/overnight/daily_cards_persistence")
+    raise ValueError("일별 카드 단계는 probe, full, persistence 중 하나여야 합니다")
 
 
 def validate(path, month):
@@ -63,11 +66,14 @@ def collect(phase="probe"):
     raw.mkdir(parents=True, exist_ok=True)
     entries = {}
     sources = ([manifest] if manifest.exists() else []) + list(raw.glob("*.source.json"))
-    if cfg.get("reuse_manifest"):
-        sources.append(CASE / cfg["reuse_manifest"])
+    reuse = cfg.get("reuse_daily_manifest", cfg.get("reuse_manifest"))
+    if reuse:
+        sources.append(CASE / reuse)
     for path in sources:
         data = json.loads(path.read_text())
         for e in data["files"] if "files" in data else [data]:
+            if reuse and path == CASE / reuse and e["month"] not in months:
+                continue
             if e["month"] in entries and entries[e["month"]]["sha256"] != e["sha256"]:
                 raise ValueError("같은 월의 출처 해시 충돌")
             entries[e["month"]] = e

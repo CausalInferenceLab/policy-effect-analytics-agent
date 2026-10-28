@@ -77,6 +77,13 @@ STAGES = {
     "conditional-low-prepare": ("overnight_conditional_low", "prepare", []),
     "conditional-low-evaluate": ("overnight_conditional_low", "evaluate", []),
     "operations-persistence-plots": ("overnight_operations_persistence_plots", "plot", []),
+    "card-persistence-collect": ("overnight_daily_card_data", "collect", ["persistence"]),
+    "card-persistence-reconcile": ("overnight_daily_card_analysis", "run", ["persistence"]),
+    "card-persistence": ("overnight_card_persistence", "run", []),
+    "conditional-low-review": ("overnight_conditional_review", "run", []),
+    "card-persistence-plots": ("overnight_card_persistence_plots", "plot", []),
+    "conditional-margin-prepare": ("overnight_conditional_margin", "prepare", []),
+    "conditional-margin-evaluate": ("overnight_conditional_margin", "evaluate", []),
     "persistence-segments": ("overnight_persistence_segments", "run", []),
     "persistence-segments-plots": ("overnight_persistence_segments_plots", "plot", []),
 }

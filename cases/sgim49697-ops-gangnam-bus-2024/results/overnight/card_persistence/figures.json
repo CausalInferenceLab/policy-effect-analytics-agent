@@ -1,0 +1,10 @@
+{
+  "code_sha256": "fd200e60d07951d054597b36fa57e5e6b591cdf455ae8100e2b1090f1f118344",
+  "inputs": {
+    "daily_comparisons.csv": "b7c04cf06e1081ef656d102e5df66b422e9ccc3f93223f84256d0bf5a5dfb833",
+    "monthly_year_changes.csv": "de087adfc38144c5b433387277247f85c988f5647472980fe2db14c86a889207"
+  },
+  "outputs": {
+    "card_persistence.png": "e9eafd144fc1b29d3a616f55ebd625b284d33b9c90702d6cc03a0acc2257a545"
+  }
+}

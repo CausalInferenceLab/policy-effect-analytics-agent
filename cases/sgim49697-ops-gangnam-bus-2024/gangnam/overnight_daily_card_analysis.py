@@ -102,6 +102,8 @@ def run(phase="probe"):
         raise ValueError("일별 카드 수집 범위가 설정과 다릅니다")
     monthly = {x["month"]: x for x in json.loads((CASE / cfg["monthly_reference"]).read_text())["files"] if x["kind"] == "card"}
     stations = pd.read_csv(REGISTRY, dtype={"stop": str, "ars": str})
+    if cfg.get("groups"):
+        stations = stations[stations.group.isin(cfg["groups"])].copy()
     stops = set(stations.stop)
     out.mkdir(parents=True, exist_ok=True)
     raw.mkdir(parents=True, exist_ok=True)

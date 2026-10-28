@@ -1,0 +1,102 @@
+{
+  "completed_at": "2026-10-28T22:30:34.190207+00:00",
+  "development_manifest_sha256": "05e623be2656d5e3e14f201661c61f97f2121c026cd32863391ae397f715e627",
+  "code_sha256": "8f2e187c758acd4aa22d2faf20046ef8e946f201ec03283149c3a386d764ec30",
+  "inputs": {
+    "results/overnight/forecast/feature_audit_test.json": "07202b6dd67998aa9fadaf5657a7ca4ae500f2427eaaafbbdd2a26a06d65032e",
+    "data/overnight/forecast/features_test_h1.parquet": "431c65ff538b7e825c07e49046a2ea2e167b50e152d404cdb53e81355256a557",
+    "data/overnight/forecast/features_test_h3.parquet": "5c43052bd444928fdedbf1f9d54a824412f8ffeff764ba7792fddbdb2071153b"
+  },
+  "predictions": [
+    {
+      "name": "calendar_only",
+      "horizon": 1,
+      "path": "data/overnight/conditional_low/test_predictions/h1_calendar_only.parquet",
+      "sha256": "0385f10961b834fa336858451dfba54f8e793511eda9a4967d2dc6deabc8f255",
+      "rows": 8820
+    },
+    {
+      "name": "weekly_delayed",
+      "horizon": 1,
+      "path": "data/overnight/conditional_low/test_predictions/h1_weekly_delayed.parquet",
+      "sha256": "955188adb45b9396b1f971bf2aee843cba39460d6756b5bfbbc6a7ace82d639c",
+      "rows": 8820
+    },
+    {
+      "name": "recent_road_assumption",
+      "horizon": 1,
+      "path": "data/overnight/conditional_low/test_predictions/h1_recent_road_assumption.parquet",
+      "sha256": "d72831fe24d199964346105d7ce3a906f43fc0feffff9c265ba2e099693ab726",
+      "rows": 8820
+    },
+    {
+      "name": "delayed_bus_ablation",
+      "horizon": 1,
+      "path": "data/overnight/conditional_low/test_predictions/h1_delayed_bus_ablation.parquet",
+      "sha256": "16ddf9d3ad96fbc172a5c9e403a8dfff7c0ee27dacbd08a61c51b33b69124bd4",
+      "rows": 8820
+    },
+    {
+      "name": "calendar_only",
+      "horizon": 3,
+      "path": "data/overnight/conditional_low/test_predictions/h3_calendar_only.parquet",
+      "sha256": "47ecbfff56cb144cd1689dae73326b1d6b97f53279cf0b52c6d24c1d1ac42a93",
+      "rows": 8820
+    },
+    {
+      "name": "weekly_delayed",
+      "horizon": 3,
+      "path": "data/overnight/conditional_low/test_predictions/h3_weekly_delayed.parquet",
+      "sha256": "25785bd272b196ffcaac81bd147175ad746f2a20b5e1a867cad5895e964430c3",
+      "rows": 8820
+    },
+    {
+      "name": "recent_road_assumption",
+      "horizon": 3,
+      "path": "data/overnight/conditional_low/test_predictions/h3_recent_road_assumption.parquet",
+      "sha256": "7f803e9b16f0a2425fdc19b07384050cd03ebf2af2a0bb3aa6e1b1c66b6e9ee0",
+      "rows": 8820
+    },
+    {
+      "name": "delayed_bus_ablation",
+      "horizon": 3,
+      "path": "data/overnight/conditional_low/test_predictions/h3_delayed_bus_ablation.parquet",
+      "sha256": "688817daed3881fa5970d9921c8926737c0ac6886295f6d338ed62fa5c2fcd61",
+      "rows": 8820
+    }
+  ],
+  "threshold_diagnostics": [
+    {
+      "calendar_q20_threshold_level": "link_weekday_hour",
+      "rows": 8820,
+      "positives": 2569.0,
+      "horizon": 1
+    },
+    {
+      "calendar_q20_threshold_level": "link_weekday_hour",
+      "rows": 8820,
+      "positives": 2569.0,
+      "horizon": 3
+    }
+  ],
+  "outputs": {
+    "development_target_counts.csv": "46980afc42bb8abf7ed69de3b932af7b721cd145bc952e8ec0e68c68facfda3f",
+    "h1_targets_by_hour.csv": "8fe86f9a7396aa63f44ab169599c9f991603262d63afe14b0b7d9d91bbd35f79",
+    "h1_targets_by_link_id.csv": "809002601d8cd0fa9d8b4aa075dfc5d441a105a316237a38f976514d9c2bfb63",
+    "h1_targets_by_month.csv": "2a69967c7eceb5bf57a7eaefe346055c08e77b3a3b89a6dee90c0d5ae674b8c2",
+    "h1_target_overlap.csv": "ab913e7348b86cc753fa70887b39b7aa9f13e1482345f1440a7bfe6da59aadb8",
+    "h3_targets_by_hour.csv": "8fe86f9a7396aa63f44ab169599c9f991603262d63afe14b0b7d9d91bbd35f79",
+    "h3_targets_by_link_id.csv": "809002601d8cd0fa9d8b4aa075dfc5d441a105a316237a38f976514d9c2bfb63",
+    "h3_targets_by_month.csv": "2a69967c7eceb5bf57a7eaefe346055c08e77b3a3b89a6dee90c0d5ae674b8c2",
+    "h3_target_overlap.csv": "ab913e7348b86cc753fa70887b39b7aa9f13e1482345f1440a7bfe6da59aadb8",
+    "metrics.csv": "b46709a7d4c5c50d0f6909eb6844bd69b507fd076be0ec064bfffcb7cd50c5d7",
+    "paired_comparisons.csv": "fb3a67090f782d44c27acb10ebd2c133011f794a337a64a508acb17297e3be42",
+    "training_thresholds.csv": "fdc90839d6dd1ab10b0942ff6ecfe8a81eadab2c07f4270a0b2e41736a92285e"
+  },
+  "interpretation": [
+    "이미 관측한 시험의 새 질문이며 독립 시험 또는 기존 모델 성능 향상으로 부르지 않는다.",
+    "원래 상대 저속 라벨과 모델·임계값·결과는 보존한다.",
+    "저녁 등 반복 패턴만으로 얻은 예측력과 같은 요일·시간 기준 낮은 속도의 예측력을 구별한다.",
+    "새 라벨의 시험 성능을 보고 q20·최소 표본·정보 집합·모델 설정을 바꾸지 않는다."
+  ]
+}

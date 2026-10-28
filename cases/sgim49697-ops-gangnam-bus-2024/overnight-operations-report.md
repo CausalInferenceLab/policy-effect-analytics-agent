@@ -114,3 +114,25 @@
 4시간대·도착/출발 연결·두 방향·4지표·5비교의 **320행은 모두 관측 조건을 통과**했다. 같은 원본의 겹치는 비교들이므로 320개의 독립 검증은 아니다. [전체 비교와 변동 구간](results/overnight/operations_persistence/comparisons.csv), [0·결측 관측 상태](results/overnight/operations_persistence/observation_states.csv), [분석 명세](results/overnight/operations_persistence/analysis_audit.json), [출처](overnight-operations-persistence-sources.json)를 공개한다.
 
 재현은 사례 환경의 `python overnight.py operations-persistence-collect`, `operations-persistence-prepare`, `operations-persistence`, `operations-persistence-plots` 순서다. 기존 원본·공통 셀·2025년 시간/운행 캐시가 필요하며 새 체크아웃에는 대용량 원본이 포함되지 않는다. 기존 2024년 결과와 별도 경로에 저장한다.
+
+
+## 정류장 전체의 2025년 카드 기록과 대조
+
+공통 운영 셀의 증가가 더 넓은 기록에서도 관측되는지 확인하기 위해 [새 규칙](overnight_card_persistence_config.yaml)을 먼저 저장했다. 2025년 5~8월 일별 CSV 4개를 추가하고 2024년 같은 월 원본 4개를 재사용했다. 월별 자료는 앞서 ID 이력 확인에만 쓴 원본을 이번 범위에서 별도로 결과 분석에 사용했다. **10,073,123행**의 너비·날짜를 검사해 중앙 16개 정류장의 79,001행을 정리했다. 선택 행의 정확 중복과 원본 누락 날짜는 모두 0개다.
+
+일별·월별 각각의 정류장·월 ID·ARS **256개 대응이 일치**했고, 정류장×8개월×승하차의 **256개 합계도 정확히 일치**했다. 서로 다른 두 관측 장비의 검증이 아니라 같은 카드 집계 체계의 공개 산출물 대조다. 하루에 방향별 8개 정류장이 모두 알려진 경우만 합쳤으며, 2024 사전/사후 29/29일, 2025년 27/28일이다.
+
+| 기록 | 2024 사전→2025 사전 | 주 재표집 구간 | 2025 사전→여름 |
+|---|---:|---:|---:|
+| 남행 하루 승차 | +4.28% | [+2.28, +6.20]% | +1.30% |
+| 북행 하루 승차 | +1.86% | [+0.10, +3.55]% | −0.44% |
+| 남행 하루 하차 | +7.92% | [+6.09, +9.54]% | −2.20% |
+| 북행 하루 하차 | −2.11% | [−3.90, −0.34]% | +1.82% |
+
+![카드 기록의 전년 대비 변화](results/overnight/card_persistence/card_persistence.png)
+
+남행 평일 하루 승차는 25,797.6→26,900.7건, 북행은 35,574.4→36,236.1건이다. 2025년 사전→여름 변화는 표의 네 기록 모두 구간에 0을 포함한다. 원래 2024년 비교도 새 경로에서 재현됐다. 방향·개별 정류장 180개 일별 비교와 80개 월 시간대 비교는 모두 관측 조건을 통과했으며 독립 검정 수로 해석하지 않는다.
+
+월별 저녁 승차의 전년 같은 월 대비 변화는 남행 5월 +5.21%, 6월 +6.11%, 7월 +5.26%, 8월 +3.21%다. 북행은 −1.89%, +0.56%, +0.42%, −0.68%다. 월별 값은 주말을 포함한다. **제한된 공통 운영 셀의 저녁 +15.67%를 정류장 전체 승차 증가율로 일반화할 수 없다.** 전년과의 증가 폭 차이에는 노선·시각 구성, 집계 체계, 표본 범위가 함께 작용할 수 있다.
+
+[정류장·월 합계 대조](results/overnight/card_persistence/station_month_reconciliation.csv), [일별 비교](results/overnight/card_persistence/daily_comparisons.csv), [월별 시간대 비교](results/overnight/card_persistence/monthly_year_changes.csv), [분석 명세](results/overnight/card_persistence/audit.json), [추가 출처](overnight-card-persistence-sources.json)를 공개한다. 재현은 `python overnight.py card-persistence-collect`, `card-persistence-reconcile`, `card-persistence`, `card-persistence-plots` 순서다. 새 체크아웃에는 원본 캐시가 없으므로 수집부터 필요하다. 기존 보고서·원본·2024년 결과는 보존한다.
