@@ -36,6 +36,9 @@ STAGES = {
     "fare-trim": ("overnight_fare_trim", "run", []),
     "road-context-collect": ("overnight_road_context_data", "collect", []),
     "road-context": ("overnight_road_context", "run", []),
+    "road-persistence-collect": ("overnight_road_persistence_data", "collect", []),
+    "road-persistence": ("overnight_road_persistence", "run", []),
+    "road-persistence-plots": ("overnight_road_persistence_plots", "plot", []),
     "road-names": ("overnight_road_names", "run", []),
     "road-names-plot": ("overnight_road_names_plot", "plot", []),
     "operations-plots": ("overnight_operations_plots", "plot", []),
@@ -64,6 +67,7 @@ STAGES = {
     "persistence-weather-plots": ("overnight_persistence_weather_plots", "plot", []),
     "relative-ablation-prepare": ("overnight_relative_ablation", "prepare", []),
     "relative-ablation-evaluate": ("overnight_relative_ablation", "evaluate", []),
+    "relative-ablation-plots": ("overnight_relative_ablation_plots", "plot", []),
     "persistence-segments": ("overnight_persistence_segments", "run", []),
     "persistence-segments-plots": ("overnight_persistence_segments_plots", "plot", []),
 }

@@ -70,3 +70,29 @@
 다음 확인은 버스 정류장 정차·대기와 노선 분산의 공간 대응, 22개 끝점 명칭 변화의 의미다. 승객 전환 경로를 주장하려면 당시 전체 광역버스 수록 범위와 다른 수단의 출도착 자료가 필요하다.
 
 사례 환경에서 `python overnight.py road-context-collect`, `road-context`, `operations-plots`를 각각 실행한다. [교통량 출처](overnight-road-context-sources.json), [감사 명세](results/overnight/road_context/audit.json), [공간 유지율](results/overnight/road_context/metadata_retention.csv), [전체 비교](results/overnight/road_context/comparisons.csv)를 제공한다. 속도는 기존 예측 캐시의 **2023·2024년 지정 월만** 읽었다. 고정 예측 코드·모델·2026년 잠금 값은 변경하거나 열지 않았다.
+
+## 2025년 연장: 일반도로에서도 버스와 같은 변화가 남는가
+
+[연장 규칙](overnight_road_persistence_config.yaml)을 `1771a79`에 저장하고 기존 엄격 도로 셀을 그대로 사용했다. 2025년 속도·관측률로 재선택하지 않았다. 원래 66개 링크의 8개월 메타데이터 528개가 모두 일치했다. 2025년 5~8월 교통량 4개를 새로 수집하고 2024년 4개를 재사용해 68,388행을 검사했다. 선택 교통량의 결측은 16시간, 0값은 없었으며 지점·방향 설명도 유지됐다. 560개 기술 비교가 관측·메타데이터 조건을 통과했다. 비교가 모두 독립이라는 뜻은 아니다.
+
+다음은 저녁 17~19시의 **2024년 사전→2025년 사전** 비교다. 날짜와 공휴일은 [버스 지속성](overnight-persistence-report.md)과 같다.
+
+| 측정 범위 | 남행 변화 | 북행 변화 |
+|---|---:|---:|
+| 정책 후보 밖 버스 기록 시간 | −5.53% | +14.59% |
+| 일반도로 핵심 3개 링크 속도 | +5.10% [1.91, 8.39] | +0.65% [−3.31, 5.10] |
+| 강남대로 전체 15개 링크 속도 | −4.29% [−8.16, −0.06] | +2.50% [−1.10, 6.33] |
+| D-35 시간당 교통량 | −1.42% [−2.12, −0.60] | −5.61% [−7.33, −3.77] |
+| D-43 시간당 교통량 | −0.52% [−3.05, 1.90] | −0.60% [−2.22, 1.37] |
+
+대괄호는 각 자료의 달력 주 재표집 95% 구간이다. 버스 시간은 낮을수록 짧고 도로 속도는 높을수록 빠르다. 북행 버스 기록 시간은 늘었지만 핵심 일반도로 속도에서 같은 정도의 변화는 확인되지 않았고 D-35 통과 대수는 줄었다. **일반 교통량 증가만으로 북행 버스 기록의 증가를 설명하기는 어렵다는 탐색 단서**이며, 단위·공간이 다른 자료로 그 가설을 배제한 인과 검정은 아니다.
+
+![버스·도로·교통량의 기간별 수준](results/overnight/road_persistence/transport_context_levels.png)
+
+2025년 안의 사전→여름에는 핵심 남행 속도 −5.89% [−8.80, −2.91], 북행 −4.21% [−10.98, 2.91]였다. 같은 창의 버스 시간 변화는 작은 값이며 구간에 0을 포함한다. D-35 북행 교통량은 2024년 사전 대비 2025년 여름 −9.60%였지만 버스 기록은 높은 수준이 남았다. 이 역시 같은 차량을 연결한 결과가 아니다.
+
+![강남대로 공간 범위별 2025년 사전 속도](results/overnight/road_persistence/road_spatial_scope.png)
+
+핵심 남행 3개 속도는 빨라졌고 더 넓은 15개는 느려졌다. 같은 도로명만으로 공간 대표성을 보장할 수 없다. 두 집단은 중첩되므로 독립 비교가 아니며 원래 엄격·명칭 허용 민감도와 함께 읽어야 한다.
+
+`python overnight.py road-persistence-collect`, `road-persistence`, `road-persistence-plots`로 실행한다. [추가 출처](overnight-road-persistence-sources.json), [전체 비교](results/overnight/road_persistence/comparisons.csv), [메타데이터 대조](results/overnight/road_persistence/metadata_check.csv), [감사](results/overnight/road_persistence/audit.json)를 저장했다. 속도 원본·캐시가 필요한 분석과 달리 그림은 커밋된 표로 재생성할 수 있다. 2025년은 앞서 예측에서 이미 관측한 기간이며 새로운 미사용 검증 연도가 아니다.

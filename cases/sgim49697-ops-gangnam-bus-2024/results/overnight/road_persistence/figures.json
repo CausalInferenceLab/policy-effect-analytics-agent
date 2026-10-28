@@ -1,0 +1,11 @@
+{
+  "code_sha256": "11af354691a4725c998f9aa9e09a412fbff71e0b69d1642290796c8c7d0461cf",
+  "inputs": {
+    "results/overnight/road_persistence/comparisons.csv": "e9b55d711be3067e9e44bec35059b35aa9aafa8bef88491decb17e0585351d3a",
+    "results/overnight/persistence/comparisons.csv": "b1981069692cd320177098571ce1a082d239b726e40965c3fcbdfa82bb144553"
+  },
+  "outputs": {
+    "transport_context_levels.png": "45ed3e66073012a9dc04f5ee867a8ccc3a919fe192d2fe696608b467e5c4554a",
+    "road_spatial_scope.png": "8e9ad60f8835af47c4ec82d7928b9e61bc4e74de1ece71c38e54985feaf16715"
+  }
+}
