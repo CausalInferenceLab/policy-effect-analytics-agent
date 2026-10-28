@@ -1,0 +1,33 @@
+# overnight_card_records_config.yaml - 일별·월별 총계 대조를 통과한 정류장의 승하차 기록 추이
+recorded_at_utc: '2026-10-28T20:10:00Z'
+mode: exploratory_after_full_month_route_label_reconciliation
+base_config: directional_config.yaml
+source_audit: results/overnight/daily_cards_full/audit.json
+route_label_audit: results/overnight/daily_cards_full/monthly_reconciliation.csv
+monthly_manifest: overnight-auxiliary-sources.json
+identity: results/directional/station_registry.csv
+groups: [central_south, central_north]
+daily:
+  unit: 정류장에 공개된 서울 면허 버스 승차 또는 하차의 하루 기록 합; 고유 이용자 수가 아님
+  routes: 공개된 모든 노선 표기·이름 변형의 서로 다른 행을 합산; 고정 노선 코호트가 아님
+  reconciliation: 노선 표기를 합친 정류장·월·승하차 합계가 두 자료에서 정확히 같은지 검증
+  quality: 원본 날짜·숫자·정확 중복·월 합계 중 하나라도 실패한 정류장·월·승하차는 미확정
+  missing: 정류장 행 부재·공란은 0이 아니며 예상 날짜를 보존
+  group_total: 기존 중앙 방향별 8개 정류장이 같은 날 모두 유효할 때만 합계를 공개
+  comparisons: [summer2023, summer2024, autumn2024]
+  calendar: 기존 버스 비교의 평일·공휴일 제외 창과 동일; 자료 날짜 부재는 분모에서 제거하지 않음
+monthly_hours:
+  role: 보조적인 월별 24시간 분포·시간대 기록; 일별 총계 일치가 시간대 배분까지 검증하지는 않음
+  reference_months: ['04', '05']
+  summer_months: ['07', '08']
+  autumn_months: ['09', '10']
+  aggregation: 월 기록을 해당 월 달력 일수로 나눈 후 비교; 평일만의 값으로 해석하지 않음
+  bands_from: overnight_config.yaml
+minimum_days: 20
+maximum_coverage_gap: 0.10
+whole_group_coverage: 1.0
+interpretation:
+  - 노선 표기 예외를 전역 정규식으로 강제 병합하지 않고 정류장 전체 기록 합으로 대조한다.
+  - 모든 경기 광역버스 또는 모든 이동수단의 수요 변화로 일반화하지 않는다.
+  - 기후동행카드·GTX-A 구성역·노선 구성·계절 등의 동시 변화를 제거한 인과 추정이 아니다.
+  - 기존 반복 키 제외 결과를 보존하고 새 집계 근거를 별도 결과로 공개한다.
