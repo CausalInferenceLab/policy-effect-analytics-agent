@@ -1,0 +1,14 @@
+{
+  "code_sha256": "84b1300bf2e7087751156e93a8996fbe0521a0668dbc7b8613a8b357d8a655cc",
+  "inputs": {
+    "results/overnight/cards/station_identity.csv": "33eb9e731604dbe81c5f49bce76cf967941776890a420066b13f4b4d731ec889",
+    "results/overnight/cards/monthly_group.csv": "9e35cffdc612cca50d3ae473256689f1f090080a079d131afc57501ca92b7a1b",
+    "results/overnight/auxiliary/transfer_probe_selected_quality_by_day.csv": "9598ff65434f3af128c2b389def37dfe3dee7883207a8f192704bee8d2f2b28a",
+    "results/overnight/auxiliary/transfer_key_multiplicity.csv": "e789e25d8b64efe6fbb1844b5f65c93af3612dd6020422f0d70c69f0badff18d"
+  },
+  "figures": {
+    "card_cohort_coverage.png": "4c4056e0145e81db1c37682531aa3544fe6ac50114aff15af9edac28e8de875a",
+    "card_identity.png": "0484b8d95cd1c6a27a7e20a20e0b88f1e6246121b45b9c23a932ab8156113c76",
+    "transfer_key_quality.png": "f52addb6af715b2f7d3e53ec7e88d8003d6f17f261d8367c7d48f1da299f6591"
+  }
+}

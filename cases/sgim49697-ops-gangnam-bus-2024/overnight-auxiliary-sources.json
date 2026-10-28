@@ -1,0 +1,383 @@
+{
+  "description": "서울 면허 월별 카드와 환승·출도착 원본 탐색. 2025년 카드는 ID 이력 확인 전용.",
+  "config_sha256": "c2ad06070725cfad1410a241d3264de5e159f4945b009cbed00eb81422087c1c",
+  "files": [
+    {
+      "kind": "card",
+      "month": "2023-04",
+      "path": "data/overnight/auxiliary/card_2023-04.csv",
+      "source": "https://data.seoul.go.kr/dataList/OA-12913/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "title": "2023년_버스노선별_정류장별_시간대별_승하차_인원_정보(04월).csv",
+      "request": {
+        "infId": "OA-12913",
+        "infSeq": "3",
+        "seq": "70",
+        "seqNo": ""
+      },
+      "bytes": 15171596,
+      "sha256": "efe102d5e59eb3448d0b4eeb13c8201c59da45843d7ea6a1a17c6cfeb93c08fb",
+      "retrieved_at": "2026-10-28T19:08:47.835230+00:00"
+    },
+    {
+      "month": "2023-05",
+      "path": "data/directional/history/boarding_202305.csv",
+      "source": "https://data.seoul.go.kr/dataList/OA-12913/F/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-12913",
+        "infSeq": "3",
+        "seq": "71",
+        "seqNo": ""
+      },
+      "bytes": 15283273,
+      "sha256": "9b5cdbcab0ba4684b0ddb0e11430fd1ce5e03b220bb2f16e11d8bb3fc885be98",
+      "retrieved_at": "2026-10-28T15:28:43.292171+00:00",
+      "kind": "card"
+    },
+    {
+      "kind": "card",
+      "month": "2023-06",
+      "path": "data/overnight/auxiliary/card_2023-06.csv",
+      "source": "https://data.seoul.go.kr/dataList/OA-12913/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "title": "2023년_버스노선별_정류장별_시간대별_승하차_인원_정보(06월).csv",
+      "request": {
+        "infId": "OA-12913",
+        "infSeq": "3",
+        "seq": "72",
+        "seqNo": ""
+      },
+      "bytes": 15352443,
+      "sha256": "8fe59cfb604a5e133c0c69a8d209fdfbb1d687c49df2fa12aab2d9f88cb7725a",
+      "retrieved_at": "2026-10-28T19:08:50.093070+00:00"
+    },
+    {
+      "month": "2023-07",
+      "path": "data/directional/history/boarding_202307.csv",
+      "source": "https://data.seoul.go.kr/dataList/OA-12913/F/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-12913",
+        "infSeq": "3",
+        "seq": "73",
+        "seqNo": ""
+      },
+      "bytes": 15403192,
+      "sha256": "02c8d8cdd9dad4305ee42e40be30baa4e4aa7f2d6bda0bf1ac2be785e14978d4",
+      "retrieved_at": "2026-10-28T15:28:45.357048+00:00",
+      "kind": "card"
+    },
+    {
+      "kind": "card",
+      "month": "2023-08",
+      "path": "data/overnight/auxiliary/card_2023-08.csv",
+      "source": "https://data.seoul.go.kr/dataList/OA-12913/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "title": "2023년_버스노선별_정류장별_시간대별_승하차_인원_정보(08월).csv",
+      "request": {
+        "infId": "OA-12913",
+        "infSeq": "3",
+        "seq": "74",
+        "seqNo": ""
+      },
+      "bytes": 15178125,
+      "sha256": "ffbfab2bd70b59bc883eae86c21aa574a3fd636e354de7e5d662cf07134e7c87",
+      "retrieved_at": "2026-10-28T19:08:51.468705+00:00"
+    },
+    {
+      "kind": "card",
+      "month": "2023-09",
+      "path": "data/overnight/auxiliary/card_2023-09.csv",
+      "source": "https://data.seoul.go.kr/dataList/OA-12913/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "title": "2023년_버스노선별_정류장별_시간대별_승하차_인원_정보(09월).csv",
+      "request": {
+        "infId": "OA-12913",
+        "infSeq": "3",
+        "seq": "75",
+        "seqNo": ""
+      },
+      "bytes": 15137400,
+      "sha256": "050136604f3fab53bb11139abdb00cee9815751e5fe0c1b5db34f0d76fe667be",
+      "retrieved_at": "2026-10-28T19:08:52.939634+00:00"
+    },
+    {
+      "kind": "card",
+      "month": "2023-10",
+      "path": "data/overnight/auxiliary/card_2023-10.csv",
+      "source": "https://data.seoul.go.kr/dataList/OA-12913/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "title": "2023년_버스노선별_정류장별_시간대별_승하차_인원_정보(10월).csv",
+      "request": {
+        "infId": "OA-12913",
+        "infSeq": "3",
+        "seq": "76",
+        "seqNo": ""
+      },
+      "bytes": 15428506,
+      "sha256": "d04c8e8f0cc002ae2d3828ac38d9bf27a58b87dc2ab89f25f3102ebe58c2c557",
+      "retrieved_at": "2026-10-28T19:08:53.958576+00:00"
+    },
+    {
+      "kind": "card",
+      "month": "2024-04",
+      "path": "data/overnight/auxiliary/card_2024-04.csv",
+      "source": "https://data.seoul.go.kr/dataList/OA-12913/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "title": "2024년_버스노선별_정류장별_시간대별_승하차_인원_정보(04월).csv",
+      "request": {
+        "infId": "OA-12913",
+        "infSeq": "3",
+        "seq": "82",
+        "seqNo": ""
+      },
+      "bytes": 15289506,
+      "sha256": "739cac2c34b9751a57b4aa5b53c2afd39d802b4df74566a4a025405c290cbe30",
+      "retrieved_at": "2026-10-28T19:08:55.192007+00:00"
+    },
+    {
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-12913",
+        "infSeq": "3",
+        "seq": "83",
+        "seqNo": ""
+      },
+      "source": "https://data.seoul.go.kr/dataList/OA-12913/F/1/datasetView.do",
+      "bytes": 15647322,
+      "sha256": "e851a91f539ea033db6812669ce86fc8ee966e06a1a38de1ab1e1080ea7b44a0",
+      "retrieved_at": "2026-10-28T12:53:10Z",
+      "file": "boarding_202405.csv",
+      "path": "data/discovery/boarding_202405.csv",
+      "kind": "card",
+      "month": "2024-05"
+    },
+    {
+      "kind": "card",
+      "month": "2024-06",
+      "path": "data/overnight/auxiliary/card_2024-06.csv",
+      "source": "https://data.seoul.go.kr/dataList/OA-12913/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "title": "2024년_버스노선별_정류장별_시간대별_승하차_인원_정보(06월).csv",
+      "request": {
+        "infId": "OA-12913",
+        "infSeq": "3",
+        "seq": "84",
+        "seqNo": ""
+      },
+      "bytes": 15392901,
+      "sha256": "1cf1328f479b193ce04273380a465874d85d1c2260c324c69f4cdbe158e15e5c",
+      "retrieved_at": "2026-10-28T19:08:58.571205+00:00"
+    },
+    {
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-12913",
+        "infSeq": "3",
+        "seq": "85",
+        "seqNo": ""
+      },
+      "source": "https://data.seoul.go.kr/dataList/OA-12913/F/1/datasetView.do",
+      "bytes": 15477233,
+      "sha256": "a10f379bcfd6f6f9be8bcd6f2b7186e658000a9107d4e41e05b07a705d4e6c88",
+      "retrieved_at": "2026-10-28T12:53:12Z",
+      "file": "boarding_202407.csv",
+      "path": "data/discovery/boarding_202407.csv",
+      "kind": "card",
+      "month": "2024-07"
+    },
+    {
+      "kind": "card",
+      "month": "2024-08",
+      "path": "data/overnight/auxiliary/card_2024-08.csv",
+      "source": "https://data.seoul.go.kr/dataList/OA-12913/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "title": "2024년_버스노선별_정류장별_시간대별_승하차_인원_정보(08월).csv",
+      "request": {
+        "infId": "OA-12913",
+        "infSeq": "3",
+        "seq": "88",
+        "seqNo": ""
+      },
+      "bytes": 10652677,
+      "sha256": "0220d54f538ca9ec612d183b586e6ab81aef0c158f6b4bd47fb94f7b8db97957",
+      "retrieved_at": "2026-10-28T19:08:56.834352+00:00"
+    },
+    {
+      "kind": "card",
+      "month": "2024-09",
+      "path": "data/overnight/auxiliary/card_2024-09.csv",
+      "source": "https://data.seoul.go.kr/dataList/OA-12913/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "title": "2024년_버스노선별_정류장별_시간대별_승하차_인원_정보(09월).csv",
+      "request": {
+        "infId": "OA-12913",
+        "infSeq": "3",
+        "seq": "89",
+        "seqNo": ""
+      },
+      "bytes": 10468803,
+      "sha256": "ed7063a5c9ce1e7cd8041120631a5610da28c6b4ad19f9b1e4c5d64a58945807",
+      "retrieved_at": "2026-10-28T19:08:58.555306+00:00"
+    },
+    {
+      "kind": "card",
+      "month": "2024-10",
+      "path": "data/overnight/auxiliary/card_2024-10.csv",
+      "source": "https://data.seoul.go.kr/dataList/OA-12913/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "title": "2024년_버스노선별_정류장별_시간대별_승하차_인원_정보(10월).csv",
+      "request": {
+        "infId": "OA-12913",
+        "infSeq": "3",
+        "seq": "90",
+        "seqNo": ""
+      },
+      "bytes": 15636561,
+      "sha256": "12e04f04dc0bc5832c4cdf83fa2b3bd047ac7c5cae801890f51d982b560a47ea",
+      "retrieved_at": "2026-10-28T19:09:02.297201+00:00"
+    },
+    {
+      "kind": "card",
+      "month": "2025-05",
+      "path": "data/overnight/auxiliary/card_2025-05.csv",
+      "source": "https://data.seoul.go.kr/dataList/OA-12913/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "title": "2025년_버스노선별_정류장별_시간대별_승하차_인원_정보(05월).csv",
+      "request": {
+        "infId": "OA-12913",
+        "infSeq": "3",
+        "seq": "98",
+        "seqNo": ""
+      },
+      "bytes": 15451279,
+      "sha256": "7c78d229f4f6c92e6ce059a050bf0cd3f2fa2a73e41a4cc6df1cfa4f878824f8",
+      "retrieved_at": "2026-10-28T19:09:00.850607+00:00"
+    },
+    {
+      "kind": "card",
+      "month": "2025-06",
+      "path": "data/overnight/auxiliary/card_2025-06.csv",
+      "source": "https://data.seoul.go.kr/dataList/OA-12913/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "title": "2025년_버스노선별_정류장별_시간대별_승하차_인원_정보(06월).csv",
+      "request": {
+        "infId": "OA-12913",
+        "infSeq": "3",
+        "seq": "99",
+        "seqNo": ""
+      },
+      "bytes": 15325301,
+      "sha256": "0ce08c8acf598e9b7e2d8967cf058c6e3134e0c8de72193b4ec208f57b32bf0b",
+      "retrieved_at": "2026-10-28T19:09:03.288045+00:00"
+    },
+    {
+      "kind": "card",
+      "month": "2025-07",
+      "path": "data/overnight/auxiliary/card_2025-07.csv",
+      "source": "https://data.seoul.go.kr/dataList/OA-12913/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "title": "2025년_버스노선별_정류장별_시간대별_승하차_인원_정보(07월).csv",
+      "request": {
+        "infId": "OA-12913",
+        "infSeq": "3",
+        "seq": "100",
+        "seqNo": ""
+      },
+      "bytes": 15444323,
+      "sha256": "93154bb81227d62e9f96cd0953d30197b100aafc840db528046d3a2d0c5b8af5",
+      "retrieved_at": "2026-10-28T19:09:05.350867+00:00"
+    },
+    {
+      "kind": "card",
+      "month": "2025-08",
+      "path": "data/overnight/auxiliary/card_2025-08.csv",
+      "source": "https://data.seoul.go.kr/dataList/OA-12913/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "title": "2025년_버스노선별_정류장별_시간대별_승하차_인원_정보(08월).csv",
+      "request": {
+        "infId": "OA-12913",
+        "infSeq": "3",
+        "seq": "101",
+        "seqNo": ""
+      },
+      "bytes": 15483024,
+      "sha256": "cd4185a782aed0bde5462ccd12ef5cddfaa8403d810ed82ad2c5b2513d79f9a1",
+      "retrieved_at": "2026-10-28T19:09:05.749899+00:00"
+    },
+    {
+      "kind": "card_history",
+      "month": "2022",
+      "path": "data/overnight/auxiliary/card_history_2022.zip",
+      "source": "https://data.seoul.go.kr/dataList/OA-12913/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "title": "2022년_버스노선별_정류장별_시간대별_승하차_인원_정보.zip",
+      "request": {
+        "infId": "OA-12913",
+        "infSeq": "3",
+        "seq": "66",
+        "seqNo": ""
+      },
+      "bytes": 33891897,
+      "sha256": "de86fd7a40c034c9563cb55f7f0aa2756a0e82031de7d92020caab63e5735fcb",
+      "retrieved_at": "2026-10-28T19:08:48.337579+00:00"
+    },
+    {
+      "kind": "od_probe",
+      "month": "2024-05",
+      "path": "data/overnight/auxiliary/od_probe_2024-05.zip",
+      "source": "https://data.seoul.go.kr/dataList/OA-21222/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "title": "kscc_dx_ra_od_202405.zip",
+      "request": {
+        "infId": "OA-21222",
+        "infSeq": "1",
+        "seq": "2405",
+        "seqNo": ""
+      },
+      "uncompressed_bytes": 2282143038,
+      "bytes": 206431666,
+      "sha256": "03edddf7797699efe714cbbf1f467a340ea5fabe0ed48f9941c67d77fd68ecdd",
+      "retrieved_at": "2026-10-28T19:14:03.162000+00:00"
+    },
+    {
+      "kind": "transfer_probe",
+      "month": "2024-05",
+      "path": "data/overnight/auxiliary/transfer_probe_2024-05.zip",
+      "source": "https://data.seoul.go.kr/dataList/OA-21221/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "title": "kscc_dx_trnsf_path_sum_202405.zip",
+      "request": {
+        "infId": "OA-21221",
+        "infSeq": "1",
+        "seq": "2405",
+        "seqNo": ""
+      },
+      "bytes": 162964959,
+      "sha256": "78c573ae48ab39577943de0f0a65b7084158ffa26d8866348eb323e55589efa1",
+      "retrieved_at": "2026-10-28T19:11:11.324394+00:00"
+    }
+  ]
+}

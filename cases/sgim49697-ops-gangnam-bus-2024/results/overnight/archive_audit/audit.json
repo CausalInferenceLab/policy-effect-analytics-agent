@@ -1,0 +1,544 @@
+{
+  "completed_at": "2026-10-28T19:03:07.027737+00:00",
+  "code_hashes": {
+    "gangnam/overnight_archive_audit.py": "2e1331266374f5d9aa2a89b9d622ac10c7d15e2b956eeadd25711ceff2a3cb41",
+    "gangnam/overnight_2022_audit.py": "cb2d8ffb9dd8caaf0be8b0d0f7ecb2f8abbf42b8ef45c88b6af6504f96196690"
+  },
+  "source_manifests": {
+    "directional-sources.json": "84e8efe3bb32fec11d05abeea08e778c2bd5fbe95a0e9f0130d3a1b395fe22f9",
+    "overnight-multiyear-sources.json": "de7bf831090383d137ba3c6239bf7a85d453d449a3c4c6480c78a5b5f029cbf6",
+    "overnight-forecast-bus-test-sources.json": "19bd52ace89e85d781617e3461dc9c994176a4d4c257ebe01ea5e5be2a972065",
+    "overnight-passenger-sources.json": "563e5ce5d0c5d9624847341eec1f896951cf71ec2f7eb2bb86768f432ea8b4a3"
+  },
+  "files": 82,
+  "members": 354,
+  "rows_scanned": 194697370,
+  "non_usable_members": [
+    {
+      "kind": "bus_time",
+      "month": "2024-11",
+      "member": "tpss_route_section_speedh_2024.11.04-11.10.csv",
+      "rows": 563510,
+      "header_columns": 61,
+      "invalid_date_rows": 0,
+      "status": "header_mismatch",
+      "structurally_usable": false,
+      "row_width_counts": "{\"31\": 563510}",
+      "missing_required_headers": "도착_정류장_순서",
+      "date_count": 7,
+      "first_date": "20241104",
+      "last_date": "20241110"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2023-01",
+      "member": "tpss_sta_route_hturn_2023.01.02-01.08.csv",
+      "rows": 67134,
+      "header_columns": 29,
+      "invalid_date_rows": 67134,
+      "status": "header_mismatch",
+      "structurally_usable": false,
+      "row_width_counts": "{\"22\": 1, \"29\": 67133}",
+      "missing_required_headers": "기준_날짜|노선_ID|버스운행횟수_00시|버스운행횟수_01시|버스운행횟수_02시|버스운행횟수_03시|버스운행횟수_04시|버스운행횟수_05시|버스운행횟수_06시|버스운행횟수_07시|버스운행횟수_08시|버스운행횟수_09시|버스운행횟수_10시|버스운행횟수_11시|버스운행횟수_12시|버스운행횟수_13시|버스운행횟수_14시|버스운행횟수_15시|버스운행횟수_16시|버스운행횟수_17시|버스운행횟수_18시|버스운행횟수_19시|버스운행횟수_20시|버스운행횟수_21시|버스운행횟수_22시|버스운행횟수_23시|정류장_ID|정류장_순서",
+      "date_count": 0,
+      "first_date": "",
+      "last_date": ""
+    }
+  ],
+  "members_sha256": "2eaa67724c3f7e8c6ba108a45f5f21649eae0f06d46f93b49a7b73460d842a89",
+  "detailed_cache": [
+    {
+      "kind": "bus_boardings",
+      "month": "2023-03",
+      "path": "data/overnight/archive_audit/bus_boardings_2023-03.json",
+      "sha256": "5839cabe389115d877127dd230a07fe826c97183ad71c9b913e7177d8a7ba0b1"
+    },
+    {
+      "kind": "bus_boardings",
+      "month": "2023-04",
+      "path": "data/overnight/archive_audit/bus_boardings_2023-04.json",
+      "sha256": "8d3a9ac9f3c2359631369f19a172480181c8d4511810fabedb9cafd6332dd2fa"
+    },
+    {
+      "kind": "bus_boardings",
+      "month": "2023-05",
+      "path": "data/overnight/archive_audit/bus_boardings_2023-05.json",
+      "sha256": "dbaf517286b627d93d229bc471b206605f5cffd02fc72abb27fc5fcb73ec86bc"
+    },
+    {
+      "kind": "bus_boardings",
+      "month": "2023-06",
+      "path": "data/overnight/archive_audit/bus_boardings_2023-06.json",
+      "sha256": "7aeb0bbf3aa8782d95485d6209bde174c98007b0646e0aaa6c2a991321bd16ca"
+    },
+    {
+      "kind": "bus_boardings",
+      "month": "2023-07",
+      "path": "data/overnight/archive_audit/bus_boardings_2023-07.json",
+      "sha256": "8fa95f026736be65b8210a3f8bb38c7e764b7526d62b77446f922d462b4b775d"
+    },
+    {
+      "kind": "bus_boardings",
+      "month": "2023-08",
+      "path": "data/overnight/archive_audit/bus_boardings_2023-08.json",
+      "sha256": "845820cfeb7a5c751b577ebc49f80120ce359fe6d27c5beeebc6d919d2766c4e"
+    },
+    {
+      "kind": "bus_boardings",
+      "month": "2024-04",
+      "path": "data/overnight/archive_audit/bus_boardings_2024-04.json",
+      "sha256": "0d08e9c801943c681d5bd501beec6a349c3ef1c5da21f0f2392e4876f21376f6"
+    },
+    {
+      "kind": "bus_boardings",
+      "month": "2024-05",
+      "path": "data/overnight/archive_audit/bus_boardings_2024-05.json",
+      "sha256": "1d4f17c3940f3eb70e4877b951ef4afe5b74a950bc0982df7bf9e8794308b3a2"
+    },
+    {
+      "kind": "bus_boardings",
+      "month": "2024-06",
+      "path": "data/overnight/archive_audit/bus_boardings_2024-06.json",
+      "sha256": "c306a09cacfac54f083be02e748d2c12c049b9216c26d4564a6b3df0fe281f70"
+    },
+    {
+      "kind": "bus_boardings",
+      "month": "2024-07",
+      "path": "data/overnight/archive_audit/bus_boardings_2024-07.json",
+      "sha256": "88568edb261577ad6ecd2dc88baa05f65edfa04f07bc6f792684b0a6fb1e21a4"
+    },
+    {
+      "kind": "bus_boardings",
+      "month": "2024-08",
+      "path": "data/overnight/archive_audit/bus_boardings_2024-08.json",
+      "sha256": "aea7a5a0f30156536fdd69e68fbb90848c0557967681e292cf6210d2f2446c39"
+    },
+    {
+      "kind": "bus_boardings",
+      "month": "2024-09",
+      "path": "data/overnight/archive_audit/bus_boardings_2024-09.json",
+      "sha256": "91c8636e70100da7c392a1ba13c6c154e1c56c7bdabe16c27f4f8d07da7ec3ea"
+    },
+    {
+      "kind": "bus_boardings",
+      "month": "2024-10",
+      "path": "data/overnight/archive_audit/bus_boardings_2024-10.json",
+      "sha256": "be21116392aa50bbce02b8c6efa76862e335f6fd002a7fe9e968398c057d967a"
+    },
+    {
+      "kind": "bus_passengers",
+      "month": "2024-04",
+      "path": "data/overnight/archive_audit/bus_passengers_2024-04.json",
+      "sha256": "f07d45ee626f1efef6333cc10a8d03045fd750a12357ee80dfa7392ba6d1f8a8"
+    },
+    {
+      "kind": "bus_passengers",
+      "month": "2024-05",
+      "path": "data/overnight/archive_audit/bus_passengers_2024-05.json",
+      "sha256": "b20c5adf4d0ea3c4ef1f83c4abba7d8583060596eba243e66cb512e8dfd0ce57"
+    },
+    {
+      "kind": "bus_passengers",
+      "month": "2024-06",
+      "path": "data/overnight/archive_audit/bus_passengers_2024-06.json",
+      "sha256": "555bdb3343dfcccbc07c119bb431ddcae0e77868dfbc0cb32abc86594b79e822"
+    },
+    {
+      "kind": "bus_passengers",
+      "month": "2024-07",
+      "path": "data/overnight/archive_audit/bus_passengers_2024-07.json",
+      "sha256": "d4e4b6fb2b9489d65532635aa05e23e06d36e44d6ab429a44c038039f3cb95d8"
+    },
+    {
+      "kind": "bus_passengers",
+      "month": "2024-08",
+      "path": "data/overnight/archive_audit/bus_passengers_2024-08.json",
+      "sha256": "73cc1ef4579c0eb32b0f77c993a77d2686a69b95a5aa27a24aefdb14cbf4150f"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2023-01",
+      "path": "data/overnight/archive_audit/bus_time_2023-01.json",
+      "sha256": "c269bbefa6ab3d208ff82d5bb4569c08b51d5cbc03383390bcd29ba965567cf2"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2023-02",
+      "path": "data/overnight/archive_audit/bus_time_2023-02.json",
+      "sha256": "68ffa0c9f81ee2d0d1644b5d77b49fe4b503ede68e9d0f5404328f7cd5b17a38"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2023-03",
+      "path": "data/overnight/archive_audit/bus_time_2023-03.json",
+      "sha256": "b91de26573462eb436c9992e9bea6067aefb0e1d0630a6a4e443230b22ce1122"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2023-04",
+      "path": "data/overnight/archive_audit/bus_time_2023-04.json",
+      "sha256": "84be7678c780d15d5be37e0b3d15a2ccbf380bdcd6847f009fddc4adc4171905"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2023-05",
+      "path": "data/overnight/archive_audit/bus_time_2023-05.json",
+      "sha256": "da0fed6fa1c4c45d5c86d12bf15fdd9a64888eb4430a575b4ba628305a50c0c8"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2023-06",
+      "path": "data/overnight/archive_audit/bus_time_2023-06.json",
+      "sha256": "4628e8b8fb7dfc08297d12cea45a7c3744318e3b8af509bc700c50456ab41983"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2023-07",
+      "path": "data/overnight/archive_audit/bus_time_2023-07.json",
+      "sha256": "7634ae88957424c5f20377ce2bdf3b9e7032303752d38fe559828858bff61527"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2023-08",
+      "path": "data/overnight/archive_audit/bus_time_2023-08.json",
+      "sha256": "a652b45798c645fc682fc2d60cd6ec958be2821ad5b3c7166cfd5962c83895cc"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2023-09",
+      "path": "data/overnight/archive_audit/bus_time_2023-09.json",
+      "sha256": "94f8aaa49ec85853e7fe802c9494f89d7e9888fe637dbae79e95e5334db2b6a2"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2023-10",
+      "path": "data/overnight/archive_audit/bus_time_2023-10.json",
+      "sha256": "9cf132386ba8e0036b31bde570dde109e02dcac38ef64e4fb23ade11db28f7f3"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2023-11",
+      "path": "data/overnight/archive_audit/bus_time_2023-11.json",
+      "sha256": "20cfc2d087807552f4d88dc23670e3e0e732abb0900c4fd2244c799dc6ab9751"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2023-12",
+      "path": "data/overnight/archive_audit/bus_time_2023-12.json",
+      "sha256": "4930c573e1a8fa34ec52bb565f4f36959c86dfe53b6ce5b9bbb1a058891ee73c"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2024-01",
+      "path": "data/overnight/archive_audit/bus_time_2024-01.json",
+      "sha256": "fc1608df9b876406eaac7cf60df72f8f6abdea0d350018d16c255d083e52aad4"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2024-02",
+      "path": "data/overnight/archive_audit/bus_time_2024-02.json",
+      "sha256": "f64cb249f724d20516f5e6ecd1a77c03699d115fe7f4468135a9c2079e059be0"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2024-03",
+      "path": "data/overnight/archive_audit/bus_time_2024-03.json",
+      "sha256": "7ac57d5824ebd9010338045bd6471238ebc605dfdaf29ab6d2178cef58151665"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2024-04",
+      "path": "data/overnight/archive_audit/bus_time_2024-04.json",
+      "sha256": "5314cc43387cbeb72d5df0cab7995925b1f856c1842f20c21ebd5664b2dad5bd"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2024-05",
+      "path": "data/overnight/archive_audit/bus_time_2024-05.json",
+      "sha256": "037f1038dc0efc0e1ba5889f237047b2ffbfb3da4e703546c045788d95343555"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2024-06",
+      "path": "data/overnight/archive_audit/bus_time_2024-06.json",
+      "sha256": "12cccdc77da36ef50b5635ccf42072e9fa6dac9cc6463fd5b4db34126800e1b2"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2024-07",
+      "path": "data/overnight/archive_audit/bus_time_2024-07.json",
+      "sha256": "04bf3adea4b9b1e6ebc9bdc3ecfbb5e4d98b5d02088bbcb49caf23804974f879"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2024-08",
+      "path": "data/overnight/archive_audit/bus_time_2024-08.json",
+      "sha256": "75c7aaf83e37e9d052ae75846faea5619ade2b0001a4c191c8a156d5de87315b"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2024-09",
+      "path": "data/overnight/archive_audit/bus_time_2024-09.json",
+      "sha256": "c9f01145a90061007ea6a73dd62d18a20f79cb6d4c14be68212351c09916478b"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2024-10",
+      "path": "data/overnight/archive_audit/bus_time_2024-10.json",
+      "sha256": "baca5d525ca3c5536be77c64f5bd592473961c25f7b8d86d827642f99641e090"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2024-11",
+      "path": "data/overnight/archive_audit/bus_time_2024-11.json",
+      "sha256": "3c625434721dd048010ac613031485a676b2e5d21715131c85485609bc2cf6cb"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2024-12",
+      "path": "data/overnight/archive_audit/bus_time_2024-12.json",
+      "sha256": "2af0fab6feb34dfd33c9dfb26e74e6383c1f34ebe98adb6eab3149fca2c1e082"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2025-01",
+      "path": "data/overnight/archive_audit/bus_time_2025-01.json",
+      "sha256": "8c30471d798ae7a1affb1ceaa5d53b48507cd6ea3be63e1bb5650c4f9d798379"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2025-02",
+      "path": "data/overnight/archive_audit/bus_time_2025-02.json",
+      "sha256": "7ea34d91b1512813f37910d579a8c46ebb9e136ce1b0bc9cbaf47897864e5007"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2025-03",
+      "path": "data/overnight/archive_audit/bus_time_2025-03.json",
+      "sha256": "718524ff52e04941f9532c4bc450cf189f93b9556641bc51c11d832a85743243"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2025-04",
+      "path": "data/overnight/archive_audit/bus_time_2025-04.json",
+      "sha256": "467d780b285235dcd31340a9d7af453cb32c7a4947b56c375af2ce29b54adc27"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2025-05",
+      "path": "data/overnight/archive_audit/bus_time_2025-05.json",
+      "sha256": "201d3b4aeb4a00d922ed889be0989c36e3b5613c6cd7ac6f5c56c33cf3dce63f"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2025-06",
+      "path": "data/overnight/archive_audit/bus_time_2025-06.json",
+      "sha256": "2acbdff6ba2f72efaa7dc4a622f57c0062592713d6cd94fa6ea17d378ad73653"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2025-07",
+      "path": "data/overnight/archive_audit/bus_time_2025-07.json",
+      "sha256": "59f37fc84614eabdf66276478ccc08ad1c9290d4cdf456e488e44287414640a8"
+    },
+    {
+      "kind": "bus_time",
+      "month": "2025-08",
+      "path": "data/overnight/archive_audit/bus_time_2025-08.json",
+      "sha256": "d673d9a082c0121e0e7fcbb5a1540bd4fdbe05880dbfb7492df66f1ada5fcc68"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2023-01",
+      "path": "data/overnight/archive_audit/bus_trips_2023-01.json",
+      "sha256": "b7772b7ac5ac76c1159ae5e8ad83e5748a370f8392a32121aee12d694cb21aa2"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2023-02",
+      "path": "data/overnight/archive_audit/bus_trips_2023-02.json",
+      "sha256": "4872e0c095b7ee7c95814d05f0863d3e0a6adbbc042084f20dd1e2e9c6ddda01"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2023-03",
+      "path": "data/overnight/archive_audit/bus_trips_2023-03.json",
+      "sha256": "168d90652c541070900bf1066681d28192ca7266ca17e18f68f6ebfaad65cb2e"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2023-04",
+      "path": "data/overnight/archive_audit/bus_trips_2023-04.json",
+      "sha256": "747de16bbc268430577fc706ca20283b7aea1fc3d6cded5a4a2817d9503ab64b"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2023-05",
+      "path": "data/overnight/archive_audit/bus_trips_2023-05.json",
+      "sha256": "122faa195179f4579357a0a95b74ce59f0c5ce6b437def3f1c62f69a861a0f35"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2023-06",
+      "path": "data/overnight/archive_audit/bus_trips_2023-06.json",
+      "sha256": "2612dffc359120dec23f847ed8de8a48e2c30e662b2e6e0b788cca50df85b63b"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2023-07",
+      "path": "data/overnight/archive_audit/bus_trips_2023-07.json",
+      "sha256": "422f321729491be555941900ef56e0cfa24d06bb3d7c3909b5f0434336a8f7b0"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2023-08",
+      "path": "data/overnight/archive_audit/bus_trips_2023-08.json",
+      "sha256": "efae1ffbc76882e566b762c1acb935f4f9e3ab11b37ac26f0562527dea50defe"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2023-09",
+      "path": "data/overnight/archive_audit/bus_trips_2023-09.json",
+      "sha256": "3baac88a1ef49583043d2d778c8ab283e22392efdd0300bc4cda7c656c50c40a"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2023-10",
+      "path": "data/overnight/archive_audit/bus_trips_2023-10.json",
+      "sha256": "2d66caaa6f43cdae319378c623c4fa1f12b4221ab0c9eeca28ea025451fdb748"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2023-11",
+      "path": "data/overnight/archive_audit/bus_trips_2023-11.json",
+      "sha256": "f7a0e8d7ae59151c2244700968a1a388ea301339bf8645a343a68529ff94c033"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2023-12",
+      "path": "data/overnight/archive_audit/bus_trips_2023-12.json",
+      "sha256": "f4d567b8a019ed14b75c6b8a08f790fcaa6e22ec3a8f2ae0b8bc596509d64210"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2024-01",
+      "path": "data/overnight/archive_audit/bus_trips_2024-01.json",
+      "sha256": "fd98702754d8c3f3a2fb78d0ad06a6160feee3db0c9e0645c88be724313b38c6"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2024-02",
+      "path": "data/overnight/archive_audit/bus_trips_2024-02.json",
+      "sha256": "c3f10e7eb99e36d774205fb714a10d480bdb296b7d8588d9032de09fa41d0ee2"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2024-03",
+      "path": "data/overnight/archive_audit/bus_trips_2024-03.json",
+      "sha256": "ad7eb5b63f073b286b943479983778fc57efd0998450c3301d7463135de27e0c"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2024-04",
+      "path": "data/overnight/archive_audit/bus_trips_2024-04.json",
+      "sha256": "001c41c91ba1973f1c53dbe3ec5dfc0feefa84761c6ba91a2e5bae388ed0fab0"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2024-05",
+      "path": "data/overnight/archive_audit/bus_trips_2024-05.json",
+      "sha256": "658814adead9640ccebbe0e249ef94f23ca741c0d4abb645c3a2c5ce8a39d791"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2024-06",
+      "path": "data/overnight/archive_audit/bus_trips_2024-06.json",
+      "sha256": "6ff50d57eb9b79b05bfd969853633aba6e9ce90993c53b9ad255d2d55e43aaa6"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2024-07",
+      "path": "data/overnight/archive_audit/bus_trips_2024-07.json",
+      "sha256": "964f1e0c75b2bca36b4031608b6b47cee384bf3be5d708a43b057a57e910ce85"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2024-08",
+      "path": "data/overnight/archive_audit/bus_trips_2024-08.json",
+      "sha256": "28a463e3a0bcf6493d5199fb5aafc7333d79a169ee12168c25b6a0ce43f53c95"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2024-09",
+      "path": "data/overnight/archive_audit/bus_trips_2024-09.json",
+      "sha256": "3e025d9d6bd1dbe4abc269272146b1686d41a1801a225677e50f3b9d00eea074"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2024-10",
+      "path": "data/overnight/archive_audit/bus_trips_2024-10.json",
+      "sha256": "3c6a7a16af4710f374ba9d21d5eaccc2f53d6655cb148eee483f3b79c15b6331"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2024-11",
+      "path": "data/overnight/archive_audit/bus_trips_2024-11.json",
+      "sha256": "803b64154c608b141f9c89f805b546d2b1eeb19d4e3de79351d2bc7bb27accf1"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2024-12",
+      "path": "data/overnight/archive_audit/bus_trips_2024-12.json",
+      "sha256": "744b81205e261f45f06ab2355dd898c10449ec40d698895fd4417cb2617a7820"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2025-01",
+      "path": "data/overnight/archive_audit/bus_trips_2025-01.json",
+      "sha256": "06deb75a1079528b907dbcf2252e5c95a5aeed31adc6ccc310022dbec1e99533"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2025-02",
+      "path": "data/overnight/archive_audit/bus_trips_2025-02.json",
+      "sha256": "e9ccf4c31b7d373bcd553d85f3bf8a312ef5fe9dd7ea8680ae7e9616df7aa267"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2025-03",
+      "path": "data/overnight/archive_audit/bus_trips_2025-03.json",
+      "sha256": "81bce2cc1f1ce386826e53bda16eac252fb683a26566528bee754e0d8066d001"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2025-04",
+      "path": "data/overnight/archive_audit/bus_trips_2025-04.json",
+      "sha256": "ecea3a78b608bdc39e17af784686ca3e363f0be44dfabc54d0d1a81f76ea554a"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2025-05",
+      "path": "data/overnight/archive_audit/bus_trips_2025-05.json",
+      "sha256": "18163f30550f5d6ed87277d30d633ca201b4a6878b0ae9a371025641d1fd0186"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2025-06",
+      "path": "data/overnight/archive_audit/bus_trips_2025-06.json",
+      "sha256": "0e3f7a5470fcf21d55bcc3567bfff8a0eb440df0fd193a8210d43317826aa031"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2025-07",
+      "path": "data/overnight/archive_audit/bus_trips_2025-07.json",
+      "sha256": "76af0664e17864eca91fd1adcf3c6351d40f34753344ca4904ff8bdca5228cfa"
+    },
+    {
+      "kind": "bus_trips",
+      "month": "2025-08",
+      "path": "data/overnight/archive_audit/bus_trips_2025-08.json",
+      "sha256": "52d444c6c4812981a67b22029d377ddc90a863e2f3074f96dbba05e7353b4951"
+    }
+  ],
+  "scope": "기존 추출·모델을 수정하지 않는 추가 형식 감사. 새 손상 발견 시 결과 영향부터 별도로 판단. 2026년 자료 미접근."
+}

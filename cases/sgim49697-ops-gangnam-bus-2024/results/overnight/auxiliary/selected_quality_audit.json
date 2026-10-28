@@ -1,0 +1,44 @@
+{
+  "completed_at": "2026-10-28T19:30:46.892599+00:00",
+  "code_sha256": "ca5dc19a21a105fd58b7cb23310ac61fdf1179ab257f7b5754dd661c7c34e94c",
+  "probe_audit_sha256": "88fa2272690e4479762d6a8f8d064a064ba3f81960ebe0a67fb872a01e194570",
+  "files": [
+    {
+      "kind": "od_probe",
+      "month": "2024-05",
+      "source_sha256": "03edddf7797699efe714cbbf1f467a340ea5fabe0ed48f9941c67d77fd68ecdd",
+      "rows": 208962,
+      "duplicate_keys": 0,
+      "daily_total_missing_rows": 0,
+      "hourly_cells": 5015088,
+      "hourly_known_cells": 1138329,
+      "hourly_blank_cells": 3876759,
+      "all_hours_known_rows": 228,
+      "known_hour_sum_daily_total_mismatch_rows": 0,
+      "decision": "일별 명시적 합계의 관측 기록 분석 후보. 공란 시각을 0으로 대체하지 않고 수단·노선·미수록 범위 확인 필요."
+    },
+    {
+      "kind": "transfer_probe",
+      "month": "2024-05",
+      "source_sha256": "78c573ae48ab39577943de0f0a65b7084158ffa26d8866348eb323e55589efa1",
+      "rows": 171627,
+      "distinct_public_keys": 136878,
+      "exact_duplicate_extra_rows": 16,
+      "ambiguous_rows": 62235,
+      "ambiguous_row_fraction": 0.3626177699313045,
+      "ambiguous_keys": 27486,
+      "unique_key_rows": 109392,
+      "max_public_key_multiplicity": 6,
+      "category_count_sum_mismatch_rows": 1093,
+      "category_count_remainder_range": [
+        0.0,
+        3.0
+      ],
+      "category_mean_consistency_eligible_rows": 170534,
+      "category_mean_difference_abs_over_one_rows": 1961,
+      "time_unit_status": "not_verified",
+      "hour_attribution_status": "not_verified",
+      "decision": "공개 키의 행 구분·시간 단위를 확인하기 전 승객 수 합산과 환승시간 전후 효과 분석 보류"
+    }
+  ]
+}

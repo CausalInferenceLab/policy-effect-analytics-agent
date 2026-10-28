@@ -1,0 +1,122 @@
+{
+  "description": "같은 시기 정책과 선행 분석 원문. 공개 원본은 Git 제외, 주장 적용 범위는 후속 보고서에 기록.",
+  "files": [
+    {
+      "path": "data/overnight/probes/gtxa_guseong_opening.html",
+      "url": "https://www.molit.go.kr/USR/NEWS/m_71/dtl.jsp?id=95089901&lcmspage=2",
+      "bytes": 61426,
+      "sha256": "c83fe04bc110b77a155c1763032974cf4aa48ad548ba138c1460aff73a45aa49",
+      "retrieved_at": "2026-10-28T18:22:54.622047+00:00",
+      "finding": "2024-06-29 GTX-A 구성역 개통 및 연계교통 정비",
+      "status": "official_concurrent_policy_context_not_causal_identification"
+    },
+    {
+      "path": "data/overnight/probes/climate_card_main_2024.html",
+      "url": "https://www.seoul.go.kr/news/news_report.do?nttNo=414644&tr_code=snews",
+      "bytes": 124960,
+      "sha256": "cb5c28d9c19f88463c1abd5afb3b567107785285731ace50980944127dff2f00",
+      "retrieved_at": "2026-10-28T18:22:54.427120+00:00",
+      "finding": "2024-07-01 본사업, 단기권·청년할인 충전 변화",
+      "status": "official_concurrent_policy_context_not_causal_identification"
+    },
+    {
+      "path": "data/overnight/probes/seoul_bus_fare_2023.html",
+      "url": "https://mediahub.seoul.go.kr/archives/2008762",
+      "bytes": 134613,
+      "sha256": "f35257e3dce333a428b8418d0e9395e07ca33698716a8c59cf94d13968e0d20a",
+      "retrieved_at": "2026-10-28T18:22:55.347410+00:00",
+      "finding": "2023-08-12 서울버스 요금 조정",
+      "status": "official_concurrent_policy_context_not_causal_identification"
+    },
+    {
+      "path": "data/overnight/probes/koti_gtxa_2025_report.pdf",
+      "url": "https://m.koti.re.kr/common/file/download.do?atch_no=2m6QQF3Ei%2Fv%2FJGvb1QeKoA%3D%3D",
+      "landing_url": "https://m.koti.re.kr/user/bbs/rndRsrchReprtView.do?bbs_no=70125",
+      "bytes": 14845462,
+      "sha256": "3d9fd6274b1e6c9346bc962adb1bbf4eeef442e1a2490d708121200f43c04806",
+      "retrieved_at": "2026-10-28T18:42:46.267746+00:00",
+      "finding": "2025-04-30 이호·김정인·곽민정. 수단 통행/목적 통행 구분과 2023/24 계절 비교 참고. 전후 평균 검정 자체를 강남대로 정책의 인과 식별로 적용하지 않음.",
+      "status": "official_report_full_text_reviewed_pages_63_70"
+    },
+    {
+      "path": "data/overnight/probes/gtxa_operations_2024sep.pdf",
+      "url": "https://ms.smc.seoul.kr/record/appendixDownload.do?key=43a70cc473221c8832f7aa33e5d62d00c6490d8d9a0a8a20672b88cdf40b194168daabb0f2618c49",
+      "bytes": 1591667,
+      "sha256": "2f7d3df5c2b7a1b9568325648ac92efb4c4cc0fb38b749c5552a5ccf1d09e4b2",
+      "retrieved_at": "2026-10-28T18:48:15.771954+00:00",
+      "timestamp_note": "원본 확보 후 명세 등록 시각",
+      "finding": "GTX-A운영 2024-09 서울시의회 업무보고. 2024-03-30~07-31 운영 집계.",
+      "status": "official_descriptive_operations_context"
+    },
+    {
+      "path": "data/overnight/probes/uos_gangnam_2024_slides.pdf",
+      "url": "https://d1pam7o10hv9s4.cloudfront.net/wp-content/uploads/2024/05/30034417/5.22-%EC%88%98_%EC%B5%9C%EC%A2%85%EB%B0%9C%ED%91%9C_%EC%9C%A4%EC%83%81%ED%9B%88.pdf",
+      "bytes": 3116110,
+      "sha256": "6246701796d2a665b970448cf8fba323e2df64a3bc30ae342e24d03926ce4423",
+      "retrieved_at": "2026-10-28T18:48:15.771954+00:00",
+      "timestamp_note": "원본 확보 후 명세 등록 시각",
+      "finding": "서울시립대 2024-05 강남대로 버스전용차로 기능 개선 광역버스 지하도로 제안. 정책 이전 학생 설계 발표.",
+      "status": "student_design_prior_context_not_peer_reviewed_policy_evaluation"
+    },
+    {
+      "path": "data/overnight/probes/kits_2017_bus_time.html",
+      "url": "http://journal.kits.or.kr/journal/article.php?code=57976",
+      "bytes": 116191,
+      "sha256": "5f9b4dfa495ed6700b3b8c77daf52a0f41297e2beb16078741eee9b377d56628",
+      "retrieved_at": "2026-10-28T18:48:15.771954+00:00",
+      "timestamp_note": "원본 확보 후 명세 등록 시각",
+      "finding": "김민주·이영인 2017 정시성 확보를 위한 버스노선 당 적정 운행시간 산정 연구. 주행·정차·총운행시간의 측정 사건 구분 참고.",
+      "status": "peer_reviewed_measurement_concepts_not_our_source_definition"
+    },
+    {
+      "path": "data/overnight/probes/kma_2022_extreme_rain.pdf",
+      "url": "https://www.kma.go.kr/down/e-learning/hands/hands_56.pdf",
+      "bytes": 20318379,
+      "sha256": "541d8d0e1b3b3709a2a981aed4542133ba9e4665e2601ba1bb44993cee920ba2",
+      "retrieved_at": "2026-10-28T18:48:15.771954+00:00",
+      "timestamp_note": "원본 확보 후 명세 등록 시각",
+      "finding": "기상청 호우 예보 관련 공개 교재. 2022년 비교 가능성의 기상 맥락 검토 중.",
+      "status": "official_context_pending_relevant_section_review"
+    },
+    {
+      "path": "data/overnight/probes/gtxa_initial_opening_2024.html",
+      "url": "https://molit.go.kr/USR/NEWS/m_72/dtl.jsp?id=95089607&lcmspage=2",
+      "bytes": 58594,
+      "sha256": "6ea8c0d05ff83bd1690b53779ef3b763f852b603db40ab6d4726e7682040021c",
+      "retrieved_at": "2026-10-28T19:12:18.840748+00:00",
+      "finding": "2024-03-30 수서~동탄 최초 개통; 6월 구성역 개통과 별개",
+      "status": "official_historical_policy_scope_not_effect"
+    },
+    {
+      "path": "data/overnight/probes/climate_card_scope_2024.html",
+      "url": "https://news.seoul.go.kr/traffic/archives/512725",
+      "bytes": 117457,
+      "sha256": "5b607caae4d6f52d17a7e1b8f613a2045059c01a31ea8c29deb10395674f220a",
+      "retrieved_at": "2026-10-28T19:12:19.035787+00:00",
+      "finding": "2024-08-07 수정 FAQ: 서울 면허 버스 포함, 광역·타 시도 버스와 신분당선 제외",
+      "status": "official_historical_policy_scope_not_effect"
+    }
+  ],
+  "web_verified_sources": [
+    {
+      "url": "https://www.krihs.re.kr/boardDownload.es?bid=0008&list_no=397975&seq=3",
+      "title": "국토정책 Brief 1036호 수도권 GTX-A(수서~동탄) 개통에 따른 영향 분석",
+      "publication_date": "2025-11-03",
+      "verified_at": "2026-10-28T18:48:15.771954+00:00",
+      "status": "web_pdf_full_text_read_local_http_400",
+      "pages_used": [
+        3,
+        5,
+        7
+      ],
+      "finding": "2024년 1~8월 교통카드 통행사슬·활동 패널. 동탄-서울 주요 노선의 변화 방향이 서로 다름. 요약의 광역버스 감소를 모든 대상 노선으로 일반화하지 않음."
+    }
+  ],
+  "local_pdf_parser": {
+    "package": "pypdf",
+    "version": "6.21.4",
+    "environment": "/tmp/gangnam-pdf-tools",
+    "installation": "uv venv /tmp/gangnam-pdf-tools --python 3.12; uv pip install --python /tmp/gangnam-pdf-tools/bin/python pypdf==6.21.4",
+    "checks": "uv pip show 및 uv pip check 통과. 동결 모델 환경은 변경하지 않음."
+  }
+}

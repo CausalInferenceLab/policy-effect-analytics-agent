@@ -1,0 +1,28 @@
+kind,month,member,rows,header_columns,invalid_date_rows,status,structurally_usable,row_width_counts,missing_required_headers,date_count,first_date,last_date
+bus_time,2022-04,tpss_route_section_speedh_2022.04.04-04.10.csv,527718,31,0,row_width_mismatch,False,"{""31"": 303454, ""33"": 224264}",,7,20220404,20220410
+bus_time,2022-04,tpss_route_section_speedh_2022.04.11-04.17.csv,529744,31,0,row_width_mismatch,False,"{""31"": 453346, ""33"": 76398}",,7,20220411,20220417
+bus_time,2022-04,tpss_route_section_speedh_2022.04.18-04.24.csv,532874,31,0,row_width_mismatch,False,"{""31"": 304497, ""33"": 228377}",,7,20220418,20220424
+bus_time,2022-04,tpss_route_section_speedh_2022.04.25-05.01.csv,529725,31,0,row_width_mismatch,False,"{""31"": 227174, ""33"": 302551}",,7,20220425,20220501
+bus_time,2022-05,tpss_route_section_speedh_2022.05.02-05.08.csv,382539,31,382539,header_mismatch,False,"{""31"": 382539}",기준_날짜,0,,
+bus_time,2022-05,tpss_route_section_speedh_2022.05.09-05.15.csv,225867,31,225867,header_mismatch,False,"{""31"": 225867}",기준_날짜,0,,
+bus_time,2022-05,tpss_route_section_speedh_2022.05.16-05.22.csv,77075,31,77075,header_mismatch,False,"{""31"": 77075}",기준_날짜,0,,
+bus_time,2022-05,tpss_route_section_speedh_2022.05.23-05.29.csv,0,31,0,empty,False,{},기준_날짜,0,,
+bus_time,2022-05,tpss_route_section_speedh_2022.05.30-06.05.csv,0,31,0,empty,False,{},,0,,
+bus_time,2022-06,tpss_route_section_speedh_2022.06.06-06.12.csv,0,31,0,empty,False,{},,0,,
+bus_time,2022-06,tpss_route_section_speedh_2022.06.13-06.19.csv,0,31,0,empty,False,{},,0,,
+bus_time,2022-06,tpss_route_section_speedh_2022.06.20-06.26.csv,537508,31,0,structurally_usable,True,"{""31"": 537508}",,7,20220620,20220626
+bus_time,2022-06,tpss_route_section_speedh_2022.06.27-07.03.csv,457836,31,0,structurally_usable,True,"{""31"": 457836}",,6,20220627,20220703
+bus_time,2022-07,tpss_route_section_speedh_2022.07.04-07.10.csv,230235,31,0,structurally_usable,True,"{""31"": 230235}",,3,20220707,20220710
+bus_time,2022-07,tpss_route_section_speedh_2022.07.11-07.17.csv,307319,31,0,structurally_usable,True,"{""31"": 307319}",,4,20220714,20220717
+bus_time,2022-07,tpss_route_section_speedh_2022.07.18-07.24.csv,463517,31,0,structurally_usable,True,"{""31"": 463517}",,6,20220718,20220724
+bus_time,2022-07,tpss_route_section_speedh_2022.07.25-07.31.csv,313040,31,0,structurally_usable,True,"{""31"": 313040}",,4,20220725,20220728
+bus_time,2022-08,tpss_route_section_speedh_2022.08.01-08.07.csv,0,31,0,empty,False,{},,0,,
+bus_time,2022-08,tpss_route_section_speedh_2022.08.08-08.14.csv,0,31,0,empty,False,{},,0,,
+bus_time,2022-08,tpss_route_section_speedh_2022.08.15-08.21.csv,0,31,0,empty,False,{},,0,,
+bus_time,2022-08,tpss_route_section_speedh_2022.08.22-08.28.csv,0,31,0,empty,False,{},,0,,
+bus_time,2022-08,tpss_route_section_speedh_2022.08.29-09.04.csv,0,31,0,empty,False,{},,0,,
+bus_trips,2022-04,tpss_sta_route_hturn_202204.csv,2404583,32,0,structurally_usable,True,"{""32"": 2404583}",,30,20220401,20220430
+bus_trips,2022-05,tpss_sta_route_hturn_202205.csv,2488720,32,0,structurally_usable,True,"{""32"": 2488720}",,31,20220501,20220531
+bus_trips,2022-06,tpss_sta_route_hturn_202206.csv,2425798,32,0,structurally_usable,True,"{""32"": 2425798}",,30,20220601,20220630
+bus_trips,2022-07,tpss_sta_route_hturn_202207.csv,2486193,32,0,structurally_usable,True,"{""32"": 2486193}",,31,20220701,20220731
+bus_trips,2022-08,tpss_sta_route_hturn_202208.csv,2558865,32,0,structurally_usable,True,"{""32"": 2558865}",,31,20220801,20220831

@@ -1,0 +1,37 @@
+# overnight_auxiliary_config.yaml - 승하차·환승·출도착 보조 자료의 탐색 범위와 사전 선택 규칙
+recorded_at_kst: '2026-10-29T04:09:00+09:00'
+status: exploratory_after_primary_results
+card:
+  dataset: OA-12913
+  annual_history: ['2022']
+  analysis_months: ['2023-04', '2023-05', '2023-06', '2023-07', '2023-08', '2023-09', '2023-10', '2024-04', '2024-05', '2024-06', '2024-07', '2024-08', '2024-09', '2024-10']
+  identity_only_months: ['2025-05', '2025-06', '2025-07', '2025-08']
+  reference_pre_months: [4, 5]
+  reference_post_months: [7, 8]
+  reference_fall_months: [9, 10]
+  scope: 서울 면허 버스의 월별 카드 승하차; 경기 광역버스와 전체 정류장 승객을 대표하지 않음
+  comparison: 고정 중앙정류장별 월 총수와 달력 일수로 나눈 기록; 일별 정책 비교와 동일한 추정량이 아님
+  route_identity: 카드 노선번호를 BIS 노선_ID와 직접 연결하지 않음
+  missing: 없는 행·공란을 0으로 채우지 않음; 숫자 0은 관측값
+  year_2022: 월별 ID·ARS 이력 확인이 우선; 운행시간의 전년 비교 실패를 대체하지 않음
+  year_2025: ID·ARS 이력만 확인; 동결된 예측 특징과 결과는 변경하지 않음
+  pre_window_amendment_before_outcome_analysis: 6월 월계에는 6월 29·30일이 포함되므로 기준 월을 4·5월로 정정. 일별 정책 추정량으로 사용하지 않음.
+transfer_probe:
+  dataset: OA-21221
+  prefix: kscc_dx_trnsf_path_sum
+  months: ['2024-05']
+od_probe:
+  dataset: OA-21222
+  prefix: kscc_dx_ra_od
+  months: ['2024-05']
+probe_rules:
+  - 최초 한 달에서 실제 헤더·행 단위·ID·시간·단위·결측·중복을 검토한 뒤 추가 수집 여부를 정함
+  - 두 카탈로그의 버스·철도 ID 길이 설명이 상반되므로 실제 역사적 정류장 목록과 대조함
+  - 환승시간 분모와 단위가 확인되기 전 분 단위 대기시간이나 도보시간으로 바꾸지 않음
+  - 개인 카드 기록과 이동 경로를 추정하지 않음
+  - 2026년 자료는 수집하지 않음
+archive_limits:
+  compressed_mib: 400
+  uncompressed_gib: 8
+  read_mode: ZIP을 디스크에 해제하지 않고 최대 2개 작업으로 청크 처리
+  amendment: 출도착 2024년 5월은 기존 버스용 2 GiB 해제 한도를 초과하여 탐색 전에 별도 한도를 기록함

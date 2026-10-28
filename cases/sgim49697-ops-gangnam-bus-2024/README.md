@@ -8,7 +8,7 @@
 
 ## 문서와 설정
 
-**10시간 확장 탐색 진행:** [노선군 분리·시간대·승객 기록](overnight-route-report.md)에서 사전 관측으로 고정한 정책 후보 밖 집단의 저녁 남행 −7.32%, 북행 +11.89%를 확인했다. 4개 집계 방식에서 부호가 유지되지만 인과 효과는 아니다. 승객 가중치는 수록 범위가 부족해 24개 비교를 모두 보류했다. [2025년 저속 경보 고정 시험](overnight-forecast-report.md)도 완료했다. 절대 저속은 41개 관측에 불과하고 경보 정밀도 10.6~15.4%라 운영 채택을 보류한다. 상대 저속·속도 범위는 별도 탐색 후보로 남긴다. [첫 결과: 관측 누락·지역 기상](overnight-observation-report.md), [자료 정의·접근 근거](overnight-evidence.md), [전체 탐색 계획과 진행 기록](overnight-plan.md)을 함께 제공한다.
+**10시간 확장 탐색 진행:** [노선군 분리·시간대·승객 기록](overnight-route-report.md)에서 사전 관측으로 고정한 정책 후보 밖 집단의 저녁 남행 −7.32%, 북행 +11.89%를 확인했다. 4개 집계 방식에서 부호가 유지되지만 인과 효과는 아니다. 전체 승객 가중치 비교 24개는 보류했으며, 관측된 제한 표본의 비교는 별도로 보고했다. [2025년 저속 경보 고정 시험](overnight-forecast-report.md)도 완료했다. 절대 저속은 41개 관측에 불과하고 경보 정밀도 10.6~15.4%라 운영 채택을 보류한다. 상대 저속·속도 범위는 별도 탐색 후보로 남긴다. [동시 정책·연구·2022 원본 점검](overnight-context-report.md), [카드·환승·출도착 자료 점검](overnight-auxiliary-report.md)에서는 같은 날 GTX-A 구성역 개통, 정류장 이력과 집계 한계를 추가 확인했다. [첫 결과: 관측 누락·지역 기상](overnight-observation-report.md), [자료 정의·접근 근거](overnight-evidence.md), [전체 탐색 계획과 진행 기록](overnight-plan.md)을 함께 제공한다.
 
 **최신 확장 분석:** [노선 이동·전년 비교·가을 지속성](directional-report.md)에서 2023년 4~8월과 2024년 9~10월을 추가했다. 북행 증가는 표본을 바꿔도 남았고, 남행의 큰 감소 구간은 계속 관측된 표본에서 가을에도 확인됐다. 남행 전체의 기록 누락과 부족한 기상 공통 표본 때문에 전체 정책 효과·날씨 보정 효과는 확정하지 않는다. 노선 이동표와 비교 그림 5장을 제공한다.
 
@@ -17,6 +17,8 @@
 | 파일 | 역할 |
 |---|---|
 | [overnight-route-report.md](overnight-route-report.md) | 노선군·시간·날짜·기상 민감도, 승객 가중 실패와 추가 원본 형식 점검 |
+| [overnight-context-report.md](overnight-context-report.md) | GTX-A·요금상품·관련 연구, 2022년 비교 제외와 82개 기존 ZIP의 전체 행 구조 감사 |
+| [overnight-auxiliary-report.md](overnight-auxiliary-report.md) | 월별 카드의 역사적 ID 대조, 승하차·환승 공개 키와 출도착 결측 점검, 그림 3장 |
 | [overnight-forecast-plan.md](overnight-forecast-plan.md) / [overnight_forecast_config.yaml](overnight_forecast_config.yaml) | 2025 저속 경보의 시간 분할·지연 조건·모델 선택·시험 전 동결 규칙 |
 | [overnight-forecast-report.md](overnight-forecast-report.md) | 고정 시험 24개 모델, 절대·상대 저속 경보, 속도 범위, 실패 진단과 그림 4장 |
 | [requirements-overnight.txt](requirements-overnight.txt) | 기존 CPU 환경에 확률 경보 평가용 scikit-learn을 추가한 고정 의존성 |
