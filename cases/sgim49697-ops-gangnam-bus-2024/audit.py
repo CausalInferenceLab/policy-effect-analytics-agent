@@ -19,10 +19,12 @@ def main():
     check_corridors(summaries, read_yaml("corridors.yaml"))
     hourly = read_hourly(CASE / "data/processed", verify=True)
     data = prepare(hourly, cfg)
+    invalid = hourly.loc[~hourly.is_valid]
     quality = {"registration": registration, "rows": len(hourly), "months": len(paths),
                "links_before_coverage_filter": hourly.link_id.nunique(), "selected_links": data.links,
                "invalid_reasons": {str(k): int(v) for k, v in hourly.invalid_reason.value_counts(dropna=False).items()},
                "valid_fraction": float(hourly.is_valid.mean()), "metadata": metadata,
+               "missing_by_day": {str(k): int(v) for k, v in invalid.groupby(invalid.interval_start_kst.dt.strftime("%Y-%m-%d")).size().items()},
                "prepared_identity": data.identity, "dataset_identity": data.dataset_identity,
                "splits": {name: {"windows": len(data.keys(name)), "date_range": dates}
                           for name, dates in cfg["splits"].items()}}

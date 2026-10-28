@@ -414,3 +414,37 @@ def test_train_subsample_is_stable_and_excludes_holdouts(hourly, small_config):
     np.testing.assert_allclose(actual.lag168, past[:, 0])
     np.testing.assert_allclose(actual.mean24, past[:, -24:].mean(axis=1))
     np.testing.assert_array_equal(actual.hour, data.times[keys[:, 0] + 2].hour)
+
+
+def test_committed_exploratory_protocol_can_run_without_24_hour_wait(tmp_path):
+    subprocess.run(['git', 'init', '-q', str(tmp_path)], check=True)
+    for name in PROTOCOL_FILES:
+        (tmp_path / name).write_text('version: 1\n')
+    (tmp_path / 'data_contract.yaml').write_text('version: 1\nexecution:\n  mode: exploratory\n  authorization: 사용자 즉시 실행 요청\n')
+    env = {**os.environ, 'GIT_AUTHOR_DATE': '2026-01-01T00:00:00+00:00', 'GIT_COMMITTER_DATE': '2026-01-01T00:00:00+00:00'}
+    subprocess.run(['git', '-C', str(tmp_path), 'add', '--', *PROTOCOL_FILES], check=True)
+    subprocess.run(['git', '-C', str(tmp_path), '-c', 'user.name=검증', '-c', 'user.email=test@example.org',
+                    'commit', '-qm', '탐색 실행 규약'], env=env, check=True)
+    result = require_registration(tmp_path, datetime(2026, 1, 1, 0, 1, tzinfo=UTC))
+    assert result['mode'] == 'exploratory'
+    (tmp_path / 'ml_config.yaml').write_text('version: 2\n')
+    with pytest.raises(ValueError, match='먼저 커밋'):
+        require_registration(tmp_path)
+
+
+def test_assumed_graph_requires_exploratory_authorization(tmp_path, small_config):
+    pytest.importorskip('torch')
+    from gangnam.common import write_json
+    from gangnam.graph import load_graph
+    path = tmp_path / 'edges.csv'
+    path.write_text('source_link,target_link,weight\na,b,1\nb,c,1\n')
+    write_json(path.with_suffix('.source.json'), {
+        'verified': False, 'status': 'assumed', 'method': 'stable_metadata_endpoints',
+        'source': 'https://topis.seoul.go.kr/refRoom/openRefRoom_1.do', 'sha256': sha256(path),
+        'valid_from': '2023-01-01', 'valid_to': '2024-08-31', 'node_ids': ['a', 'b', 'c']})
+    contract = copy.deepcopy(read_yaml('data_contract.yaml'))
+    graph, evidence = load_graph(path, ['a', 'b', 'c'], contract, small_config)
+    assert graph[0, 1] == 1 and evidence['verified'] is False
+    contract['execution']['mode'] = 'preregistered'
+    with pytest.raises(ValueError, match='공식 근거'):
+        load_graph(path, ['a', 'b', 'c'], contract, small_config)

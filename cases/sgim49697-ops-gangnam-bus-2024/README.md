@@ -4,7 +4,7 @@
 
 작업 제안: [이슈 #53](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/issues/53).
 
-**실행 코드와 합성자료 검증을 완료했고, 실자료 분석은 근거 확인을 기다리는 단계다.** 월별 원본 20개를 확보했다. [계획 PR #54](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/54)와 [구현 PR #55](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/55)를 분리했다. 현재 작업 브랜치는 `sgim49697-ops/gangnam-pipeline`이다. 실제 정책 효과와 모델 성능은 아직 계산하지 않았다. 시간 표기·결측·이용 조건·2023년 속성 변경·비교 도로 노출에 미해결 사항이 있다.
+**20개월 실자료를 사용해 정책 전후 비교와 9개 예측 모델의 탐색 분석을 실행한다.** [계획 PR #54](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/54), [구현·결과 PR #55](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/55)를 분리했으며 작업 브랜치는 `sgim49697-ops/gangnam-pipeline`이다. 사용자 요청에 따라 24시간 대기 대신 명시적 탐색 모드를 사용한다. 시간 표기·0값·측정 일관성·비교 도로 노출·그래프는 검증된 사실과 구별해 가정으로 남긴다.
 
 ## 문서와 설정
 
@@ -50,34 +50,32 @@ uv pip check --python .venv/bin/python
 ## 수집·분석 순서
 
 ```bash
-# 현재도 가능: 원본·메타데이터만 수집. 속도 수치를 해석하지 않는다.
-.venv/bin/python fetch.py --metadata-only
-.venv/bin/python fetch.py --scope ml --metadata-only
-.venv/bin/python validate.py --structural-only
-
-# 공식 정의·역사적 노출을 확인하고 설정을 커밋한 지 24시간 이상 지난 뒤 실행.
+# 70e8ec7에서 결과를 보기 전 가정·제외 링크·계산 예산을 고정했다.
 .venv/bin/python validate.py
-.venv/bin/python fetch.py
+.venv/bin/python fetch.py --scope ml --workers 4
+.venv/bin/python audit.py
 .venv/bin/python estimate.py
-.venv/bin/python fetch.py --scope ml
-.venv/bin/python forecast.py train --run main_v1 --models all
-.venv/bin/python forecast.py evaluate --run main_v1 --models all --split pre_test
-.venv/bin/python forecast.py evaluate --run main_v1 --models all --split transition
-.venv/bin/python forecast.py evaluate --run main_v1 --models all --split post_test
-.venv/bin/python forecast.py compare --run main_v1 --models all --split post_test
+.venv/bin/python forecast.py train --run exploration_20261028 --models all --graph data/graph/edges.csv
+for split in pre_test transition post_test; do
+  .venv/bin/python forecast.py evaluate --run exploration_20261028 --models all --split "$split" --graph data/graph/edges.csv
+  .venv/bin/python forecast.py compare --run exploration_20261028 --models all --split "$split" --graph data/graph/edges.csv
+done
+.venv/bin/python summarize.py --run exploration_20261028
 ```
 
-현재 `validate.py`는 미해결 근거를 출력하고 종료 코드 2를 반환하는 것이 정상이다. `--structural-only`는 설정 문법·구조 점검용이며 분석 허가가 아니다. `pending`은 출처를 확인한 뒤에만 `verified`로 바꾼다. 24시간 경과만으로 자료 관문이 해제되지 않는다.
+새 실행에는 새 `--run` 이름을 사용한다. 실행 중 오류가 나면 로그·부분 결과를 보존하고 원인을 해결한 뒤 다른 실행 이름으로 재시작한다. 실제 학습에서는 독립적인 CPU CatBoost와 GPU 모델 작업을 동시에 실행할 수 있다. GPU 모델끼리는 순차 실행한다.
 
-검증된 그래프가 없으면 `all`의 DCRNN·STGCN은 보류 기록을 남긴다. 그래프를 확보한 경우 `--graph data/graph/edges.csv`를 학습·평가 양쪽에 전달한다. CSV는 `source_link,target_link,weight`, 같은 경로의 `edges.source.json`은 `verified,source,sha256,node_ids,valid_from,valid_to`를 갖춰야 한다. 전체 학습·평가 기간의 유효성을 요구한다.
+`validate.py`는 현재 `mode: exploratory`와 가정 목록을 출력한다. `assumed`는 공식 확인 완료를 뜻하지 않는다. 탐색 모드와 사용자 요청 근거가 없으면 기존의 검증 완료·커밋 후 24시간 관문이 적용된다. 어떤 모드에서도 미커밋 설정으로 실자료를 실행하지 않는다.
 
-비우천 민감도는 공식 ASOS 108 일별 CSV를 `weather.py 입력.csv --evidence 근거.json`으로 정규화하고 `estimate.py --weather data/weather/daily.csv`로 실행한다. 근거에는 `verified,source,raw_sha256,unit,blank_precipitation`이 필요하며 빈칸을 0으로 바꾸려면 공식 정의가 있어야 한다. 예측 입력에는 미래 실제 날씨를 쓰지 않는다.
+`audit.py`는 원자료의 결측 사유, train 관측률로 고른 링크, 분할별 공통 창, 메타데이터 변경 이력을 기록한다. `data/graph/edges.csv`는 전 기간에 안정적인 동일 도로·방향의 종점명→시점명 연결이다. 동반 근거는 `verified: false`, `status: assumed`이며 역사적 회전 가능성을 검증한 지도가 아니다.
+
+공식 ASOS 108 일별 CSV와 결측 정의를 확보하면 `weather.py 입력.csv --evidence 근거.json` 후 `estimate.py --weather data/weather/daily.csv`로 비우천 민감도를 추가할 수 있다. 아직 빈 표시의 정의를 확인하지 못했으므로 이번 실행에서 기상 결측을 무강수로 바꾸지 않는다. 예측 입력에 미래 실제 날씨를 쓰지 않는다.
 
 `fetch.py` 기본 실행은 기준을 만족할 때 `data/panel.csv`를 만든다. 비교군 부족이면 `data/descriptive.csv`만 만든다. 개인 `estimate.py`는 `runs/policy/`에 기술통계·DiD·주별 격차·민감도·그림·보고서를 생성한다. **공통 `make flow`는 이 개인 실행기를 호출하지 않는다.** 개인 진단은 위 명령으로 재현한다.
 
 ## 저장·검증 규칙
 
-원본·Parquet·기상자료는 `data/`, 예측 행·체크포인트·실행 로그는 `runs/`에 두며 Git에서 제외한다. 실행 폴더는 덮어쓰지 않는다. 실자료 결과 공개 전 이용 조건을 확인하고 필요한 집계·그림·해석만 후속 결과 PR에 넣는다. 다른 참여자의 사례와 `core/`, `site/`는 수정하지 않는다.
+원본·Parquet·기상자료는 `data/`, 예측 행·체크포인트·실행 로그는 `runs/`에 두며 Git에서 제외한다. 실행 폴더는 덮어쓰지 않는다. 월별 파일의 개별 이용 조건은 미확정으로 남기고 공개 산출물은 필요한 집계·자체 그림·해석·출처로 제한한다. 체크포인트와 개별 예측은 재배포하지 않는다. 다른 참여자의 사례와 `core/`, `site/`는 수정하지 않는다.
 
 저장소 루트의 기본 검증은 `make check PY=.venv/bin/python`이다. 선택 ML 의존성까지 설치한 환경에서는 아래 명령으로 사례 테스트를 모두 실행한다.
 

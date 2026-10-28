@@ -12,7 +12,7 @@ from pathlib import Path
 
 import numpy as np
 
-from .common import utcnow, write_json
+from .common import CASE, sha256, utcnow, write_json
 from .windows import baseline, features
 
 BASELINES = {"last_value", "weekly_naive", "weekday_hour_mean"}
@@ -243,6 +243,7 @@ def train_model(name, data, root, holiday_dates, registration, adjacency=None, g
     folder.mkdir(parents=True)
     common = {"model": name, "prepared_identity": data.identity, "dataset_identity": data.dataset_identity, "registration": registration,
               "links": data.links, "created_at": utcnow(), "graph_evidence": graph_evidence,
+              "source_hashes": {f: sha256(CASE / "gangnam" / f) for f in ("common.py", "windows.py", "models.py", "graph.py")},
               "group": "external_pretraining" if name == "chronos2" else "local_history"}
     if name in BASELINES or name == "chronos2":
         write_json(folder / "selection.json", {**common, "params": data.cfg["models"][name], "seeds": [0], "trials": []})
