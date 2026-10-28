@@ -82,4 +82,6 @@
 
 채택할 방향은 **저녁·구간별로 오차가 다른 속도 범위 예측**이다. 더 복잡한 모델 추가보다 사전에 정한 과거 보정 창·시간대별 보정 규칙을 새 기간에서 평가하는 것이 우선이다. 지금 시험에서 가장 좋은 보정값을 고른 뒤 같은 시험을 다시 성능 증거로 사용하지 않는다. 실제 제공 지연과 운영 사건의 정의도 별도 확인이 필요하다.
 
+[후속 보정 탐색](overnight-interval-report.md)에서 3월 고정·28일 이동 창과 오차 공개 지연을 비교했다. 저녁 포함률은 높아졌지만 폭도 커졌고 구간 점수의 개선은 뚜렷하지 않았다. 기존 모델과 이 보고서의 원본 결과는 유지했다.
+
 원본·특징·모델 캐시를 보유한 사례 환경에서 `python overnight.py baseline-prepare`, `baseline-evaluate`, `baseline-plots`를 실행한다. 준비 단계는 기존 명세를 검증하고 재사용한다. 새 체크아웃에는 Git 제외 원본·모델이 없으므로 전체 평가가 즉시 실행되지는 않는다. 커밋된 명세는 원실행 검증 자료이며 다른 환경에서의 재학습을 동일 바이너리라고 간주하지 않는다. 그림은 커밋된 비교표로 다시 만들 수 있다. [전체 확률 지표](results/overnight/forecast_baselines/probability_metrics.csv), [구간 지표](results/overnight/forecast_baselines/quantile_metrics.csv), [확률 짝 비교](results/overnight/forecast_baselines/probability_paired.csv), [구간 짝 비교](results/overnight/forecast_baselines/quantile_paired.csv), [평가 감사](results/overnight/forecast_baselines/evaluation_audit.json), [논문·공식 자료 출처](overnight-supplement-references.json)를 제공한다.

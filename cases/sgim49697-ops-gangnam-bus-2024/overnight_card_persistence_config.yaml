@@ -1,0 +1,36 @@
+# overnight_card_persistence_config.yaml - 검증된 중앙 정류장 카드 기록의 2025년 지속성 탐색
+version: 1
+mode: exploratory_after_2025_common_operations_results
+locked_year: 2026
+dataset: OA-12912
+months: ['2024-05', '2024-06', '2024-07', '2024-08', '2025-05', '2025-06', '2025-07', '2025-08']
+new_months: ['2025-05', '2025-06', '2025-07', '2025-08']
+reuse_daily_manifest: overnight-daily-card-full-sources.json
+monthly_reference: overnight-auxiliary-sources.json
+previous_monthly_2025_role: 이전 ID 이력 확인용 원본을 별도 사전 규칙에 따라 이번 탐색의 결과 분석에 사용; 이전 출처·결과는 보존
+identity: results/directional/station_registry.csv
+groups: [central_south, central_north]
+calendar_from: overnight_persistence_config.yaml
+selection: 기존 중앙 16개 정류장 고정; 공개된 모든 노선 표기의 서로 다른 기록을 합산
+reconciliation: 정류장·월·승하차별 일별 합과 월별 24시간 합의 정확 일치·원본 날짜 완전성·정확 중복 0개 요구
+group_total: 방향별 8개 정류장이 그날 모두 유효할 때만 하루 총계 공개
+identity_guard: 선택된 모든 월 원본의 ID·ARS 조합이 기존 정류장과 일치해야 함
+comparisons:
+  summer2024: [pre2024, post2024]
+  summer2025: [pre2025, post2025]
+  pre_year_over_year: [pre2024, pre2025]
+  post_year_over_year: [post2024, post2025]
+  post2025_from_pre2024: [pre2024, post2025]
+minimum_days: 20
+maximum_coverage_gap: 0.10
+bootstrap: {draws: 2000, seed: 20261029}
+monthly_hours:
+  role: 보조 시간대별 전년 같은 월 변화; 평일 창 또는 일별 시간대로 해석하지 않음
+  pairs: [['2024-05', '2025-05'], ['2024-06', '2025-06'], ['2024-07', '2025-07'], ['2024-08', '2025-08']]
+  bands_from: overnight_config.yaml
+resources: {download_workers: 2, compressed_csv_limit_mib: 180, minimum_free_gib: 25}
+interpretation:
+  - 서울 면허 버스의 승하차 기록이며 경기 광역버스 전체·고유 이용자·차량별 탑승 인원이 아님
+  - 공통 운행 셀과 표본·시각 범위가 다르므로 승차 기록 증가율의 직접 일치를 요구하지 않음
+  - 2025년 지하철 요금 변경·노선 구성·동시 정책·계절을 분리한 인과 효과가 아님
+  - 원본 부재·공란·부적합 월은 0으로 대체하거나 유리한 날짜로 보완하지 않음

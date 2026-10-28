@@ -1,0 +1,427 @@
+[
+  {
+    "kind": "bus_boardings",
+    "month": "2025-04",
+    "path": "data/overnight/operations_persistence/processed/bus_boardings_2025-04.parquet",
+    "raw_sha256": "f44628c6430b142773638c89016613f9d1f407cb8a12a8d8e3439a0cc24f9a4f",
+    "sha256": "ce0b13beac5553f621aca94d641f62c501695ce9237518969d4e7a8638397a10",
+    "signature": "db5eff33ceaa11dccf85dd859c7b04d5440d0eec7ff553f8d96872ddde3c9019",
+    "rows_scanned": 2377305,
+    "rows_selected": 26327,
+    "dates": [
+      "20250407",
+      "20250408",
+      "20250409",
+      "20250410",
+      "20250411",
+      "20250412",
+      "20250413",
+      "20250414",
+      "20250415",
+      "20250416",
+      "20250417",
+      "20250418",
+      "20250419",
+      "20250420",
+      "20250421",
+      "20250422",
+      "20250423",
+      "20250424",
+      "20250425",
+      "20250426",
+      "20250427",
+      "20250428",
+      "20250429",
+      "20250430",
+      "20250501",
+      "20250502",
+      "20250503",
+      "20250504"
+    ],
+    "hours": [
+      7,
+      8,
+      9,
+      11,
+      12,
+      13,
+      14,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22
+    ],
+    "stops_hash": "9e5e14aa4648b85d18b8e92bbf80033b2833a16b3f4fe83fc8525662d31d40e9",
+    "parser_sha256": "684af0690c28ef4c7c48330029965e146882eb3c4eefd0e205a4c49ffef15ab5",
+    "members": [
+      {
+        "member": "tpss_sta_route_hpasngr_2025.04.07-04.13.csv",
+        "header_columns": 29,
+        "rows_scanned": 594316,
+        "status": "all_row_widths_verified"
+      },
+      {
+        "member": "tpss_sta_route_hpasngr_2025.04.14-04.20.csv",
+        "header_columns": 29,
+        "rows_scanned": 595156,
+        "status": "all_row_widths_verified"
+      },
+      {
+        "member": "tpss_sta_route_hpasngr_2025.04.21-04.27.csv",
+        "header_columns": 29,
+        "rows_scanned": 595141,
+        "status": "all_row_widths_verified"
+      },
+      {
+        "member": "tpss_sta_route_hpasngr_2025.04.28-05.04.csv",
+        "header_columns": 29,
+        "rows_scanned": 592692,
+        "status": "all_row_widths_verified"
+      }
+    ]
+  },
+  {
+    "kind": "bus_boardings",
+    "month": "2025-05",
+    "path": "data/overnight/operations_persistence/processed/bus_boardings_2025-05.parquet",
+    "raw_sha256": "5765812b3b6d8a1b0526309eda8aef861107347b2378c0c8b3f54225fad12e30",
+    "sha256": "6d4c5e9c90c7217f5a8481fbd4a233599491bca19813c2dcea46b4ca59791db5",
+    "signature": "831058f6108601a7edd3f0b24799edbcbc4d9d0fb49b5b255d06fc2f3188125d",
+    "rows_scanned": 2369292,
+    "rows_selected": 26220,
+    "dates": [
+      "20250505",
+      "20250506",
+      "20250507",
+      "20250508",
+      "20250509",
+      "20250510",
+      "20250511",
+      "20250512",
+      "20250513",
+      "20250514",
+      "20250515",
+      "20250516",
+      "20250517",
+      "20250518",
+      "20250519",
+      "20250520",
+      "20250521",
+      "20250522",
+      "20250523",
+      "20250524",
+      "20250525",
+      "20250526",
+      "20250527",
+      "20250528",
+      "20250529",
+      "20250530",
+      "20250531",
+      "20250601"
+    ],
+    "hours": [
+      7,
+      8,
+      9,
+      11,
+      12,
+      13,
+      14,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22
+    ],
+    "stops_hash": "9e5e14aa4648b85d18b8e92bbf80033b2833a16b3f4fe83fc8525662d31d40e9",
+    "parser_sha256": "684af0690c28ef4c7c48330029965e146882eb3c4eefd0e205a4c49ffef15ab5",
+    "members": [
+      {
+        "member": "tpss_sta_route_hpasngr_2025.05.05-05.11.csv",
+        "header_columns": 29,
+        "rows_scanned": 582649,
+        "status": "all_row_widths_verified"
+      },
+      {
+        "member": "tpss_sta_route_hpasngr_2025.05.12-05.18.csv",
+        "header_columns": 29,
+        "rows_scanned": 595070,
+        "status": "all_row_widths_verified"
+      },
+      {
+        "member": "tpss_sta_route_hpasngr_2025.05.19-05.25.csv",
+        "header_columns": 29,
+        "rows_scanned": 595655,
+        "status": "all_row_widths_verified"
+      },
+      {
+        "member": "tpss_sta_route_hpasngr_2025.05.26-06.01.csv",
+        "header_columns": 29,
+        "rows_scanned": 595918,
+        "status": "all_row_widths_verified"
+      }
+    ]
+  },
+  {
+    "kind": "bus_boardings",
+    "month": "2025-06",
+    "path": "data/overnight/operations_persistence/processed/bus_boardings_2025-06.parquet",
+    "raw_sha256": "0777b8367636bcdd96b459cd7a09cbd949b45409cb0593bb4feb12eba3e226c6",
+    "sha256": "31e798a6acd8e60fbc1f1c62bcac28c913c744e720a267baeea743f15189580c",
+    "signature": "92fb16aa59bc5a705ce908028244ebd2da6f72447171d8de441b695e29a1363f",
+    "rows_scanned": 2711458,
+    "rows_selected": 29960,
+    "dates": [
+      "20250602",
+      "20250603",
+      "20250604",
+      "20250605",
+      "20250606",
+      "20250607",
+      "20250608",
+      "20250609",
+      "20250610",
+      "20250611",
+      "20250612",
+      "20250613",
+      "20250614",
+      "20250615",
+      "20250616",
+      "20250617",
+      "20250618",
+      "20250619",
+      "20250620",
+      "20250621",
+      "20250622",
+      "20250623",
+      "20250624",
+      "20250625",
+      "20250626",
+      "20250627",
+      "20250628",
+      "20250629",
+      "20250703",
+      "20250704",
+      "20250705",
+      "20250706"
+    ],
+    "hours": [
+      7,
+      8,
+      9,
+      11,
+      12,
+      13,
+      14,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22
+    ],
+    "stops_hash": "9e5e14aa4648b85d18b8e92bbf80033b2833a16b3f4fe83fc8525662d31d40e9",
+    "parser_sha256": "684af0690c28ef4c7c48330029965e146882eb3c4eefd0e205a4c49ffef15ab5",
+    "members": [
+      {
+        "member": "tpss_sta_route_hpasngr_2025.06.02-06.08.csv",
+        "header_columns": 29,
+        "rows_scanned": 584885,
+        "status": "all_row_widths_verified"
+      },
+      {
+        "member": "tpss_sta_route_hpasngr_2025.06.09-06.15.csv",
+        "header_columns": 29,
+        "rows_scanned": 595760,
+        "status": "all_row_widths_verified"
+      },
+      {
+        "member": "tpss_sta_route_hpasngr_2025.06.16-06.22.csv",
+        "header_columns": 29,
+        "rows_scanned": 596391,
+        "status": "all_row_widths_verified"
+      },
+      {
+        "member": "tpss_sta_route_hpasngr_2025.06.23-06.29.csv",
+        "header_columns": 29,
+        "rows_scanned": 596432,
+        "status": "all_row_widths_verified"
+      },
+      {
+        "member": "tpss_sta_route_hpasngr_2025.06.30-07.06.csv",
+        "header_columns": 29,
+        "rows_scanned": 337990,
+        "status": "all_row_widths_verified"
+      }
+    ]
+  },
+  {
+    "kind": "bus_boardings",
+    "month": "2025-07",
+    "path": "data/overnight/operations_persistence/processed/bus_boardings_2025-07.parquet",
+    "raw_sha256": "6e88e6120d0e031d3e49a7d0f2d2f05b869e11b3fff6e8c63ea1041abdcabd10",
+    "sha256": "13c478fcd9301d79fb34a7bc00ee948a413631e36c4199a7f7b13931dd07496b",
+    "signature": "3f3e8e1cddc1ed986d06ec1b47250eac73465a078dde3010d07790dce90bdb9a",
+    "rows_scanned": 2388030,
+    "rows_selected": 26356,
+    "dates": [
+      "20250707",
+      "20250708",
+      "20250709",
+      "20250710",
+      "20250711",
+      "20250712",
+      "20250713",
+      "20250714",
+      "20250715",
+      "20250716",
+      "20250717",
+      "20250718",
+      "20250719",
+      "20250720",
+      "20250721",
+      "20250722",
+      "20250723",
+      "20250724",
+      "20250725",
+      "20250726",
+      "20250727",
+      "20250728",
+      "20250729",
+      "20250730",
+      "20250731",
+      "20250801",
+      "20250802",
+      "20250803"
+    ],
+    "hours": [
+      7,
+      8,
+      9,
+      11,
+      12,
+      13,
+      14,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22
+    ],
+    "stops_hash": "9e5e14aa4648b85d18b8e92bbf80033b2833a16b3f4fe83fc8525662d31d40e9",
+    "parser_sha256": "684af0690c28ef4c7c48330029965e146882eb3c4eefd0e205a4c49ffef15ab5",
+    "members": [
+      {
+        "member": "tpss_sta_route_hpasngr_2025.07.07-07.13.csv",
+        "header_columns": 29,
+        "rows_scanned": 596734,
+        "status": "all_row_widths_verified"
+      },
+      {
+        "member": "tpss_sta_route_hpasngr_2025.07.14-07.20.csv",
+        "header_columns": 29,
+        "rows_scanned": 597560,
+        "status": "all_row_widths_verified"
+      },
+      {
+        "member": "tpss_sta_route_hpasngr_2025.07.21-07.27.csv",
+        "header_columns": 29,
+        "rows_scanned": 596462,
+        "status": "all_row_widths_verified"
+      },
+      {
+        "member": "tpss_sta_route_hpasngr_2025.07.28-08.03.csv",
+        "header_columns": 29,
+        "rows_scanned": 597274,
+        "status": "all_row_widths_verified"
+      }
+    ]
+  },
+  {
+    "kind": "bus_boardings",
+    "month": "2025-08",
+    "path": "data/overnight/operations_persistence/processed/bus_boardings_2025-08.parquet",
+    "raw_sha256": "d52263c65a7090b13d20173af5b3dbce4979d68379246d4c6929b36466bfcb2f",
+    "sha256": "e8b4d971eeafe9635dff05caa096461a1068e588869709dd640e45ac485075a1",
+    "signature": "05a845d44cacc7688504b909d63544fa8657a84190ef03ad4d5dd1a0165fe983",
+    "rows_scanned": 2377948,
+    "rows_selected": 26316,
+    "dates": [
+      "20250804",
+      "20250805",
+      "20250806",
+      "20250807",
+      "20250808",
+      "20250809",
+      "20250810",
+      "20250811",
+      "20250812",
+      "20250813",
+      "20250814",
+      "20250815",
+      "20250816",
+      "20250817",
+      "20250818",
+      "20250819",
+      "20250820",
+      "20250821",
+      "20250822",
+      "20250823",
+      "20250824",
+      "20250825",
+      "20250826",
+      "20250827",
+      "20250828",
+      "20250829",
+      "20250830",
+      "20250831"
+    ],
+    "hours": [
+      7,
+      8,
+      9,
+      11,
+      12,
+      13,
+      14,
+      17,
+      18,
+      19,
+      20,
+      21,
+      22
+    ],
+    "stops_hash": "9e5e14aa4648b85d18b8e92bbf80033b2833a16b3f4fe83fc8525662d31d40e9",
+    "parser_sha256": "684af0690c28ef4c7c48330029965e146882eb3c4eefd0e205a4c49ffef15ab5",
+    "members": [
+      {
+        "member": "tpss_sta_route_hpasngr_2025.08.04-08.10.csv",
+        "header_columns": 29,
+        "rows_scanned": 599283,
+        "status": "all_row_widths_verified"
+      },
+      {
+        "member": "tpss_sta_route_hpasngr_2025.08.11-08.17.csv",
+        "header_columns": 29,
+        "rows_scanned": 590200,
+        "status": "all_row_widths_verified"
+      },
+      {
+        "member": "tpss_sta_route_hpasngr_2025.08.18-08.24.csv",
+        "header_columns": 29,
+        "rows_scanned": 594323,
+        "status": "all_row_widths_verified"
+      },
+      {
+        "member": "tpss_sta_route_hpasngr_2025.08.25-08.31.csv",
+        "header_columns": 29,
+        "rows_scanned": 594142,
+        "status": "all_row_widths_verified"
+      }
+    ]
+  }
+]

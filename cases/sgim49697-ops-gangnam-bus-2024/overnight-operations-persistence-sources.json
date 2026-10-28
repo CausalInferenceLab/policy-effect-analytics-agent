@@ -1,0 +1,90 @@
+{
+  "description": "2025년 고정 공통 셀의 승차 기록 연장. 4월은 주간 파일의 월 경계용이며 결과 기간은 고정.",
+  "files": [
+    {
+      "kind": "bus_boardings",
+      "month": "2025-04",
+      "path": "data/overnight/operations_persistence/bus_boardings_2025-04.zip",
+      "source": "https://data.seoul.go.kr/dataList/OA-21219/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21219",
+        "infSeq": "3",
+        "seq": "2504",
+        "seqNo": ""
+      },
+      "bytes": 43681402,
+      "sha256": "f44628c6430b142773638c89016613f9d1f407cb8a12a8d8e3439a0cc24f9a4f",
+      "retrieved_at": "2026-10-28T22:11:34.129038+00:00"
+    },
+    {
+      "kind": "bus_boardings",
+      "month": "2025-05",
+      "path": "data/overnight/operations_persistence/bus_boardings_2025-05.zip",
+      "source": "https://data.seoul.go.kr/dataList/OA-21219/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21219",
+        "infSeq": "3",
+        "seq": "2505",
+        "seqNo": ""
+      },
+      "bytes": 43576788,
+      "sha256": "5765812b3b6d8a1b0526309eda8aef861107347b2378c0c8b3f54225fad12e30",
+      "retrieved_at": "2026-10-28T22:11:39.239823+00:00"
+    },
+    {
+      "kind": "bus_boardings",
+      "month": "2025-06",
+      "path": "data/overnight/operations_persistence/bus_boardings_2025-06.zip",
+      "source": "https://data.seoul.go.kr/dataList/OA-21219/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21219",
+        "infSeq": "3",
+        "seq": "2506",
+        "seqNo": ""
+      },
+      "bytes": 49793951,
+      "sha256": "0777b8367636bcdd96b459cd7a09cbd949b45409cb0593bb4feb12eba3e226c6",
+      "retrieved_at": "2026-10-28T22:11:43.069461+00:00"
+    },
+    {
+      "kind": "bus_boardings",
+      "month": "2025-07",
+      "path": "data/overnight/operations_persistence/bus_boardings_2025-07.zip",
+      "source": "https://data.seoul.go.kr/dataList/OA-21219/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21219",
+        "infSeq": "3",
+        "seq": "2507",
+        "seqNo": ""
+      },
+      "bytes": 43902636,
+      "sha256": "6e88e6120d0e031d3e49a7d0f2d2f05b869e11b3fff6e8c63ea1041abdcabd10",
+      "retrieved_at": "2026-10-28T22:11:43.566014+00:00"
+    },
+    {
+      "kind": "bus_boardings",
+      "month": "2025-08",
+      "path": "data/overnight/operations_persistence/bus_boardings_2025-08.zip",
+      "source": "https://data.seoul.go.kr/dataList/OA-21219/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21219",
+        "infSeq": "3",
+        "seq": "2508",
+        "seqNo": ""
+      },
+      "bytes": 43735139,
+      "sha256": "d52263c65a7090b13d20173af5b3dbce4979d68379246d4c6929b36466bfcb2f",
+      "retrieved_at": "2026-10-28T22:11:45.998388+00:00"
+    }
+  ]
+}

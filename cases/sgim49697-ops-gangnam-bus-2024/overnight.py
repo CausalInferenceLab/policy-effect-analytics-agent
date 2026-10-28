@@ -76,6 +76,7 @@ STAGES = {
     "relative-ablation-plots": ("overnight_relative_ablation_plots", "plot", []),
     "conditional-low-prepare": ("overnight_conditional_low", "prepare", []),
     "conditional-low-evaluate": ("overnight_conditional_low", "evaluate", []),
+    "operations-persistence-plots": ("overnight_operations_persistence_plots", "plot", []),
     "persistence-segments": ("overnight_persistence_segments", "run", []),
     "persistence-segments-plots": ("overnight_persistence_segments_plots", "plot", []),
 }
