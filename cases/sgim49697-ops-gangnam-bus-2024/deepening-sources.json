@@ -130,6 +130,48 @@
       "retrieved_at": "2026-10-29T06:15:36.053881+00:00",
       "scope": "thread_count 기본값 -1과 전체 코어 사용 설명 확인; 새 월별 모형은 명시적으로 2개 제한",
       "status": "retrieved_for_methods_review"
+    },
+    {
+      "id": "heolleung_brt_opening_202501",
+      "title": "헌릉로 중앙버스전용차로 2구간 2025년 1월 11일 개통 안내",
+      "source": "https://mediahub.seoul.go.kr/archives/2013139",
+      "url": "https://mediahub.seoul.go.kr/archives/2013139",
+      "method": "GET",
+      "path": "data/deepening/references/heolleung_brt_opening_202501.html",
+      "kind": "html",
+      "bytes": 145220,
+      "sha256": "95bbb51fd5a5abbdd6a3a75a40c60294338471a8e59926ea51afca78421b16a4",
+      "retrieved_at": "2026-10-29T06:44:19.293677+00:00",
+      "scope": "본문·정류소별 노선 표 확인. 개통 사전 안내이며 실제 첫 운행 기록은 아님.",
+      "status": "primary_document_partial_review"
+    },
+    {
+      "id": "heolleung_council_20230621",
+      "title": "2023년 6월 21일 서울시의회 헌릉로 가로변 정류장 존치 청원",
+      "source": "https://ms.smc.seoul.kr/record/recordView.do?key=279e8a70cc0c39a40f9ac388dfe0ce45f5b310361158db5b6560b68b0a20308b3725cd47d6ab8d6b",
+      "url": "https://ms.smc.seoul.kr/record/recordView.do?key=279e8a70cc0c39a40f9ac388dfe0ce45f5b310361158db5b6560b68b0a20308b3725cd47d6ab8d6b",
+      "method": "GET",
+      "path": "data/deepening/references/heolleung_council_20230621.html",
+      "kind": "html",
+      "bytes": 655863,
+      "sha256": "f4a8eede15032ada9e0fd81b534f9453fb9fd16733bc79ee82f3c91ba4756519",
+      "retrieved_at": "2026-10-29T06:44:19.886800+00:00",
+      "scope": "안건 8의 헌릉로 청원 검토 부분 확인: 2023년 7월 강남대로 연결 구간 착공 예정, 가로변 정류소·유턴 존치 요청. 실제 공정일 기록은 아님.",
+      "status": "primary_document_partial_review"
+    },
+    {
+      "id": "heolleung_council_20231102",
+      "title": "2023년 11월 2일 서울시의회 도시교통실 감사",
+      "source": "https://ms.smc.seoul.kr/record/recordView.do?key=4833d0888ff75d435db3fd39dd276a674565cde2a50768454885758e3f741b6adf7c5572346477c5",
+      "url": "https://ms.smc.seoul.kr/record/recordView.do?key=4833d0888ff75d435db3fd39dd276a674565cde2a50768454885758e3f741b6adf7c5572346477c5",
+      "method": "GET",
+      "path": "data/deepening/references/heolleung_council_20231102.html",
+      "kind": "html",
+      "bytes": 538010,
+      "sha256": "56c6b07d9fca73b150545f1367ca790297988a7067a1fcde70963fd59e40c488",
+      "retrieved_at": "2026-10-29T06:44:20.222384+00:00",
+      "scope": "업무보고 35쪽을 설명하는 문단 확인: 2023년 1구간 개통 및 2구간 공사 진행 보고. 월별·일별 공정이나 2024년 차로 통제 날짜는 미확인.",
+      "status": "primary_document_partial_review"
     }
   ]
 }

@@ -4,6 +4,7 @@ import argparse
 import importlib
 
 COMMANDS = {
+    "metadata-audit": ("deepening_metadata", "run"),
     "transition-raw-check": ("deepening_transition_check", "raw_check"),
     "transition-result-check": ("deepening_transition_check", "result_check"),
     "transition-plots": ("deepening_transition_plots", "run"),
