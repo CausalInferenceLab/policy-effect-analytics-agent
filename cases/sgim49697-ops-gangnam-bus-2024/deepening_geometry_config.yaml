@@ -1,0 +1,18 @@
+# 공개된 서비스링크 보간점의 2022·2025 버전과 2025 표준링크 대응만 수집한다.
+version: 1
+purpose: 도로 형상·ID 대응의 기록 비교. 2022·2025 두 버전 사이 변경 시점과 2024년 공사 노출은 별도 확인 필요
+catalogs:
+  - id: OA-15060
+    source_id: seoul_link_vertex_catalog
+    titles: ['서비스링크 보간점 정보(LINK_VERTEX)_2022.xlsx', '서비스링크 보간점 정보(LINK_VERTEX)_2025.xlsx']
+  - id: OA-15061
+    source_id: seoul_link_mapping_catalog
+    titles: ['서울특별시 교통소통 표준링크 매핑정보_20250306.xlsx']
+maximum_file_mib: 20
+workers: 2
+min_free_gib: 25
+interpretation:
+  - 파일명 연도와 게시 수정일을 실제 지오메트리 적용일로 단정하지 않음
+  - 원래 속도 링크 ID와 서비스링크 ID의 대응을 먼저 확인
+  - 좌표계 명세 확인 없이 측량 거리·반경 노출을 계산하지 않음
+  - 2026년 속도·버스 잠금 결과는 접근하지 않음

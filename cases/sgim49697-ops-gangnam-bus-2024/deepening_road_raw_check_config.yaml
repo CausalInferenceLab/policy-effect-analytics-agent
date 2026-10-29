@@ -1,0 +1,13 @@
+# 별도 XLSX XML 판독기로 고정 14개 도로의 여섯 날짜 원본 값을 재확인한다.
+version: 1
+locked_year: 2026
+dates: ['2023-06-26', '2023-07-10', '2024-06-26', '2024-07-10', '2025-06-26', '2025-07-10']
+selection_config: deepening_road_config.yaml
+source_manifest: overnight-forecast-sources.json
+extraction_manifests: [results/overnight/forecast/extraction_development.json, results/overnight/forecast/extraction_test.json]
+comparison: 모든 지정 링크·날짜의 24시간, 추출 float32 저장 오차를 고려한 절대오차 0.00001 이내와 결측 상태 동등성
+absolute_tolerance: 0.00001
+sentinels: ['', '-', 'NA', 'N/A', 'null']
+nonpositive: missing
+workers: 2
+scope: 여섯 날짜의 독립 값 대조이며 전체 월 값의 독립 재추출은 아님

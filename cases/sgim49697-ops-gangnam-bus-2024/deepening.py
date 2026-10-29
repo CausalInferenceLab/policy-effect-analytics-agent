@@ -4,6 +4,11 @@ import argparse
 import importlib
 
 COMMANDS = {
+    "geometry-audit": ("deepening_geometry", "run"),
+    "road-plots": ("deepening_road_plots", "run"),
+    "geometry-prepare": ("deepening_geometry_data", "prepare"),
+    "geometry-collect": ("deepening_geometry_data", "collect"),
+    "road-raw-check": ("deepening_road_raw_check", "run"),
     "road-context": ("deepening_road", "run"),
     "gyeonggi-plots": ("deepening_gyeonggi_plots", "run"),
     "gyeonggi-audit": ("deepening_gyeonggi_audit", "run"),
