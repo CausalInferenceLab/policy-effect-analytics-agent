@@ -4,6 +4,7 @@ import argparse
 import importlib
 
 COMMANDS = {
+    "infrastructure-raw-check": ("deepening_infrastructure_raw_check", "run"),
     "infrastructure-raw": ("deepening_infrastructure_raw", "run"),
     "infrastructure-check": ("deepening_infrastructure_check", "run"),
     "infrastructure-plots": ("deepening_infrastructure_plots", "run"),

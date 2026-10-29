@@ -1,0 +1,167 @@
+{
+  "completed_at": "2026-10-29T07:14:31.927941+00:00",
+  "configuration": {
+    "version": 1,
+    "locked_year": 2026,
+    "source_manifest": "overnight-multiyear-sources.json",
+    "kind": "bus_trips",
+    "months": [
+      "2025-01",
+      "2025-02"
+    ],
+    "window": [
+      "2025-01-01",
+      "2025-02-07"
+    ],
+    "workers": 2,
+    "route_selection": "results/deepening/infrastructure/route_groups.csv",
+    "stop_history": "results/deepening/infrastructure/stop_history.csv",
+    "historical_stop_ars": [
+      "22043",
+      "22044",
+      "22045",
+      "22046",
+      "22293",
+      "22294",
+      "22295",
+      "22296",
+      "22297",
+      "22298"
+    ],
+    "hours": "all_24",
+    "duplicate_rule": "같은 순서·모든 수치가 같은 행만 중복 제거, 재방문 또는 상충 행은 선택하지 않고 격리",
+    "scope": "정류소·노선·날짜의 양수 운행횟수 기록 지원 여부, 차량별 실제 경로·정류소 도착시각·노선 전체 무영향 여부를 증명하지 않음"
+  },
+  "code_sha256": "c1014d33ef6b678474bc4467dd4c5a9723867d1bc32c08e1f6ae966bca240672",
+  "inputs": {
+    "deepening_infrastructure_raw_config.yaml": "122ef18e28b100a317ef4dc4bb676fdecc10ffc9fda2451c5d58875ab2dff8bd",
+    "overnight-multiyear-sources.json": "de7bf831090383d137ba3c6239bf7a85d453d449a3c4c6480c78a5b5f029cbf6",
+    "results/deepening/infrastructure/route_groups.csv": "67643e25a14996abf43ca4f2980b3cd1d6b66b0bcd7e55d8ce83b5df0715b254",
+    "results/deepening/infrastructure/stop_history.csv": "4c07321565c205be6058594f50f49069b3cdc7217bf6ffbdce1b3ae707b81408",
+    "gangnam/deepening_raw_check.py": "70015cb76a752c64dc2ce913eec25e667c644b8ebda504466720017e63bebdc2"
+  },
+  "sources": [
+    {
+      "path": "data/overnight/multiyear/bus_trips_2025-01.zip",
+      "sha256": "9a12451adfe3f4a315e2ae69922b5077b23a024fda9845ff8fbb2e2aebb24e57",
+      "month": "2025-01",
+      "members": [
+        {
+          "name": "tpss_sta_route_hturn_2025.01.06-01.12.csv",
+          "rows": 335664
+        },
+        {
+          "name": "tpss_sta_route_hturn_2025.01.13-01.19.csv",
+          "rows": 595643
+        },
+        {
+          "name": "tpss_sta_route_hturn_2025.01.20-01.26.csv",
+          "rows": 515792
+        },
+        {
+          "name": "tpss_sta_route_hturn_2025.01.27-02.02.csv",
+          "rows": 571539
+        }
+      ],
+      "rows_scanned": 2018638,
+      "selected_rows": 1109,
+      "source_dates": [
+        "20250109",
+        "20250110",
+        "20250111",
+        "20250112",
+        "20250113",
+        "20250114",
+        "20250115",
+        "20250116",
+        "20250117",
+        "20250118",
+        "20250119",
+        "20250120",
+        "20250121",
+        "20250122",
+        "20250123",
+        "20250124",
+        "20250125",
+        "20250126",
+        "20250127",
+        "20250128",
+        "20250129",
+        "20250130",
+        "20250131",
+        "20250201",
+        "20250202"
+      ]
+    },
+    {
+      "path": "data/overnight/multiyear/bus_trips_2025-02.zip",
+      "sha256": "c25dfde4b5260311ea0119a531cb7108212b19ad729f60ca206032fb9fbd4bc3",
+      "month": "2025-02",
+      "members": [
+        {
+          "name": "tpss_sta_route_hturn_2025.02.03-02.09.csv",
+          "rows": 600267
+        },
+        {
+          "name": "tpss_sta_route_hturn_2025.02.10-02.16.csv",
+          "rows": 600482
+        },
+        {
+          "name": "tpss_sta_route_hturn_2025.02.17-02.23.csv",
+          "rows": 599086
+        },
+        {
+          "name": "tpss_sta_route_hturn_2025.02.24-03.02.csv",
+          "rows": 598498
+        }
+      ],
+      "rows_scanned": 2398333,
+      "selected_rows": 222,
+      "source_dates": [
+        "20250203",
+        "20250204",
+        "20250205",
+        "20250206",
+        "20250207",
+        "20250208",
+        "20250209",
+        "20250210",
+        "20250211",
+        "20250212",
+        "20250213",
+        "20250214",
+        "20250215",
+        "20250216",
+        "20250217",
+        "20250218",
+        "20250219",
+        "20250220",
+        "20250221",
+        "20250222",
+        "20250223",
+        "20250224",
+        "20250225",
+        "20250226",
+        "20250227",
+        "20250228",
+        "20250301",
+        "20250302"
+      ]
+    }
+  ],
+  "expected_route_stop_days": 4940,
+  "complete_sum_checks": 0,
+  "failed_sum_checks": 0,
+  "record_states": {
+    "row_absent": 2593,
+    "unique_record": 1283,
+    "source_date_absent": 1040,
+    "multiple_records_quarantined": 24
+  },
+  "selected_input_rows": 1331,
+  "unique_selected_records": 1331,
+  "outputs": {
+    "trip_support_daily.csv": "c9a8b3848118263d7b3e3b94bb80239752c7b089ddb818254d359f55484d27fa",
+    "trip_support_summary.csv": "e2a6504e65f5d2ab835def005f27c987d481883d4b314d33028522476408649c"
+  }
+}

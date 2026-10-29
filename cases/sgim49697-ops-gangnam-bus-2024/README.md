@@ -2,11 +2,11 @@
 
 **“강남역 버스는 양방향으로 좋아졌을까?”** 2024년 광역버스 분산 전후의 기록을 방향·구간·시간별로 확인하고 다음 해까지 연결한 학생 프로젝트다. 작성자 `sgim49697-ops`, 트랙 **B. 가설과 분석**. 일반도로 속도 범위·저속 경보 예측은 별도 확장으로 다룬다.
 
-먼저 **[확장 탐색 종합 보고서](overnight-summary.md)**를 읽으면 된다. 남행 강조 구간은 2024년 사전 대비 그해 여름 −48.45%, 북행 강조 구간은 +32.59%였다. 2025년에도 수준 차이가 남았고, 인접 구간 합·같은 노선의 16시간 공동 표본에서도 반대 양상을 확인했다. 버스 기록의 시간 단위·정차 경계는 미확인이므로 실제 분 단위 절감이나 정책의 인과 효과로 해석하지 않는다.
+먼저 **[최신 종합 보고서](deepening-summary.md)**를 읽으면 된다. 폐선 노선을 제외한 고정 13개에서도 2024년 여름 기록 지수는 남행 −49.71%·북행 +41.03%였고, 정류소 안내군을 나눠도 다음 해까지 반대 양상이 남았다. 주변 도로는 시행일 전부터 일부 하락해 단일 정책으로 설명하기 어려웠다. 버스 기록의 시간 단위·정차 경계는 미확인이므로 실제 분 단위 절감이나 정책의 인과 효과로 해석하지 않는다. [첫 탐색의 결과](overnight-summary.md)는 그대로 보존했다.
 
-**2026-10-29 추가 확인:** [과거 정류장·노선 이력](deepening-history-report.md)에서 32개 정류장의 ID·ARS와 정책일 양쪽의 좌표 기록을 대조했다. 2024-08-24 폐선된 542번을 제외한 [고정 13개 노선 비교](deepening-cohort-report.md)에서도 2024년 남행 −49.71%·북행 +41.03%가 유지됐다. 폐선 뒤 해당 노선의 시간·횟수 행은 없었고, 경계 네 날짜의 원본 대조 5,376건도 일치했다. [두 번째 탐색 계획](deepening-plan.md)에 따라 기록 정의와 추가 운영 이력을 계속 확인한다.
+**2026-10-29 추가 탐색:** [역사 자료](deepening-history-report.md)와 [중앙차로·정류소 이동](deepening-infrastructure-report.md)을 공식 문서와 실제 운행 기록으로 대조했다. 예측은 월별 파일의 공개 지연을 반영한 [8개 CPU 모형](deepening-archive-report.md)을 새로 학습했다. 같은 조건의 달력 모형보다 H1 MAE가 여름 29.29%·가을 21.26% 낮았지만 12월 예측구간 포괄률은 74.10%였다. [기존 경보 평가](deepening-episode-report.md)는 높은 정밀도와 부족한 시작 감지를 구별한다. 다음 우선 자료는 시간 필드 정의, 당시 신호·회전량·차로 통제, 차량별 도착·출발이다.
 
-**[공개 핵심 수치](results/overnight/review/key_numbers.csv)**는 원본 집계의 선택 조건과 연결된다. Python 3.12에서 `python review_overnight.py --check`를 실행하면 원본·모델·외부 패키지 없이 수치와 공개 동결 해시를 대조할 수 있다. [재현 안내](overnight-reproduction.md)는 공개 검토, 기존 로컬 모델 검증, 원자료 계산의 의존성과 한계를 구분한다.
+**[추가 핵심 수치](results/deepening/review/key_numbers.csv)**와 **[이전 핵심 수치](results/overnight/review/key_numbers.csv)**는 근거 집계의 선택 조건과 연결된다. Python 3.12에서 `python review_deepening.py --check`, `python review_overnight.py --check`로 원본·모델·외부 패키지 없이 수치와 공개 해시를 대조할 수 있다. [최신 재현 안내](deepening-reproduction.md)는 공개 검토·로컬 동결·원자료 계산을 설명하며, [문헌 안내](deepening-literature.md)는 실제 읽은 범위와 적용 여부를 기록한다.
 
 작업 제안 [이슈 #53](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/issues/53), [계획 PR #54](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/54), [구현·결과 PR #55](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/55). 작업 브랜치는 `sgim49697-ops/gangnam-pipeline`이며 PR은 초안이다. 최초 일반도로·GPU 모델 비교는 아래 이전 분석 문서에 보존했다. 2026년 잠금 시험값은 사용하지 않았다.
 
@@ -14,6 +14,8 @@
 
 | 읽을 내용 | 문서 |
 |---|---|
+| 최신 추천·수집 우선순위·재현 | [종합](deepening-summary.md), [문헌](deepening-literature.md), [공개 검토·재현](deepening-reproduction.md) |
+| 추가 탐색: 실제 시설·노선군의 운영 변화 | [중앙차로·새 정류소·월별 속성·공식 안내군 비교](deepening-infrastructure-report.md): 1월 11일 실제 집계 기록과 전체 경계 상태 |
 | 추가 탐색: 과거 ID·폐선 구성·시간 명세 | [역사 목록](deepening-history-report.md), [13개 노선 비교](deepening-cohort-report.md), [정의 확인](deepening-definition-report.md), [진행 계획](deepening-plan.md) |
 | 추가 탐색: 경기 노선 이용객의 실제 범위 | [대표일·이름 후보·중복 감사](deepening-gyeonggi-report.md): 2023~2025년 330만 행, 월 합계·역사 노선 ID와 구별 |
 | 추가 탐색: 같은 강남대로의 다른 변화 | [양재천 주변 14개 링크 비교](deepening-road-report.md), [공개 형상·표준링크 대응](deepening-geometry-report.md): 일반도로 공간 차이와 동시 공사 근거 |

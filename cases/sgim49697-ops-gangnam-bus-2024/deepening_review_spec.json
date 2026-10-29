@@ -1,0 +1,1990 @@
+{
+  "description": "공개 결과의 명시적 선택 조건과 전체 산출물 해시. 0건인 완전 시간 합계 검사는 통과 사례가 아님.",
+  "claims": [
+    {
+      "id": "cohort_south_summer2024_change_pct",
+      "source": "results/deepening/cohort/comparisons.csv",
+      "where": {
+        "cohort": "retained_13_original_coverage_rule",
+        "segment": "south",
+        "comparison": "summer2024"
+      },
+      "field": "change_pct",
+      "description": "고정 13개 노선 / change_pct",
+      "unit": "%",
+      "interpretation": "기록의 변화, 물리 시간 단위·인과 효과 미확인",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "cohort_south_summer2024_week_bootstrap_low",
+      "source": "results/deepening/cohort/comparisons.csv",
+      "where": {
+        "cohort": "retained_13_original_coverage_rule",
+        "segment": "south",
+        "comparison": "summer2024"
+      },
+      "field": "week_bootstrap_low",
+      "description": "고정 13개 노선 / week_bootstrap_low",
+      "unit": "%",
+      "interpretation": "기록의 변화, 물리 시간 단위·인과 효과 미확인",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "cohort_south_summer2024_week_bootstrap_high",
+      "source": "results/deepening/cohort/comparisons.csv",
+      "where": {
+        "cohort": "retained_13_original_coverage_rule",
+        "segment": "south",
+        "comparison": "summer2024"
+      },
+      "field": "week_bootstrap_high",
+      "description": "고정 13개 노선 / week_bootstrap_high",
+      "unit": "%",
+      "interpretation": "기록의 변화, 물리 시간 단위·인과 효과 미확인",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "cohort_south_post2025_from_pre2024_change_pct",
+      "source": "results/deepening/cohort/comparisons.csv",
+      "where": {
+        "cohort": "retained_13_original_coverage_rule",
+        "segment": "south",
+        "comparison": "post2025_from_pre2024"
+      },
+      "field": "change_pct",
+      "description": "고정 13개 노선 / change_pct",
+      "unit": "%",
+      "interpretation": "기록의 변화, 물리 시간 단위·인과 효과 미확인",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "cohort_south_post2025_from_pre2024_week_bootstrap_low",
+      "source": "results/deepening/cohort/comparisons.csv",
+      "where": {
+        "cohort": "retained_13_original_coverage_rule",
+        "segment": "south",
+        "comparison": "post2025_from_pre2024"
+      },
+      "field": "week_bootstrap_low",
+      "description": "고정 13개 노선 / week_bootstrap_low",
+      "unit": "%",
+      "interpretation": "기록의 변화, 물리 시간 단위·인과 효과 미확인",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "cohort_south_post2025_from_pre2024_week_bootstrap_high",
+      "source": "results/deepening/cohort/comparisons.csv",
+      "where": {
+        "cohort": "retained_13_original_coverage_rule",
+        "segment": "south",
+        "comparison": "post2025_from_pre2024"
+      },
+      "field": "week_bootstrap_high",
+      "description": "고정 13개 노선 / week_bootstrap_high",
+      "unit": "%",
+      "interpretation": "기록의 변화, 물리 시간 단위·인과 효과 미확인",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "announced_central_south_summer2024_change_pct",
+      "source": "results/deepening/infrastructure/group_comparisons.csv",
+      "where": {
+        "date_rule": "common_partition_dates",
+        "group": "announced_central",
+        "segment": "south",
+        "comparison": "summer2024"
+      },
+      "field": "change_pct",
+      "description": "공식 안내군·같은 날짜 / change_pct",
+      "unit": "%",
+      "interpretation": "정류소 배치와 기록 지원에 근거한 구성 민감도; 무처리 대조군 아님",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "announced_central_south_summer2024_week_bootstrap_low",
+      "source": "results/deepening/infrastructure/group_comparisons.csv",
+      "where": {
+        "date_rule": "common_partition_dates",
+        "group": "announced_central",
+        "segment": "south",
+        "comparison": "summer2024"
+      },
+      "field": "week_bootstrap_low",
+      "description": "공식 안내군·같은 날짜 / week_bootstrap_low",
+      "unit": "%",
+      "interpretation": "정류소 배치와 기록 지원에 근거한 구성 민감도; 무처리 대조군 아님",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "announced_central_south_summer2024_week_bootstrap_high",
+      "source": "results/deepening/infrastructure/group_comparisons.csv",
+      "where": {
+        "date_rule": "common_partition_dates",
+        "group": "announced_central",
+        "segment": "south",
+        "comparison": "summer2024"
+      },
+      "field": "week_bootstrap_high",
+      "description": "공식 안내군·같은 날짜 / week_bootstrap_high",
+      "unit": "%",
+      "interpretation": "정류소 배치와 기록 지원에 근거한 구성 민감도; 무처리 대조군 아님",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "announced_central_south_post2025_from_pre2024_change_pct",
+      "source": "results/deepening/infrastructure/group_comparisons.csv",
+      "where": {
+        "date_rule": "common_partition_dates",
+        "group": "announced_central",
+        "segment": "south",
+        "comparison": "post2025_from_pre2024"
+      },
+      "field": "change_pct",
+      "description": "공식 안내군·같은 날짜 / change_pct",
+      "unit": "%",
+      "interpretation": "정류소 배치와 기록 지원에 근거한 구성 민감도; 무처리 대조군 아님",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "announced_central_south_post2025_from_pre2024_week_bootstrap_low",
+      "source": "results/deepening/infrastructure/group_comparisons.csv",
+      "where": {
+        "date_rule": "common_partition_dates",
+        "group": "announced_central",
+        "segment": "south",
+        "comparison": "post2025_from_pre2024"
+      },
+      "field": "week_bootstrap_low",
+      "description": "공식 안내군·같은 날짜 / week_bootstrap_low",
+      "unit": "%",
+      "interpretation": "정류소 배치와 기록 지원에 근거한 구성 민감도; 무처리 대조군 아님",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "announced_central_south_post2025_from_pre2024_week_bootstrap_high",
+      "source": "results/deepening/infrastructure/group_comparisons.csv",
+      "where": {
+        "date_rule": "common_partition_dates",
+        "group": "announced_central",
+        "segment": "south",
+        "comparison": "post2025_from_pre2024"
+      },
+      "field": "week_bootstrap_high",
+      "description": "공식 안내군·같은 날짜 / week_bootstrap_high",
+      "unit": "%",
+      "interpretation": "정류소 배치와 기록 지원에 근거한 구성 민감도; 무처리 대조군 아님",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "announced_curb_south_summer2024_change_pct",
+      "source": "results/deepening/infrastructure/group_comparisons.csv",
+      "where": {
+        "date_rule": "common_partition_dates",
+        "group": "announced_curb",
+        "segment": "south",
+        "comparison": "summer2024"
+      },
+      "field": "change_pct",
+      "description": "공식 안내군·같은 날짜 / change_pct",
+      "unit": "%",
+      "interpretation": "정류소 배치와 기록 지원에 근거한 구성 민감도; 무처리 대조군 아님",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "announced_curb_south_summer2024_week_bootstrap_low",
+      "source": "results/deepening/infrastructure/group_comparisons.csv",
+      "where": {
+        "date_rule": "common_partition_dates",
+        "group": "announced_curb",
+        "segment": "south",
+        "comparison": "summer2024"
+      },
+      "field": "week_bootstrap_low",
+      "description": "공식 안내군·같은 날짜 / week_bootstrap_low",
+      "unit": "%",
+      "interpretation": "정류소 배치와 기록 지원에 근거한 구성 민감도; 무처리 대조군 아님",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "announced_curb_south_summer2024_week_bootstrap_high",
+      "source": "results/deepening/infrastructure/group_comparisons.csv",
+      "where": {
+        "date_rule": "common_partition_dates",
+        "group": "announced_curb",
+        "segment": "south",
+        "comparison": "summer2024"
+      },
+      "field": "week_bootstrap_high",
+      "description": "공식 안내군·같은 날짜 / week_bootstrap_high",
+      "unit": "%",
+      "interpretation": "정류소 배치와 기록 지원에 근거한 구성 민감도; 무처리 대조군 아님",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "announced_curb_south_post2025_from_pre2024_change_pct",
+      "source": "results/deepening/infrastructure/group_comparisons.csv",
+      "where": {
+        "date_rule": "common_partition_dates",
+        "group": "announced_curb",
+        "segment": "south",
+        "comparison": "post2025_from_pre2024"
+      },
+      "field": "change_pct",
+      "description": "공식 안내군·같은 날짜 / change_pct",
+      "unit": "%",
+      "interpretation": "정류소 배치와 기록 지원에 근거한 구성 민감도; 무처리 대조군 아님",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "announced_curb_south_post2025_from_pre2024_week_bootstrap_low",
+      "source": "results/deepening/infrastructure/group_comparisons.csv",
+      "where": {
+        "date_rule": "common_partition_dates",
+        "group": "announced_curb",
+        "segment": "south",
+        "comparison": "post2025_from_pre2024"
+      },
+      "field": "week_bootstrap_low",
+      "description": "공식 안내군·같은 날짜 / week_bootstrap_low",
+      "unit": "%",
+      "interpretation": "정류소 배치와 기록 지원에 근거한 구성 민감도; 무처리 대조군 아님",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "announced_curb_south_post2025_from_pre2024_week_bootstrap_high",
+      "source": "results/deepening/infrastructure/group_comparisons.csv",
+      "where": {
+        "date_rule": "common_partition_dates",
+        "group": "announced_curb",
+        "segment": "south",
+        "comparison": "post2025_from_pre2024"
+      },
+      "field": "week_bootstrap_high",
+      "description": "공식 안내군·같은 날짜 / week_bootstrap_high",
+      "unit": "%",
+      "interpretation": "정류소 배치와 기록 지원에 근거한 구성 민감도; 무처리 대조군 아님",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "cohort_north_summer2024_change_pct",
+      "source": "results/deepening/cohort/comparisons.csv",
+      "where": {
+        "cohort": "retained_13_original_coverage_rule",
+        "segment": "north",
+        "comparison": "summer2024"
+      },
+      "field": "change_pct",
+      "description": "고정 13개 노선 / change_pct",
+      "unit": "%",
+      "interpretation": "기록의 변화, 물리 시간 단위·인과 효과 미확인",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "cohort_north_summer2024_week_bootstrap_low",
+      "source": "results/deepening/cohort/comparisons.csv",
+      "where": {
+        "cohort": "retained_13_original_coverage_rule",
+        "segment": "north",
+        "comparison": "summer2024"
+      },
+      "field": "week_bootstrap_low",
+      "description": "고정 13개 노선 / week_bootstrap_low",
+      "unit": "%",
+      "interpretation": "기록의 변화, 물리 시간 단위·인과 효과 미확인",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "cohort_north_summer2024_week_bootstrap_high",
+      "source": "results/deepening/cohort/comparisons.csv",
+      "where": {
+        "cohort": "retained_13_original_coverage_rule",
+        "segment": "north",
+        "comparison": "summer2024"
+      },
+      "field": "week_bootstrap_high",
+      "description": "고정 13개 노선 / week_bootstrap_high",
+      "unit": "%",
+      "interpretation": "기록의 변화, 물리 시간 단위·인과 효과 미확인",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "cohort_north_post2025_from_pre2024_change_pct",
+      "source": "results/deepening/cohort/comparisons.csv",
+      "where": {
+        "cohort": "retained_13_original_coverage_rule",
+        "segment": "north",
+        "comparison": "post2025_from_pre2024"
+      },
+      "field": "change_pct",
+      "description": "고정 13개 노선 / change_pct",
+      "unit": "%",
+      "interpretation": "기록의 변화, 물리 시간 단위·인과 효과 미확인",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "cohort_north_post2025_from_pre2024_week_bootstrap_low",
+      "source": "results/deepening/cohort/comparisons.csv",
+      "where": {
+        "cohort": "retained_13_original_coverage_rule",
+        "segment": "north",
+        "comparison": "post2025_from_pre2024"
+      },
+      "field": "week_bootstrap_low",
+      "description": "고정 13개 노선 / week_bootstrap_low",
+      "unit": "%",
+      "interpretation": "기록의 변화, 물리 시간 단위·인과 효과 미확인",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "cohort_north_post2025_from_pre2024_week_bootstrap_high",
+      "source": "results/deepening/cohort/comparisons.csv",
+      "where": {
+        "cohort": "retained_13_original_coverage_rule",
+        "segment": "north",
+        "comparison": "post2025_from_pre2024"
+      },
+      "field": "week_bootstrap_high",
+      "description": "고정 13개 노선 / week_bootstrap_high",
+      "unit": "%",
+      "interpretation": "기록의 변화, 물리 시간 단위·인과 효과 미확인",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "announced_central_north_summer2024_change_pct",
+      "source": "results/deepening/infrastructure/group_comparisons.csv",
+      "where": {
+        "date_rule": "common_partition_dates",
+        "group": "announced_central",
+        "segment": "north",
+        "comparison": "summer2024"
+      },
+      "field": "change_pct",
+      "description": "공식 안내군·같은 날짜 / change_pct",
+      "unit": "%",
+      "interpretation": "정류소 배치와 기록 지원에 근거한 구성 민감도; 무처리 대조군 아님",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "announced_central_north_summer2024_week_bootstrap_low",
+      "source": "results/deepening/infrastructure/group_comparisons.csv",
+      "where": {
+        "date_rule": "common_partition_dates",
+        "group": "announced_central",
+        "segment": "north",
+        "comparison": "summer2024"
+      },
+      "field": "week_bootstrap_low",
+      "description": "공식 안내군·같은 날짜 / week_bootstrap_low",
+      "unit": "%",
+      "interpretation": "정류소 배치와 기록 지원에 근거한 구성 민감도; 무처리 대조군 아님",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "announced_central_north_summer2024_week_bootstrap_high",
+      "source": "results/deepening/infrastructure/group_comparisons.csv",
+      "where": {
+        "date_rule": "common_partition_dates",
+        "group": "announced_central",
+        "segment": "north",
+        "comparison": "summer2024"
+      },
+      "field": "week_bootstrap_high",
+      "description": "공식 안내군·같은 날짜 / week_bootstrap_high",
+      "unit": "%",
+      "interpretation": "정류소 배치와 기록 지원에 근거한 구성 민감도; 무처리 대조군 아님",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "announced_central_north_post2025_from_pre2024_change_pct",
+      "source": "results/deepening/infrastructure/group_comparisons.csv",
+      "where": {
+        "date_rule": "common_partition_dates",
+        "group": "announced_central",
+        "segment": "north",
+        "comparison": "post2025_from_pre2024"
+      },
+      "field": "change_pct",
+      "description": "공식 안내군·같은 날짜 / change_pct",
+      "unit": "%",
+      "interpretation": "정류소 배치와 기록 지원에 근거한 구성 민감도; 무처리 대조군 아님",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "announced_central_north_post2025_from_pre2024_week_bootstrap_low",
+      "source": "results/deepening/infrastructure/group_comparisons.csv",
+      "where": {
+        "date_rule": "common_partition_dates",
+        "group": "announced_central",
+        "segment": "north",
+        "comparison": "post2025_from_pre2024"
+      },
+      "field": "week_bootstrap_low",
+      "description": "공식 안내군·같은 날짜 / week_bootstrap_low",
+      "unit": "%",
+      "interpretation": "정류소 배치와 기록 지원에 근거한 구성 민감도; 무처리 대조군 아님",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "announced_central_north_post2025_from_pre2024_week_bootstrap_high",
+      "source": "results/deepening/infrastructure/group_comparisons.csv",
+      "where": {
+        "date_rule": "common_partition_dates",
+        "group": "announced_central",
+        "segment": "north",
+        "comparison": "post2025_from_pre2024"
+      },
+      "field": "week_bootstrap_high",
+      "description": "공식 안내군·같은 날짜 / week_bootstrap_high",
+      "unit": "%",
+      "interpretation": "정류소 배치와 기록 지원에 근거한 구성 민감도; 무처리 대조군 아님",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "announced_curb_north_summer2024_change_pct",
+      "source": "results/deepening/infrastructure/group_comparisons.csv",
+      "where": {
+        "date_rule": "common_partition_dates",
+        "group": "announced_curb",
+        "segment": "north",
+        "comparison": "summer2024"
+      },
+      "field": "change_pct",
+      "description": "공식 안내군·같은 날짜 / change_pct",
+      "unit": "%",
+      "interpretation": "정류소 배치와 기록 지원에 근거한 구성 민감도; 무처리 대조군 아님",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "announced_curb_north_summer2024_week_bootstrap_low",
+      "source": "results/deepening/infrastructure/group_comparisons.csv",
+      "where": {
+        "date_rule": "common_partition_dates",
+        "group": "announced_curb",
+        "segment": "north",
+        "comparison": "summer2024"
+      },
+      "field": "week_bootstrap_low",
+      "description": "공식 안내군·같은 날짜 / week_bootstrap_low",
+      "unit": "%",
+      "interpretation": "정류소 배치와 기록 지원에 근거한 구성 민감도; 무처리 대조군 아님",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "announced_curb_north_summer2024_week_bootstrap_high",
+      "source": "results/deepening/infrastructure/group_comparisons.csv",
+      "where": {
+        "date_rule": "common_partition_dates",
+        "group": "announced_curb",
+        "segment": "north",
+        "comparison": "summer2024"
+      },
+      "field": "week_bootstrap_high",
+      "description": "공식 안내군·같은 날짜 / week_bootstrap_high",
+      "unit": "%",
+      "interpretation": "정류소 배치와 기록 지원에 근거한 구성 민감도; 무처리 대조군 아님",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "announced_curb_north_post2025_from_pre2024_change_pct",
+      "source": "results/deepening/infrastructure/group_comparisons.csv",
+      "where": {
+        "date_rule": "common_partition_dates",
+        "group": "announced_curb",
+        "segment": "north",
+        "comparison": "post2025_from_pre2024"
+      },
+      "field": "change_pct",
+      "description": "공식 안내군·같은 날짜 / change_pct",
+      "unit": "%",
+      "interpretation": "정류소 배치와 기록 지원에 근거한 구성 민감도; 무처리 대조군 아님",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "announced_curb_north_post2025_from_pre2024_week_bootstrap_low",
+      "source": "results/deepening/infrastructure/group_comparisons.csv",
+      "where": {
+        "date_rule": "common_partition_dates",
+        "group": "announced_curb",
+        "segment": "north",
+        "comparison": "post2025_from_pre2024"
+      },
+      "field": "week_bootstrap_low",
+      "description": "공식 안내군·같은 날짜 / week_bootstrap_low",
+      "unit": "%",
+      "interpretation": "정류소 배치와 기록 지원에 근거한 구성 민감도; 무처리 대조군 아님",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "announced_curb_north_post2025_from_pre2024_week_bootstrap_high",
+      "source": "results/deepening/infrastructure/group_comparisons.csv",
+      "where": {
+        "date_rule": "common_partition_dates",
+        "group": "announced_curb",
+        "segment": "north",
+        "comparison": "post2025_from_pre2024"
+      },
+      "field": "week_bootstrap_high",
+      "description": "공식 안내군·같은 날짜 / week_bootstrap_high",
+      "unit": "%",
+      "interpretation": "정류소 배치와 기록 지원에 근거한 구성 민감도; 무처리 대조군 아님",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "road_bridge_south_change_pct",
+      "source": "results/deepening/road_context/group_comparisons.csv",
+      "where": {
+        "group": "bridge_south",
+        "band": "evening",
+        "method": "fixed_length_arithmetic",
+        "comparison": "summer2024"
+      },
+      "field": "change_pct",
+      "description": "주변·핵심 일반도로 / change_pct",
+      "unit": "%",
+      "interpretation": "일반도로 속도, 버스 속도·인과 효과와 구별",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "transition_bridge_south_weekday_level_level_kmh",
+      "source": "results/deepening/transition/fixed_date_regressions.csv",
+      "where": {
+        "scope": "group",
+        "group": "bridge_south",
+        "link_id": "",
+        "band": "evening",
+        "year": "2024",
+        "specification": "weekday_level"
+      },
+      "field": "level_kmh",
+      "description": "6월 29일 고정 기술 회귀 / level_kmh",
+      "unit": "km/h",
+      "interpretation": "요일·추세 사양에 따른 수준 계수, 인과 효과 아님",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "transition_bridge_south_weekday_trend_level_level_kmh",
+      "source": "results/deepening/transition/fixed_date_regressions.csv",
+      "where": {
+        "scope": "group",
+        "group": "bridge_south",
+        "link_id": "",
+        "band": "evening",
+        "year": "2024",
+        "specification": "weekday_trend_level"
+      },
+      "field": "level_kmh",
+      "description": "6월 29일 고정 기술 회귀 / level_kmh",
+      "unit": "km/h",
+      "interpretation": "요일·추세 사양에 따른 수준 계수, 인과 효과 아님",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "road_bridge_north_change_pct",
+      "source": "results/deepening/road_context/group_comparisons.csv",
+      "where": {
+        "group": "bridge_north",
+        "band": "evening",
+        "method": "fixed_length_arithmetic",
+        "comparison": "summer2024"
+      },
+      "field": "change_pct",
+      "description": "주변·핵심 일반도로 / change_pct",
+      "unit": "%",
+      "interpretation": "일반도로 속도, 버스 속도·인과 효과와 구별",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "transition_bridge_north_weekday_level_level_kmh",
+      "source": "results/deepening/transition/fixed_date_regressions.csv",
+      "where": {
+        "scope": "group",
+        "group": "bridge_north",
+        "link_id": "",
+        "band": "evening",
+        "year": "2024",
+        "specification": "weekday_level"
+      },
+      "field": "level_kmh",
+      "description": "6월 29일 고정 기술 회귀 / level_kmh",
+      "unit": "km/h",
+      "interpretation": "요일·추세 사양에 따른 수준 계수, 인과 효과 아님",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "transition_bridge_north_weekday_trend_level_level_kmh",
+      "source": "results/deepening/transition/fixed_date_regressions.csv",
+      "where": {
+        "scope": "group",
+        "group": "bridge_north",
+        "link_id": "",
+        "band": "evening",
+        "year": "2024",
+        "specification": "weekday_trend_level"
+      },
+      "field": "level_kmh",
+      "description": "6월 29일 고정 기술 회귀 / level_kmh",
+      "unit": "km/h",
+      "interpretation": "요일·추세 사양에 따른 수준 계수, 인과 효과 아님",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "road_core_south_change_pct",
+      "source": "results/deepening/road_context/group_comparisons.csv",
+      "where": {
+        "group": "core_south",
+        "band": "evening",
+        "method": "fixed_length_arithmetic",
+        "comparison": "summer2024"
+      },
+      "field": "change_pct",
+      "description": "주변·핵심 일반도로 / change_pct",
+      "unit": "%",
+      "interpretation": "일반도로 속도, 버스 속도·인과 효과와 구별",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "transition_core_south_weekday_level_level_kmh",
+      "source": "results/deepening/transition/fixed_date_regressions.csv",
+      "where": {
+        "scope": "group",
+        "group": "core_south",
+        "link_id": "",
+        "band": "evening",
+        "year": "2024",
+        "specification": "weekday_level"
+      },
+      "field": "level_kmh",
+      "description": "6월 29일 고정 기술 회귀 / level_kmh",
+      "unit": "km/h",
+      "interpretation": "요일·추세 사양에 따른 수준 계수, 인과 효과 아님",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "transition_core_south_weekday_trend_level_level_kmh",
+      "source": "results/deepening/transition/fixed_date_regressions.csv",
+      "where": {
+        "scope": "group",
+        "group": "core_south",
+        "link_id": "",
+        "band": "evening",
+        "year": "2024",
+        "specification": "weekday_trend_level"
+      },
+      "field": "level_kmh",
+      "description": "6월 29일 고정 기술 회귀 / level_kmh",
+      "unit": "km/h",
+      "interpretation": "요일·추세 사양에 따른 수준 계수, 인과 효과 아님",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "road_core_north_change_pct",
+      "source": "results/deepening/road_context/group_comparisons.csv",
+      "where": {
+        "group": "core_north",
+        "band": "evening",
+        "method": "fixed_length_arithmetic",
+        "comparison": "summer2024"
+      },
+      "field": "change_pct",
+      "description": "주변·핵심 일반도로 / change_pct",
+      "unit": "%",
+      "interpretation": "일반도로 속도, 버스 속도·인과 효과와 구별",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "transition_core_north_weekday_level_level_kmh",
+      "source": "results/deepening/transition/fixed_date_regressions.csv",
+      "where": {
+        "scope": "group",
+        "group": "core_north",
+        "link_id": "",
+        "band": "evening",
+        "year": "2024",
+        "specification": "weekday_level"
+      },
+      "field": "level_kmh",
+      "description": "6월 29일 고정 기술 회귀 / level_kmh",
+      "unit": "km/h",
+      "interpretation": "요일·추세 사양에 따른 수준 계수, 인과 효과 아님",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "transition_core_north_weekday_trend_level_level_kmh",
+      "source": "results/deepening/transition/fixed_date_regressions.csv",
+      "where": {
+        "scope": "group",
+        "group": "core_north",
+        "link_id": "",
+        "band": "evening",
+        "year": "2024",
+        "specification": "weekday_trend_level"
+      },
+      "field": "level_kmh",
+      "description": "6월 29일 고정 기술 회귀 / level_kmh",
+      "unit": "km/h",
+      "interpretation": "요일·추세 사양에 따른 수준 계수, 인과 효과 아님",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "archive_summer_h1_calendar_only_median_mae",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "summer",
+        "horizon": "1",
+        "name": "calendar_only",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "median_mae",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / median_mae",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_summer_h1_calendar_only_mean_pinball",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "summer",
+        "horizon": "1",
+        "name": "calendar_only",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "mean_pinball",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / mean_pinball",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_summer_h1_calendar_only_coverage",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "summer",
+        "horizon": "1",
+        "name": "calendar_only",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "coverage",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / coverage",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_summer_h1_calendar_only_width",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "summer",
+        "horizon": "1",
+        "name": "calendar_only",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "width",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / width",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_summer_h1_calendar_only_interval_score_alpha_0.2",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "summer",
+        "horizon": "1",
+        "name": "calendar_only",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "interval_score_alpha_0.2",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / interval_score_alpha_0.2",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_summer_h1_published_archive_median_mae",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "summer",
+        "horizon": "1",
+        "name": "published_archive",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "median_mae",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / median_mae",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_summer_h1_published_archive_mean_pinball",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "summer",
+        "horizon": "1",
+        "name": "published_archive",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "mean_pinball",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / mean_pinball",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_summer_h1_published_archive_coverage",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "summer",
+        "horizon": "1",
+        "name": "published_archive",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "coverage",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / coverage",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_summer_h1_published_archive_width",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "summer",
+        "horizon": "1",
+        "name": "published_archive",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "width",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / width",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_summer_h1_published_archive_interval_score_alpha_0.2",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "summer",
+        "horizon": "1",
+        "name": "published_archive",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "interval_score_alpha_0.2",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / interval_score_alpha_0.2",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "availability_summer_h1_fraction_available",
+      "source": "results/deepening/availability/feature_availability.csv",
+      "where": {
+        "scenario": "conservative_guide_and_current_version",
+        "period": "summer",
+        "horizon": "1",
+        "anchor": "origin",
+        "lag_hours": "2"
+      },
+      "field": "fraction_available",
+      "description": "공개 파일로 최근 2시간 입력의 가용성 / fraction_available",
+      "unit": "비율",
+      "interpretation": "현재 공개 목록과 보수적 지연 가정, 실제 역사 버전의 증명 아님"
+    },
+    {
+      "id": "archive_summer_h3_calendar_only_median_mae",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "summer",
+        "horizon": "3",
+        "name": "calendar_only",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "median_mae",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / median_mae",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_summer_h3_calendar_only_mean_pinball",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "summer",
+        "horizon": "3",
+        "name": "calendar_only",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "mean_pinball",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / mean_pinball",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_summer_h3_calendar_only_coverage",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "summer",
+        "horizon": "3",
+        "name": "calendar_only",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "coverage",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / coverage",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_summer_h3_calendar_only_width",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "summer",
+        "horizon": "3",
+        "name": "calendar_only",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "width",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / width",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_summer_h3_calendar_only_interval_score_alpha_0.2",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "summer",
+        "horizon": "3",
+        "name": "calendar_only",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "interval_score_alpha_0.2",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / interval_score_alpha_0.2",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_summer_h3_published_archive_median_mae",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "summer",
+        "horizon": "3",
+        "name": "published_archive",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "median_mae",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / median_mae",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_summer_h3_published_archive_mean_pinball",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "summer",
+        "horizon": "3",
+        "name": "published_archive",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "mean_pinball",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / mean_pinball",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_summer_h3_published_archive_coverage",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "summer",
+        "horizon": "3",
+        "name": "published_archive",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "coverage",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / coverage",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_summer_h3_published_archive_width",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "summer",
+        "horizon": "3",
+        "name": "published_archive",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "width",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / width",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_summer_h3_published_archive_interval_score_alpha_0.2",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "summer",
+        "horizon": "3",
+        "name": "published_archive",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "interval_score_alpha_0.2",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / interval_score_alpha_0.2",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "availability_summer_h3_fraction_available",
+      "source": "results/deepening/availability/feature_availability.csv",
+      "where": {
+        "scenario": "conservative_guide_and_current_version",
+        "period": "summer",
+        "horizon": "3",
+        "anchor": "origin",
+        "lag_hours": "2"
+      },
+      "field": "fraction_available",
+      "description": "공개 파일로 최근 2시간 입력의 가용성 / fraction_available",
+      "unit": "비율",
+      "interpretation": "현재 공개 목록과 보수적 지연 가정, 실제 역사 버전의 증명 아님"
+    },
+    {
+      "id": "archive_autumn_h1_calendar_only_median_mae",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "autumn",
+        "horizon": "1",
+        "name": "calendar_only",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "median_mae",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / median_mae",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_autumn_h1_calendar_only_mean_pinball",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "autumn",
+        "horizon": "1",
+        "name": "calendar_only",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "mean_pinball",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / mean_pinball",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_autumn_h1_calendar_only_coverage",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "autumn",
+        "horizon": "1",
+        "name": "calendar_only",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "coverage",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / coverage",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_autumn_h1_calendar_only_width",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "autumn",
+        "horizon": "1",
+        "name": "calendar_only",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "width",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / width",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_autumn_h1_calendar_only_interval_score_alpha_0.2",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "autumn",
+        "horizon": "1",
+        "name": "calendar_only",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "interval_score_alpha_0.2",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / interval_score_alpha_0.2",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_autumn_h1_published_archive_median_mae",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "autumn",
+        "horizon": "1",
+        "name": "published_archive",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "median_mae",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / median_mae",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_autumn_h1_published_archive_mean_pinball",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "autumn",
+        "horizon": "1",
+        "name": "published_archive",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "mean_pinball",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / mean_pinball",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_autumn_h1_published_archive_coverage",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "autumn",
+        "horizon": "1",
+        "name": "published_archive",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "coverage",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / coverage",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_autumn_h1_published_archive_width",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "autumn",
+        "horizon": "1",
+        "name": "published_archive",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "width",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / width",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_autumn_h1_published_archive_interval_score_alpha_0.2",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "autumn",
+        "horizon": "1",
+        "name": "published_archive",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "interval_score_alpha_0.2",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / interval_score_alpha_0.2",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "availability_autumn_h1_fraction_available",
+      "source": "results/deepening/availability/feature_availability.csv",
+      "where": {
+        "scenario": "conservative_guide_and_current_version",
+        "period": "autumn",
+        "horizon": "1",
+        "anchor": "origin",
+        "lag_hours": "2"
+      },
+      "field": "fraction_available",
+      "description": "공개 파일로 최근 2시간 입력의 가용성 / fraction_available",
+      "unit": "비율",
+      "interpretation": "현재 공개 목록과 보수적 지연 가정, 실제 역사 버전의 증명 아님"
+    },
+    {
+      "id": "archive_autumn_h3_calendar_only_median_mae",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "autumn",
+        "horizon": "3",
+        "name": "calendar_only",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "median_mae",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / median_mae",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_autumn_h3_calendar_only_mean_pinball",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "autumn",
+        "horizon": "3",
+        "name": "calendar_only",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "mean_pinball",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / mean_pinball",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_autumn_h3_calendar_only_coverage",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "autumn",
+        "horizon": "3",
+        "name": "calendar_only",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "coverage",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / coverage",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_autumn_h3_calendar_only_width",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "autumn",
+        "horizon": "3",
+        "name": "calendar_only",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "width",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / width",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_autumn_h3_calendar_only_interval_score_alpha_0.2",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "autumn",
+        "horizon": "3",
+        "name": "calendar_only",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "interval_score_alpha_0.2",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / interval_score_alpha_0.2",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_autumn_h3_published_archive_median_mae",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "autumn",
+        "horizon": "3",
+        "name": "published_archive",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "median_mae",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / median_mae",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_autumn_h3_published_archive_mean_pinball",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "autumn",
+        "horizon": "3",
+        "name": "published_archive",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "mean_pinball",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / mean_pinball",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_autumn_h3_published_archive_coverage",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "autumn",
+        "horizon": "3",
+        "name": "published_archive",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "coverage",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / coverage",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_autumn_h3_published_archive_width",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "autumn",
+        "horizon": "3",
+        "name": "published_archive",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "width",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / width",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_autumn_h3_published_archive_interval_score_alpha_0.2",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "autumn",
+        "horizon": "3",
+        "name": "published_archive",
+        "seed": "17",
+        "scope": "primary_all_hours"
+      },
+      "field": "interval_score_alpha_0.2",
+      "description": "공개 과거 월 예측 또는 같은 조건 달력 / interval_score_alpha_0.2",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "시드17, 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "availability_autumn_h3_fraction_available",
+      "source": "results/deepening/availability/feature_availability.csv",
+      "where": {
+        "scenario": "conservative_guide_and_current_version",
+        "period": "autumn",
+        "horizon": "3",
+        "anchor": "origin",
+        "lag_hours": "2"
+      },
+      "field": "fraction_available",
+      "description": "공개 파일로 최근 2시간 입력의 가용성 / fraction_available",
+      "unit": "비율",
+      "interpretation": "현재 공개 목록과 보수적 지연 가정, 실제 역사 버전의 증명 아님"
+    },
+    {
+      "id": "episode_autumn_h1_point_precision",
+      "source": "results/deepening/episodes/metrics.csv",
+      "where": {
+        "period": "autumn",
+        "family": "relative",
+        "name": "recent_road_assumption",
+        "horizon": "1",
+        "rule": "budget_rule",
+        "cooldown_hours": "0",
+        "minimum_observed_hours": "1"
+      },
+      "field": "point_precision",
+      "description": "제한 알림과 저속 시작 감지 / point_precision",
+      "unit": "비율 또는 건/일",
+      "interpretation": "H1 대상 시작 시점, H3 대상 시작 2시간 전. 실시간 입력 접근은 미확인"
+    },
+    {
+      "id": "episode_autumn_h1_onset_recall",
+      "source": "results/deepening/episodes/metrics.csv",
+      "where": {
+        "period": "autumn",
+        "family": "relative",
+        "name": "recent_road_assumption",
+        "horizon": "1",
+        "rule": "budget_rule",
+        "cooldown_hours": "0",
+        "minimum_observed_hours": "1"
+      },
+      "field": "onset_recall",
+      "description": "제한 알림과 저속 시작 감지 / onset_recall",
+      "unit": "비율 또는 건/일",
+      "interpretation": "H1 대상 시작 시점, H3 대상 시작 2시간 전. 실시간 입력 접근은 미확인"
+    },
+    {
+      "id": "episode_autumn_h1_advance_recall",
+      "source": "results/deepening/episodes/metrics.csv",
+      "where": {
+        "period": "autumn",
+        "family": "relative",
+        "name": "recent_road_assumption",
+        "horizon": "1",
+        "rule": "budget_rule",
+        "cooldown_hours": "0",
+        "minimum_observed_hours": "1"
+      },
+      "field": "advance_recall",
+      "description": "제한 알림과 저속 시작 감지 / advance_recall",
+      "unit": "비율 또는 건/일",
+      "interpretation": "H1 대상 시작 시점, H3 대상 시작 2시간 전. 실시간 입력 접근은 미확인"
+    },
+    {
+      "id": "episode_autumn_h1_alerts_per_day",
+      "source": "results/deepening/episodes/metrics.csv",
+      "where": {
+        "period": "autumn",
+        "family": "relative",
+        "name": "recent_road_assumption",
+        "horizon": "1",
+        "rule": "budget_rule",
+        "cooldown_hours": "0",
+        "minimum_observed_hours": "1"
+      },
+      "field": "alerts_per_day",
+      "description": "제한 알림과 저속 시작 감지 / alerts_per_day",
+      "unit": "비율 또는 건/일",
+      "interpretation": "H1 대상 시작 시점, H3 대상 시작 2시간 전. 실시간 입력 접근은 미확인"
+    },
+    {
+      "id": "episode_autumn_h3_point_precision",
+      "source": "results/deepening/episodes/metrics.csv",
+      "where": {
+        "period": "autumn",
+        "family": "relative",
+        "name": "recent_road_assumption",
+        "horizon": "3",
+        "rule": "budget_rule",
+        "cooldown_hours": "0",
+        "minimum_observed_hours": "1"
+      },
+      "field": "point_precision",
+      "description": "제한 알림과 저속 시작 감지 / point_precision",
+      "unit": "비율 또는 건/일",
+      "interpretation": "H1 대상 시작 시점, H3 대상 시작 2시간 전. 실시간 입력 접근은 미확인"
+    },
+    {
+      "id": "episode_autumn_h3_onset_recall",
+      "source": "results/deepening/episodes/metrics.csv",
+      "where": {
+        "period": "autumn",
+        "family": "relative",
+        "name": "recent_road_assumption",
+        "horizon": "3",
+        "rule": "budget_rule",
+        "cooldown_hours": "0",
+        "minimum_observed_hours": "1"
+      },
+      "field": "onset_recall",
+      "description": "제한 알림과 저속 시작 감지 / onset_recall",
+      "unit": "비율 또는 건/일",
+      "interpretation": "H1 대상 시작 시점, H3 대상 시작 2시간 전. 실시간 입력 접근은 미확인"
+    },
+    {
+      "id": "episode_autumn_h3_advance_recall",
+      "source": "results/deepening/episodes/metrics.csv",
+      "where": {
+        "period": "autumn",
+        "family": "relative",
+        "name": "recent_road_assumption",
+        "horizon": "3",
+        "rule": "budget_rule",
+        "cooldown_hours": "0",
+        "minimum_observed_hours": "1"
+      },
+      "field": "advance_recall",
+      "description": "제한 알림과 저속 시작 감지 / advance_recall",
+      "unit": "비율 또는 건/일",
+      "interpretation": "H1 대상 시작 시점, H3 대상 시작 2시간 전. 실시간 입력 접근은 미확인"
+    },
+    {
+      "id": "episode_autumn_h3_alerts_per_day",
+      "source": "results/deepening/episodes/metrics.csv",
+      "where": {
+        "period": "autumn",
+        "family": "relative",
+        "name": "recent_road_assumption",
+        "horizon": "3",
+        "rule": "budget_rule",
+        "cooldown_hours": "0",
+        "minimum_observed_hours": "1"
+      },
+      "field": "alerts_per_day",
+      "description": "제한 알림과 저속 시작 감지 / alerts_per_day",
+      "unit": "비율 또는 건/일",
+      "interpretation": "H1 대상 시작 시점, H3 대상 시작 2시간 전. 실시간 입력 접근은 미확인"
+    },
+    {
+      "id": "archive_december_coverage",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "autumn",
+        "horizon": "1",
+        "name": "published_archive",
+        "seed": "17",
+        "scope": "month_2025-12"
+      },
+      "field": "coverage",
+      "description": "12월 공개 과거 월 모형 포괄률 / coverage",
+      "unit": "비율",
+      "interpretation": "명목 80%의 하위 기간 실패도 공개"
+    },
+    {
+      "id": "history_files",
+      "source": "results/deepening/history/identity_audit.json",
+      "keys": [
+        "files"
+      ],
+      "description": "history / files",
+      "unit": "건",
+      "interpretation": "검사 범위 안의 건수; 결측·시행일·단위·인과 식별을 추가로 증명하지 않음"
+    },
+    {
+      "id": "history_data_rows",
+      "source": "results/deepening/history/identity_audit.json",
+      "keys": [
+        "data_rows"
+      ],
+      "description": "history / data_rows",
+      "unit": "건",
+      "interpretation": "검사 범위 안의 건수; 결측·시행일·단위·인과 식별을 추가로 증명하지 않음"
+    },
+    {
+      "id": "history_snapshots",
+      "source": "results/deepening/history/identity_audit.json",
+      "keys": [
+        "snapshots"
+      ],
+      "description": "history / snapshots",
+      "unit": "건",
+      "interpretation": "검사 범위 안의 건수; 결측·시행일·단위·인과 식별을 추가로 증명하지 않음"
+    },
+    {
+      "id": "history_target_stations",
+      "source": "results/deepening/history/identity_audit.json",
+      "keys": [
+        "target_stations"
+      ],
+      "description": "history / target_stations",
+      "unit": "건",
+      "interpretation": "검사 범위 안의 건수; 결측·시행일·단위·인과 식별을 추가로 증명하지 않음"
+    },
+    {
+      "id": "metadata_monthly_link_states",
+      "source": "results/deepening/metadata/audit.json",
+      "keys": [
+        "monthly_link_states"
+      ],
+      "description": "metadata / monthly_link_states",
+      "unit": "건",
+      "interpretation": "검사 범위 안의 건수; 결측·시행일·단위·인과 식별을 추가로 증명하지 않음"
+    },
+    {
+      "id": "metadata_changed_adjacent_fields",
+      "source": "results/deepening/metadata/audit.json",
+      "keys": [
+        "changed_adjacent_fields"
+      ],
+      "description": "metadata / changed_adjacent_fields",
+      "unit": "건",
+      "interpretation": "검사 범위 안의 건수; 결측·시행일·단위·인과 식별을 추가로 증명하지 않음"
+    },
+    {
+      "id": "metadata_missing_link_months",
+      "source": "results/deepening/metadata/audit.json",
+      "keys": [
+        "missing_link_months"
+      ],
+      "description": "metadata / missing_link_months",
+      "unit": "건",
+      "interpretation": "검사 범위 안의 건수; 결측·시행일·단위·인과 식별을 추가로 증명하지 않음",
+      "expected": 0
+    },
+    {
+      "id": "transition_raw_compared_cells",
+      "source": "results/deepening/transition/raw_check.json",
+      "keys": [
+        "compared_cells"
+      ],
+      "description": "transition_raw / compared_cells",
+      "unit": "건",
+      "interpretation": "검사 범위 안의 건수; 결측·시행일·단위·인과 식별을 추가로 증명하지 않음"
+    },
+    {
+      "id": "transition_raw_mismatches",
+      "source": "results/deepening/transition/raw_check.json",
+      "keys": [
+        "mismatches"
+      ],
+      "description": "transition_raw / mismatches",
+      "unit": "건",
+      "interpretation": "검사 범위 안의 건수; 결측·시행일·단위·인과 식별을 추가로 증명하지 않음",
+      "expected": 0
+    },
+    {
+      "id": "transition_check_regression_rows",
+      "source": "results/deepening/transition/result_validation.json",
+      "keys": [
+        "regression_rows"
+      ],
+      "description": "transition_check / regression_rows",
+      "unit": "건",
+      "interpretation": "검사 범위 안의 건수; 결측·시행일·단위·인과 식별을 추가로 증명하지 않음"
+    },
+    {
+      "id": "transition_check_coefficient_values",
+      "source": "results/deepening/transition/result_validation.json",
+      "keys": [
+        "coefficient_values"
+      ],
+      "description": "transition_check / coefficient_values",
+      "unit": "건",
+      "interpretation": "검사 범위 안의 건수; 결측·시행일·단위·인과 식별을 추가로 증명하지 않음"
+    },
+    {
+      "id": "transition_check_mismatches",
+      "source": "results/deepening/transition/result_validation.json",
+      "keys": [
+        "mismatches"
+      ],
+      "description": "transition_check / mismatches",
+      "unit": "건",
+      "interpretation": "검사 범위 안의 건수; 결측·시행일·단위·인과 식별을 추가로 증명하지 않음",
+      "expected": 0
+    },
+    {
+      "id": "archive_check_prediction_files",
+      "source": "results/deepening/archive_forecast/result_validation.json",
+      "keys": [
+        "prediction_files"
+      ],
+      "description": "archive_check / prediction_files",
+      "unit": "건",
+      "interpretation": "검사 범위 안의 건수; 결측·시행일·단위·인과 식별을 추가로 증명하지 않음"
+    },
+    {
+      "id": "archive_check_metric_values_checked",
+      "source": "results/deepening/archive_forecast/result_validation.json",
+      "keys": [
+        "metric_values_checked"
+      ],
+      "description": "archive_check / metric_values_checked",
+      "unit": "건",
+      "interpretation": "검사 범위 안의 건수; 결측·시행일·단위·인과 식별을 추가로 증명하지 않음"
+    },
+    {
+      "id": "archive_check_paired_values_checked",
+      "source": "results/deepening/archive_forecast/result_validation.json",
+      "keys": [
+        "paired_values_checked"
+      ],
+      "description": "archive_check / paired_values_checked",
+      "unit": "건",
+      "interpretation": "검사 범위 안의 건수; 결측·시행일·단위·인과 식별을 추가로 증명하지 않음"
+    },
+    {
+      "id": "archive_check_mismatches",
+      "source": "results/deepening/archive_forecast/result_validation.json",
+      "keys": [
+        "mismatches"
+      ],
+      "description": "archive_check / mismatches",
+      "unit": "건",
+      "interpretation": "검사 범위 안의 건수; 결측·시행일·단위·인과 식별을 추가로 증명하지 않음",
+      "expected": 0
+    },
+    {
+      "id": "episode_check_independent_episodes",
+      "source": "results/deepening/episodes/validation.json",
+      "keys": [
+        "independent_episodes"
+      ],
+      "description": "episode_check / independent_episodes",
+      "unit": "건",
+      "interpretation": "검사 범위 안의 건수; 결측·시행일·단위·인과 식별을 추가로 증명하지 않음"
+    },
+    {
+      "id": "episode_check_existing_numeric_comparisons",
+      "source": "results/deepening/episodes/validation.json",
+      "keys": [
+        "existing_numeric_comparisons"
+      ],
+      "description": "episode_check / existing_numeric_comparisons",
+      "unit": "건",
+      "interpretation": "검사 범위 안의 건수; 결측·시행일·단위·인과 식별을 추가로 증명하지 않음"
+    },
+    {
+      "id": "episode_check_mismatches",
+      "source": "results/deepening/episodes/validation.json",
+      "keys": [
+        "mismatches"
+      ],
+      "description": "episode_check / mismatches",
+      "unit": "건",
+      "interpretation": "검사 범위 안의 건수; 결측·시행일·단위·인과 식별을 추가로 증명하지 않음",
+      "expected": 0
+    },
+    {
+      "id": "infrastructure_history_snapshots",
+      "source": "results/deepening/infrastructure/history_audit.json",
+      "keys": [
+        "snapshots"
+      ],
+      "description": "infrastructure_history / snapshots",
+      "unit": "건",
+      "interpretation": "검사 범위 안의 건수; 결측·시행일·단위·인과 식별을 추가로 증명하지 않음"
+    },
+    {
+      "id": "infrastructure_history_target_rows",
+      "source": "results/deepening/infrastructure/history_audit.json",
+      "keys": [
+        "target_rows"
+      ],
+      "description": "infrastructure_history / target_rows",
+      "unit": "건",
+      "interpretation": "검사 범위 안의 건수; 결측·시행일·단위·인과 식별을 추가로 증명하지 않음"
+    },
+    {
+      "id": "infrastructure_history_matched",
+      "source": "results/deepening/infrastructure/history_audit.json",
+      "keys": [
+        "matched"
+      ],
+      "description": "infrastructure_history / matched",
+      "unit": "건",
+      "interpretation": "검사 범위 안의 건수; 결측·시행일·단위·인과 식별을 추가로 증명하지 않음"
+    },
+    {
+      "id": "infrastructure_history_duplicate_ars",
+      "source": "results/deepening/infrastructure/history_audit.json",
+      "keys": [
+        "duplicate_ars"
+      ],
+      "description": "infrastructure_history / duplicate_ars",
+      "unit": "건",
+      "interpretation": "검사 범위 안의 건수; 결측·시행일·단위·인과 식별을 추가로 증명하지 않음",
+      "expected": 0
+    },
+    {
+      "id": "infrastructure_check_numeric_checks",
+      "source": "results/deepening/infrastructure/group_validation.json",
+      "keys": [
+        "numeric_checks"
+      ],
+      "description": "infrastructure_check / numeric_checks",
+      "unit": "건",
+      "interpretation": "검사 범위 안의 건수; 결측·시행일·단위·인과 식별을 추가로 증명하지 않음"
+    },
+    {
+      "id": "infrastructure_check_mismatches",
+      "source": "results/deepening/infrastructure/group_validation.json",
+      "keys": [
+        "mismatches"
+      ],
+      "description": "infrastructure_check / mismatches",
+      "unit": "건",
+      "interpretation": "검사 범위 안의 건수; 결측·시행일·단위·인과 식별을 추가로 증명하지 않음",
+      "expected": 0
+    },
+    {
+      "id": "infrastructure_raw_expected_route_stop_days",
+      "source": "results/deepening/infrastructure/trip_support_audit.json",
+      "keys": [
+        "expected_route_stop_days"
+      ],
+      "description": "infrastructure_raw / expected_route_stop_days",
+      "unit": "건",
+      "interpretation": "검사 범위 안의 건수; 결측·시행일·단위·인과 식별을 추가로 증명하지 않음"
+    },
+    {
+      "id": "infrastructure_raw_complete_sum_checks",
+      "source": "results/deepening/infrastructure/trip_support_audit.json",
+      "keys": [
+        "complete_sum_checks"
+      ],
+      "description": "infrastructure_raw / complete_sum_checks",
+      "unit": "건",
+      "interpretation": "검사 범위 안의 건수; 결측·시행일·단위·인과 식별을 추가로 증명하지 않음"
+    },
+    {
+      "id": "infrastructure_raw_failed_sum_checks",
+      "source": "results/deepening/infrastructure/trip_support_audit.json",
+      "keys": [
+        "failed_sum_checks"
+      ],
+      "description": "infrastructure_raw / failed_sum_checks",
+      "unit": "건",
+      "interpretation": "검사 범위 안의 건수; 결측·시행일·단위·인과 식별을 추가로 증명하지 않음",
+      "expected": 0
+    },
+    {
+      "id": "infrastructure_raw_check_raw_rows_scanned",
+      "source": "results/deepening/infrastructure/trip_support_validation.json",
+      "keys": [
+        "raw_rows_scanned"
+      ],
+      "description": "infrastructure_raw_check / raw_rows_scanned",
+      "unit": "건",
+      "interpretation": "검사 범위 안의 건수; 결측·시행일·단위·인과 식별을 추가로 증명하지 않음"
+    },
+    {
+      "id": "infrastructure_raw_check_route_stop_days",
+      "source": "results/deepening/infrastructure/trip_support_validation.json",
+      "keys": [
+        "route_stop_days"
+      ],
+      "description": "infrastructure_raw_check / route_stop_days",
+      "unit": "건",
+      "interpretation": "검사 범위 안의 건수; 결측·시행일·단위·인과 식별을 추가로 증명하지 않음"
+    },
+    {
+      "id": "infrastructure_raw_check_numeric_checks",
+      "source": "results/deepening/infrastructure/trip_support_validation.json",
+      "keys": [
+        "numeric_checks"
+      ],
+      "description": "infrastructure_raw_check / numeric_checks",
+      "unit": "건",
+      "interpretation": "검사 범위 안의 건수; 결측·시행일·단위·인과 식별을 추가로 증명하지 않음"
+    },
+    {
+      "id": "infrastructure_raw_check_mismatches",
+      "source": "results/deepening/infrastructure/trip_support_validation.json",
+      "keys": [
+        "mismatches"
+      ],
+      "description": "infrastructure_raw_check / mismatches",
+      "unit": "건",
+      "interpretation": "검사 범위 안의 건수; 결측·시행일·단위·인과 식별을 추가로 증명하지 않음",
+      "expected": 0
+    }
+  ],
+  "output_manifests": [
+    "results/deepening/archive_forecast/evaluation_audit.json",
+    "results/deepening/archive_forecast/figures.json",
+    "results/deepening/availability/audit.json",
+    "results/deepening/availability/figures.json",
+    "results/deepening/cohort/audit.json",
+    "results/deepening/cohort/figures.json",
+    "results/deepening/definitions/audit.json",
+    "results/deepening/episodes/audit.json",
+    "results/deepening/episodes/figures.json",
+    "results/deepening/geometry/audit.json",
+    "results/deepening/gyeonggi/audit.json",
+    "results/deepening/gyeonggi/figures.json",
+    "results/deepening/infrastructure/figures.json",
+    "results/deepening/infrastructure/group_audit.json",
+    "results/deepening/infrastructure/history_audit.json",
+    "results/deepening/infrastructure/trip_support_audit.json",
+    "results/deepening/metadata/audit.json",
+    "results/deepening/road_context/audit.json",
+    "results/deepening/road_context/figures.json",
+    "results/deepening/road_context/raw_check.json",
+    "results/deepening/transition/audit.json",
+    "results/deepening/transition/figures.json",
+    "results/deepening/transition/raw_check.json"
+  ]
+}
