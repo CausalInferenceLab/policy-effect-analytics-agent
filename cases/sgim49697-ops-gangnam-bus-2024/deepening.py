@@ -4,6 +4,9 @@ import argparse
 import importlib
 
 COMMANDS = {
+    "transition-raw-check": ("deepening_transition_check", "raw_check"),
+    "transition-result-check": ("deepening_transition_check", "result_check"),
+    "transition-plots": ("deepening_transition_plots", "run"),
     "transition-prepare": ("deepening_transition", "prepare"),
     "transition-audit": ("deepening_transition", "run"),
     "archive-plots": ("deepening_archive_plots", "run"),

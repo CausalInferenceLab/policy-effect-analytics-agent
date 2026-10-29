@@ -1,0 +1,14 @@
+# 매년 같은 6월24일~7월5일의 원본과 전환 결과를 별도 계산으로 대조한다.
+locked_year: 2026
+date_windows:
+  - ['2023-06-24', '2023-07-05']
+  - ['2024-06-24', '2024-07-05']
+  - ['2025-06-24', '2025-07-05']
+selection_config: deepening_road_config.yaml
+source_manifest: overnight-forecast-sources.json
+extraction_manifests: [results/overnight/forecast/extraction_development.json, results/overnight/forecast/extraction_test.json]
+sentinels: ['', '-', 'NA', 'N/A', 'null']
+workers: 2
+absolute_tolerance: 0.00001
+scope: 모든 14개 링크·36개 날짜·24시간, 전체 월을 다시 추출했다는 주장은 하지 않음
+regression_check: FWL_QR_residualized_coefficients_without_calling_original_design_or_fitting_function
