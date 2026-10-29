@@ -1,0 +1,25 @@
+# 강조 두 구간에서 같은 노선·날짜·시간을 공동 관측한 제한 표본의 방향 차이를 점검한다.
+version: 1
+mode: exploratory_after_directional_and_hour_shape_results
+locked_year: 2026
+base_config: overnight_hour_shape_config.yaml
+candidate_eligibility: results/overnight/hour_shape/eligibility.csv
+candidate_audit: results/overnight/hour_shape/audit.json
+expected_common_routes: ['100100019', '100100063', '100100068', '100100070', '100100073', '100100391', '100100392', '100100409', '100100459', '100100596', '100100603', '107000005', '113000002', '123000010']
+selection_rule: both_segments_all_16_hours_joint_positive_on_at_least_80pct_of_each_pre_period
+normalization: each_route_segment_hour_own_pre2024_mean_on_both_segments_joint_dates
+report_hours: [17, 18, 19]
+minimum_pre_joint_coverage: 0.80
+minimum_routes: 3
+minimum_coverage: 0.80
+minimum_days: 20
+maximum_coverage_gap: 0.10
+bootstrap: {draws: 2000, seed: 20261029}
+contrast: north_relative_change_minus_south_relative_change_in_percentage_points
+bootstrap_pairing: resample_same_calendar_weeks_for_both_directions_within_each_period
+interpretation:
+  - 기존 결과를 본 뒤 추가하는 노선 구성 민감도이며 독립된 확인 실험이 아님
+  - 두 강조 구간은 서로 정확히 반대편의 같은 물리 구간이 아님
+  - 같은 노선 ID와 날짜가 같은 차량·운행 회차·승객을 뜻하지 않음
+  - 방향별 변화율 차이는 기술적 요약이며 인과 이중차분 추정치가 아님
+  - 사후 누락 노선을 분모에서 제거하거나 대체 노선을 선택하지 않음
