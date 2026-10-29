@@ -12,6 +12,7 @@ import pytest
 CASE = Path(__file__).resolve().parents[1] / "cases/sgim49697-ops-gangnam-bus-2024"
 sys.path.insert(0, str(CASE))
 pytest.importorskip("pyarrow")
+pytest.importorskip("openpyxl")
 mod = importlib.import_module("gangnam.deepening_gyeonggi_parse")
 CFG = {"years": [2024], "locked_year": 2026}
 
@@ -62,7 +63,8 @@ def test_wrong_dimensions_and_trailing_style_rows_are_audited(tmp_path, monkeypa
         for item in before.infolist():
             blob = before.read(item)
             if item.filename.startswith('xl/worksheets/sheet'):
-                blob = re.sub(rb'<dimension ref="[^"]+"/>', b'<dimension ref="A1"/>', blob)
+                blob, changed = re.subn(rb'(<(?:\w+:)?dimension\b[^>]*\bref=")[^"]+', rb'\g<1>A1', blob)
+                assert changed == 1
             after.writestr(item, blob)
     monkeypatch.setattr(mod, 'CASE', tmp_path)
     monkeypatch.setattr(mod, 'RAW', tmp_path)

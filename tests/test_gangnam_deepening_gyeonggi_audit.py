@@ -10,6 +10,7 @@ CASE = Path(__file__).resolve().parents[1] / "cases/sgim49697-ops-gangnam-bus-20
 sys.path.insert(0, str(CASE))
 pd = pytest.importorskip("pandas")
 pytest.importorskip("pyarrow")
+pytest.importorskip("openpyxl")
 mod = importlib.import_module("gangnam.deepening_gyeonggi_audit")
 
 
