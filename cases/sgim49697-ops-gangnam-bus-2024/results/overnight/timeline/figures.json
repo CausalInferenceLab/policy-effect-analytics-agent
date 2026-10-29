@@ -1,0 +1,12 @@
+{
+  "code_sha256": "a6fb9e1943441340374c77dac4e26573311e7d78eab622e925c354a77ab14b6c",
+  "inputs": {
+    "weekly.csv": "3a744867ef2b3a9f0dcafd1a704636c37e444587865d00055539c3972e439a7b",
+    "single_level_changes.csv": "3d53af5249bff67a047d6090897f42f43efa6c2aafc57d20656f473bedfdbabb",
+    "series.csv": "93cb70f9f3474b2d77c95edd07397aaa0c9581e96547a6dcbc61effcda73446e"
+  },
+  "outputs": {
+    "highlighted_weekly.png": "d8586ac6878574f77ed4b98497f1195118bc89ad7720413e2be1ea672e647916",
+    "segment_splits.png": "5a8c01c614428a5eecad8f46e72895bacc858caed371eb77022fb61bdff9e08e"
+  }
+}
