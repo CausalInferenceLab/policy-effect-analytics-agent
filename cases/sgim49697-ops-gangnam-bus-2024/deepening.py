@@ -4,6 +4,8 @@ import argparse
 import importlib
 
 COMMANDS = {
+    "archive-prepare": ("deepening_archive_data", "prepare"),
+    "archive-features": ("deepening_archive_features", "run"),
     "episode-check": ("deepening_episode_check", "run"),
     "forecast-plots": ("deepening_forecast_plots", "run"),
     "availability-audit": ("deepening_availability", "run"),

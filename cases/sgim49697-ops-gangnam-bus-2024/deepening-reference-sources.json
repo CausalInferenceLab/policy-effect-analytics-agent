@@ -240,6 +240,28 @@
       "bytes": 5377,
       "retrieved_at": "2026-10-29T05:12:03.313768+00:00",
       "status": "catalog_metadata_only_no_new_speed_values"
+    },
+    {
+      "id": "fpp3_time_series_validation",
+      "url": "https://otexts.com/fpp3/toolbox.html",
+      "resolved_url": "https://otexts.com/fpp3/toolbox.html",
+      "path": "data/deepening/references/fpp3_time_series_validation.html",
+      "sha256": "bc742d10baf1c5767c41bf39642744a981b9179ebd2effc11d81cd48b18ec0f2",
+      "bytes": 270133,
+      "retrieved_at": "2026-10-29T05:47:23.590335+00:00",
+      "reviewed_scope": "Section 5.10 only: time ordered forecasting origins; no claim of implemented rolling refits",
+      "status": "methods_reference_not_outcome_values"
+    },
+    {
+      "id": "catboost_multiquantile_reference",
+      "url": "https://catboost.ai/docs/en/concepts/loss-functions-regression",
+      "resolved_url": "https://catboost.ai/docs/en/concepts/loss-functions-regression",
+      "path": "data/deepening/references/catboost_multiquantile_reference.html",
+      "sha256": "eb97def886d18e52b2698d96213a6a0e4ddd433790ab8e9e3827291b68176d8f",
+      "bytes": 277654,
+      "retrieved_at": "2026-10-29T05:47:27.616458+00:00",
+      "reviewed_scope": "MultiQuantile coefficients and CPU/GPU support table",
+      "status": "methods_reference_not_outcome_values"
     }
   ],
   "access_notes": [
