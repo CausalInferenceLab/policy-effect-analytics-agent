@@ -4,6 +4,9 @@ import argparse
 import importlib
 
 COMMANDS = {
+    "gyeonggi-prepare": ("deepening_gyeonggi_data", "prepare"),
+    "gyeonggi-collect": ("deepening_gyeonggi_data", "collect"),
+    "definitions-audit": ("deepening_definitions", "run"),
     "cohort-plots": ("deepening_cohort_plots", "run"),
     "cohort-raw-check": ("deepening_raw_check", "run"),
     "cohort-audit": ("deepening_cohort", "run"),

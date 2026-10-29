@@ -1,0 +1,35 @@
+# 공개 API 설명과 2021년 예시의 필드 대응을 감사하며 측정 단위를 추정하지 않는다.
+version: 1
+locked_year: 2026
+sources:
+  - id: tdata_time_api_1039
+    manifest: deepening-sources.json
+  - id: tdata_operations_api_1083
+    manifest: deepening-sources.json
+  - id: tdata_vehicle_api_1084
+    manifest: deepening-reference-sources.json
+sample_value_allowlist:
+  - stdrDe
+  - tripTime
+  - tripTime00h
+  - tripTime01h
+  - tripTime02h
+  - tripTime03h
+  - tripTime04h
+  - speed
+  - tripFcnt
+  - tourTime
+  - stpcarTimeAcmtl
+  - opdrTimeAcmtl
+  - pasageTimeAcmtl
+  - ssttnDt
+  - csttnDt
+  - detectCo62
+  - tkcarNmpr
+  - gffNmpr
+  - nownmprNmpr
+limitations:
+  - 날짜 인자와 과거 응답 샘플은 현재 실제 보관·접근 가능 기간을 증명하지 않는다
+  - 표기 정규화는 대소문자와 밑줄만 제거하며 필드 의미의 동등성을 판정하지 않는다
+  - 표본 숫자의 크기 또는 시각 차이로 다른 자료의 단위·경계·산출식을 확정하지 않는다
+  - 인증키 발급·실제 API 요청·2026년 자료값 열람은 수행하지 않는다

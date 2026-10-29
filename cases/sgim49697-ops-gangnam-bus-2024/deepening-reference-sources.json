@@ -63,6 +63,54 @@
       "retrieved_at": "2026-10-29T03:35:50.208118+00:00",
       "status": "reviewed_relevant_section",
       "review_scope": "2024-11-27 언론담당관 해명자료 중 106·542번 폐선 및 배경 진술 확인. 폐선의 정확한 날짜는 과천시 원문에서 확인."
+    },
+    {
+      "id": "gits_original_catalog",
+      "url": "https://gits.gg.go.kr/gtdb/web/trafficDb/visualization/data/list.do",
+      "path": "data/deepening/references/gits_original_catalog.html",
+      "bytes": 61936,
+      "sha256": "763843f40a87b099e8cb87aafa341dce3b115dab4040bbbca9ff50f99af7d681",
+      "retrieved_at": "2026-10-29T04:11:21.605934+00:00",
+      "status": "downloaded_pending_semantic_review",
+      "acquisition_note": "같은 수집 묶음의 GBIS 연결 시간초과 뒤 성공한 로컬 파일과 기록된 요청 URL로 명세 복구"
+    },
+    {
+      "id": "gg_route_passengers_catalog",
+      "url": "https://data.gg.go.kr/portal/data/service/selectServicePage.do?infId=DAPGOOZCRQS7L32P7AWP32619343&infSeq=1",
+      "path": "data/deepening/references/gg_route_passengers_catalog.html",
+      "bytes": 976437,
+      "sha256": "b352affcc02df098d08edf06a883fb34e126a1e2e1315e47a792155e2da97498",
+      "retrieved_at": "2026-10-29T04:11:21.721483+00:00",
+      "status": "rejected_missing_page",
+      "acquisition_note": "같은 수집 묶음의 GBIS 연결 시간초과 뒤 성공한 로컬 파일과 기록된 요청 URL로 명세 복구",
+      "review_scope": "HTTP 200이나 공식 오류 메세지 페이지. 과거 카탈로그 URL을 유효 자료로 사용하지 않음."
+    },
+    {
+      "id": "gits_original_catalog_page2",
+      "url": "https://gits.gg.go.kr/gtdb/web/trafficDb/visualization/data/list.do?pageIndex=2",
+      "path": "data/deepening/references/gits_original_catalog_page2.html",
+      "bytes": 60914,
+      "sha256": "9ac52bfe40cea833b17d6db14027e615fec86f48f3122561dcd0be665bfd2711",
+      "retrieved_at": "2026-10-29T04:13:32.444861+00:00",
+      "status": "downloaded_pending_semantic_review"
+    },
+    {
+      "id": "gits_routes_2024_description",
+      "url": "https://gits.gg.go.kr/gtdb/web/trafficDb/visualization/data/view.do?boardNo=1956&boardOrder=1695&schGubunCode=02&schCon=0&schStr=&pageIndex=1",
+      "path": "data/deepening/references/gits_routes_2024_description.html",
+      "bytes": 47098,
+      "sha256": "3d01eb85b44cb84e3c2ccdce598f14bdc15d3016ea5f1e20b4df08a31f88a7ea",
+      "retrieved_at": "2026-10-29T04:13:32.616011+00:00",
+      "status": "downloaded_pending_semantic_review"
+    }
+  ],
+  "access_notes": [
+    {
+      "id": "gbis_base_api_manual",
+      "url": "https://www.gbis.go.kr/gbis2014/publicService.action?cmd=mBaseInfo",
+      "checked_at": "2026-10-29T04:12:45.492047+00:00",
+      "status": "web_read_local_connect_timeout",
+      "scope": "공식 웹 문서로 인증키 요구·현재 버전/파일 경로·명세 확인. 로컬 HTTP 연결 15초 시간초과. 과거 버전 요청 인자는 문서에 없음."
     }
   ]
 }

@@ -1,0 +1,13 @@
+source,field,type,required,size,description,value_description,example
+tdata_time_api_1039,apikey,,필,100,인증키,교통빅데이터 포털에서 받은 인증키,-
+tdata_time_api_1039,startRow,,,4,시작행번호,시작행번호,1
+tdata_time_api_1039,rowCnt,,,10,한 페이지 결과수,한 페이지 결과 수,10
+tdata_time_api_1039,stdrDe,,필,8,기준날짜,기준 날짜,20211024
+tdata_operations_api_1083,apikey,,필,100,인증키,교통빅데이터 포털에서 받은 인증키,-
+tdata_operations_api_1083,stdrDe,,필,8,기준일자,기준일(yyyymmdd),20210101
+tdata_operations_api_1083,startRow,,,4,시작행번호,시작행번호,1
+tdata_operations_api_1083,rowCnt,,,10,한 페이지 결과수,한 페이지 결과 수,10
+tdata_vehicle_api_1084,rowCnt,,,10,한 페이지 결과수,한 페이지 결과 수,10
+tdata_vehicle_api_1084,apikey,,필,100,인증키,교통빅데이터 포털에서 받은 인증키,-
+tdata_vehicle_api_1084,startRow,,,4,시작행번호,시작행번호,1
+tdata_vehicle_api_1084,stdrDe,,필,8,기준일자,기준일(yyyymmdd),20210101
