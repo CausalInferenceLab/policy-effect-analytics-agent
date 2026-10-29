@@ -78,7 +78,7 @@ def run():
         ax.set(xlabel=title, yticks=np.arange(len(names)), yticklabels=names, ylim=(len(names) - .3, -.7))
         ax.grid(axis="x", alpha=.16)
     fig.suptitle("공개 과거 월 입력의 추가 가치: 같은 시드의 달력 모형과 비교", fontsize=15, y=.985)
-    fig.text(.02, .02, "차이 = 공개 과거 월 모형 − 달력 모형. 0보다 작으면 오차/점수가 감소한다. 모든 두 시드·시간대·시점 비교를 함께 표시.\n"
+    fig.text(.02, .02, "차이 = 공개 과거 월 모형 - 달력 모형. 0보다 작으면 오차/점수가 감소한다. 모든 두 시드·시간대·시점 비교를 함께 표시.\n"
         "같은 달력 주를 2,000회 재표집한 기술적 95% 구간이며 인과효과나 다중비교 보정 구간이 아니다.", fontsize=9)
     fig.tight_layout(rect=(0, .085, 1, .95))
     second = OUT / "archive_calendar_differences.png"
