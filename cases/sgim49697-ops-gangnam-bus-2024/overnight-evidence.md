@@ -29,3 +29,9 @@
 [T Data 노선 부가정보](https://t-data.seoul.go.kr/dataprovide/trafficdataviewfile.do?data_id=54)는 월 갱신 설명이 있지만 공개 목록에서 확인한 파일은 현재 스냅숏 한 개다. 월 갱신이라는 이유만으로 과거 월별 파일이 존재한다고 추정하지 않는다. [노선 전체 경유지 API](https://t-data.seoul.go.kr/category/dataviewopenapi.do?data_id=1058)의 신청·미리보기에는 로그인 조건이 있다.
 
 현재 노선 이름과 과거 관측 경로를 함께 활용하되 역사적 ID↔노선명 확정 여부는 계속 미확인으로 표시한다. 정류장 ID↔ARS의 당시 대응은 기존 2023·2024년 카드 파일 대조를 유지한다. 남은 버스 노선을 무처치 대조군으로 지정하지 않는다.
+
+## 정류장 운행 통계와 물리 환경의 후속 확인
+
+[T Data 정류장 운행 통계 API 1083](https://t-data.seoul.go.kr/dataprovide/trafficdataviewopenapi.do?data_id=1083)는 기준일과 인증키를 요구하며 여행시간·개문/통과 누계·검출 건수 등을 명시한다. 그러나 `stpcarTimeAcmtl`의 API 설명과 [공개 파일 83](https://t-data.seoul.go.kr/dataprovide/trafficdataviewfile.do?data_id=83)의 헤더가 서로 다르고 단위·분모·시간 집계가 미확인이다. 현재 공개 파일은 첫 기간 키가 20261025여서 헤더와 기간만 확인한 뒤 중단했다. 수치 분석·전체 다운로드·2026 시험 해제는 하지 않았다. API에 날짜 인자가 있다는 이유로 2023~2025년 응답 확보를 주장하지 않는다. 상세 근거·접근 범위는 [후속 출처](overnight-followup-references.json)에 기록했다.
+
+서울시의 [2023-11-29 조간용 원문](https://clik.nanet.go.kr/clikr-collection/policyinfo/77/313/2023/CLIKC9523951788674343_attach_2.pdf) 1~2쪽은 **2호선 강남역 양방향 중앙 승강장 연장·횡단보도 추가와 2023-11-25 개통**을, 5쪽은 공사 기간 2023-10-17~11-25를 명시한다. 2024-02-27 소개 영상의 게시일과 실제 개통일을 구별했다. 이 원문만으로 ARS별 길이·검지 경계·신호 주기까지 확인한 것은 아니다. 2023년과 2024년의 정류장 환경 동일성을 가정하지 않으며, 2024년 6월 버스 조정의 직접 동시 사건으로도 분류하지 않는다. 원문은 로컬에 보존하고 해시만 공개했다.

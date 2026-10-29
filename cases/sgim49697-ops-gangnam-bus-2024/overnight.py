@@ -99,6 +99,8 @@ STAGES = {
     "timeline-plots": ("overnight_timeline_plots", "run", []),
     "path-sums": ("overnight_path_sums", "run", []),
     "path-sums-plots": ("overnight_path_sums_plots", "run", []),
+    "hour-shape": ("overnight_hour_shape", "run", []),
+    "hour-shape-plots": ("overnight_hour_shape_plots", "run", []),
     "persistence-segments": ("overnight_persistence_segments", "run", []),
     "persistence-segments-plots": ("overnight_persistence_segments_plots", "plot", []),
 }

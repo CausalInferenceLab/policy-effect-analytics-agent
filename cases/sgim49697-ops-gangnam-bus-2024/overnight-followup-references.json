@@ -57,6 +57,16 @@
         "data/overnight/probes/tdata_stop_operations_head.json": "2490904efdc4d342164c7524e13f2a5907dca5bc9134cb5d0fe79548b9ca767e",
         "data/overnight/probes/tdata_stop_operations_schema.json": "6a491de4c9f77ee68cf274e73ecdf483f3bb560b250497ab5dd3f77f0b3b2b41"
       }
+    },
+    {
+      "title": "서울시, 강남역 중앙정류소에 횡단보도 추가 설치…혼잡 개선·이동 편의",
+      "url": "https://clik.nanet.go.kr/clikr-collection/policyinfo/77/313/2023/CLIKC9523951788674343_attach_2.pdf",
+      "publisher": "서울특별시 교통운영과, 국회도서관 수집 원문",
+      "published_for": "2023-11-29",
+      "review_scope": "6쪽 중 본문 1~3쪽과 참고 4~5쪽의 계획·공사·개통 날짜 확인. 2023-10-17~11-25 공사, 11-25 개통, 2호선 강남역 양방향 승강장 연장·횡단보도 추가. 지도상의 ARS·검지 경계·신호 주기 수치는 확인되지 않음.",
+      "application": "2023년과 2024년의 물리 환경 동일성을 가정하지 않는 근거. 2024년 6월 버스 조정과 별개 사건이며 2024-02-27 영상 게시일을 공사일로 사용하지 않음.",
+      "local_path": "data/overnight/probes/gangnam_crosswalk_20231129.pdf",
+      "sha256": "9ee8696e4ab30181316cc88f45c28f5d300720388339c329dac50bbfdca4b1fa"
     }
   ]
 }
