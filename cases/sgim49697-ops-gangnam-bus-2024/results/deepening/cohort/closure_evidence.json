@@ -1,0 +1,27 @@
+{
+  "route_id": "100100603",
+  "route_name": "542",
+  "closure_date": "2024-08-24",
+  "files": [
+    {
+      "id": "gccity_542_closure_20241118",
+      "url": "https://www.gccity.go.kr/portal/newsList/view.do?idx=733&mId=0301140000",
+      "path": "data/deepening/references/gccity_542_closure_20241118.html",
+      "bytes": 254003,
+      "sha256": "bec54c80564dd54ec34bb57627e34cd20f1bf1a7e9393d32c60154276a3bc2a5",
+      "retrieved_at": "2026-10-29T03:35:51.866303+00:00",
+      "status": "reviewed_relevant_section",
+      "review_scope": "2024-11-18 교통과 보도자료 본문의 서울 542번 8월 24일 폐선 진술 확인."
+    },
+    {
+      "id": "seoul_542_closure_20241127",
+      "url": "https://mediahub.seoul.go.kr/archives/2012820",
+      "path": "data/deepening/references/seoul_542_closure_20241127.html",
+      "bytes": 127364,
+      "sha256": "8418cdc66a1d637196f6ab5be5d00684cdd5483306f6fc1601e2d8e0bfa786b6",
+      "retrieved_at": "2026-10-29T03:35:50.208118+00:00",
+      "status": "reviewed_relevant_section",
+      "review_scope": "2024-11-27 언론담당관 해명자료 중 106·542번 폐선 및 배경 진술 확인. 폐선의 정확한 날짜는 과천시 원문에서 확인."
+    }
+  ]
+}
