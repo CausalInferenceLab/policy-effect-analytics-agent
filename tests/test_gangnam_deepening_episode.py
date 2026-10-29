@@ -64,6 +64,9 @@ def test_missing_saved_predictions_remain_unknown_on_complete_clock():
     assert catalog.left_censored.tolist() == [True]
     with pytest.raises(ValueError, match="시각의 차이"):
         mod.complete_panel(frame, ["1"], "2025-05-01 22:00", "2025-05-02 02:00", 3)
+    with_raw = frame.assign(raw_probability=.01)
+    extra = mod.complete_panel(with_raw, ["1"], "2025-05-01 22:00", "2025-05-02 02:00", 1)
+    pd.testing.assert_frame_equal(full, extra)
 
 
 def test_episode_length_filter_does_not_change_point_metrics_or_restore_unknown_start():

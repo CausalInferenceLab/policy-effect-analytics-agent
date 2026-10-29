@@ -104,9 +104,10 @@ def verify(committed=True):
 
 def complete_panel(frame, links, start, end, horizon, timezone="Asia/Seoul"):
     """관측되지 않은 시각을 0 또는 예측값으로 대체하지 않는다."""
-    data = frame.copy()
-    if set(data.columns) != {"link_id", "target_start", "origin", "speed_kmh", "label", "probability"}:
+    columns = ["link_id", "target_start", "origin", "speed_kmh", "label", "probability"]
+    if not set(columns).issubset(frame.columns) or set(frame.columns) - set(columns) - {"raw_probability"}:
         raise ValueError("경보 예측 열이 예상과 다릅니다")
+    data = frame[columns].copy()
     data["link_id"] = data.link_id.astype(str)
     for col in ["target_start", "origin"]:
         if str(data[col].dt.tz) != timezone:
