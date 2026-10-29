@@ -1,0 +1,184 @@
+{
+  "prepared_at": "2026-10-29T07:02:22.653123+00:00",
+  "configuration": {
+    "version": 1,
+    "mode": "exploratory_after_existing_results",
+    "locked_year": 2026,
+    "years": [
+      2023,
+      2024,
+      2025
+    ],
+    "source_manifest": "deepening-sources.json",
+    "notice_id": "heolleung_brt_opening_202501",
+    "notice_date": "2025-01-06",
+    "announced_opening_date": "2025-01-11",
+    "history_manifest": "deepening-history-sources.json",
+    "history_routes": "results/deepening/history/target_route_history.csv",
+    "history_audit": "results/deepening/history/identity_audit.json",
+    "cohort_audit": "results/deepening/cohort/audit.json",
+    "reference_config": "overnight_matched_directions_config.yaml",
+    "notice_ars": {
+      "central": [
+        "22043",
+        "22044"
+      ],
+      "curb": [
+        "22294",
+        "22295"
+      ]
+    },
+    "new_stop_ars": [
+      "22043",
+      "22044",
+      "22045",
+      "22046"
+    ],
+    "curb_stop_ars": [
+      "22293",
+      "22294",
+      "22295",
+      "22296",
+      "22297",
+      "22298"
+    ],
+    "route_groups": {
+      "announced_central": {
+        "label": "2025년 안내의 신설 중앙정류소 정차 7개 노선",
+        "names": [
+          "440",
+          "452",
+          "470",
+          "741",
+          "9404",
+          "9408",
+          "9409"
+        ]
+      },
+      "announced_curb": {
+        "label": "2025년 안내의 매헌시민의숲 가로변 정류소 정차 4개 공통 노선",
+        "names": [
+          "140",
+          "400",
+          "421",
+          "441"
+        ]
+      },
+      "not_in_selected_notice_rows": {
+        "label": "위 정류소 안내 행에 없는 나머지 2개 공통 노선",
+        "names": [
+          "402",
+          "420"
+        ]
+      }
+    },
+    "date_rules": [
+      "native_group_coverage",
+      "common_partition_dates"
+    ],
+    "normalization": "기존 노선·방향·시간별 2024년 사전 평균 유지, 양방향 7~22시 32개 양수 기록의 공동 관측 유지",
+    "comparison_dates": "기존 다섯 비교 기간·공휴일·최소 20일·80퍼센트 관측·최소 3개 노선 기준 유지",
+    "minimum_routes_for_interpretation": 3,
+    "group_contrast": "같은 날짜의 중앙 안내군 변화율에서 가로변 안내군 변화율을 빼는 기술 비교, 인과 이중차분 아님",
+    "interpretation": [
+      "안내에 실린 정차 계획은 해당 기간 실제 경로·배차·정류소 이용의 차량별 확인이 아니다",
+      "표에 없는 노선 또는 가로변 노선을 무처리 대조군으로 간주하지 않는다",
+      "2023년 1구간 개통과 2024년 동시 변화도 있어 연도별 비교에 단일 원인을 부여하지 않는다",
+      "2개 노선 집단은 결과를 숨기지 않되 최소 노선 수 조건 실패로 표시한다",
+      "관측 기준일 사이의 정류소 존재와 실제 개통 날짜를 보간하지 않는다"
+    ]
+  },
+  "inputs": {
+    "deepening_infrastructure_config.yaml": "632037e745c6f38102c1c857fc1645e5a7c72671fef39b3b165e5ec81d62b839",
+    "deepening-history-sources.json": "e43aae0e8e661bb52073741cc330e38d56384480450d9c1132b19f46fc6c47d2",
+    "results/deepening/history/target_route_history.csv": "ae11ba607f74f8a05bf6e487cf5af84da5d384b123858d42f2d33006b12e49a3",
+    "results/deepening/history/identity_audit.json": "d1f7203d8910b8f6cb1be124d82c0fcd5b01c034588a1ecbb3a81bd4ff694e51",
+    "results/deepening/cohort/audit.json": "709826eaecef4f7299815c7b9d518de0cb5832d760a8b28c18b83f91395b911c",
+    "results/overnight/matched_directions/audit.json": "96fb4062a0c203798e0730107091d987d585eae6130aa0fbb89a3ac07ac2d3cd",
+    "data/overnight/matched_directions/baseline.parquet": "cdb1a811e96d2a3a8ef67b98fe824fe84b2afe42cf36deda103f54346a29f436",
+    "overnight_matched_directions_config.yaml": "31b042ea38722240165692b53499910eb04ebdfb78e2aa3f443c1b65a5ac82ad",
+    "data/deepening/references/heolleung_brt_opening_202501.html": "95bbb51fd5a5abbdd6a3a75a40c60294338471a8e59926ea51afca78421b16a4",
+    "gangnam/deepening_identity.py": "c72657300b27d4517122948e50d78114211dd10c0d401210fc6a1ff589a7b709",
+    "gangnam/overnight_matched_directions.py": "8f2fb4fa18c127d3b415f5572cb63d80c2f3108c9b0e88be5dedbfecf2413340",
+    "gangnam/overnight_sensitivity.py": "a490bc4d816deff003edf9537d293680af23c6e8b178062ea415f40af03079c6",
+    "overnight_hour_shape_config.yaml": "740ee36d3dd17bee4e0c9842c30301a73a92bbea24c5e1eaa087603115e025ce"
+  },
+  "notice": {
+    "id": "heolleung_brt_opening_202501",
+    "title": "헌릉로 중앙버스전용차로 2구간 2025년 1월 11일 개통 안내",
+    "source": "https://mediahub.seoul.go.kr/archives/2013139",
+    "url": "https://mediahub.seoul.go.kr/archives/2013139",
+    "method": "GET",
+    "path": "data/deepening/references/heolleung_brt_opening_202501.html",
+    "kind": "html",
+    "bytes": 145220,
+    "sha256": "95bbb51fd5a5abbdd6a3a75a40c60294338471a8e59926ea51afca78421b16a4",
+    "retrieved_at": "2026-10-29T06:44:19.293677+00:00",
+    "scope": "본문·정류소별 노선 표 확인. 개통 사전 안내이며 실제 첫 운행 기록은 아님.",
+    "status": "primary_document_partial_review"
+  },
+  "advertised_routes": {
+    "22043": [
+      "440",
+      "452",
+      "470",
+      "741",
+      "9404",
+      "9408",
+      "9409"
+    ],
+    "22295": [
+      "140",
+      "400",
+      "405",
+      "421",
+      "441",
+      "0411",
+      "4432",
+      "11-3",
+      "6",
+      "8442출근",
+      "8442퇴근"
+    ],
+    "22044": [
+      "440",
+      "452",
+      "470",
+      "741",
+      "9404",
+      "9408",
+      "9409"
+    ],
+    "22294": [
+      "140",
+      "400",
+      "405",
+      "421",
+      "441",
+      "0411",
+      "4432",
+      "11-3",
+      "6",
+      "8442출근",
+      "8442퇴근"
+    ]
+  },
+  "retained_routes": [
+    "100100019",
+    "100100063",
+    "100100068",
+    "100100070",
+    "100100073",
+    "100100391",
+    "100100392",
+    "100100409",
+    "100100459",
+    "100100596",
+    "107000005",
+    "113000002",
+    "123000010"
+  ],
+  "grid_path": "data/deepening/cohort/time_count_grid.parquet",
+  "grid_sha256": "bd2b37dd6b2cb45c0cac6e91a2852901c291e556171b1d1798d756e508f19810",
+  "membership_sha256": "67643e25a14996abf43ca4f2980b3cd1d6b66b0bcd7e55d8ce83b5df0715b254"
+}
