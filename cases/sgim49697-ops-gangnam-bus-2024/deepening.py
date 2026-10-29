@@ -4,6 +4,8 @@ import argparse
 import importlib
 
 COMMANDS = {
+    "cohort-plots": ("deepening_cohort_plots", "run"),
+    "cohort-raw-check": ("deepening_raw_check", "run"),
     "cohort-audit": ("deepening_cohort", "run"),
     "history-audit": ("deepening_identity", "audit"),
     "history-prepare": ("deepening_history_data", "prepare_requests"),

@@ -1,0 +1,16 @@
+# 기존 추출 함수를 쓰지 않고 폐선 전후 네 날짜를 원본 CSV와 대조한다.
+version: 1
+locked_year: 2026
+dates: ['2024-08-22', '2024-08-23', '2024-08-24', '2024-08-26']
+source_manifest: followup-sources.json
+source_month: '2024-08'
+kinds: [bus_time, bus_trips]
+cohort_audit: results/deepening/cohort/audit.json
+route_selection: results/overnight/matched_directions/eligibility.csv
+segments:
+  - {segment: south, stop: '121000011', arrival: '121000009'}
+  - {segment: north, stop: '121000008', arrival: '121000010'}
+report_hours: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22]
+retired_route: '100100603'
+scope: 두 ZIP의 모든 CSV 행 너비를 검증하고, 선택 날짜·노선·정류장의 원래 24시간 값을 읽어 7~22시 캐시와 직접 비교한다
+interpretation: 네 날짜·두 강조 구간의 직접 대조이며 전체 32개월의 독립 재추출로 부르지 않는다

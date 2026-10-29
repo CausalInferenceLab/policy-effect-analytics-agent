@@ -1,0 +1,11 @@
+{
+  "code_sha256": "638e41551391d2a1f758ffb34cad05ee2e1c645d269f169aec91c6add188a87c",
+  "inputs": {
+    "comparisons.csv": "129c93a16421c01909f2fafcccf7769b08ccfa8a6e7c2c3ae74b9e6d146c1f13",
+    "retired_route_daily.csv": "bafe5602d7a46128805611851b23382af6cf4279c00586dda6d6c2721aa0a0c4"
+  },
+  "outputs": {
+    "retained_cohort_changes.png": "05a80aaad9bb6a729c103c527be9cb2af8bb0258fc69c53acb685ef0f8e689d8",
+    "retirement_record_states.png": "3b5ca3379fff8e8a6877ffd6418124eeb6becc077bedecac2d25b11f4919b972"
+  }
+}
