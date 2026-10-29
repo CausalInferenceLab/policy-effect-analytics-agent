@@ -1,0 +1,49 @@
+{
+  "completed_at": "2026-10-29T05:31:07.340949+00:00",
+  "config_sha256": "e1da9cd81539c008601221986f9273ba6b8f7c083c21107858e5e8b74f7edff1",
+  "code_sha256": "9dd36779ec59bd011e63d38d398ac4d05fa9705f97db2dcf35e5ea6a957d64eb",
+  "references_sha256": "84a6a0839bd2f8144a223560828e6a7b6b9e409d608dd1db91fd371c1d47435b",
+  "inputs": {
+    "overnight-forecast-sources.json": "91eb1e8400ce55de82fbd4f5677ec92df098252a769e5613a1cb1a65b6b6a2b9",
+    "overnight-confirmation-sources.json": "eb5ba0c22f370ad4625fc3272754ec90494223a1250bd01750b267b92c1bcbb8",
+    "overnight_forecast_config.yaml": "459e838c924c3bad0b189b6ab752db8842a0e2d6ef2688b2933d64e7f31317af",
+    "gangnam/deepening_definitions.py": "0c9d85a93ca7fafde081251e9d581e2df1f7b2e2b2a68a75bc8535622c87b311"
+  },
+  "matched_catalog_files": 36,
+  "api_specification": {
+    "request_fields": [
+      "KEY",
+      "TYPE",
+      "SERVICE",
+      "START_INDEX",
+      "END_INDEX",
+      "LINK_ID"
+    ],
+    "observation_fields": [
+      "LINK_ID",
+      "PRCS_SPD",
+      "PRCS_TRV_TIME"
+    ],
+    "observation_timestamp_field_documented": false,
+    "historical_date_parameter_documented": false,
+    "key_required": true,
+    "actual_service_called": false
+  },
+  "outputs": {
+    "monthly_catalog.csv": "8461cf735622ccba85846880cb6a4358ebc7d6c2dbad4bde7acf6dc22c53dbb3",
+    "feature_availability.csv": "90446c6624bd8741e939e5a4de26d8daf1f881668bcb81de365479f9e2d64c4e",
+    "model_stage_availability.csv": "f96565f9bf34309c5250a9a2b20c908fcda696865684d8f0ccc33e9dd833f8b8",
+    "model_state_availability.csv": "19278091b94caa3be344b5f927570fc8917a850b0bc1066c0e76fca90d3354a8",
+    "newest_archive_age.csv": "ae89b8d9b51b0d953ff0d7025e2533f779d31022fe8b581d63b7c4c239a54be9"
+  },
+  "interpretation": [
+    "current catalog timestamps are proxies, not proof of historical publication vintages or user access",
+    "timezone is assumed Asia/Seoul because catalog timestamps have no explicit zone",
+    "guide day10 start and day11 start bracket unspecified time of day; actual dates can differ",
+    "current-version scenario uses maximum created/updated timestamp, not a complete revision history",
+    "conservative scenario takes maximum of next-month day11 and current-version proxy",
+    "counts use one clock per horizon, not three duplicated links; no road outcome values read",
+    "same API origin system does not prove equivalence between real-time samples and archived hourly aggregates",
+    "no public service call, account creation, historical archive request, or 2026 outcome access"
+  ]
+}

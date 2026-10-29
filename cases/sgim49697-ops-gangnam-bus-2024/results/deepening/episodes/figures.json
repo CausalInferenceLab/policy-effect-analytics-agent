@@ -1,0 +1,9 @@
+{
+  "code_sha256": "2145edcd15f82d9324b05f5bfcc820cc779375f4000a101d5ea40543909ff4af",
+  "inputs": {
+    "metrics.csv": "ca9b0eec8584ffac427c911148d6d21e3d1071b8262f88b3c09b7b2f85c17a5d"
+  },
+  "outputs": {
+    "alarm_timing.png": "b9cec28a283e7f64d916375e07c63a3d07355121ed4a3cd9e7f4178b055b09ff"
+  }
+}

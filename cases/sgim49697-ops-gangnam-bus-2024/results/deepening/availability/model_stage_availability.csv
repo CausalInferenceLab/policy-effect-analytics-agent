@@ -1,0 +1,21 @@
+scenario,stage,target_start,target_end,source_months,latest_required_file_at
+guide_next_month_day10_start,train,2023-01-01,2024-12-31,24,2025-01-10 00:00:00+09:00
+guide_next_month_day10_start,tuning,2025-01-01,2025-02-28,2,2025-03-10 00:00:00+09:00
+guide_next_month_day10_start,calibration,2025-03-01,2025-03-31,1,2025-04-10 00:00:00+09:00
+guide_next_month_day10_start,decision,2025-04-01,2025-04-30,1,2025-05-10 00:00:00+09:00
+guide_next_month_day11_start,train,2023-01-01,2024-12-31,24,2025-01-11 00:00:00+09:00
+guide_next_month_day11_start,tuning,2025-01-01,2025-02-28,2,2025-03-11 00:00:00+09:00
+guide_next_month_day11_start,calibration,2025-03-01,2025-03-31,1,2025-04-11 00:00:00+09:00
+guide_next_month_day11_start,decision,2025-04-01,2025-04-30,1,2025-05-11 00:00:00+09:00
+catalog_created_proxy,train,2023-01-01,2024-12-31,24,2025-01-21 10:52:04+09:00
+catalog_created_proxy,tuning,2025-01-01,2025-02-28,2,2025-03-04 09:19:05+09:00
+catalog_created_proxy,calibration,2025-03-01,2025-03-31,1,2025-04-11 09:40:46+09:00
+catalog_created_proxy,decision,2025-04-01,2025-04-30,1,2025-05-07 03:17:57+09:00
+catalog_current_version_proxy,train,2023-01-01,2024-12-31,24,2025-01-21 10:52:04+09:00
+catalog_current_version_proxy,tuning,2025-01-01,2025-02-28,2,2025-03-04 09:19:05+09:00
+catalog_current_version_proxy,calibration,2025-03-01,2025-03-31,1,2025-04-11 09:40:46+09:00
+catalog_current_version_proxy,decision,2025-04-01,2025-04-30,1,2025-05-07 03:17:57+09:00
+conservative_guide_and_current_version,train,2023-01-01,2024-12-31,24,2025-01-21 10:52:04+09:00
+conservative_guide_and_current_version,tuning,2025-01-01,2025-02-28,2,2025-03-11 00:00:00+09:00
+conservative_guide_and_current_version,calibration,2025-03-01,2025-03-31,1,2025-04-11 09:40:46+09:00
+conservative_guide_and_current_version,decision,2025-04-01,2025-04-30,1,2025-05-11 00:00:00+09:00

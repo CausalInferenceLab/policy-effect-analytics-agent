@@ -4,6 +4,9 @@ import argparse
 import importlib
 
 COMMANDS = {
+    "episode-check": ("deepening_episode_check", "run"),
+    "forecast-plots": ("deepening_forecast_plots", "run"),
+    "availability-audit": ("deepening_availability", "run"),
     "episode-prepare": ("deepening_episode", "prepare"),
     "episode-audit": ("deepening_episode", "run"),
     "geometry-audit": ("deepening_geometry", "run"),

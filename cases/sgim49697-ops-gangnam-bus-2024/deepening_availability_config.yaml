@@ -1,0 +1,31 @@
+# 현재 공개 메타데이터로 월별 파일만 이용하는 예측의 가용 시점을 감사한다.
+analysis: metadata_only_archive_availability_scenarios
+timezone_assumption: Asia/Seoul
+metadata_timezone_explicitly_documented: false
+catalog_years: [2023, 2024, 2025]
+locked_outcome_year: 2026
+periods:
+  summer: ['2025-05-01', '2025-09-01']
+  autumn: ['2025-09-01', '2026-01-01']
+period_end: exclusive
+horizons: [1, 3]
+origin_relative_lags_hours: [2, 3, 4, 24, 48, 168]
+target_relative_lags_hours: [168, 336, 504, 672, 1344, 1512, 1680, 1848]
+scenarios:
+  - guide_next_month_day10_start
+  - guide_next_month_day11_start
+  - catalog_created_proxy
+  - catalog_current_version_proxy
+  - conservative_guide_and_current_version
+guide_day: 10
+conservative_guide_day: 11
+publication_time_comparison: available_at_less_than_or_equal_to_origin
+historical_vintage_claim: prohibited
+real_time_service_call: prohibited
+source_ids:
+  - topis_speed_method_release
+  - seoul_road_realtime_catalog
+  - seoul_road_realtime_api_spec
+  - topis_speed_catalog_2023
+  - topis_speed_catalog_2024
+  - topis_speed_catalog_2025

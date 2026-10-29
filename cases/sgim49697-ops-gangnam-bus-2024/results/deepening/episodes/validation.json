@@ -1,0 +1,44 @@
+{
+  "completed_at": "2026-10-29T05:34:03.222830+00:00",
+  "code_sha256": "07ae76e6ac87cc68c595d991115ac2e7e07be7870accb48e40a10329fdfbf8cf",
+  "inputs": {
+    "results/deepening/episodes/input_manifest.json": "d6e493735a434f539942c2e359fdb7880b4d488a36f7dcb54ce0e43b7c8ae6ec",
+    "results/deepening/episodes/metrics.csv": "ca9b0eec8584ffac427c911148d6d21e3d1071b8262f88b3c09b7b2f85c17a5d",
+    "results/deepening/episodes/episodes.csv": "8320c9b94bdb6e694ce88e7fcbbd41c66a6b6af2f564ae014b09ee1edbc0aedf",
+    "results/deepening/episodes/coverage.csv": "6cd81744087f10ebc7a1f9c7c1a5e1c156d1f19ad6ca22dc03b5afaa21ae8331",
+    "results/overnight/relative_ablation/metrics.csv": "554cebdc2581b321716a059ee4bbbe434e39cdf8ba20e1ceff6789126d0cedb5",
+    "results/overnight/conditional_low/metrics.csv": "b46709a7d4c5c50d0f6909eb6844bd69b507fd076be0ec064bfffcb7cd50c5d7",
+    "results/overnight/conditional_margin/metrics.csv": "8e8d0954c96ae240e547e4382606594691fb03f02df9d5577cde2a6b4faca58c",
+    "results/overnight/confirmation/probability_metrics.csv": "ba311a7f9f35295e2000379d5f9804e166319213e8d14287b3a597117385469a"
+  },
+  "existing_metric_rows": 48,
+  "existing_numeric_comparisons": 480,
+  "independent_episode_groups": 4,
+  "independent_episodes": 3849,
+  "independent_sources": [
+    {
+      "path": "data/overnight/relative_ablation/test_predictions/h1_calendar_only.parquet",
+      "sha256": "785afe0929e3307321e08d249934f5bc2e3f2883623514fb67c100bf4d2bfda8",
+      "rows": 8820
+    },
+    {
+      "path": "data/overnight/confirmation/predictions/h1_relative_probability_calendar_only.parquet",
+      "sha256": "180440d9c9d0ad14f62567ae0f68a041a823fcfe1dfa2a296d3e666d2cd3f9fe",
+      "rows": 8784
+    },
+    {
+      "path": "data/overnight/conditional_low/test_predictions/h1_recent_road_assumption.parquet",
+      "sha256": "d72831fe24d199964346105d7ce3a906f43fc0feffff9c265ba2e099693ab726",
+      "rows": 8820
+    },
+    {
+      "path": "data/overnight/confirmation/predictions/h1_conditional_probability_recent_road_assumption.parquet",
+      "sha256": "946df73e1b45625742bfb706bc0681a71da94b7b13e9cd3879f7d3c43a613e64",
+      "rows": 8784
+    }
+  ],
+  "verified_local_files": 192,
+  "local_rows": 219403,
+  "notification_files_checked": 96,
+  "mismatches": 0
+}
