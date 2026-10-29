@@ -4,6 +4,7 @@ import argparse
 import importlib
 
 COMMANDS = {
+    "history-audit": ("deepening_identity", "audit"),
     "history-prepare": ("deepening_history_data", "prepare_requests"),
     "history-collect": ("deepening_history_data", "collect"),
 }
