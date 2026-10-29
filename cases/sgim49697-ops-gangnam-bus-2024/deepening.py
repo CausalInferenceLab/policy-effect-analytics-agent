@@ -4,6 +4,7 @@ import argparse
 import importlib
 
 COMMANDS = {
+    "gyeonggi-parse": ("deepening_gyeonggi_parse", "run"),
     "gyeonggi-prepare": ("deepening_gyeonggi_data", "prepare"),
     "gyeonggi-collect": ("deepening_gyeonggi_data", "collect"),
     "definitions-audit": ("deepening_definitions", "run"),
