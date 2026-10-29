@@ -101,6 +101,10 @@ STAGES = {
     "path-sums-plots": ("overnight_path_sums_plots", "run", []),
     "hour-shape": ("overnight_hour_shape", "run", []),
     "hour-shape-plots": ("overnight_hour_shape_plots", "run", []),
+    "confirmation-freeze": ("overnight_confirmation_data", "freeze", []),
+    "confirmation-collect": ("overnight_confirmation_data", "collect", []),
+    "confirmation-prepare": ("overnight_confirmation_data", "prepare", []),
+    "confirmation-evaluate": ("overnight_confirmation", "evaluate", []),
     "persistence-segments": ("overnight_persistence_segments", "run", []),
     "persistence-segments-plots": ("overnight_persistence_segments_plots", "plot", []),
 }

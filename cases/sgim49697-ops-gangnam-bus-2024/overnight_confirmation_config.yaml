@@ -1,0 +1,35 @@
+# 미열람 2025년 9~12월에 기존 후보·보정·임계값을 그대로 적용하는 후향적 추가 검증.
+version: 1
+mode: untouched_period_confirmation_after_summer_exploration
+locked_year: 2026
+period: ['2025-09-01', '2025-12-31']
+months: ['2025-09', '2025-10', '2025-11', '2025-12']
+warmup_month: '2025-08'
+roads: ['강남대로']
+primary_links: ['1220025000', '1220021000', '1220016200']
+horizons: [1, 3]
+relative_probability: [calendar_only, weekly_delayed, recent_road_assumption]
+conditional_probability: [recent_road_assumption]
+conditional_margin: [median_gap, scaled_median_gap]
+quantiles:
+  - {name: catboost_frozen_quantile, variant: raw}
+  - {name: weekly_empirical, variant: calibration_expanded}
+  - {name: calendar_empirical, variant: calibration_expanded}
+primary_questions:
+  - 고정 CatBoost 분위수의 구간 점수·중앙값 오차가 고정 달력·주간 기준보다 낮은가
+  - 폭 정규화 차이 점수의 조건부 저속 AP가 기존 최근 도로 이진 분류보다 높은가
+  - 전체 하위 20퍼센트에서 최근 도로 정보의 추가 가치가 달력·주간 기준에 비해 남는가
+rules: [original_rule, budget_rule]
+paired_slices: [primary_all_hours, primary_evening_17_19]
+all_slices: all_hours_evening_each_link_each_month
+bootstrap: {draws: 1000, seed: 17}
+minimum_link_month_observed_fraction: 0.95
+metadata: exact_original_training_signature_or_mask_entire_link_month; no_reselection
+resources: {download_workers: 2, parse_workers: 2, cpu_threads: 2, minimum_free_gib: 25}
+model_updates: prohibited; retain_original_training_calibration_and_april_thresholds
+bus_features: omitted_from_this_confirmation; no_retraining_or_claim_of_validating_bus_increment
+interpretation:
+  - 새 기간은 최초 열람 전에 후보·코드·입력 해시를 커밋한 뒤 수집한다
+  - 원래 시험·프로토콜·결과를 수정하지 않는 별도 검증이며 2026년 잠금은 유지
+  - 실제 운영 실험이 아니며 최근 도로 자료의 가용 지연 가정은 계속 남음
+  - 자료 부족·메타데이터 변경·기준 실패를 숨기지 않고 모든 지정 결과를 보고
