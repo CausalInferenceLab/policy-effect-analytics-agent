@@ -52,6 +52,10 @@ def aliases(cfg):
     return result
 
 
+def blank_row(row):
+    return all(not scalar(value) for value in row)
+
+
 def normalize(row, family, expected_year, cfg):
     width = 15 if family == "trips" else 8
     if len(row) > width and any(v is not None for v in row[width:]):
@@ -107,8 +111,15 @@ def parse_book(source, member, handle, cfg):
         if path.exists() or part.exists():
             raise ValueError("parser destination exists without a verified complete manifest")
         writer = pq.ParquetWriter(part, SCHEMA, compression="zstd")
-        counter, batch, names = Counter(), [], aliases(cfg)
-        for row in rows:
+        counter, batch, names = Counter(fully_blank_xml_rows=0, xml_rows_scanned=0), [], aliases(cfg)
+        blank_first = blank_last = None
+        for row_number, row in enumerate(rows, start=2):
+            counter["xml_rows_scanned"] += 1
+            if blank_row(row):
+                counter["fully_blank_xml_rows"] += 1
+                blank_first = blank_first or row_number
+                blank_last = row_number
+                continue
             item = normalize(row, family, source["year"], cfg)
             item.update(source=source["id"], member=member, policy_name=names.get(item["route"], ""))
             vals = [item[f"v{i}"] for i in range(9 if family == "trips" else 1)]
@@ -132,6 +143,7 @@ def parse_book(source, member, handle, cfg):
         def filters(alias, column):
             return sorted(set(re.findall(rf"\b{alias}\.{column}\s*=\s*'(\d+)'", sql, flags=re.I)))
         info.update(family=family, header=header, **counter, statistics_years=filters("a", "year"),
+                    blank_first=blank_first, blank_last=blank_last,
                     route_description_years=filters("b", "year"), route_description_months=filters("b", "month"),
                     sql_path=str(query_path.relative_to(CASE)), sql_sha256=sha256(query_path),
                     path=str(path.relative_to(CASE)), sha256=sha256(path), source_sha256=source["sha256"])
