@@ -1,13 +1,49 @@
 """발행 시점에 공개된 월만 사용해 지연값·요일 시간 프로필을 만든다."""
 
+import importlib.metadata
+import json
+
 import numpy as np
 import pandas as pd
 
-from .common import CASE, holiday_dates, sha256, utcnow, write_json
-from .deepening_archive_data import MANIFEST, OUT, RAW, read_matrix, reference, verify
+from .common import CASE, holiday_dates, read_yaml, sha256, utcnow, write_json
+from .deepening_archive_data import MANIFEST, OUT, RAW, checked, read_matrix, reference, verify
 
 CALENDAR = ["link_id", "hour", "weekday", "month", "weekend", "korean_public_holiday"]
 PROFILE_STATS = ["mean", "std", "q10", "q50", "q90", "count", "expected"]
+
+
+def retained_calendar():
+    """제한된 공식 대조 범위를 유지하면서 기존 전체 예측의 달력 표시와 맞춘다."""
+    import holidays
+
+    contract = read_yaml("data_contract.yaml")["checks"]["holidays"]
+    holiday_dates(contract["valid_from"], contract["valid_to"])
+    dates = {str(day) for day in holidays.KR(years=[2023, 2024, 2025])}
+    sources, flags = [], []
+    for name in ["results/overnight/forecast/feature_audit_development.json", "results/overnight/forecast/feature_audit_test.json",
+                 "results/overnight/confirmation/feature_audit.json"]:
+        audit = json.loads((CASE / name).read_text())
+        selected = [entry for entry in audit["outputs"] if entry["horizon"] == 1]
+        if len(selected) != 1:
+            raise ValueError("기존 달력 특징 파일이 유일하지 않습니다")
+        entry = selected[0]
+        frame = pd.read_parquet(checked(entry), columns=["target_start", "korean_public_holiday"])
+        if frame.target_start.dt.year.ge(2026).any() or not frame.korean_public_holiday.isin([0, 1]).all():
+            raise ValueError("기존 달력의 잠금 연도·표시값 오류")
+        daily = frame.assign(date=frame.target_start.dt.strftime("%Y-%m-%d"))[["date", "korean_public_holiday"]].drop_duplicates()
+        flags.append(daily)
+        sources.append(dict(audit_path=name, audit_sha256=sha256(CASE / name), path=entry["path"], sha256=entry["sha256"], rows=len(frame)))
+    daily = pd.concat(flags, ignore_index=True).drop_duplicates()
+    expected = pd.date_range("2023-01-01", "2025-12-31", freq="D").strftime("%Y-%m-%d")
+    if daily.date.duplicated().any() or set(daily.date) != set(expected):
+        raise ValueError("기존 달력의 날짜별 표시 충돌·기간 공백")
+    if not daily.korean_public_holiday.eq(daily.date.isin(dates).astype(int)).all():
+        raise ValueError("기존 예측 달력과 현재 공휴일 패키지 결과가 다릅니다")
+    return dates, dict(package_version=importlib.metadata.version("holidays"), dates=sorted(dates),
+        matched_calendar_days=len(daily), previous_sources=sources,
+        official_crosscheck_scope=[contract["valid_from"], contract["valid_to"]],
+        interpretation="전체 기간은 기존 예측 표시와의 일치 검증; 공식 원문 대조 범위를 임의 확장하지 않음")
 
 
 def publication_clock(targets, horizon, releases, windows):
@@ -127,7 +163,7 @@ def run():
     matrix, selected, exclusions = read_matrix(cfg, manifest)
     release = pd.read_csv(CASE / cfg["release_table"]).set_index("month")[cfg["release_scenario"]]
     releases = pd.to_datetime(release, utc=True).dt.tz_convert(cfg["timezone"])
-    holidays = holiday_dates("2023-01-01", "2025-12-31")
+    holidays, calendar_audit = retained_calendar()
     outputs, quality_tables, clocks = [], [], []
     for horizon in cfg["horizons"]:
         frame, quality, clock = build_features(matrix, releases, horizon, cfg, holidays)
@@ -142,6 +178,6 @@ def run():
         data.to_csv(OUT / name, index=False, lineterminator="\n")
     write_json(OUT / "feature_audit.json", dict(completed_at=utcnow(), input_manifest_sha256=sha256(MANIFEST),
         code_sha256=sha256(__file__), data_code_sha256=sha256(CASE / "gangnam/deepening_archive_data.py"),
-        selected_links=len(selected), metadata_exclusions=exclusions, outputs=outputs,
+        selected_links=len(selected), metadata_exclusions=exclusions, outputs=outputs, calendar=calendar_audit,
         tables={name: sha256(OUT / name) for name in ["feature_coverage.csv", "publication_windows.csv"]},
         scope="current metadata publication proxy; feature values only after month release; not historical vintage proof"))
