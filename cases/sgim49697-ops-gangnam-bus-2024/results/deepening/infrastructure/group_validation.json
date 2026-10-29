@@ -1,0 +1,13 @@
+{
+  "completed_at": "2026-10-29T07:07:35.764074+00:00",
+  "code_sha256": "2368a118373bc9d8e652ada2babc5c37f64e8b7bab77e59b992ffa9f9a510784",
+  "manifest_sha256": "1f217977e359783bad1c17a09981136227ee95675bfd8672466d716c68c4dc2e",
+  "audit_sha256": "3476e90e247b1475b6dba325a57b488a911f3e7c6b702ad10be1dd1bee76d833",
+  "daily_rows": 2160,
+  "comparison_rows": 80,
+  "contrast_rows": 10,
+  "numeric_checks": 4590,
+  "maximum_absolute_difference": 1.1368683772161603e-13,
+  "mismatches": 0,
+  "scope": "독립 긴 표의 공동 관측·노선별 기준값·집단 평균 및 주별 대비; 기존 집계 함수 호출 없음"
+}

@@ -1,0 +1,14 @@
+{
+  "completed_at": "2026-10-29T07:03:48.001607+00:00",
+  "manifest_sha256": "1f217977e359783bad1c17a09981136227ee95675bfd8672466d716c68c4dc2e",
+  "code_sha256": "9bd3a4708c638a839e53a4ce549b18d1def4f6fe24894474e609053f5f7dfd57",
+  "snapshots": 43,
+  "target_rows": 352,
+  "matched": 242,
+  "duplicate_ars": 0,
+  "outputs": {
+    "stop_history.csv": "4c07321565c205be6058594f50f49069b3cdc7217bf6ffbdce1b3ae707b81408",
+    "stop_snapshots.csv": "d12ab585078ccc2bfc250c490d2847e5bd01ff2256cfec8d2d28175732a82f56"
+  },
+  "scope": "목록 수록·미수록의 관측일, 실제 시행일·미수록 중 폐쇄·정확한 좌표계는 추정하지 않음"
+}

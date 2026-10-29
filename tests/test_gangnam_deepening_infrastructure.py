@@ -3,6 +3,7 @@
 import importlib
 import sys
 from pathlib import Path
+from types import SimpleNamespace
 
 import pytest
 
@@ -13,6 +14,8 @@ pytest.importorskip("numpy")
 pytest.importorskip("openpyxl")
 mod = importlib.import_module("gangnam.deepening_infrastructure")
 groups = importlib.import_module("gangnam.deepening_route_groups")
+check = importlib.import_module("gangnam.deepening_infrastructure_check")
+raw = importlib.import_module("gangnam.deepening_infrastructure_raw")
 
 
 def test_notice_parser_keeps_leading_zero_and_rejects_ellipsis_or_duplicate():
@@ -46,3 +49,22 @@ def test_group_gap_uses_relative_changes_and_same_weeks():
     assert result["central_minus_curb_percentage_points"] == pytest.approx(-75)
     assert result["week_bootstrap_low"] == pytest.approx(-75)
     assert result["week_bootstrap_high"] == pytest.approx(-75)
+
+
+def test_missing_non_report_hour_excludes_both_directions_in_independent_check():
+    rows = [SimpleNamespace(route="a", segment=segment, hour=hour, raw_value=20., record_status="positive")
+            for segment in ["south", "north"] for hour in range(7, 23)]
+    baselines = {("a", row.segment, row.hour): 10. for row in rows}
+    assert check.route_day_values(rows, baselines, list(range(7, 23)), [17, 18, 19]) == {"south": 200., "north": 200.}
+    rows[0].raw_value = float("nan")
+    rows[0].record_status = "blank"
+    assert check.route_day_values(rows, baselines, list(range(7, 23)), [17, 18, 19]) is None
+
+
+def test_trip_record_absence_zero_and_conflict_are_distinct():
+    zero = ("1", tuple([0.] * 25))
+    assert raw.summarize(set(), False)["record_state"] == "source_date_absent"
+    assert raw.summarize(set(), True)["record_state"] == "row_absent"
+    result = raw.summarize({zero}, True)
+    assert result["zero_hours"] == 24 and result["daily_hour_sum_equal"]
+    assert raw.summarize({zero, ("2", zero[1])}, True)["record_state"] == "multiple_records_quarantined"
