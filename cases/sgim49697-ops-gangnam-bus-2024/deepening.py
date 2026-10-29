@@ -4,6 +4,7 @@ import argparse
 import importlib
 
 COMMANDS = {
+    "road-context": ("deepening_road", "run"),
     "gyeonggi-plots": ("deepening_gyeonggi_plots", "run"),
     "gyeonggi-audit": ("deepening_gyeonggi_audit", "run"),
     "gyeonggi-parse": ("deepening_gyeonggi_parse", "run"),

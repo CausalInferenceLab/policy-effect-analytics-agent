@@ -1,0 +1,34 @@
+{
+  "description": "동시 도로 변화의 문서 근거만 고정. 개통 시각·공사 노출 링크는 확정하지 않음.",
+  "files": [
+    {
+      "id": "seocho_news_202406",
+      "url": "https://seocho.newstool.co.kr/pdf/seocho_202406.pdf",
+      "path": "data/deepening/references/seocho_news_202406.pdf",
+      "bytes": 8236330,
+      "sha256": "645afbc6506d7c89aa1653e5f05f9ff55e5a6e0b12c85260c93a7de55c772888",
+      "retrieved_at": "2026-10-29T03:29:48.929024+00:00",
+      "content_type": "application/pdf",
+      "status": "reviewed_relevant_section",
+      "review_scope": "2024-06-01 발행 제569호 16면 기사와 아래 위치 약도를 시각 확인. 영동1교 교차로~태봉로의 6월 29일 예정 및 안전시설 보완. 실제 완료는 별도 회의록으로 확인. 약도는 좌표 측량 자료가 아님.",
+      "visual_review": {
+        "page_index": 8,
+        "renderer": "pypdfium2 5.14.0",
+        "image_library": "Pillow 13.0.0",
+        "isolated_environment": "data/deepening/pdf-env",
+        "local_render": "data/deepening/references/seocho_news_202406_page16.png"
+      }
+    },
+    {
+      "id": "seocho_council_20241119",
+      "url": "https://sdc.seoul.kr/main/minutes/html/MinutesView.do?MINTS_SN=5089",
+      "path": "data/deepening/references/seocho_council_20241119.html",
+      "bytes": 567757,
+      "sha256": "d7fe812e32ecf75df471af5634ef93bc3ffe2c1ad455a6a32e3d9eec93818647",
+      "retrieved_at": "2026-10-29T03:29:47.421462+00:00",
+      "content_type": "text/html;charset=UTF-8",
+      "status": "reviewed_relevant_section",
+      "review_scope": "2024-11-19 회의 일시 및 도로과 처리결과의 6월 29일 공사 완료 진술 확인. 회의록 전체를 분석하지 않음."
+    }
+  ]
+}
