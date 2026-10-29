@@ -15,6 +15,7 @@
 | 읽을 내용 | 문서 |
 |---|---|
 | 추가 탐색: 과거 ID·폐선 구성·시간 명세 | [역사 목록](deepening-history-report.md), [13개 노선 비교](deepening-cohort-report.md), [정의 확인](deepening-definition-report.md), [진행 계획](deepening-plan.md) |
+| 추가 탐색: 경기 노선 이용객의 실제 범위 | [대표일·이름 후보·중복 감사](deepening-gyeonggi-report.md): 2023~2025년 330만 행, 월 합계·역사 노선 ID와 구별 |
 | 추천 프로젝트·주요 결과·채택/보류·추가 수집 순위 | [종합 보고서](overnight-summary.md) |
 | 변화 시점과 32개월의 지속성 | [장기 궤적](overnight-timeline-report.md) |
 | 강조 구간·단일 노선/구간 제외·공동 변동 범위·운영 기록 | [구간 분석](overnight-segment-report.md) |

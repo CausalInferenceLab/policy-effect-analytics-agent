@@ -1,0 +1,82 @@
+{
+  "completed_at": "2026-10-29T04:49:21.879502+00:00",
+  "configuration": {
+    "version": 1,
+    "years": [
+      2023,
+      2024,
+      2025
+    ],
+    "locked_year": 2026,
+    "source_manifest": "deepening-gyeonggi-sources.json",
+    "definition_source": "https://gits.gg.go.kr/gtdb/pdfDownload/publicTransport_passengersByRoute.pdf",
+    "sampling": "매월 평일 수요일과 주말 토요일 대표 1일씩, 실제 선정 날짜는 첨부에 없음",
+    "policy_names": [
+      "1560",
+      "5001",
+      "5001-1",
+      "5002",
+      "5003",
+      "9500",
+      "9501",
+      "9802",
+      "M7412",
+      "9700",
+      "M6427",
+      "6427",
+      "G7426",
+      "3100",
+      "M4403",
+      "4403",
+      "1551",
+      "1551B",
+      "8501",
+      "8502"
+    ],
+    "explicit_ab_variants": [
+      "1560",
+      "5001",
+      "5001-1",
+      "5002",
+      "5003"
+    ],
+    "name_matching": "문자열 정확 일치와 위 명시된 A/B 이름만 후보로 표시; 행정지역·시종점·모든 미수록을 보존",
+    "historical_id_verified": false,
+    "measurement": [
+      "전체통행은 전체승차와 전체하차의 합이며 고유 승객 수가 아님",
+      "주간은 07시 이상 19시 미만 12개 시간, 전일은 24개 시간의 합",
+      "0·공란·음수·행 부재는 구별하고 없는 시간 칸을 0으로 채우지 않음",
+      "실제 대표일을 모르므로 일별 정책 창·날씨·휴일에 결합하지 않음"
+    ],
+    "audit": [
+      "XLSX 선언 범위를 무시하고 실제 XML 전체 행을 읽음",
+      "모든 셀이 비어 있는 XML 서식 행은 개수와 처음/마지막 행 번호를 기록하고 자료 행에서 제외; 일부 값이 있는 잘못된 행은 거절",
+      "전체 키 중복과 시종점 설명 제외 키의 값 충돌·반복을 별도 집계",
+      "SQL에 기록된 통계 연도와 시종점 설명의 노선 마스터 연도를 구분",
+      "시종점 제외 동일 값의 하나의 표현은 내부 합계 대조에만 사용하며 노선 ID 통합을 뜻하지 않음",
+      "시간 합계 대조는 24개 또는 주간 12개 칸이 모두 관측되고 값 충돌이 없는 경우만 판정",
+      "노선명 후보 전체를 보고하고 결과 크기·합계 일치 여부로 후보를 다시 고르지 않음"
+    ],
+    "parser_workers": 1,
+    "batch_rows": 40000,
+    "min_free_gib": 25
+  },
+  "configuration_sha256": "a6268c50bdaee6b70149b32d059f1ab7ffd5ea07bbf8951a145aa88e5847f4e1",
+  "extraction_sha256": "432e8208caa37dc08664477875518a14c19ebad83d78ccdfca730f0ad8991ac3",
+  "code_sha256": "e2248f09c06bcf55f0807dea82076bedfc056976fab4d8e28f4a76457864715b",
+  "outputs": {
+    "file_audit.csv": "14d3c4629457ea9c93ed9c9b0748676093af035660943cf342f30f2eb0c83e39",
+    "key_audit.csv": "f79a95909a9f4d07f51803834440603f08ccda0ce1776d8daa5b0c49e3e14924",
+    "candidate_coverage.csv": "c2d8de8b8c9681788f0e3ecb5b35916ae315e70c85d0589d2fd53fdebf54ae44",
+    "policy_name_presence.csv": "c441588f05f098f73fffca7acbb4e06a14a29407ab637e331132617c080f3260",
+    "candidate_representative_day_trips.csv": "560e43deadb8060b0212bdbbdfb162ad4395d2f976dd3c47826ddaeec33125b0",
+    "arithmetic_summary.csv": "928c844fd99fb5919aa50aafed2c5ad7ecabf732d1f6e8101ed9cacd9b138457",
+    "candidate_arithmetic_checks.csv": "28393b46d2e9499860fb9df1e54a48df1a75dc66d8abee2c169fd9fa53e09f01",
+    "description_ambiguity_examples.csv": "9d73b8c1d8b37130e2dd54eb04ccb7065100729bfee34ddeb17c1a1a718bc7ed"
+  },
+  "limitations": [
+    "no historical route identifier in actual exports",
+    "representative dates unavailable",
+    "canonical values used only for internal arithmetic checks"
+  ]
+}

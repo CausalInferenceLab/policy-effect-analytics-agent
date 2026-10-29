@@ -114,6 +114,12 @@ def run():
                                             month_list=("month", lambda v: ";".join(str(x) for x in sorted(set(v)))),
                                             terminal_descriptions=("terminal", "nunique"),
                                             terminal_names=("terminal", lambda v: " | ".join(sorted(set(v))))).reset_index()
+            grouped["policy_name"] = grouped.route.map(names).fillna("")
+            target_quality = grouped[grouped.policy_name.ne("")].groupby(keys).agg(
+                natural_keys=("route", "size"),
+                value_conflict_keys=("value_versions", lambda v: int(v.gt(1).sum())),
+                multiple_description_keys=("terminal_versions", lambda v: int(v.gt(1).sum()))).reset_index()
+            cov = cov.merge(target_quality, on=keys, validate="one_to_one")
             cov["family"] = family
             coverage_rows.append(cov)
             trouble = grouped[grouped.terminal_versions.gt(1) | grouped.value_versions.gt(1)]
@@ -157,5 +163,8 @@ def run():
         save_csv("description_ambiguity_examples.csv", pd.concat(examples, ignore_index=True))
     write_json(OUT / "audit.json", dict(completed_at=utcnow(), configuration=cfg,
                configuration_sha256=sha256(CONFIG), extraction_sha256=sha256(extraction_path),
-               code_sha256=sha256(__file__), outputs={p.name: sha256(p) for p in sorted(OUT.glob("*.csv"))},
+               code_sha256=sha256(__file__), outputs={name: sha256(OUT / name) for name in [
+                   "file_audit.csv", "key_audit.csv", "candidate_coverage.csv", "policy_name_presence.csv",
+                   "candidate_representative_day_trips.csv", "arithmetic_summary.csv",
+                   "candidate_arithmetic_checks.csv", "description_ambiguity_examples.csv"]},
                limitations=["no historical route identifier in actual exports", "representative dates unavailable", "canonical values used only for internal arithmetic checks"]))

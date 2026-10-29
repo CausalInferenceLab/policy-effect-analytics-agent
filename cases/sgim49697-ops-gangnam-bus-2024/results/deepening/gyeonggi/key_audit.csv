@@ -1,0 +1,10 @@
+year,family,rows,natural_keys,repeated_full_key_rows,identical_full_row_excess,full_keys_with_conflicting_values,natural_keys_with_conflicting_values,natural_keys_with_multiple_terminal_descriptions,rows_with_missing_value,rows_with_negative_value
+2023,hourly,896028,835386,68736,0,33717,16894,24662,0,0
+2023,daily,132903,124753,10543,0,5129,2677,2640,0,0
+2023,trips,67764,63685,5278,0,2567,1341,1320,0,0
+2024,hourly,861240,803260,64191,1,31329,16075,24145,0,0
+2024,daily,126502,118586,10120,0,4904,2684,2604,0,0
+2024,trips,64482,60521,5066,0,2455,1345,1302,0,0
+2025,hourly,951354,892354,65685,0,32136,16388,24472,0,0
+2025,daily,135069,126696,10986,0,5349,2805,2640,0,0
+2025,trips,68638,64441,5514,0,2685,1408,1320,0,0

@@ -1,0 +1,13 @@
+source,member,year,family,declared_rows,declared_columns,rows,xml_rows_scanned,fully_blank_xml_rows,blank_first,blank_last,missing_values,zero_values,negative_values,name_candidate_rows,statistics_years,route_description_years,route_description_months
+gits_routes_2023_1,,2023,hourly,896029,8,448018,896028,448010,448020.0,896029.0,0,0,0,3453,2023,2023,01
+gits_routes_2023_2,,2023,hourly,448011,8,448010,448010,0,,,0,0,0,7198,2023,2023,01
+gits_routes_2023_3,01.일시별_2023.xlsx,2023,daily,1,1,132903,132903,0,,,0,0,0,1104,2023,2023,01
+gits_routes_2023_3,03. 통행구분별.xlsx,2023,trips,1,1,67764,67764,0,,,0,19387,0,552,2023,2023,01
+gits_routes_2024_1,,2024,hourly,400002,8,400001,400001,0,,,0,0,0,6863,2024,2023,01
+gits_routes_2024_2,,2024,hourly,861240,8,461239,861239,400000,461241.0,861240.0,0,0,0,3474,2024,2023,01
+gits_routes_2024_3,01. 일시별_2024.xlsx,2024,daily,1,1,126502,126502,0,,,0,0,0,1088,2024,2023,01
+gits_routes_2024_3,03. 통행구분별_2024.xlsx,2024,trips,1,1,64482,64482,0,,,0,18259,0,544,2024,2023,01
+gits_routes_2025_1,,2025,hourly,486946,8,486945,486945,0,,,0,0,0,5460,2025,2025,01
+gits_routes_2025_2,,2025,hourly,464410,8,464409,464409,0,,,0,0,0,5388,2025,2025,01
+gits_routes_2025_3,01. 일시별_2025.xlsx,2025,daily,135070,8,135069,135069,0,,,0,0,0,1248,2025,2025,01
+gits_routes_2025_3,03. 통행구분별_2025.xlsx,2025,trips,1,1,68638,68638,0,,,0,17674,0,624,2025,2025,01

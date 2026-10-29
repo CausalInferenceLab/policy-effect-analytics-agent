@@ -1,0 +1,12 @@
+{
+  "code_sha256": "13b08a1bcb3bac5b87ddd1f63c72795b7586685a933f8e90c33be93ccbd635a6",
+  "inputs": {
+    "candidate_representative_day_trips.csv": "560e43deadb8060b0212bdbbdfb162ad4395d2f976dd3c47826ddaeec33125b0",
+    "candidate_coverage.csv": "c2d8de8b8c9681788f0e3ecb5b35916ae315e70c85d0589d2fd53fdebf54ae44",
+    "policy_name_presence.csv": "c441588f05f098f73fffca7acbb4e06a14a29407ab637e331132617c080f3260"
+  },
+  "outputs": {
+    "candidate_coverage.png": "08600d1f91a948f1d13fdd80288d2f634669c07debb87fdab8a01feaf997bf36",
+    "candidate_coverage_grid.csv": "d69bbfa913cb0c971c8575a0ba3437c1fdc3f73029cab370c96547c6750a0c77"
+  }
+}
