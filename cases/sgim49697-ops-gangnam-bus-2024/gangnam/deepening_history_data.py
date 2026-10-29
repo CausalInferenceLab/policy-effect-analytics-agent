@@ -170,4 +170,3 @@ def collect():
             write_json(MANIFEST, {"description": "공식 2023~2025년 정류장·노선 이력 파일과 별도 컬럼 명세. 원문 재배포하지 않음.",
                 "requests_sha256": sha256(REQUESTS), "files": sorted(existing.values(), key=lambda item: item["id"])})
             print(f"역사 파일 수집: {entry['title']} ({entry['bytes']:,} bytes)", flush=True)
-
