@@ -88,6 +88,48 @@
       "status": "verified_public_file_catalog",
       "scope": "기존 공개 Sheet 경로의 파일 목록 확인, API 호출·인증 우회 아님",
       "review": "파일 다운로드 폼의 자료 ID·파일용 infSeq·제목/파일 seq 대응을 확인. 파일 본문과 자료의 역사적 의미는 별도 검증."
+    },
+    {
+      "id": "bernal_its_correction",
+      "title": "중단 시계열 모형의 시간 중심화 정정",
+      "source": "https://researchonline.lshtm.ac.uk/4657832/1/2017_lopezbernal_IJE_correction.pdf",
+      "url": "https://researchonline.lshtm.ac.uk/id/eprint/4657832/1/2017_lopezbernal_IJE_correction.pdf",
+      "method": "GET",
+      "path": "data/deepening/references/bernal_its_correction.pdf",
+      "kind": "pdf",
+      "bytes": 241929,
+      "sha256": "950a28c647f5988672046c100c4373539c40da484973133d898465a976bcf6d7",
+      "retrieved_at": "2026-10-29T06:15:32.443454+00:00",
+      "scope": "1쪽 정정문과 수식 확인; 기존 일반도로 전후 비교를 인과모형으로 바꾸는 근거가 아님",
+      "status": "retrieved_for_methods_review"
+    },
+    {
+      "id": "bernal_its_author_r",
+      "title": "중단 시계열 튜토리얼 저자 공개 R 코드",
+      "source": "https://raw.githubusercontent.com/gasparrini/2017_lopezbernal_IJE_codedata/master/Rcode.R",
+      "url": "https://raw.githubusercontent.com/gasparrini/2017_lopezbernal_IJE_codedata/master/Rcode.R",
+      "method": "GET",
+      "path": "data/deepening/references/bernal_its_author_r.R",
+      "kind": "R",
+      "bytes": 8745,
+      "sha256": "0f2a74509e416723dc1f8caf96e782044064dd77fd1954bc3958409617e5649b",
+      "retrieved_at": "2026-10-29T06:15:32.787374+00:00",
+      "scope": "저자 공개 예제의 시간 중심화·계절성·자기상관 처리 검토; 실행·복제하지 않음",
+      "status": "retrieved_for_methods_review"
+    },
+    {
+      "id": "catboost_prediction_threads",
+      "title": "CatBoostRegressor 예측의 스레드 기본값",
+      "source": "https://catboost.ai/docs/en/concepts/python-reference_catboostregressor_predict",
+      "url": "https://catboost.ai/docs/en/concepts/python-reference_catboostregressor_predict",
+      "method": "GET",
+      "path": "data/deepening/references/catboost_prediction_threads.html",
+      "kind": "html",
+      "bytes": 227837,
+      "sha256": "4579a2422510db490f902331d03f98b36b868ec3ab54ad9ebeafb1243c49bac2",
+      "retrieved_at": "2026-10-29T06:15:36.053881+00:00",
+      "scope": "thread_count 기본값 -1과 전체 코어 사용 설명 확인; 새 월별 모형은 명시적으로 2개 제한",
+      "status": "retrieved_for_methods_review"
     }
   ]
 }

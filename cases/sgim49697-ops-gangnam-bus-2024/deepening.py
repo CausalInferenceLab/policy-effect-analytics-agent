@@ -4,6 +4,10 @@ import argparse
 import importlib
 
 COMMANDS = {
+    "transition-prepare": ("deepening_transition", "prepare"),
+    "transition-audit": ("deepening_transition", "run"),
+    "archive-plots": ("deepening_archive_plots", "run"),
+    "archive-result-check": ("deepening_archive_result_check", "run"),
     "archive-feature-check": ("deepening_archive_check", "run"),
     "archive-eval-prepare": ("deepening_archive_evaluate", "prepare_context"),
     "archive-evaluate": ("deepening_archive_evaluate", "run"),
