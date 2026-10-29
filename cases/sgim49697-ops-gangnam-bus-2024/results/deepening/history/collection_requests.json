@@ -1,0 +1,841 @@
+{
+  "prepared_at": "2026-10-29T03:16:40.678077+00:00",
+  "configuration": {
+    "version": 1,
+    "mode": "exploratory_historical_identity_audit",
+    "years": [
+      2023,
+      2024,
+      2025
+    ],
+    "locked_outcome_years": [
+      2026
+    ],
+    "datasets": [
+      {
+        "id": "OA-15067",
+        "key": "stop_positions",
+        "catalog": "seoul_stops_15067_sheet"
+      },
+      {
+        "id": "OA-15262",
+        "key": "route_identity",
+        "catalog": "seoul_routes_15262"
+      },
+      {
+        "id": "OA-21288",
+        "key": "median_stops",
+        "catalog": "seoul_median_stops_21288"
+      }
+    ],
+    "metadata_title_prefix": "컬럼정의",
+    "allowed_data_extensions": [
+      ".csv",
+      ".xlsx"
+    ],
+    "maximum_file_mib": 25,
+    "targets": {
+      "stations": "results/directional/station_registry.csv",
+      "common_routes": "results/overnight/matched_directions/eligibility.csv",
+      "wider_route_scope": "original_selected_routes_and_documented_policy_candidates"
+    },
+    "interpretation": [
+      "게시일과 파일에 표시된 기준일, 실제 시설 변경 시행일을 구분한다",
+      "연간 파일은 실제 날짜 열 또는 날짜별 시트를 확인한 뒤에만 월별 기록으로 사용한다",
+      "좌표계·단위·행 너비·키 중복·목표 대응을 확인하기 전 좌표 변화를 계산하지 않는다",
+      "좌표의 동일성과 승강장·신호·검지 경계의 동일성을 같은 의미로 사용하지 않는다",
+      "역사적 자료와 기존 대응이 다르면 차이를 공개하고 기존 결과를 덮어쓰지 않는다",
+      "2024년 4월과 8월 사이 자료 공백을 선형 보간해 정책 당일 위치로 만들지 않는다"
+    ]
+  },
+  "inputs": {
+    "data/deepening/probes/seoul_stops_15067_sheet.html": "17fa30ae2ac54fda4c648dbe558663f6b8e778a3161cc17977a1d217c1d51680",
+    "data/deepening/probes/seoul_routes_15262.html": "b3af789203b19a387af06d9514a122c9efe9ca5871f7f0856359795eae44e0bd",
+    "data/deepening/probes/seoul_median_stops_21288.html": "d438e1d167699f5dab78862964c30fa81b53b94651ad4f420c29cc3a0bf410e4",
+    "deepening_history_config.yaml": "ffb13faffe71199ff8669dad5b9386a2fa7ff17ad272785b9639d3e937b6f4ce"
+  },
+  "requests": [
+    {
+      "id": "OA-15067_29",
+      "dataset": "OA-15067",
+      "kind": "stop_positions",
+      "title": "2023년각월1일기준_서울시버스정류소위치정보.csv",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-15067/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-15067",
+        "infSeq": "1",
+        "seq": "29",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/stop_positions/29_2023년각월1일기준_서울시버스정류소위치정보.csv"
+    },
+    {
+      "id": "OA-15067_30",
+      "dataset": "OA-15067",
+      "kind": "stop_positions",
+      "title": "2024년1~4월1일기준_서울시버스정류소위치정보.csv",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-15067/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-15067",
+        "infSeq": "1",
+        "seq": "30",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/stop_positions/30_2024년1~4월1일기준_서울시버스정류소위치정보.csv"
+    },
+    {
+      "id": "OA-15067_33",
+      "dataset": "OA-15067",
+      "kind": "stop_positions",
+      "title": "서울시버스정류소위치정보(20240812).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-15067/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-15067",
+        "infSeq": "1",
+        "seq": "33",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/stop_positions/33_서울시버스정류소위치정보(20240812).xlsx"
+    },
+    {
+      "id": "OA-15067_34",
+      "dataset": "OA-15067",
+      "kind": "stop_positions",
+      "title": "서울시버스정류소위치정보(20240903).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-15067/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-15067",
+        "infSeq": "1",
+        "seq": "34",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/stop_positions/34_서울시버스정류소위치정보(20240903).xlsx"
+    },
+    {
+      "id": "OA-15067_35",
+      "dataset": "OA-15067",
+      "kind": "stop_positions",
+      "title": "서울시버스정류소위치정보(20241002).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-15067/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-15067",
+        "infSeq": "1",
+        "seq": "35",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/stop_positions/35_서울시버스정류소위치정보(20241002).xlsx"
+    },
+    {
+      "id": "OA-15067_36",
+      "dataset": "OA-15067",
+      "kind": "stop_positions",
+      "title": "서울시버스정류소위치정보(20241110).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-15067/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-15067",
+        "infSeq": "1",
+        "seq": "36",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/stop_positions/36_서울시버스정류소위치정보(20241110).xlsx"
+    },
+    {
+      "id": "OA-15067_37",
+      "dataset": "OA-15067",
+      "kind": "stop_positions",
+      "title": "서울시버스정류소위치정보(20241209).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-15067/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-15067",
+        "infSeq": "1",
+        "seq": "37",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/stop_positions/37_서울시버스정류소위치정보(20241209).xlsx"
+    },
+    {
+      "id": "OA-15067_38",
+      "dataset": "OA-15067",
+      "kind": "stop_positions",
+      "title": "서울시버스정류소위치정보(20250204).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-15067/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-15067",
+        "infSeq": "1",
+        "seq": "38",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/stop_positions/38_서울시버스정류소위치정보(20250204).xlsx"
+    },
+    {
+      "id": "OA-15067_41",
+      "dataset": "OA-15067",
+      "kind": "stop_positions",
+      "title": "서울시버스정류소위치정보(20250513).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-15067/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-15067",
+        "infSeq": "1",
+        "seq": "41",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/stop_positions/41_서울시버스정류소위치정보(20250513).xlsx"
+    },
+    {
+      "id": "OA-15067_42",
+      "dataset": "OA-15067",
+      "kind": "stop_positions",
+      "title": "서울시버스정류소위치정보(20250624).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-15067/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-15067",
+        "infSeq": "1",
+        "seq": "42",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/stop_positions/42_서울시버스정류소위치정보(20250624).xlsx"
+    },
+    {
+      "id": "OA-15067_43",
+      "dataset": "OA-15067",
+      "kind": "stop_positions",
+      "title": "서울시버스정류소위치정보(20250801).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-15067/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-15067",
+        "infSeq": "1",
+        "seq": "43",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/stop_positions/43_서울시버스정류소위치정보(20250801).xlsx"
+    },
+    {
+      "id": "OA-15067_44",
+      "dataset": "OA-15067",
+      "kind": "stop_positions",
+      "title": "서울시버스정류소위치정보(20250901).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-15067/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-15067",
+        "infSeq": "1",
+        "seq": "44",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/stop_positions/44_서울시버스정류소위치정보(20250901).xlsx"
+    },
+    {
+      "id": "OA-15067_45",
+      "dataset": "OA-15067",
+      "kind": "stop_positions",
+      "title": "서울시버스정류소위치정보(20251002).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-15067/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-15067",
+        "infSeq": "1",
+        "seq": "45",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/stop_positions/45_서울시버스정류소위치정보(20251002).xlsx"
+    },
+    {
+      "id": "OA-15067_46",
+      "dataset": "OA-15067",
+      "kind": "stop_positions",
+      "title": "서울시버스정류소위치정보(20251103).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-15067/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-15067",
+        "infSeq": "1",
+        "seq": "46",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/stop_positions/46_서울시버스정류소위치정보(20251103).xlsx"
+    },
+    {
+      "id": "OA-15067_47",
+      "dataset": "OA-15067",
+      "kind": "stop_positions",
+      "title": "서울시버스정류소위치정보(20251117).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-15067/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-15067",
+        "infSeq": "1",
+        "seq": "47",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/stop_positions/47_서울시버스정류소위치정보(20251117).xlsx"
+    },
+    {
+      "id": "OA-15067_48",
+      "dataset": "OA-15067",
+      "kind": "stop_positions",
+      "title": "서울시버스정류소위치정보(20251209).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-15067/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-15067",
+        "infSeq": "1",
+        "seq": "48",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/stop_positions/48_서울시버스정류소위치정보(20251209).xlsx"
+    },
+    {
+      "id": "OA-15067_31",
+      "dataset": "OA-15067",
+      "kind": "stop_positions",
+      "title": "컬럼정의_서울시 버스정류소 위치정보.xlsx",
+      "metadata_only": true,
+      "source": "https://data.seoul.go.kr/dataList/OA-15067/S/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-15067",
+        "infSeq": "1",
+        "seq": "31",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/stop_positions/31_컬럼정의_서울시 버스정류소 위치정보.xlsx"
+    },
+    {
+      "id": "OA-15262_24",
+      "dataset": "OA-15262",
+      "kind": "route_identity",
+      "title": "2023년각월1일기준_서울시노선기본정보.xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-15262/F/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-15262",
+        "infSeq": "2",
+        "seq": "24",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/route_identity/24_2023년각월1일기준_서울시노선기본정보.xlsx"
+    },
+    {
+      "id": "OA-15262_25",
+      "dataset": "OA-15262",
+      "kind": "route_identity",
+      "title": "2024년1~4월1일기준_서울시노선기본정보.xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-15262/F/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-15262",
+        "infSeq": "2",
+        "seq": "25",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/route_identity/25_2024년1~4월1일기준_서울시노선기본정보.xlsx"
+    },
+    {
+      "id": "OA-15262_28",
+      "dataset": "OA-15262",
+      "kind": "route_identity",
+      "title": "서울시버스노선ID정보(20240812).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-15262/F/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-15262",
+        "infSeq": "2",
+        "seq": "28",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/route_identity/28_서울시버스노선ID정보(20240812).xlsx"
+    },
+    {
+      "id": "OA-15262_29",
+      "dataset": "OA-15262",
+      "kind": "route_identity",
+      "title": "서울시버스노선ID정보(20240903).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-15262/F/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-15262",
+        "infSeq": "2",
+        "seq": "29",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/route_identity/29_서울시버스노선ID정보(20240903).xlsx"
+    },
+    {
+      "id": "OA-15262_30",
+      "dataset": "OA-15262",
+      "kind": "route_identity",
+      "title": "서울시버스노선ID정보(20241002).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-15262/F/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-15262",
+        "infSeq": "2",
+        "seq": "30",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/route_identity/30_서울시버스노선ID정보(20241002).xlsx"
+    },
+    {
+      "id": "OA-15262_31",
+      "dataset": "OA-15262",
+      "kind": "route_identity",
+      "title": "서울시버스노선ID정보(20241110).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-15262/F/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-15262",
+        "infSeq": "2",
+        "seq": "31",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/route_identity/31_서울시버스노선ID정보(20241110).xlsx"
+    },
+    {
+      "id": "OA-15262_32",
+      "dataset": "OA-15262",
+      "kind": "route_identity",
+      "title": "서울시버스노선ID정보(20241209).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-15262/F/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-15262",
+        "infSeq": "2",
+        "seq": "32",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/route_identity/32_서울시버스노선ID정보(20241209).xlsx"
+    },
+    {
+      "id": "OA-15262_33",
+      "dataset": "OA-15262",
+      "kind": "route_identity",
+      "title": "서울시버스노선ID정보(20250204).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-15262/F/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-15262",
+        "infSeq": "2",
+        "seq": "33",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/route_identity/33_서울시버스노선ID정보(20250204).xlsx"
+    },
+    {
+      "id": "OA-15262_34",
+      "dataset": "OA-15262",
+      "kind": "route_identity",
+      "title": "서울시버스노선ID정보(20250513).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-15262/F/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-15262",
+        "infSeq": "2",
+        "seq": "34",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/route_identity/34_서울시버스노선ID정보(20250513).xlsx"
+    },
+    {
+      "id": "OA-15262_35",
+      "dataset": "OA-15262",
+      "kind": "route_identity",
+      "title": "서울시버스노선ID정보(20250624).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-15262/F/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-15262",
+        "infSeq": "2",
+        "seq": "35",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/route_identity/35_서울시버스노선ID정보(20250624).xlsx"
+    },
+    {
+      "id": "OA-15262_36",
+      "dataset": "OA-15262",
+      "kind": "route_identity",
+      "title": "서울시버스노선ID정보(20250801).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-15262/F/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-15262",
+        "infSeq": "2",
+        "seq": "36",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/route_identity/36_서울시버스노선ID정보(20250801).xlsx"
+    },
+    {
+      "id": "OA-15262_37",
+      "dataset": "OA-15262",
+      "kind": "route_identity",
+      "title": "서울시버스노선ID정보(20250901).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-15262/F/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-15262",
+        "infSeq": "2",
+        "seq": "37",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/route_identity/37_서울시버스노선ID정보(20250901).xlsx"
+    },
+    {
+      "id": "OA-15262_38",
+      "dataset": "OA-15262",
+      "kind": "route_identity",
+      "title": "서울시버스노선ID정보(20251002).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-15262/F/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-15262",
+        "infSeq": "2",
+        "seq": "38",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/route_identity/38_서울시버스노선ID정보(20251002).xlsx"
+    },
+    {
+      "id": "OA-15262_39",
+      "dataset": "OA-15262",
+      "kind": "route_identity",
+      "title": "서울시버스노선ID정보(20251103).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-15262/F/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-15262",
+        "infSeq": "2",
+        "seq": "39",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/route_identity/39_서울시버스노선ID정보(20251103).xlsx"
+    },
+    {
+      "id": "OA-15262_40",
+      "dataset": "OA-15262",
+      "kind": "route_identity",
+      "title": "서울시버스노선ID정보(20251209).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-15262/F/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-15262",
+        "infSeq": "2",
+        "seq": "40",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/route_identity/40_서울시버스노선ID정보(20251209).xlsx"
+    },
+    {
+      "id": "OA-15262_26",
+      "dataset": "OA-15262",
+      "kind": "route_identity",
+      "title": "컬럼정의_서울시 버스노선 기본정보 항목정보.xlsx",
+      "metadata_only": true,
+      "source": "https://data.seoul.go.kr/dataList/OA-15262/F/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-15262",
+        "infSeq": "2",
+        "seq": "26",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/route_identity/26_컬럼정의_서울시 버스노선 기본정보 항목정보.xlsx"
+    },
+    {
+      "id": "OA-21288_18",
+      "dataset": "OA-21288",
+      "kind": "median_stops",
+      "title": "서울시중앙차로버스정류소(20240812).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-21288/F/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21288",
+        "infSeq": "1",
+        "seq": "18",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/median_stops/18_서울시중앙차로버스정류소(20240812).xlsx"
+    },
+    {
+      "id": "OA-21288_19",
+      "dataset": "OA-21288",
+      "kind": "median_stops",
+      "title": "서울시중앙차로버스정류소(20240903).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-21288/F/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21288",
+        "infSeq": "1",
+        "seq": "19",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/median_stops/19_서울시중앙차로버스정류소(20240903).xlsx"
+    },
+    {
+      "id": "OA-21288_20",
+      "dataset": "OA-21288",
+      "kind": "median_stops",
+      "title": "서울시중앙차로버스정류소(20241002).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-21288/F/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21288",
+        "infSeq": "1",
+        "seq": "20",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/median_stops/20_서울시중앙차로버스정류소(20241002).xlsx"
+    },
+    {
+      "id": "OA-21288_21",
+      "dataset": "OA-21288",
+      "kind": "median_stops",
+      "title": "서울시중앙차로버스정류소(20241110).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-21288/F/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21288",
+        "infSeq": "1",
+        "seq": "21",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/median_stops/21_서울시중앙차로버스정류소(20241110).xlsx"
+    },
+    {
+      "id": "OA-21288_22",
+      "dataset": "OA-21288",
+      "kind": "median_stops",
+      "title": "서울시중앙차로버스정류소(20241209).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-21288/F/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21288",
+        "infSeq": "1",
+        "seq": "22",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/median_stops/22_서울시중앙차로버스정류소(20241209).xlsx"
+    },
+    {
+      "id": "OA-21288_23",
+      "dataset": "OA-21288",
+      "kind": "median_stops",
+      "title": "서울시중앙차로버스정류소(20250204).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-21288/F/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21288",
+        "infSeq": "1",
+        "seq": "23",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/median_stops/23_서울시중앙차로버스정류소(20250204).xlsx"
+    },
+    {
+      "id": "OA-21288_24",
+      "dataset": "OA-21288",
+      "kind": "median_stops",
+      "title": "서울시중앙차로버스정류소(20250513).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-21288/F/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21288",
+        "infSeq": "1",
+        "seq": "24",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/median_stops/24_서울시중앙차로버스정류소(20250513).xlsx"
+    },
+    {
+      "id": "OA-21288_25",
+      "dataset": "OA-21288",
+      "kind": "median_stops",
+      "title": "서울시중앙차로버스정류소(20250624).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-21288/F/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21288",
+        "infSeq": "1",
+        "seq": "25",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/median_stops/25_서울시중앙차로버스정류소(20250624).xlsx"
+    },
+    {
+      "id": "OA-21288_26",
+      "dataset": "OA-21288",
+      "kind": "median_stops",
+      "title": "서울시중앙차로버스정류소(20250801).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-21288/F/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21288",
+        "infSeq": "1",
+        "seq": "26",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/median_stops/26_서울시중앙차로버스정류소(20250801).xlsx"
+    },
+    {
+      "id": "OA-21288_27",
+      "dataset": "OA-21288",
+      "kind": "median_stops",
+      "title": "서울시중앙차로버스정류소(20250901).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-21288/F/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21288",
+        "infSeq": "1",
+        "seq": "27",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/median_stops/27_서울시중앙차로버스정류소(20250901).xlsx"
+    },
+    {
+      "id": "OA-21288_28",
+      "dataset": "OA-21288",
+      "kind": "median_stops",
+      "title": "서울시중앙차로버스정류소(20251002).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-21288/F/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21288",
+        "infSeq": "1",
+        "seq": "28",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/median_stops/28_서울시중앙차로버스정류소(20251002).xlsx"
+    },
+    {
+      "id": "OA-21288_29",
+      "dataset": "OA-21288",
+      "kind": "median_stops",
+      "title": "서울시중앙차로버스정류소(20251103).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-21288/F/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21288",
+        "infSeq": "1",
+        "seq": "29",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/median_stops/29_서울시중앙차로버스정류소(20251103).xlsx"
+    },
+    {
+      "id": "OA-21288_30",
+      "dataset": "OA-21288",
+      "kind": "median_stops",
+      "title": "서울시중앙차로버스정류소(20251209).xlsx",
+      "metadata_only": false,
+      "source": "https://data.seoul.go.kr/dataList/OA-21288/F/1/datasetView.do",
+      "url": "https://datafile.seoul.go.kr/bigfile/iot/inf/nio_download.do?&useCache=false",
+      "method": "POST",
+      "request": {
+        "infId": "OA-21288",
+        "infSeq": "1",
+        "seq": "30",
+        "seqNo": ""
+      },
+      "path": "data/deepening/history/median_stops/30_서울시중앙차로버스정류소(20251209).xlsx"
+    }
+  ]
+}

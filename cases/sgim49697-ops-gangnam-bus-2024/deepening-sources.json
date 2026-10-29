@@ -1,0 +1,93 @@
+{
+  "description": "두 번째 탐색에서 확인한 공식 문서·목록의 원문 출처. 원문은 Git 제외 경로에 보관.",
+  "files": [
+    {
+      "id": "tdata_time_api_1039",
+      "title": "T Data 일자·시간·노선·구간 운행시간 명세",
+      "source": "https://t-data.seoul.go.kr/dataprovide/trafficdataviewopenapi.do?data_id=1039",
+      "url": "https://t-data.seoul.go.kr/dataprovide/trafficdataviewopenapi.do?data_id=1039",
+      "method": "GET",
+      "path": "data/deepening/probes/tdata_time_api_1039.html",
+      "kind": "html",
+      "bytes": 62244,
+      "sha256": "1064cc1e5c9988f655bc7d56f112b00026c08d53a9394dcdc3e3d577bab7d527",
+      "retrieved_at": "2026-10-29T03:04:09.980653+00:00",
+      "scope": "공식 명세·파일 목록, 아직 과거 파일의 본문 검증 전",
+      "status": "downloaded_pending_semantic_review"
+    },
+    {
+      "id": "tdata_operations_api_1083",
+      "title": "T Data 정류장 운행 통계 명세",
+      "source": "https://t-data.seoul.go.kr/dataprovide/trafficdataviewopenapi.do?data_id=1083",
+      "url": "https://t-data.seoul.go.kr/dataprovide/trafficdataviewopenapi.do?data_id=1083",
+      "method": "GET",
+      "path": "data/deepening/probes/tdata_operations_api_1083.html",
+      "kind": "html",
+      "bytes": 48723,
+      "sha256": "5dc0f835238af67c4a668aae1724d6039f37009b47da251a484143fd8dc07dbf",
+      "retrieved_at": "2026-10-29T03:04:09.981880+00:00",
+      "scope": "공식 명세·파일 목록, 아직 과거 파일의 본문 검증 전",
+      "status": "downloaded_pending_semantic_review"
+    },
+    {
+      "id": "seoul_stops_15067",
+      "title": "서울 버스정류소 위치정보 과거 파일 목록",
+      "source": "https://data.seoul.go.kr/dataList/OA-15067/A/1/datasetView.do",
+      "url": "https://data.seoul.go.kr/dataList/OA-15067/A/1/datasetView.do",
+      "method": "GET",
+      "path": "data/deepening/probes/seoul_stops_15067.html",
+      "kind": "html",
+      "bytes": 1097,
+      "sha256": "bd749267704e348de5c0d1ebb2fcc3210136420e592a1091df6a3c109f50ed21",
+      "retrieved_at": "2026-10-29T03:04:10.143343+00:00",
+      "scope": "공식 명세·파일 목록, 아직 과거 파일의 본문 검증 전",
+      "status": "rejected_service_delay_page",
+      "reason": "HTTP 200이나 서비스 지연(103) 오류 HTML, 실제 목록 아님"
+    },
+    {
+      "id": "seoul_routes_15262",
+      "title": "서울 버스노선 기본정보 과거 파일 목록",
+      "source": "https://data.seoul.go.kr/dataList/OA-15262/F/1/datasetView.do",
+      "url": "https://data.seoul.go.kr/dataList/OA-15262/F/1/datasetView.do",
+      "method": "GET",
+      "path": "data/deepening/probes/seoul_routes_15262.html",
+      "kind": "html",
+      "bytes": 117525,
+      "sha256": "b3af789203b19a387af06d9514a122c9efe9ca5871f7f0856359795eae44e0bd",
+      "retrieved_at": "2026-10-29T03:04:10.201252+00:00",
+      "scope": "공식 명세·파일 목록, 아직 과거 파일의 본문 검증 전",
+      "status": "verified_public_file_catalog",
+      "review": "파일 다운로드 폼의 자료 ID·파일용 infSeq·제목/파일 seq 대응을 확인. 파일 본문과 자료의 역사적 의미는 별도 검증."
+    },
+    {
+      "id": "seoul_median_stops_21288",
+      "title": "서울 중앙차로 버스정류소 과거 파일 목록",
+      "source": "https://data.seoul.go.kr/dataList/OA-21288/F/1/datasetView.do",
+      "url": "https://data.seoul.go.kr/dataList/OA-21288/F/1/datasetView.do",
+      "method": "GET",
+      "path": "data/deepening/probes/seoul_median_stops_21288.html",
+      "kind": "html",
+      "bytes": 110145,
+      "sha256": "d438e1d167699f5dab78862964c30fa81b53b94651ad4f420c29cc3a0bf410e4",
+      "retrieved_at": "2026-10-29T03:04:10.307554+00:00",
+      "scope": "공식 명세·파일 목록, 아직 과거 파일의 본문 검증 전",
+      "status": "verified_public_file_catalog",
+      "review": "파일 다운로드 폼의 자료 ID·파일용 infSeq·제목/파일 seq 대응을 확인. 파일 본문과 자료의 역사적 의미는 별도 검증."
+    },
+    {
+      "id": "seoul_stops_15067_sheet",
+      "title": "서울 버스정류소 위치정보 과거 파일 목록, Sheet 경로",
+      "source": "https://data.seoul.go.kr/dataList/OA-15067/S/1/datasetView.do",
+      "url": "https://data.seoul.go.kr/dataList/OA-15067/S/1/datasetView.do",
+      "method": "GET",
+      "path": "data/deepening/probes/seoul_stops_15067_sheet.html",
+      "kind": "html",
+      "bytes": 110478,
+      "sha256": "17fa30ae2ac54fda4c648dbe558663f6b8e778a3161cc17977a1d217c1d51680",
+      "retrieved_at": "2026-10-29T03:08:53.630983+00:00",
+      "status": "verified_public_file_catalog",
+      "scope": "기존 공개 Sheet 경로의 파일 목록 확인, API 호출·인증 우회 아님",
+      "review": "파일 다운로드 폼의 자료 ID·파일용 infSeq·제목/파일 seq 대응을 확인. 파일 본문과 자료의 역사적 의미는 별도 검증."
+    }
+  ]
+}
