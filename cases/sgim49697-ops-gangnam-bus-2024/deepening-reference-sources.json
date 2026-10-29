@@ -1,0 +1,68 @@
+{
+  "description": "두 번째 탐색의 추가 공식 문서 원문. 자료값과 정의의 확인 범위는 후속 기록에 구분한다.",
+  "files": [
+    {
+      "id": "seocho_news_202406",
+      "url": "https://seocho.newstool.co.kr/pdf/seocho_202406.pdf",
+      "path": "data/deepening/references/seocho_news_202406.pdf",
+      "bytes": 8236330,
+      "sha256": "645afbc6506d7c89aa1653e5f05f9ff55e5a6e0b12c85260c93a7de55c772888",
+      "retrieved_at": "2026-10-29T03:29:48.929024+00:00",
+      "content_type": "application/pdf",
+      "status": "reviewed_relevant_section",
+      "review_scope": "2024-06-01 발행 제569호 16면의 양재천 우안도로 기사 본문 확인. 6월 29일 예정, 영동1교 교차로~태봉로 구간. 예정과 실제 완료를 구분."
+    },
+    {
+      "id": "seocho_council_20241119",
+      "url": "https://sdc.seoul.kr/main/minutes/html/MinutesView.do?MINTS_SN=5089",
+      "path": "data/deepening/references/seocho_council_20241119.html",
+      "bytes": 567757,
+      "sha256": "d7fe812e32ecf75df471af5634ef93bc3ffe2c1ad455a6a32e3d9eec93818647",
+      "retrieved_at": "2026-10-29T03:29:47.421462+00:00",
+      "content_type": "text/html;charset=UTF-8",
+      "status": "reviewed_relevant_section",
+      "review_scope": "2024-11-19 회의 일시 및 도로과 처리결과의 6월 29일 공사 완료 진술 확인. 회의록 전체를 분석하지 않음."
+    },
+    {
+      "id": "tdata_vehicle_api_1084",
+      "url": "https://t-data.seoul.go.kr/dataprovide/trafficdataviewopenapi.do?data_id=1084",
+      "path": "data/deepening/references/tdata_vehicle_api_1084.html",
+      "bytes": 52851,
+      "sha256": "a0161898cbbf273291d8512615573eee0636a85c49cb5ed195015c7b495b2fa3",
+      "retrieved_at": "2026-10-29T03:29:47.550030+00:00",
+      "content_type": "text/html; charset=UTF-8",
+      "status": "downloaded_pending_semantic_review"
+    },
+    {
+      "id": "openpyxl_dimensions",
+      "url": "https://openpyxl.readthedocs.io/en/stable/optimized.html",
+      "path": "data/deepening/references/openpyxl_dimensions.html",
+      "bytes": 17915,
+      "sha256": "024a89a4c5daa56ee5d192e5b695fae342640bcdf8f1a639980f975f18715315",
+      "retrieved_at": "2026-10-29T03:29:47.834572+00:00",
+      "content_type": "text/html; charset=utf-8",
+      "status": "reviewed_relevant_section",
+      "review_scope": "Worksheet dimensions 절의 A1:A1 오류 및 reset_dimensions 사용법 확인."
+    },
+    {
+      "id": "gccity_542_closure_20241118",
+      "url": "https://www.gccity.go.kr/portal/newsList/view.do?idx=733&mId=0301140000",
+      "path": "data/deepening/references/gccity_542_closure_20241118.html",
+      "bytes": 254003,
+      "sha256": "bec54c80564dd54ec34bb57627e34cd20f1bf1a7e9393d32c60154276a3bc2a5",
+      "retrieved_at": "2026-10-29T03:35:51.866303+00:00",
+      "status": "reviewed_relevant_section",
+      "review_scope": "2024-11-18 교통과 보도자료 본문의 서울 542번 8월 24일 폐선 진술 확인."
+    },
+    {
+      "id": "seoul_542_closure_20241127",
+      "url": "https://mediahub.seoul.go.kr/archives/2012820",
+      "path": "data/deepening/references/seoul_542_closure_20241127.html",
+      "bytes": 127364,
+      "sha256": "8418cdc66a1d637196f6ab5be5d00684cdd5483306f6fc1601e2d8e0bfa786b6",
+      "retrieved_at": "2026-10-29T03:35:50.208118+00:00",
+      "status": "reviewed_relevant_section",
+      "review_scope": "2024-11-27 언론담당관 해명자료 중 106·542번 폐선 및 배경 진술 확인. 폐선의 정확한 날짜는 과천시 원문에서 확인."
+    }
+  ]
+}

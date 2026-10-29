@@ -4,6 +4,8 @@
 
 먼저 **[확장 탐색 종합 보고서](overnight-summary.md)**를 읽으면 된다. 남행 강조 구간은 2024년 사전 대비 그해 여름 −48.45%, 북행 강조 구간은 +32.59%였다. 2025년에도 수준 차이가 남았고, 인접 구간 합·같은 노선의 16시간 공동 표본에서도 반대 양상을 확인했다. 버스 기록의 시간 단위·정차 경계는 미확인이므로 실제 분 단위 절감이나 정책의 인과 효과로 해석하지 않는다.
 
+**2026-10-29 추가 확인:** [과거 정류장·노선 이력](deepening-history-report.md)에서 32개 정류장의 ID·ARS와 정책일 양쪽의 좌표 기록을 대조했다. 공통 후보의 542번은 2024-08-24 폐선됐으므로, 2025년 결과를 읽을 때 사전 선택 14개와 실제 관측 노선 수를 구분해야 한다. [두 번째 탐색 계획](deepening-plan.md)에 따라 고정 13개 노선 비교와 기록 정의 확인을 진행한다.
+
 **[공개 핵심 수치](results/overnight/review/key_numbers.csv)**는 원본 집계의 선택 조건과 연결된다. Python 3.12에서 `python review_overnight.py --check`를 실행하면 원본·모델·외부 패키지 없이 수치와 공개 동결 해시를 대조할 수 있다. [재현 안내](overnight-reproduction.md)는 공개 검토, 기존 로컬 모델 검증, 원자료 계산의 의존성과 한계를 구분한다.
 
 작업 제안 [이슈 #53](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/issues/53), [계획 PR #54](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/54), [구현·결과 PR #55](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/55). 작업 브랜치는 `sgim49697-ops/gangnam-pipeline`이며 PR은 초안이다. 최초 일반도로·GPU 모델 비교는 아래 이전 분석 문서에 보존했다. 2026년 잠금 시험값은 사용하지 않았다.

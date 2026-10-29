@@ -92,8 +92,18 @@ def prepare_requests():
     if not requests or len({item["id"] for item in requests}) != len(requests):
         raise ValueError("역사 자료 요청이 비었거나 다운로드 ID가 중복됩니다")
     inputs["deepening_history_config.yaml"] = sha256(CASE / "deepening_history_config.yaml")
-    write_json(REQUESTS, {"prepared_at": utcnow(), "configuration": cfg, "inputs": inputs, "requests": requests})
-    print(f"역사적 파일·명세 {len(requests)}개 요청 확정. 파일 본문은 아직 열지 않았습니다.", flush=True)
+    preserve_requests(REQUESTS, {"configuration": cfg, "inputs": inputs, "requests": requests})
+    print(f"역사적 파일·명세 {len(requests)}개의 고정 요청을 확인했습니다.", flush=True)
+
+
+def preserve_requests(path, payload):
+    """재실행으로 고정 요청 시각과 후속 출처 해시가 바뀌지 않게 한다."""
+    if path.exists():
+        previous = json.loads(path.read_text())
+        if {k: v for k, v in previous.items() if k != "prepared_at"} != payload:
+            raise ValueError("기존 고정 요청과 다릅니다. 별도 수집 범위로 기록해야 합니다")
+        return
+    write_json(path, {"prepared_at": utcnow(), **payload})
 
 
 def validate_file(path):
@@ -164,9 +174,13 @@ def collect():
     for spec in record["requests"]:
         if spec["id"] in existing and any(existing[spec["id"]][key] != spec[key] for key in ["title", "request", "path"]):
             raise ValueError("같은 다운로드 ID의 제목·요청·경로가 달라졌습니다")
+    if set(existing) - {spec["id"] for spec in record["requests"]}:
+        raise ValueError("고정 요청 밖의 캐시 파일이 있습니다")
     with ThreadPoolExecutor(max_workers=2) as pool:
         for entry in pool.map(fetch, jobs):
             existing[entry["id"]] = entry
             write_json(MANIFEST, {"description": "공식 2023~2025년 정류장·노선 이력 파일과 별도 컬럼 명세. 원문 재배포하지 않음.",
                 "requests_sha256": sha256(REQUESTS), "files": sorted(existing.values(), key=lambda item: item["id"])})
             print(f"역사 파일 수집: {entry['title']} ({entry['bytes']:,} bytes)", flush=True)
+    write_json(MANIFEST, {"description": "공식 2023~2025년 정류장·노선 이력 파일과 별도 컬럼 명세. 원문 재배포하지 않음.",
+        "requests_sha256": sha256(REQUESTS), "files": sorted(existing.values(), key=lambda item: item["id"])})

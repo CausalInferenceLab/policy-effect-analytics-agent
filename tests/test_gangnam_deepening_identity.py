@@ -49,6 +49,17 @@ def test_xlsx_reads_full_xml_despite_false_a1_dimension(tmp_path):
     assert audit["declared_rows"] == 1 and audit["actual_rows"] == 3
 
 
+def test_csv_may_omit_only_the_unnamed_trailing_column(tmp_path):
+    path = tmp_path / "quoted.csv"
+    path.write_text('STDR_DE,NODE_ID,STTN_NM,\n20230101,100000001,"정류장9,10단지"\n')
+    header, rows, audit = read_table(path)
+    assert len(header) == 3 and rows[0][-1] == "정류장9,10단지"
+    assert audit["omitted_trailing_blank_rows"] == 1
+    path.write_text('STDR_DE,NODE_ID,STTN_NM,\n20230101,100000001\n')
+    with pytest.raises(ValueError, match="이름 있는 열"):
+        read_table(path)
+
+
 def test_ids_and_dates_are_not_silently_coerced():
     assert identifier("1001", 5) == "01001"
     assert identifier("16614A", 5) == "16614A"

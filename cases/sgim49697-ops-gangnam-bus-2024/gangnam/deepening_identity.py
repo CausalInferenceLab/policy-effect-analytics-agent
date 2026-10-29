@@ -100,6 +100,12 @@ def read_table(path):
     # Excel은 행 끝 빈 셀을 생략하므로 헤더 너비까지 빈 값으로 채운다.
     if path.suffix == ".xlsx":
         rows = [r + [""] * (width - len(r)) for r in rows]
+    else:
+        named_width = max((i + 1 for i, v in enumerate(rows[0]) if v), default=0)
+        if any(len(r) < named_width or len(r) > width for r in rows):
+            raise ValueError(f"이름 있는 열의 행 너비 불일치: {path}")
+        info["omitted_trailing_blank_rows"] = sum(len(r) < width for r in rows[1:])
+        rows = [r + [""] * (width - len(r)) for r in rows]
     if any(len(r) != width for r in rows):
         raise ValueError(f"행 너비 불일치: {path}")
     removed = 0
@@ -176,7 +182,7 @@ def save_csv(name, rows):
     OUT.mkdir(parents=True, exist_ok=True)
     path = OUT / name
     with path.with_suffix(".csv.tmp").open("w", encoding="utf-8", newline="") as f:
-        writer = csv.DictWriter(f, fieldnames=columns)
+        writer = csv.DictWriter(f, fieldnames=columns, lineterminator="\n")
         writer.writeheader()
         writer.writerows(rows)
     path.with_suffix(".csv.tmp").replace(path)

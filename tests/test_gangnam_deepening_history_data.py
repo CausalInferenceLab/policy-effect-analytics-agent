@@ -37,3 +37,14 @@ def test_only_declared_years_and_explicit_metadata_are_selected():
     assert module.selected_title("2025~2026년.csv", cfg) == (False, False)
     assert module.selected_title("최신.csv", cfg) == (False, False)
     assert module.selected_title("컬럼정의_정류소.xlsx", cfg) == (True, True)
+def test_request_replay_preserves_timestamp_and_rejects_changes(tmp_path):
+    from gangnam.deepening_history_data import preserve_requests
+
+    path = tmp_path / "requests.json"
+    payload = {"configuration": {"years": [2023, 2024, 2025]}, "inputs": {}, "requests": []}
+    preserve_requests(path, payload)
+    before = path.read_bytes()
+    preserve_requests(path, payload)
+    assert path.read_bytes() == before
+    with pytest.raises(ValueError, match="기존"):
+        preserve_requests(path, {**payload, "requests": [{"id": "changed"}]})
