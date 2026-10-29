@@ -17,10 +17,10 @@ from .deepening_archive_models import (
     archive_profile_prediction,
     load_feature_audit,
     ordered_predictions,
+    predict_quantiles,
     read_features,
 )
 from .overnight_baseline_methods import interval_losses, paired_intervals
-from .overnight_forecast_models import quantile_prediction
 
 CONTEXT = OUT / "context_prediction_sources.json"
 
@@ -126,7 +126,8 @@ def run():
         models = [entry for entry in state["entries"] if entry["horizon"] == horizon]
         for entry in models:
             model = joblib.load(checked(entry["model"]))
-            for name, importance in zip(model["estimator"].feature_names_, model["estimator"].get_feature_importance(), strict=True):
+            values = model["estimator"].get_feature_importance(thread_count=cfg["resources"]["threads"])
+            for name, importance in zip(model["estimator"].feature_names_, values, strict=True):
                 importances.append(dict(horizon=horizon, name=entry["name"], seed=entry["seed"], feature=name,
                     importance=float(importance), interpretation="model_split_dependence_not_causal_effect"))
         for period in ["summer", "autumn"]:
@@ -135,7 +136,7 @@ def run():
             for entry in models:
                 model = joblib.load(checked(entry["model"]))
                 with threadpool_limits(limits=cfg["resources"]["threads"]):
-                    q, crossing = ordered_predictions(quantile_prediction(model, frame))
+                    q, crossing = ordered_predictions(predict_quantiles(model, frame, cfg["resources"]["threads"]))
                 output = frame[KEY].copy()
                 output[QCOLS], output["raw_crossing"] = q, crossing.astype(float)
                 completed[(entry["name"], entry["seed"])] = output

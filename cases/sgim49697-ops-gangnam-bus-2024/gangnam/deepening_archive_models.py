@@ -16,11 +16,15 @@ from threadpoolctl import threadpool_limits
 from .common import CASE, digest, sha256, utcnow, write_json
 from .deepening_archive_data import MANIFEST, OUT, RAW, checked, reference, verify
 from .overnight_baseline_methods import empirical_model, empirical_prediction, interval_losses
-from .overnight_forecast_models import fit_quantile, quantile_prediction, uniform_sample
+from .overnight_forecast_models import fit_quantile, transform, uniform_sample
 
 TRAINING = OUT / "training_manifest.json"
 KEY = ["link_id", "target_start", "origin", "speed_kmh"]
 QCOLS = ["q10", "q50", "q90"]
+
+
+def predict_quantiles(model, frame, threads):
+    return model["estimator"].predict(transform(frame, model["schema"]), thread_count=threads, task_type="CPU")
 
 
 def read_features(entry, audit):
@@ -122,7 +126,7 @@ def run():
                     warnings.simplefilter("always")
                     model = fit_quantile(cfg["models"]["catboost_quantile"]["depth"], train, tuning,
                         feature["feature_sets"][name], cfg, seed)
-                    prediction, crossings = ordered_predictions(quantile_prediction(model, tuning))
+                    prediction, crossings = ordered_predictions(predict_quantiles(model, tuning, cfg["resources"]["threads"]))
                 if model["training_rows"] != sample_rows:
                     raise ValueError("실제 학습 표본 수 불일치")
                 path = RAW / "models" / f"h{horizon}_{name}_s{seed}.joblib"
