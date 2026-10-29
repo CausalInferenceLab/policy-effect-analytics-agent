@@ -23,3 +23,10 @@ def test_residualization_separates_correlated_time_and_level():
         mod.residualized_coefficient(target, time, nuisance)
     with pytest.raises(ValueError, match="계수 부족"):
         mod.residualized_coefficient(target, post, np.column_stack([nuisance, time]))
+
+
+def test_raw_check_accepts_all_missing_markers_in_existing_contract():
+    cfg = mod.read_yaml(mod.CONFIG)
+    contract = mod.read_yaml("data_contract.yaml")["checks"]["missing_values"]["value"]
+    assert set(map(str, contract["sentinels"])).issubset(cfg["sentinels"])
+    assert "NULL" in cfg["sentinels"]
