@@ -1,0 +1,483 @@
+{
+  "prepared_at": "2026-10-29T05:26:32.795582+00:00",
+  "configuration": {
+    "analysis": "exploratory_reanalysis_of_seen_2025_predictions",
+    "timezone": "Asia/Seoul",
+    "locked_year": 2026,
+    "primary_links": [
+      "1220025000",
+      "1220021000",
+      "1220016200"
+    ],
+    "horizons": [
+      1,
+      3
+    ],
+    "periods": {
+      "summer": [
+        "2025-05-01",
+        "2025-09-01"
+      ],
+      "autumn": [
+        "2025-09-01",
+        "2026-01-01"
+      ]
+    },
+    "period_end": "exclusive",
+    "target_start_offset_hours": "horizon_minus_one",
+    "candidates": {
+      "relative_probability": [
+        "calendar_only",
+        "weekly_delayed",
+        "recent_road_assumption"
+      ],
+      "conditional_probability": [
+        "recent_road_assumption"
+      ],
+      "conditional_margin": [
+        "median_gap",
+        "scaled_median_gap"
+      ]
+    },
+    "rules": [
+      "original_rule",
+      "budget_rule"
+    ],
+    "cooldown_hours": [
+      0,
+      3
+    ],
+    "minimum_observed_episode_hours": [
+      1,
+      2
+    ],
+    "episode_definition": "consecutive_positive_hour_labels_within_link",
+    "unknown_hour": "break_episode_and_preserve_unknown_onset",
+    "left_censored": "exclude_from_known_onset_recall",
+    "right_censored": "retain_known_onset_and_mark_duration_lower_bound",
+    "midnight": "do_not_split",
+    "cooldown_clock": "per_link_last_emitted_origin_no_daily_reset",
+    "cooldown_initial_state": "empty_at_each_evaluation_period",
+    "missing_predictions": "do_not_reconstruct_or_treat_as_negative",
+    "interpretation": "descriptive_low_label_runs_not_verified_traffic_incidents"
+  },
+  "entries": [
+    {
+      "task": "relative_probability",
+      "name": "calendar_only",
+      "horizon": 1,
+      "rules": {
+        "original_rule": {
+          "threshold": 0.3862840455649993,
+          "decision_fpr": 0.09976525821596244,
+          "decision_recall": 0.6820175438596491,
+          "decision_rows": 2160,
+          "decision_prevalence": 0.21111111342906952
+        },
+        "budget_rule": {
+          "threshold": 0.8854493725102522,
+          "decision_recall": 0.11403508484363556,
+          "decision_fpr": 0.004694835680751174,
+          "decision_alerts": 60,
+          "decision_calendar_days": 30,
+          "decision_alerts_per_day": 2.0
+        }
+      },
+      "predictions": {
+        "summer": {
+          "path": "data/overnight/relative_ablation/test_predictions/h1_calendar_only.parquet",
+          "sha256": "785afe0929e3307321e08d249934f5bc2e3f2883623514fb67c100bf4d2bfda8",
+          "rows": 8820
+        },
+        "autumn": {
+          "path": "data/overnight/confirmation/predictions/h1_relative_probability_calendar_only.parquet",
+          "sha256": "180440d9c9d0ad14f62567ae0f68a041a823fcfe1dfa2a296d3e666d2cd3f9fe",
+          "rows": 8784
+        }
+      }
+    },
+    {
+      "task": "relative_probability",
+      "name": "calendar_only",
+      "horizon": 3,
+      "rules": {
+        "original_rule": {
+          "threshold": 0.3862840455649993,
+          "decision_fpr": 0.09976525821596244,
+          "decision_recall": 0.6820175438596491,
+          "decision_rows": 2160,
+          "decision_prevalence": 0.21111111342906952
+        },
+        "budget_rule": {
+          "threshold": 0.8854493725102522,
+          "decision_recall": 0.11403508484363556,
+          "decision_fpr": 0.004694835680751174,
+          "decision_alerts": 60,
+          "decision_calendar_days": 30,
+          "decision_alerts_per_day": 2.0
+        }
+      },
+      "predictions": {
+        "summer": {
+          "path": "data/overnight/relative_ablation/test_predictions/h3_calendar_only.parquet",
+          "sha256": "f7e323d0a1865533ab0a720bcb0e28acb299b451e74b01519ea675a16bf83c7d",
+          "rows": 8820
+        },
+        "autumn": {
+          "path": "data/overnight/confirmation/predictions/h3_relative_probability_calendar_only.parquet",
+          "sha256": "cf534b81a1ad7f65b6367e46c1247c34c55a896bd9d85bd072344d48a639072e",
+          "rows": 8784
+        }
+      }
+    },
+    {
+      "task": "relative_probability",
+      "name": "weekly_delayed",
+      "horizon": 1,
+      "rules": {
+        "original_rule": {
+          "threshold": 0.33978814948838787,
+          "decision_fpr": 0.09976525821596244,
+          "decision_recall": 0.7127192982456141,
+          "decision_rows": 2160,
+          "decision_prevalence": 0.21111111342906952
+        },
+        "budget_rule": {
+          "threshold": 0.9097842958091432,
+          "decision_recall": 0.125,
+          "decision_fpr": 0.0017605633802816902,
+          "decision_alerts": 60,
+          "decision_calendar_days": 30,
+          "decision_alerts_per_day": 2.0
+        }
+      },
+      "predictions": {
+        "summer": {
+          "path": "data/overnight/relative_ablation/test_predictions/h1_weekly_delayed.parquet",
+          "sha256": "2a281cec9b738873d2b77e4a8ccec13263414daefc3b9d98ed0e1f80a0fd7e03",
+          "rows": 8820
+        },
+        "autumn": {
+          "path": "data/overnight/confirmation/predictions/h1_relative_probability_weekly_delayed.parquet",
+          "sha256": "dc1d27187bca842f6fbbce18b71755c2a9ff710cb8383dac8d8c7e3616a0f370",
+          "rows": 8784
+        }
+      }
+    },
+    {
+      "task": "relative_probability",
+      "name": "weekly_delayed",
+      "horizon": 3,
+      "rules": {
+        "original_rule": {
+          "threshold": 0.33978814948838787,
+          "decision_fpr": 0.09976525821596244,
+          "decision_recall": 0.7127192982456141,
+          "decision_rows": 2160,
+          "decision_prevalence": 0.21111111342906952
+        },
+        "budget_rule": {
+          "threshold": 0.9097842958091432,
+          "decision_recall": 0.125,
+          "decision_fpr": 0.0017605633802816902,
+          "decision_alerts": 60,
+          "decision_calendar_days": 30,
+          "decision_alerts_per_day": 2.0
+        }
+      },
+      "predictions": {
+        "summer": {
+          "path": "data/overnight/relative_ablation/test_predictions/h3_weekly_delayed.parquet",
+          "sha256": "87486cfdb5371c7c9d2dcdacc0a15b1b7697a41b7abe6bbf885438f76a34777d",
+          "rows": 8820
+        },
+        "autumn": {
+          "path": "data/overnight/confirmation/predictions/h3_relative_probability_weekly_delayed.parquet",
+          "sha256": "9540226a31c330fa7fe20dfe66c45e8d268d9d958856b046f4a63f7984b8b317",
+          "rows": 8784
+        }
+      }
+    },
+    {
+      "task": "relative_probability",
+      "name": "recent_road_assumption",
+      "horizon": 1,
+      "rules": {
+        "original_rule": {
+          "threshold": 0.3693873811437189,
+          "decision_fpr": 0.09976525821596244,
+          "decision_recall": 0.7390350877192983,
+          "decision_rows": 2160,
+          "decision_prevalence": 0.21111111342906952
+        },
+        "budget_rule": {
+          "threshold": 0.9409339254844429,
+          "decision_recall": 0.125,
+          "decision_fpr": 0.0017605633802816902,
+          "decision_alerts": 60,
+          "decision_calendar_days": 30,
+          "decision_alerts_per_day": 2.0
+        }
+      },
+      "predictions": {
+        "summer": {
+          "path": "data/overnight/relative_ablation/test_predictions/h1_recent_road_assumption.parquet",
+          "sha256": "fd9858fb0eab5c3ee028babce68d48b664007053a37bb4a2ec5406d811b4b158",
+          "rows": 8820
+        },
+        "autumn": {
+          "path": "data/overnight/confirmation/predictions/h1_relative_probability_recent_road_assumption.parquet",
+          "sha256": "16156b5156075a841782e8a9deb25656f8a7af16f81c79264bc78bc0a7f88dd3",
+          "rows": 8784
+        }
+      }
+    },
+    {
+      "task": "relative_probability",
+      "name": "recent_road_assumption",
+      "horizon": 3,
+      "rules": {
+        "original_rule": {
+          "threshold": 0.3499929679232201,
+          "decision_fpr": 0.09800469483568075,
+          "decision_recall": 0.7192982456140351,
+          "decision_rows": 2160,
+          "decision_prevalence": 0.21111111342906952
+        },
+        "budget_rule": {
+          "threshold": 0.922122686230458,
+          "decision_recall": 0.125,
+          "decision_fpr": 0.0017605633802816902,
+          "decision_alerts": 60,
+          "decision_calendar_days": 30,
+          "decision_alerts_per_day": 2.0
+        }
+      },
+      "predictions": {
+        "summer": {
+          "path": "data/overnight/relative_ablation/test_predictions/h3_recent_road_assumption.parquet",
+          "sha256": "9acf1721d1231f8ec44afef34b3228ca0392c14aef1d4eb7af1e237c9587164f",
+          "rows": 8820
+        },
+        "autumn": {
+          "path": "data/overnight/confirmation/predictions/h3_relative_probability_recent_road_assumption.parquet",
+          "sha256": "1b1585da7f78082a708d2503b2ba41120447e2c61b61f95d9eb8743d3f7a9bfa",
+          "rows": 8784
+        }
+      }
+    },
+    {
+      "task": "conditional_probability",
+      "name": "recent_road_assumption",
+      "horizon": 1,
+      "rules": {
+        "original_rule": {
+          "threshold": 0.24655031248699052,
+          "decision_fpr": 0.09956709956709957,
+          "decision_recall": 0.09760589318600368,
+          "decision_rows": 2160,
+          "decision_prevalence": 0.2513888888888889
+        },
+        "budget_rule": {
+          "threshold": 0.2479580285165144,
+          "decision_recall": 0.029465930018416207,
+          "decision_fpr": 0.025974025974025976,
+          "decision_alerts": 58,
+          "decision_calendar_days": 30,
+          "decision_alerts_per_day": 1.9333333333333333
+        }
+      },
+      "predictions": {
+        "summer": {
+          "path": "data/overnight/conditional_low/test_predictions/h1_recent_road_assumption.parquet",
+          "sha256": "d72831fe24d199964346105d7ce3a906f43fc0feffff9c265ba2e099693ab726",
+          "rows": 8820
+        },
+        "autumn": {
+          "path": "data/overnight/confirmation/predictions/h1_conditional_probability_recent_road_assumption.parquet",
+          "sha256": "946df73e1b45625742bfb706bc0681a71da94b7b13e9cd3879f7d3c43a613e64",
+          "rows": 8784
+        }
+      }
+    },
+    {
+      "task": "conditional_probability",
+      "name": "recent_road_assumption",
+      "horizon": 3,
+      "rules": {
+        "original_rule": {
+          "threshold": 0.2605522167097093,
+          "decision_fpr": 0.09894867037724181,
+          "decision_recall": 0.06077348066298342,
+          "decision_rows": 2160,
+          "decision_prevalence": 0.2513888888888889
+        },
+        "budget_rule": {
+          "threshold": 0.26603409295010716,
+          "decision_recall": 0.01289134438305709,
+          "decision_fpr": 0.029684601113172542,
+          "decision_alerts": 55,
+          "decision_calendar_days": 30,
+          "decision_alerts_per_day": 1.8333333333333333
+        }
+      },
+      "predictions": {
+        "summer": {
+          "path": "data/overnight/conditional_low/test_predictions/h3_recent_road_assumption.parquet",
+          "sha256": "7f803e9b16f0a2425fdc19b07384050cd03ebf2af2a0bb3aa6e1b1c66b6e9ee0",
+          "rows": 8820
+        },
+        "autumn": {
+          "path": "data/overnight/confirmation/predictions/h3_conditional_probability_recent_road_assumption.parquet",
+          "sha256": "1d1c9f7a637aee27e502ee79408492948698949a107c068a095f4967ae1387d4",
+          "rows": 8784
+        }
+      }
+    },
+    {
+      "task": "conditional_margin",
+      "name": "median_gap",
+      "horizon": 1,
+      "rules": {
+        "original_rule": {
+          "threshold": 0.3470316141837685,
+          "decision_fpr": 0.09894867037724181,
+          "decision_recall": 0.27624309392265195,
+          "decision_rows": 2160,
+          "decision_prevalence": 0.2513888888888889
+        },
+        "budget_rule": {
+          "threshold": 0.46115009134773277,
+          "decision_recall": 0.06998158379373849,
+          "decision_fpr": 0.012987012987012988,
+          "decision_alerts": 59,
+          "decision_calendar_days": 30,
+          "decision_alerts_per_day": 1.9666666666666666
+        }
+      },
+      "predictions": {
+        "summer": {
+          "path": "data/overnight/conditional_margin/h1_median_gap_test.parquet",
+          "sha256": "8850f42f001ce863ed6a487c14fbd43ebf28fbe9b9b441c07d5e15ac9afc9180",
+          "rows": 8820
+        },
+        "autumn": {
+          "path": "data/overnight/confirmation/predictions/h1_conditional_margin_median_gap.parquet",
+          "sha256": "4910662643245f1abdaaf315d1f2ca84ed039af789a54d8d936caf3d49768454",
+          "rows": 8784
+        }
+      }
+    },
+    {
+      "task": "conditional_margin",
+      "name": "median_gap",
+      "horizon": 3,
+      "rules": {
+        "original_rule": {
+          "threshold": 0.3315774892002093,
+          "decision_fpr": 0.09956709956709957,
+          "decision_recall": 0.24677716390423574,
+          "decision_rows": 2160,
+          "decision_prevalence": 0.2513888888888889
+        },
+        "budget_rule": {
+          "threshold": 0.4341459618734157,
+          "decision_recall": 0.058931860036832415,
+          "decision_fpr": 0.016079158936301793,
+          "decision_alerts": 58,
+          "decision_calendar_days": 30,
+          "decision_alerts_per_day": 1.9333333333333333
+        }
+      },
+      "predictions": {
+        "summer": {
+          "path": "data/overnight/conditional_margin/h3_median_gap_test.parquet",
+          "sha256": "22c662355b4f084025364e19d9f3fe734b74073a1c225dea48a0475bc7ff02cf",
+          "rows": 8820
+        },
+        "autumn": {
+          "path": "data/overnight/confirmation/predictions/h3_conditional_margin_median_gap.parquet",
+          "sha256": "1c7f82688a83cbaf9d09859d0575ede3b6379157ce8bd9d6c59e0f57b7036619",
+          "rows": 8784
+        }
+      }
+    },
+    {
+      "task": "conditional_margin",
+      "name": "scaled_median_gap",
+      "horizon": 1,
+      "rules": {
+        "original_rule": {
+          "threshold": 0.3622020493679941,
+          "decision_fpr": 0.09894867037724181,
+          "decision_recall": 0.27808471454880296,
+          "decision_rows": 2160,
+          "decision_prevalence": 0.2513888888888889
+        },
+        "budget_rule": {
+          "threshold": 0.49855992170635866,
+          "decision_recall": 0.06813996316758748,
+          "decision_fpr": 0.01422387136672851,
+          "decision_alerts": 60,
+          "decision_calendar_days": 30,
+          "decision_alerts_per_day": 2.0
+        }
+      },
+      "predictions": {
+        "summer": {
+          "path": "data/overnight/conditional_margin/h1_scaled_median_gap_test.parquet",
+          "sha256": "365aefa12c4a9d0fa0bbc0eec50813af29f42629a47489f324eb71601a4e6a78",
+          "rows": 8820
+        },
+        "autumn": {
+          "path": "data/overnight/confirmation/predictions/h1_conditional_margin_scaled_median_gap.parquet",
+          "sha256": "d2209e7a4a12c8a04ecd1d2c35955bda7796efc35a4700e7437b4addd2a0e34c",
+          "rows": 8784
+        }
+      }
+    },
+    {
+      "task": "conditional_margin",
+      "name": "scaled_median_gap",
+      "horizon": 3,
+      "rules": {
+        "original_rule": {
+          "threshold": 0.3414834607922615,
+          "decision_fpr": 0.09709338280766852,
+          "decision_recall": 0.24677716390423574,
+          "decision_rows": 2160,
+          "decision_prevalence": 0.2513888888888889
+        },
+        "budget_rule": {
+          "threshold": 0.4617725423804215,
+          "decision_recall": 0.06077348066298342,
+          "decision_fpr": 0.015460729746444033,
+          "decision_alerts": 58,
+          "decision_calendar_days": 30,
+          "decision_alerts_per_day": 1.9333333333333333
+        }
+      },
+      "predictions": {
+        "summer": {
+          "path": "data/overnight/conditional_margin/h3_scaled_median_gap_test.parquet",
+          "sha256": "182bc4b21846145f366878298f8d213acf9054611e95f98395aa7fcfc2b89932",
+          "rows": 8820
+        },
+        "autumn": {
+          "path": "data/overnight/confirmation/predictions/h3_conditional_margin_scaled_median_gap.parquet",
+          "sha256": "5b3fa52c9a18cbdec48a298feefcb9e9d2d816d0b7d8cf71e7bf8fee9d40e19d",
+          "rows": 8784
+        }
+      }
+    }
+  ],
+  "inputs": {
+    "deepening_episode_config.yaml": "c97ddb97cdbc909350c4a9d73a3adb1343ab78162291c5802dea28b7ad505429",
+    "results/overnight/confirmation/selection_manifest.json": "d242ac858c55380cfb2ddfbd0c2244010d375b48627ecc21d79d4ec04cb838f8",
+    "results/overnight/confirmation/evaluation_audit.json": "861000795b743d99b5970d98b12bc8121772c3289ee5454a402f3c1f40f8ad5d",
+    "results/overnight/relative_ablation/evaluation_audit.json": "95c9dd207213774c27e17af08dd39abbfe11306f4e6b679e147532ceb132f1b8",
+    "results/overnight/conditional_low/evaluation_audit.json": "b66339ce26332c1f7beb6fa855cc8ba08baa4369cc063d0ee60593121be98be3",
+    "results/overnight/conditional_margin/evaluation_audit.json": "925437c3691df7e51181ae7813952da02a8dacb98165eb753b53418e925e155c"
+  },
+  "interpretation": "이미 열람한 2025년 예측의 후속 기술 평가; 모형·확률·임계값 변경 없음"
+}
