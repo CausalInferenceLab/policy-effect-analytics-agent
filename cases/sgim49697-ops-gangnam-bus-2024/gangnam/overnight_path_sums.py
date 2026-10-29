@@ -96,6 +96,25 @@ def sequence_audit(wide, legs, routes, calendar):
     return pd.DataFrame(results)
 
 
+def sequence_summary(rows):
+    """서로 겹치는 6개 경로의 동일 노선·구간을 한 번만 집계한다."""
+    keys = ["period", "route", "from_ars", "to_ars"]
+    fields = ["expected_days", "observed_days", "sequence_pairs", "pair_count", "nonconsecutive_rows"]
+    unique = rows[keys + fields].drop_duplicates()
+    if unique.duplicated(keys).any():
+        raise ValueError("겹치는 경로의 순서 메타데이터가 일치하지 않습니다")
+    reference = unique[unique.period.eq("pre2024")][keys[1:] + ["sequence_pairs"]].rename(columns={"sequence_pairs": "before_pairs"})
+    joined = unique.merge(reference, on=keys[1:], validate="many_to_one")
+    result = []
+    for period, frame in joined.groupby("period"):
+        observed = frame.observed_days.gt(0)
+        changed = observed & frame.sequence_pairs.ne(frame.before_pairs)
+        result.append({"period": period, "route_segment_pairs": len(frame), "absent_pairs": int((~observed).sum()),
+                       "changed_observed_pairs": int(changed.sum()), "changed_routes": frame.loc[changed, "route"].nunique(),
+                       "nonconsecutive_rows": int(frame.nonconsecutive_rows.sum()), "multiple_sequence_pair_sets": int(frame.pair_count.gt(1).sum())})
+    return pd.DataFrame(result)
+
+
 def run():
     cfg = read_yaml("overnight_path_sums_config.yaml")
     if cfg["locked_year"] != 2026:
@@ -173,6 +192,7 @@ def run():
     tables = {"comparisons.csv": pd.DataFrame(comparisons), "daily.csv": pd.concat(dailies, ignore_index=True),
               "eligibility.csv": pd.concat(eligibility, ignore_index=True), "sequence_pairs.csv": pd.concat(sequences, ignore_index=True),
               "record_states.csv": pd.DataFrame(states), "path_legs.csv": pd.concat(specifications, ignore_index=True)}
+    tables["sequence_summary.csv"] = sequence_summary(tables["sequence_pairs.csv"])
     for name, frame in tables.items():
         frame.to_csv(OUT / name, index=False)
     pd.concat(baselines, ignore_index=True).to_parquet(RAW / "baselines.parquet", index=False)

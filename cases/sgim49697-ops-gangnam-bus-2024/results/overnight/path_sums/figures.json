@@ -1,0 +1,9 @@
+{
+  "code_sha256": "194879aa9a25b0e115d563d3b726840da8f55f7ad654031691d089cc977678d8",
+  "inputs": {
+    "comparisons.csv": "8efd28f0aee2795c817c71ecea0f1bc61b1b6db16e1c40c48f0a0ef9a9d2d08c"
+  },
+  "outputs": {
+    "path_components.png": "95e4d3fd1c920efbe8533df1c810b04c4ed2a4b3e00e8dc637a7d45346be00bb"
+  }
+}

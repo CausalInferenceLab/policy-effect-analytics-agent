@@ -53,3 +53,15 @@ def test_missing_leg_and_future_change_do_not_change_pre_selection():
     with pytest.raises(ValueError, match="중복"):
         module.joint_matrix(duplicated, candidates, legs, dates)
     assert np.isfinite(baseline["sum"]).all()
+
+
+def test_overlapping_paths_count_one_sequence_record_and_reject_conflict():
+    row = {"period": "pre2024", "route": "r", "from_ars": "1", "to_ars": "2", "expected_days": 27,
+           "observed_days": 27, "sequence_pairs": "10→11", "pair_count": 1, "nonconsecutive_rows": 0}
+    data = pd.DataFrame([row, row, {**row, "period": "post2024"}])
+    summary = module.sequence_summary(data)
+    assert summary.route_segment_pairs.tolist() == [1, 1]
+    assert summary.changed_observed_pairs.eq(0).all()
+    data.loc[1, "sequence_pairs"] = "11→12"
+    with pytest.raises(ValueError, match="일치"):
+        module.sequence_summary(data)
