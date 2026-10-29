@@ -1,0 +1,21 @@
+# 가을·겨울 전체 결과를 본 뒤 특정 주·휴일 의존과 구간 이탈 방향을 점검한다.
+version: 1
+mode: posthoc_after_confirmation_metrics
+source_audit: results/overnight/confirmation/evaluation_audit.json
+period: ['2025-09-01', '2025-12-31']
+models: [catboost_frozen_quantile, weekly_empirical, calendar_empirical]
+horizons: [1, 3]
+subgroups: [nonholiday_weekday, nonholiday_weekend, public_holiday]
+minimum_rows: 100
+minimum_calendar_weeks: 8
+leave_one_week_out:
+  slices: [all_hours, evening_17_19]
+  left: catboost_frozen_quantile
+  right: [weekly_empirical, calendar_empirical]
+  metric: interval_score_alpha_0.2
+  interpretation: 같은 저장 예측 손실에서 한 주씩 제외한 점수 차이 범위이며 신뢰구간이 아님
+holiday_definition: holidays_KR_0_107_same_as_frozen_feature_generation; descriptive_calendar_label
+interpretation:
+  - 새 고정 시험의 사전 지정 지표와 구별하는 사후 진단
+  - 공개 휴일을 원인으로 판정하거나 다른 사건명을 추정하지 않음
+  - 원래 예측·모델·임계값·검증 결과를 바꾸지 않음
