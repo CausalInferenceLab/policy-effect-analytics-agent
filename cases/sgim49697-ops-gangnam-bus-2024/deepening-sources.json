@@ -172,6 +172,110 @@
       "retrieved_at": "2026-10-29T06:44:20.222384+00:00",
       "scope": "업무보고 35쪽을 설명하는 문단 확인: 2023년 1구간 개통 및 2구간 공사 진행 보고. 월별·일별 공정이나 2024년 차로 통제 날짜는 미확인.",
       "status": "primary_document_partial_review"
+    },
+    {
+      "id": "heolleung_map",
+      "title": "헌릉로 중앙차로 위치도",
+      "url": "https://mediahub.seoul.go.kr/uploads/mediahub/2025/01/nlQgpJUeREgLGSqbrCAasjBwoWxSHcFO.png",
+      "source": "https://mediahub.seoul.go.kr/archives/2013139",
+      "method": "GET",
+      "path": "data/deepening/references/heolleung_map.png",
+      "kind": "png",
+      "bytes": 524423,
+      "sha256": "ea684b7f619d63f0a7be26757629f7210b134230dd40ef9f09a4cfe700908397",
+      "retrieved_at": "2026-10-29T06:51:58.866387+00:00",
+      "scope": "원본 도면/조감도 시각 확인. 위치도는 2구간 경계와 예정 개통일, 영동1교 전후는 중앙차로·횡단보도·양재천우안도로 표기, 시민의숲은 중앙·가로변 정류소 배치 확인. 실제 촬영일·신호 주기·차로 운영 적용일은 증명하지 않음.",
+      "status": "visually_reviewed"
+    },
+    {
+      "id": "heolleung_bridge_before",
+      "title": "영동1교 공사 전 조감도",
+      "url": "https://mediahub.seoul.go.kr/uploads/mediahub/2025/01/jhIaFVkGMCEwvxlymxtkOzTqKDuwZWvw.png",
+      "source": "https://mediahub.seoul.go.kr/archives/2013139",
+      "method": "GET",
+      "path": "data/deepening/references/heolleung_bridge_before.png",
+      "kind": "png",
+      "bytes": 713203,
+      "sha256": "28a0ed780f17509859fd272abd70202058d8b08d9871f768ef57c579cb4ca70b",
+      "retrieved_at": "2026-10-29T06:51:59.078534+00:00",
+      "scope": "원본 도면/조감도 시각 확인. 위치도는 2구간 경계와 예정 개통일, 영동1교 전후는 중앙차로·횡단보도·양재천우안도로 표기, 시민의숲은 중앙·가로변 정류소 배치 확인. 실제 촬영일·신호 주기·차로 운영 적용일은 증명하지 않음.",
+      "status": "visually_reviewed"
+    },
+    {
+      "id": "heolleung_bridge_after",
+      "title": "영동1교 공사 후 조감도",
+      "url": "https://mediahub.seoul.go.kr/uploads/mediahub/2025/01/lBsjGSEiCytBoGlFPTqRwKuaoMJfuHYa.png",
+      "source": "https://mediahub.seoul.go.kr/archives/2013139",
+      "method": "GET",
+      "path": "data/deepening/references/heolleung_bridge_after.png",
+      "kind": "png",
+      "bytes": 676025,
+      "sha256": "191c53b2bbde717480879552ad9e4b736adc5cf4d7d7ee1f4b72959436077fe9",
+      "retrieved_at": "2026-10-29T06:51:59.260554+00:00",
+      "scope": "원본 도면/조감도 시각 확인. 위치도는 2구간 경계와 예정 개통일, 영동1교 전후는 중앙차로·횡단보도·양재천우안도로 표기, 시민의숲은 중앙·가로변 정류소 배치 확인. 실제 촬영일·신호 주기·차로 운영 적용일은 증명하지 않음.",
+      "status": "visually_reviewed"
+    },
+    {
+      "id": "heolleung_forest_after",
+      "title": "매헌시민의숲 공사 후 조감도",
+      "url": "https://mediahub.seoul.go.kr/uploads/mediahub/2025/01/ivAnwxvYCZCGmZyOmAoOHYaatHQjLaYu.png",
+      "source": "https://mediahub.seoul.go.kr/archives/2013139",
+      "method": "GET",
+      "path": "data/deepening/references/heolleung_forest_after.png",
+      "kind": "png",
+      "bytes": 917413,
+      "sha256": "4f0e641ed75e928f0869e04fa11416ae010ed66d8abe9f66c8be73cae751320d",
+      "retrieved_at": "2026-10-29T06:51:59.513520+00:00",
+      "scope": "원본 도면/조감도 시각 확인. 위치도는 2구간 경계와 예정 개통일, 영동1교 전후는 중앙차로·횡단보도·양재천우안도로 표기, 시민의숲은 중앙·가로변 정류소 배치 확인. 실제 촬영일·신호 주기·차로 운영 적용일은 증명하지 않음.",
+      "status": "visually_reviewed"
+    },
+    {
+      "id": "heolleung_opening_visit_202307",
+      "title": "서울시 시민기자 헌릉로 1구간 개통 현장 기록",
+      "url": "https://mediahub.seoul.go.kr/archives/2008470",
+      "source": "https://mediahub.seoul.go.kr/archives/2008470",
+      "method": "GET",
+      "path": "data/deepening/references/heolleung_opening_visit_202307.html",
+      "kind": "html",
+      "bytes": 139314,
+      "sha256": "9d6a304551bb0fed534a7c5cb87318146232b55546d503f98a40312ebcd720a2",
+      "retrieved_at": "2026-10-29T06:52:00.552099+00:00",
+      "scope": "헌릉로 부분·직접 방문 사진 설명 확인. 서울시 발행 시민기자 현장 기록이며 행정 준공 문서와 구별.",
+      "status": "downloaded"
+    },
+    {
+      "id": "si_pavement_2024_page",
+      "title": "서울연구원 2024-PR-10 발행 정보",
+      "source": "https://www.si.re.kr/bbs/view.do?key=2024100039&pstSn=2502190011",
+      "url": "https://www.si.re.kr/bbs/view.do?key=2024100039&pstSn=2502190011",
+      "method": "GET",
+      "request_headers": {
+        "Referer": "https://www.si.re.kr/bbs/view.do?key=2024100039&pstSn=2502190011"
+      },
+      "kind": "html",
+      "path": "data/deepening/references/si_pavement_2024_page.html",
+      "bytes": 99804,
+      "sha256": "c69b4b7248df48c60b2b9503a56bc318c3ab739e0c51466228ace1dfcb887ed4",
+      "retrieved_at": "2026-10-29T06:52:55.726700+00:00",
+      "scope": "전범준·박대근·박순용·마경훈, 2024-PR-10, 발행 표기 2024-12-31. 도서관 수록일 2025-02-14와 구별. 다운로드는 웹 도구에서 404였으나 공개 링크에 일반 HTTP 요청으로 PDF 정상 응답, 로그인 우회 없음.",
+      "status": "bibliography_and_summary_reviewed"
+    },
+    {
+      "id": "si_pavement_2024_pdf",
+      "title": "고내구성 포장 도입 통한 중앙버스전용차로 유지관리 개선방안",
+      "source": "https://www.si.re.kr/bbs/view.do?key=2024100039&pstSn=2502190011",
+      "url": "https://www.si.re.kr/atch/fileDown.do?cnncSn=2502190011&cnncTy=bbs&ordr=2",
+      "method": "GET",
+      "request_headers": {
+        "Referer": "https://www.si.re.kr/bbs/view.do?key=2024100039&pstSn=2502190011"
+      },
+      "kind": "pdf",
+      "path": "data/deepening/references/si_pavement_2024_pdf.pdf",
+      "bytes": 17757523,
+      "sha256": "d012d159d1dbbc7ad81772baa7de3af5a7ff13fedc7f67d776d828c08838acb5",
+      "retrieved_at": "2026-10-29T06:52:57.831291+00:00",
+      "scope": "126쪽 중 인쇄 26~28쪽(버스 교통량의 운행계획 기반 산정), 86~89쪽(가상 VISSIM 도로망 가정·도로점용 결과·시사점) 본문 확인. PDF 0기준 41/99/101쪽 표·도면 시각 대조. 강남대로 관측 효과나 실제 일별 교통량으로 사용하지 않음.",
+      "status": "selected_sections_reviewed"
     }
   ]
 }

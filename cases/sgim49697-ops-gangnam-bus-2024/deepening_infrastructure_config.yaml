@@ -1,0 +1,40 @@
+# 공식 2025년 정류소 배치 안내를 과거 목록·기존 고정 노선과 연결한다.
+version: 1
+mode: exploratory_after_existing_results
+locked_year: 2026
+years: [2023, 2024, 2025]
+source_manifest: deepening-sources.json
+notice_id: heolleung_brt_opening_202501
+notice_date: '2025-01-06'
+announced_opening_date: '2025-01-11'
+history_manifest: deepening-history-sources.json
+history_routes: results/deepening/history/target_route_history.csv
+history_audit: results/deepening/history/identity_audit.json
+cohort_audit: results/deepening/cohort/audit.json
+reference_config: overnight_matched_directions_config.yaml
+notice_ars:
+  central: ['22043', '22044']
+  curb: ['22294', '22295']
+new_stop_ars: ['22043', '22044', '22045', '22046']
+curb_stop_ars: ['22293', '22294', '22295', '22296', '22297', '22298']
+route_groups:
+  announced_central:
+    label: 2025년 안내의 신설 중앙정류소 정차 7개 노선
+    names: ['440', '452', '470', '741', '9404', '9408', '9409']
+  announced_curb:
+    label: 2025년 안내의 매헌시민의숲 가로변 정류소 정차 4개 공통 노선
+    names: ['140', '400', '421', '441']
+  not_in_selected_notice_rows:
+    label: 위 정류소 안내 행에 없는 나머지 2개 공통 노선
+    names: ['402', '420']
+date_rules: [native_group_coverage, common_partition_dates]
+normalization: 기존 노선·방향·시간별 2024년 사전 평균 유지, 양방향 7~22시 32개 양수 기록의 공동 관측 유지
+comparison_dates: 기존 다섯 비교 기간·공휴일·최소 20일·80퍼센트 관측·최소 3개 노선 기준 유지
+minimum_routes_for_interpretation: 3
+group_contrast: 같은 날짜의 중앙 안내군 변화율에서 가로변 안내군 변화율을 빼는 기술 비교, 인과 이중차분 아님
+interpretation:
+  - 안내에 실린 정차 계획은 해당 기간 실제 경로·배차·정류소 이용의 차량별 확인이 아니다
+  - 표에 없는 노선 또는 가로변 노선을 무처리 대조군으로 간주하지 않는다
+  - 2023년 1구간 개통과 2024년 동시 변화도 있어 연도별 비교에 단일 원인을 부여하지 않는다
+  - 2개 노선 집단은 결과를 숨기지 않되 최소 노선 수 조건 실패로 표시한다
+  - 관측 기준일 사이의 정류소 존재와 실제 개통 날짜를 보간하지 않는다

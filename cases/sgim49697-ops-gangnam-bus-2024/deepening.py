@@ -4,6 +4,9 @@ import argparse
 import importlib
 
 COMMANDS = {
+    "infrastructure-groups": ("deepening_route_groups", "run"),
+    "infrastructure-prepare": ("deepening_infrastructure", "prepare"),
+    "infrastructure-history": ("deepening_infrastructure", "history_audit"),
     "metadata-audit": ("deepening_metadata", "run"),
     "transition-raw-check": ("deepening_transition_check", "raw_check"),
     "transition-result-check": ("deepening_transition_check", "result_check"),
