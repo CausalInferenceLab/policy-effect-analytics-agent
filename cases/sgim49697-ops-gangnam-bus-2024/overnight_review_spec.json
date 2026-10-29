@@ -810,6 +810,520 @@
       "unit": "0~1",
       "require": {},
       "interpretation": "결측 실제값에도 예산 소비; cap2는 핵심 3링크 원점 날짜 합산 2개"
+    },
+    {
+      "id": "confirmation_q_h1_coverage",
+      "description": "추가 기간 1시간 고정 분위수 coverage",
+      "source": "results/overnight/confirmation/quantile_metrics.csv",
+      "where": {
+        "name": "catboost_frozen_quantile",
+        "horizon": "1",
+        "slice": "primary_all_hours"
+      },
+      "field": "coverage",
+      "unit": "0~1",
+      "require": {
+        "comparison_quality_pass": "True"
+      },
+      "interpretation": "이번 실행에서 미열람 2025-09~12를 후보·코드 동결 후 확인; 재학습·보정 없음. 실제 온라인 서비스 검증 아님"
+    },
+    {
+      "id": "confirmation_q_h1_width",
+      "description": "추가 기간 1시간 고정 분위수 width",
+      "source": "results/overnight/confirmation/quantile_metrics.csv",
+      "where": {
+        "name": "catboost_frozen_quantile",
+        "horizon": "1",
+        "slice": "primary_all_hours"
+      },
+      "field": "width",
+      "unit": "km/h",
+      "require": {
+        "comparison_quality_pass": "True"
+      },
+      "interpretation": "이번 실행에서 미열람 2025-09~12를 후보·코드 동결 후 확인; 재학습·보정 없음. 실제 온라인 서비스 검증 아님"
+    },
+    {
+      "id": "confirmation_q_h1_median_mae",
+      "description": "추가 기간 1시간 고정 분위수 median_mae",
+      "source": "results/overnight/confirmation/quantile_metrics.csv",
+      "where": {
+        "name": "catboost_frozen_quantile",
+        "horizon": "1",
+        "slice": "primary_all_hours"
+      },
+      "field": "median_mae",
+      "unit": "km/h",
+      "require": {
+        "comparison_quality_pass": "True"
+      },
+      "interpretation": "이번 실행에서 미열람 2025-09~12를 후보·코드 동결 후 확인; 재학습·보정 없음. 실제 온라인 서비스 검증 아님"
+    },
+    {
+      "id": "confirmation_q_h1_interval_score_alpha_0.2",
+      "description": "추가 기간 1시간 고정 분위수 interval_score_alpha_0.2",
+      "source": "results/overnight/confirmation/quantile_metrics.csv",
+      "where": {
+        "name": "catboost_frozen_quantile",
+        "horizon": "1",
+        "slice": "primary_all_hours"
+      },
+      "field": "interval_score_alpha_0.2",
+      "unit": "구간 점수",
+      "require": {
+        "comparison_quality_pass": "True"
+      },
+      "interpretation": "이번 실행에서 미열람 2025-09~12를 후보·코드 동결 후 확인; 재학습·보정 없음. 실제 온라인 서비스 검증 아님"
+    },
+    {
+      "id": "confirmation_conditional_margin_h1_average_precision",
+      "description": "추가 기간 1시간 차이 점수 average_precision",
+      "source": "results/overnight/confirmation/probability_metrics.csv",
+      "where": {
+        "task": "conditional_margin",
+        "name": "scaled_median_gap",
+        "horizon": "1",
+        "slice": "primary_all_hours",
+        "rule": "budget_rule"
+      },
+      "field": "average_precision",
+      "unit": "0~1",
+      "require": {
+        "comparison_quality_pass": "True"
+      },
+      "interpretation": "이번 실행에서 미열람 2025-09~12를 후보·코드 동결 후 확인; 재학습·보정 없음. 실제 온라인 서비스 검증 아님"
+    },
+    {
+      "id": "confirmation_conditional_margin_h1_precision",
+      "description": "추가 기간 1시간 차이 점수 precision",
+      "source": "results/overnight/confirmation/probability_metrics.csv",
+      "where": {
+        "task": "conditional_margin",
+        "name": "scaled_median_gap",
+        "horizon": "1",
+        "slice": "primary_all_hours",
+        "rule": "budget_rule"
+      },
+      "field": "precision",
+      "unit": "0~1",
+      "require": {
+        "comparison_quality_pass": "True"
+      },
+      "interpretation": "이번 실행에서 미열람 2025-09~12를 후보·코드 동결 후 확인; 재학습·보정 없음. 실제 온라인 서비스 검증 아님"
+    },
+    {
+      "id": "confirmation_conditional_margin_h1_recall",
+      "description": "추가 기간 1시간 차이 점수 recall",
+      "source": "results/overnight/confirmation/probability_metrics.csv",
+      "where": {
+        "task": "conditional_margin",
+        "name": "scaled_median_gap",
+        "horizon": "1",
+        "slice": "primary_all_hours",
+        "rule": "budget_rule"
+      },
+      "field": "recall",
+      "unit": "0~1",
+      "require": {
+        "comparison_quality_pass": "True"
+      },
+      "interpretation": "이번 실행에서 미열람 2025-09~12를 후보·코드 동결 후 확인; 재학습·보정 없음. 실제 온라인 서비스 검증 아님"
+    },
+    {
+      "id": "confirmation_conditional_margin_h1_alerts_per_day",
+      "description": "추가 기간 1시간 차이 점수 alerts_per_day",
+      "source": "results/overnight/confirmation/probability_metrics.csv",
+      "where": {
+        "task": "conditional_margin",
+        "name": "scaled_median_gap",
+        "horizon": "1",
+        "slice": "primary_all_hours",
+        "rule": "budget_rule"
+      },
+      "field": "alerts_per_day",
+      "unit": "개/일",
+      "require": {
+        "comparison_quality_pass": "True"
+      },
+      "interpretation": "이번 실행에서 미열람 2025-09~12를 후보·코드 동결 후 확인; 재학습·보정 없음. 실제 온라인 서비스 검증 아님"
+    },
+    {
+      "id": "confirmation_conditional_probability_h1_average_precision",
+      "description": "추가 기간 1시간 이진 분류 average_precision",
+      "source": "results/overnight/confirmation/probability_metrics.csv",
+      "where": {
+        "task": "conditional_probability",
+        "name": "recent_road_assumption",
+        "horizon": "1",
+        "slice": "primary_all_hours",
+        "rule": "budget_rule"
+      },
+      "field": "average_precision",
+      "unit": "0~1",
+      "require": {
+        "comparison_quality_pass": "True"
+      },
+      "interpretation": "이번 실행에서 미열람 2025-09~12를 후보·코드 동결 후 확인; 재학습·보정 없음. 실제 온라인 서비스 검증 아님"
+    },
+    {
+      "id": "confirmation_relative_probability_h1_average_precision",
+      "description": "추가 기간 1시간 전체 저속 최근 도로 average_precision",
+      "source": "results/overnight/confirmation/probability_metrics.csv",
+      "where": {
+        "task": "relative_probability",
+        "name": "recent_road_assumption",
+        "horizon": "1",
+        "slice": "primary_all_hours",
+        "rule": "budget_rule"
+      },
+      "field": "average_precision",
+      "unit": "0~1",
+      "require": {
+        "comparison_quality_pass": "True"
+      },
+      "interpretation": "이번 실행에서 미열람 2025-09~12를 후보·코드 동결 후 확인; 재학습·보정 없음. 실제 온라인 서비스 검증 아님"
+    },
+    {
+      "id": "confirmation_pair_q_h1",
+      "description": "추가 기간 1시간 구간 점수 CatBoost−주간",
+      "source": "results/overnight/confirmation/quantile_paired.csv",
+      "where": {
+        "horizon": "1",
+        "slice": "primary_all_hours",
+        "right": "weekly_empirical",
+        "metric": "interval_score_alpha_0.2"
+      },
+      "field": "difference",
+      "unit": "구간 점수 차이",
+      "require": {
+        "comparison_quality_pass": "True"
+      },
+      "interpretation": "이번 실행에서 미열람 2025-09~12를 후보·코드 동결 후 확인; 재학습·보정 없음. 실제 온라인 서비스 검증 아님"
+    },
+    {
+      "id": "confirmation_pair_p_h1",
+      "description": "추가 기간 1시간 조건부 AP 차이 점수−이진 분류",
+      "source": "results/overnight/confirmation/probability_paired.csv",
+      "where": {
+        "horizon": "1",
+        "slice": "primary_all_hours",
+        "left_task": "conditional_margin",
+        "left": "scaled_median_gap",
+        "right_task": "conditional_probability",
+        "right": "recent_road_assumption",
+        "rule": "original_rule",
+        "metric": "average_precision"
+      },
+      "field": "difference",
+      "unit": "AP 차이",
+      "require": {
+        "comparison_quality_pass": "True"
+      },
+      "interpretation": "이번 실행에서 미열람 2025-09~12를 후보·코드 동결 후 확인; 재학습·보정 없음. 실제 온라인 서비스 검증 아님"
+    },
+    {
+      "id": "confirmation_q_h3_coverage",
+      "description": "추가 기간 3시간 고정 분위수 coverage",
+      "source": "results/overnight/confirmation/quantile_metrics.csv",
+      "where": {
+        "name": "catboost_frozen_quantile",
+        "horizon": "3",
+        "slice": "primary_all_hours"
+      },
+      "field": "coverage",
+      "unit": "0~1",
+      "require": {
+        "comparison_quality_pass": "True"
+      },
+      "interpretation": "이번 실행에서 미열람 2025-09~12를 후보·코드 동결 후 확인; 재학습·보정 없음. 실제 온라인 서비스 검증 아님"
+    },
+    {
+      "id": "confirmation_q_h3_width",
+      "description": "추가 기간 3시간 고정 분위수 width",
+      "source": "results/overnight/confirmation/quantile_metrics.csv",
+      "where": {
+        "name": "catboost_frozen_quantile",
+        "horizon": "3",
+        "slice": "primary_all_hours"
+      },
+      "field": "width",
+      "unit": "km/h",
+      "require": {
+        "comparison_quality_pass": "True"
+      },
+      "interpretation": "이번 실행에서 미열람 2025-09~12를 후보·코드 동결 후 확인; 재학습·보정 없음. 실제 온라인 서비스 검증 아님"
+    },
+    {
+      "id": "confirmation_q_h3_median_mae",
+      "description": "추가 기간 3시간 고정 분위수 median_mae",
+      "source": "results/overnight/confirmation/quantile_metrics.csv",
+      "where": {
+        "name": "catboost_frozen_quantile",
+        "horizon": "3",
+        "slice": "primary_all_hours"
+      },
+      "field": "median_mae",
+      "unit": "km/h",
+      "require": {
+        "comparison_quality_pass": "True"
+      },
+      "interpretation": "이번 실행에서 미열람 2025-09~12를 후보·코드 동결 후 확인; 재학습·보정 없음. 실제 온라인 서비스 검증 아님"
+    },
+    {
+      "id": "confirmation_q_h3_interval_score_alpha_0.2",
+      "description": "추가 기간 3시간 고정 분위수 interval_score_alpha_0.2",
+      "source": "results/overnight/confirmation/quantile_metrics.csv",
+      "where": {
+        "name": "catboost_frozen_quantile",
+        "horizon": "3",
+        "slice": "primary_all_hours"
+      },
+      "field": "interval_score_alpha_0.2",
+      "unit": "구간 점수",
+      "require": {
+        "comparison_quality_pass": "True"
+      },
+      "interpretation": "이번 실행에서 미열람 2025-09~12를 후보·코드 동결 후 확인; 재학습·보정 없음. 실제 온라인 서비스 검증 아님"
+    },
+    {
+      "id": "confirmation_conditional_margin_h3_average_precision",
+      "description": "추가 기간 3시간 차이 점수 average_precision",
+      "source": "results/overnight/confirmation/probability_metrics.csv",
+      "where": {
+        "task": "conditional_margin",
+        "name": "scaled_median_gap",
+        "horizon": "3",
+        "slice": "primary_all_hours",
+        "rule": "budget_rule"
+      },
+      "field": "average_precision",
+      "unit": "0~1",
+      "require": {
+        "comparison_quality_pass": "True"
+      },
+      "interpretation": "이번 실행에서 미열람 2025-09~12를 후보·코드 동결 후 확인; 재학습·보정 없음. 실제 온라인 서비스 검증 아님"
+    },
+    {
+      "id": "confirmation_conditional_margin_h3_precision",
+      "description": "추가 기간 3시간 차이 점수 precision",
+      "source": "results/overnight/confirmation/probability_metrics.csv",
+      "where": {
+        "task": "conditional_margin",
+        "name": "scaled_median_gap",
+        "horizon": "3",
+        "slice": "primary_all_hours",
+        "rule": "budget_rule"
+      },
+      "field": "precision",
+      "unit": "0~1",
+      "require": {
+        "comparison_quality_pass": "True"
+      },
+      "interpretation": "이번 실행에서 미열람 2025-09~12를 후보·코드 동결 후 확인; 재학습·보정 없음. 실제 온라인 서비스 검증 아님"
+    },
+    {
+      "id": "confirmation_conditional_margin_h3_recall",
+      "description": "추가 기간 3시간 차이 점수 recall",
+      "source": "results/overnight/confirmation/probability_metrics.csv",
+      "where": {
+        "task": "conditional_margin",
+        "name": "scaled_median_gap",
+        "horizon": "3",
+        "slice": "primary_all_hours",
+        "rule": "budget_rule"
+      },
+      "field": "recall",
+      "unit": "0~1",
+      "require": {
+        "comparison_quality_pass": "True"
+      },
+      "interpretation": "이번 실행에서 미열람 2025-09~12를 후보·코드 동결 후 확인; 재학습·보정 없음. 실제 온라인 서비스 검증 아님"
+    },
+    {
+      "id": "confirmation_conditional_margin_h3_alerts_per_day",
+      "description": "추가 기간 3시간 차이 점수 alerts_per_day",
+      "source": "results/overnight/confirmation/probability_metrics.csv",
+      "where": {
+        "task": "conditional_margin",
+        "name": "scaled_median_gap",
+        "horizon": "3",
+        "slice": "primary_all_hours",
+        "rule": "budget_rule"
+      },
+      "field": "alerts_per_day",
+      "unit": "개/일",
+      "require": {
+        "comparison_quality_pass": "True"
+      },
+      "interpretation": "이번 실행에서 미열람 2025-09~12를 후보·코드 동결 후 확인; 재학습·보정 없음. 실제 온라인 서비스 검증 아님"
+    },
+    {
+      "id": "confirmation_conditional_probability_h3_average_precision",
+      "description": "추가 기간 3시간 이진 분류 average_precision",
+      "source": "results/overnight/confirmation/probability_metrics.csv",
+      "where": {
+        "task": "conditional_probability",
+        "name": "recent_road_assumption",
+        "horizon": "3",
+        "slice": "primary_all_hours",
+        "rule": "budget_rule"
+      },
+      "field": "average_precision",
+      "unit": "0~1",
+      "require": {
+        "comparison_quality_pass": "True"
+      },
+      "interpretation": "이번 실행에서 미열람 2025-09~12를 후보·코드 동결 후 확인; 재학습·보정 없음. 실제 온라인 서비스 검증 아님"
+    },
+    {
+      "id": "confirmation_relative_probability_h3_average_precision",
+      "description": "추가 기간 3시간 전체 저속 최근 도로 average_precision",
+      "source": "results/overnight/confirmation/probability_metrics.csv",
+      "where": {
+        "task": "relative_probability",
+        "name": "recent_road_assumption",
+        "horizon": "3",
+        "slice": "primary_all_hours",
+        "rule": "budget_rule"
+      },
+      "field": "average_precision",
+      "unit": "0~1",
+      "require": {
+        "comparison_quality_pass": "True"
+      },
+      "interpretation": "이번 실행에서 미열람 2025-09~12를 후보·코드 동결 후 확인; 재학습·보정 없음. 실제 온라인 서비스 검증 아님"
+    },
+    {
+      "id": "confirmation_pair_q_h3",
+      "description": "추가 기간 3시간 구간 점수 CatBoost−주간",
+      "source": "results/overnight/confirmation/quantile_paired.csv",
+      "where": {
+        "horizon": "3",
+        "slice": "primary_all_hours",
+        "right": "weekly_empirical",
+        "metric": "interval_score_alpha_0.2"
+      },
+      "field": "difference",
+      "unit": "구간 점수 차이",
+      "require": {
+        "comparison_quality_pass": "True"
+      },
+      "interpretation": "이번 실행에서 미열람 2025-09~12를 후보·코드 동결 후 확인; 재학습·보정 없음. 실제 온라인 서비스 검증 아님"
+    },
+    {
+      "id": "confirmation_pair_p_h3",
+      "description": "추가 기간 3시간 조건부 AP 차이 점수−이진 분류",
+      "source": "results/overnight/confirmation/probability_paired.csv",
+      "where": {
+        "horizon": "3",
+        "slice": "primary_all_hours",
+        "left_task": "conditional_margin",
+        "left": "scaled_median_gap",
+        "right_task": "conditional_probability",
+        "right": "recent_road_assumption",
+        "rule": "original_rule",
+        "metric": "average_precision"
+      },
+      "field": "difference",
+      "unit": "AP 차이",
+      "require": {
+        "comparison_quality_pass": "True"
+      },
+      "interpretation": "이번 실행에서 미열람 2025-09~12를 후보·코드 동결 후 확인; 재학습·보정 없음. 실제 온라인 서비스 검증 아님"
+    },
+    {
+      "id": "matched_south_summer2024",
+      "description": "양방향 공통 14개 노선 남행, 2024 사전 대비 2024 여름",
+      "source": "results/overnight/matched_directions/comparisons.csv",
+      "where": {
+        "segment": "south",
+        "comparison": "summer2024"
+      },
+      "field": "change_pct",
+      "unit": "%",
+      "require": {
+        "quality_pass": "True",
+        "selected_routes": "14"
+      },
+      "interpretation": "같은 노선·날짜의 공동 관측 민감도; 같은 차량·역방향 물리 구간·인과 비교가 아님"
+    },
+    {
+      "id": "matched_north_summer2024",
+      "description": "양방향 공통 14개 노선 북행, 2024 사전 대비 2024 여름",
+      "source": "results/overnight/matched_directions/comparisons.csv",
+      "where": {
+        "segment": "north",
+        "comparison": "summer2024"
+      },
+      "field": "change_pct",
+      "unit": "%",
+      "require": {
+        "quality_pass": "True",
+        "selected_routes": "14"
+      },
+      "interpretation": "같은 노선·날짜의 공동 관측 민감도; 같은 차량·역방향 물리 구간·인과 비교가 아님"
+    },
+    {
+      "id": "matched_gap_summer2024",
+      "description": "양방향 공통 14개 노선의 북행 변화율−남행 변화율, 2024 여름",
+      "source": "results/overnight/matched_directions/paired_gaps.csv",
+      "where": {
+        "comparison": "summer2024"
+      },
+      "field": "gap_percentage_points",
+      "unit": "%p",
+      "require": {
+        "quality_pass": "True",
+        "selected_routes": "14"
+      },
+      "interpretation": "각자 기준화한 지수 변화율의 기술적 차이; 인과 이중차분 효과가 아님"
+    },
+    {
+      "id": "matched_south_post2025_from_pre2024",
+      "description": "양방향 공통 14개 노선 남행, 2024 사전 대비 2025 여름",
+      "source": "results/overnight/matched_directions/comparisons.csv",
+      "where": {
+        "segment": "south",
+        "comparison": "post2025_from_pre2024"
+      },
+      "field": "change_pct",
+      "unit": "%",
+      "require": {
+        "quality_pass": "True",
+        "selected_routes": "14"
+      },
+      "interpretation": "같은 노선·날짜의 공동 관측 민감도; 같은 차량·역방향 물리 구간·인과 비교가 아님"
+    },
+    {
+      "id": "matched_north_post2025_from_pre2024",
+      "description": "양방향 공통 14개 노선 북행, 2024 사전 대비 2025 여름",
+      "source": "results/overnight/matched_directions/comparisons.csv",
+      "where": {
+        "segment": "north",
+        "comparison": "post2025_from_pre2024"
+      },
+      "field": "change_pct",
+      "unit": "%",
+      "require": {
+        "quality_pass": "True",
+        "selected_routes": "14"
+      },
+      "interpretation": "같은 노선·날짜의 공동 관측 민감도; 같은 차량·역방향 물리 구간·인과 비교가 아님"
+    },
+    {
+      "id": "matched_gap_post2025_from_pre2024",
+      "description": "양방향 공통 14개 노선의 북행 변화율−남행 변화율, 2025 여름",
+      "source": "results/overnight/matched_directions/paired_gaps.csv",
+      "where": {
+        "comparison": "post2025_from_pre2024"
+      },
+      "field": "gap_percentage_points",
+      "unit": "%p",
+      "require": {
+        "quality_pass": "True",
+        "selected_routes": "14"
+      },
+      "interpretation": "각자 기준화한 지수 변화율의 기술적 차이; 인과 이중차분 효과가 아님"
     }
   ],
   "verify_public_frozen_manifests": true,

@@ -1,0 +1,254 @@
+{
+  "completed_at": "2026-10-29T00:51:02.874507+00:00",
+  "configuration": {
+    "version": 1,
+    "mode": "untouched_period_confirmation_after_summer_exploration",
+    "locked_year": 2026,
+    "period": [
+      "2025-09-01",
+      "2025-12-31"
+    ],
+    "months": [
+      "2025-09",
+      "2025-10",
+      "2025-11",
+      "2025-12"
+    ],
+    "warmup_month": "2025-08",
+    "roads": [
+      "강남대로"
+    ],
+    "primary_links": [
+      "1220025000",
+      "1220021000",
+      "1220016200"
+    ],
+    "horizons": [
+      1,
+      3
+    ],
+    "relative_probability": [
+      "calendar_only",
+      "weekly_delayed",
+      "recent_road_assumption"
+    ],
+    "conditional_probability": [
+      "recent_road_assumption"
+    ],
+    "conditional_margin": [
+      "median_gap",
+      "scaled_median_gap"
+    ],
+    "quantiles": [
+      {
+        "name": "catboost_frozen_quantile",
+        "variant": "raw"
+      },
+      {
+        "name": "weekly_empirical",
+        "variant": "calibration_expanded"
+      },
+      {
+        "name": "calendar_empirical",
+        "variant": "calibration_expanded"
+      }
+    ],
+    "primary_questions": [
+      "고정 CatBoost 분위수의 구간 점수·중앙값 오차가 고정 달력·주간 기준보다 낮은가",
+      "폭 정규화 차이 점수의 조건부 저속 AP가 기존 최근 도로 이진 분류보다 높은가",
+      "전체 하위 20퍼센트에서 최근 도로 정보의 추가 가치가 달력·주간 기준에 비해 남는가"
+    ],
+    "rules": [
+      "original_rule",
+      "budget_rule"
+    ],
+    "paired_slices": [
+      "primary_all_hours",
+      "primary_evening_17_19"
+    ],
+    "all_slices": "all_hours_evening_each_link_each_month",
+    "bootstrap": {
+      "draws": 1000,
+      "seed": 17
+    },
+    "minimum_link_month_observed_fraction": 0.95,
+    "metadata": "exact_original_training_signature_or_mask_entire_link_month; no_reselection",
+    "resources": {
+      "download_workers": 2,
+      "parse_workers": 2,
+      "cpu_threads": 2,
+      "minimum_free_gib": 25
+    },
+    "model_updates": "prohibited; retain_original_training_calibration_and_april_thresholds",
+    "bus_features": "omitted_from_this_confirmation; no_retraining_or_claim_of_validating_bus_increment",
+    "interpretation": [
+      "새 기간은 최초 열람 전에 후보·코드·입력 해시를 커밋한 뒤 수집한다",
+      "원래 시험·프로토콜·결과를 수정하지 않는 별도 검증이며 2026년 잠금은 유지",
+      "실제 운영 실험이 아니며 최근 도로 자료의 가용 지연 가정은 계속 남음",
+      "자료 부족·메타데이터 변경·기준 실패를 숨기지 않고 모든 지정 결과를 보고"
+    ]
+  },
+  "inputs": {
+    "results/overnight/confirmation/selection_manifest.json": "d242ac858c55380cfb2ddfbd0c2244010d375b48627ecc21d79d4ec04cb838f8",
+    "results/overnight/confirmation/feature_audit.json": "7d9a0a98de00e2714b91a7df1a9ae0897ffc893630f5ff2d92d378563ab23ec2",
+    "data/overnight/confirmation/features_h1.parquet": "3cbc87c826a3b62e6ddc7bffb36d8c1c0b27b02fa36732c04692dbb3d3ca7459",
+    "data/overnight/confirmation/features_h3.parquet": "c2ef75684387f0d53b077b1dab928c4b444b1b5e5134984a6b4d25aaeff5baf0"
+  },
+  "selection_manifest_sha256": "d242ac858c55380cfb2ddfbd0c2244010d375b48627ecc21d79d4ec04cb838f8",
+  "comparison_quality_pass": true,
+  "predictions": [
+    {
+      "horizon": 1,
+      "task": "quantile",
+      "name": "catboost_frozen_quantile",
+      "path": "data/overnight/confirmation/predictions/h1_quantile_catboost_frozen_quantile.parquet",
+      "sha256": "04b07715a41f27ecd65be76eb0e88a8a66cf9d31c9613ddf43423832f0e4a289",
+      "rows": 8784
+    },
+    {
+      "horizon": 1,
+      "task": "quantile",
+      "name": "weekly_empirical",
+      "path": "data/overnight/confirmation/predictions/h1_quantile_weekly_empirical.parquet",
+      "sha256": "9d7e62132dc7f5c290b12b3f041417801004ad012e1b42e26d294ab167170a66",
+      "rows": 8784
+    },
+    {
+      "horizon": 1,
+      "task": "quantile",
+      "name": "calendar_empirical",
+      "path": "data/overnight/confirmation/predictions/h1_quantile_calendar_empirical.parquet",
+      "sha256": "39f3cae3ebf359d563cf7eb75924d6a17728c5625900166b9f5f821a5e026f22",
+      "rows": 8784
+    },
+    {
+      "horizon": 1,
+      "task": "relative_probability",
+      "name": "calendar_only",
+      "path": "data/overnight/confirmation/predictions/h1_relative_probability_calendar_only.parquet",
+      "sha256": "180440d9c9d0ad14f62567ae0f68a041a823fcfe1dfa2a296d3e666d2cd3f9fe",
+      "rows": 8784
+    },
+    {
+      "horizon": 1,
+      "task": "relative_probability",
+      "name": "weekly_delayed",
+      "path": "data/overnight/confirmation/predictions/h1_relative_probability_weekly_delayed.parquet",
+      "sha256": "dc1d27187bca842f6fbbce18b71755c2a9ff710cb8383dac8d8c7e3616a0f370",
+      "rows": 8784
+    },
+    {
+      "horizon": 1,
+      "task": "relative_probability",
+      "name": "recent_road_assumption",
+      "path": "data/overnight/confirmation/predictions/h1_relative_probability_recent_road_assumption.parquet",
+      "sha256": "16156b5156075a841782e8a9deb25656f8a7af16f81c79264bc78bc0a7f88dd3",
+      "rows": 8784
+    },
+    {
+      "horizon": 1,
+      "task": "conditional_probability",
+      "name": "recent_road_assumption",
+      "path": "data/overnight/confirmation/predictions/h1_conditional_probability_recent_road_assumption.parquet",
+      "sha256": "946df73e1b45625742bfb706bc0681a71da94b7b13e9cd3879f7d3c43a613e64",
+      "rows": 8784
+    },
+    {
+      "horizon": 1,
+      "task": "conditional_margin",
+      "name": "median_gap",
+      "path": "data/overnight/confirmation/predictions/h1_conditional_margin_median_gap.parquet",
+      "sha256": "4910662643245f1abdaaf315d1f2ca84ed039af789a54d8d936caf3d49768454",
+      "rows": 8784
+    },
+    {
+      "horizon": 1,
+      "task": "conditional_margin",
+      "name": "scaled_median_gap",
+      "path": "data/overnight/confirmation/predictions/h1_conditional_margin_scaled_median_gap.parquet",
+      "sha256": "d2209e7a4a12c8a04ecd1d2c35955bda7796efc35a4700e7437b4addd2a0e34c",
+      "rows": 8784
+    },
+    {
+      "horizon": 3,
+      "task": "quantile",
+      "name": "catboost_frozen_quantile",
+      "path": "data/overnight/confirmation/predictions/h3_quantile_catboost_frozen_quantile.parquet",
+      "sha256": "b0efe89ca1f1ffac017205b497fe0071e0ec5fa8d496be6994e1194808c4d377",
+      "rows": 8784
+    },
+    {
+      "horizon": 3,
+      "task": "quantile",
+      "name": "weekly_empirical",
+      "path": "data/overnight/confirmation/predictions/h3_quantile_weekly_empirical.parquet",
+      "sha256": "c4455a79d200cb7535139c6ae53eda07f85011bebd80b01a893d3393ec1be7ed",
+      "rows": 8784
+    },
+    {
+      "horizon": 3,
+      "task": "quantile",
+      "name": "calendar_empirical",
+      "path": "data/overnight/confirmation/predictions/h3_quantile_calendar_empirical.parquet",
+      "sha256": "12e524616bb0bbd23a7685dc00e41d90da55e7aba8733e087f6585afc56cb5b0",
+      "rows": 8784
+    },
+    {
+      "horizon": 3,
+      "task": "relative_probability",
+      "name": "calendar_only",
+      "path": "data/overnight/confirmation/predictions/h3_relative_probability_calendar_only.parquet",
+      "sha256": "cf534b81a1ad7f65b6367e46c1247c34c55a896bd9d85bd072344d48a639072e",
+      "rows": 8784
+    },
+    {
+      "horizon": 3,
+      "task": "relative_probability",
+      "name": "weekly_delayed",
+      "path": "data/overnight/confirmation/predictions/h3_relative_probability_weekly_delayed.parquet",
+      "sha256": "9540226a31c330fa7fe20dfe66c45e8d268d9d958856b046f4a63f7984b8b317",
+      "rows": 8784
+    },
+    {
+      "horizon": 3,
+      "task": "relative_probability",
+      "name": "recent_road_assumption",
+      "path": "data/overnight/confirmation/predictions/h3_relative_probability_recent_road_assumption.parquet",
+      "sha256": "1b1585da7f78082a708d2503b2ba41120447e2c61b61f95d9eb8743d3f7a9bfa",
+      "rows": 8784
+    },
+    {
+      "horizon": 3,
+      "task": "conditional_probability",
+      "name": "recent_road_assumption",
+      "path": "data/overnight/confirmation/predictions/h3_conditional_probability_recent_road_assumption.parquet",
+      "sha256": "1d1c9f7a637aee27e502ee79408492948698949a107c068a095f4967ae1387d4",
+      "rows": 8784
+    },
+    {
+      "horizon": 3,
+      "task": "conditional_margin",
+      "name": "median_gap",
+      "path": "data/overnight/confirmation/predictions/h3_conditional_margin_median_gap.parquet",
+      "sha256": "1c7f82688a83cbaf9d09859d0575ede3b6379157ce8bd9d6c59e0f57b7036619",
+      "rows": 8784
+    },
+    {
+      "horizon": 3,
+      "task": "conditional_margin",
+      "name": "scaled_median_gap",
+      "path": "data/overnight/confirmation/predictions/h3_conditional_margin_scaled_median_gap.parquet",
+      "sha256": "5b3fa52c9a18cbdec48a298feefcb9e9d2d816d0b7d8cf71e7bf8fee9d40e19d",
+      "rows": 8784
+    }
+  ],
+  "outputs": {
+    "probability_metrics.csv": "ba311a7f9f35295e2000379d5f9804e166319213e8d14287b3a597117385469a",
+    "quantile_metrics.csv": "1c6eaf31319c637faf6c2129394a1823b1073e98472bd50b74dccc3ea2c5e9ab",
+    "probability_paired.csv": "979ad68179250e779b0439aa872a9cf47aed9aa5cc46dcecb16dd46e7095f1dc",
+    "quantile_paired.csv": "51da23f67691beda402eca768a7b4dc435f9b1dbaf7a6b1badf8a2d6a497cb51",
+    "target_counts.csv": "eb4f9c7f9ef9c4170f50405e35b6e462f1e4366136ad28f2af85bf084c4dcd38",
+    "prediction_diagnostics.csv": "6f6c1837df9a2e1423f56e9847b4c510a94ac460460a1e2f77d365ee581e1253"
+  },
+  "interpretation": "가을·겨울 미열람 기간의 고정 후보 추가 검증. 이전 시험 점수와 합치거나 기존 기준을 바꾸지 않음."
+}

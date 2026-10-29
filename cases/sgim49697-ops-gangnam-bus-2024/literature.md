@@ -37,3 +37,30 @@
 | 3 | 당시 승강장 위치·횡단 경로·보행 네트워크, 승객 OD·구간 재차 인원 | 버스 개선 뒤에 보행·환승 부담이 늘었는가 |
 
 자료 정의를 해결한 뒤 원시 BMS로 대기행렬과 배차 불규칙을 측정하는 것이 이 주제의 다음 단계다. 별도 예측 모델은 이미 결과를 본 2024년 구간에서 성능을 최적화하지 않고, [후속 계획](followup-plan.md)의 새 검증·시험 기간을 사용한다. 기관·저자에게 연락하거나 데이터를 신청하지는 않았다.
+
+## 5. 2026-10-29 확장 탐색 뒤의 읽기 순서
+
+현재 추천 주제와 결과는 [종합 보고서](overnight-summary.md)에 있다. 발표 준비에서는 위의 **박수진·양재환 → 하희동·김도경·최영우 → 아래의 Gneiting·Raftery** 순서가 유용하다. 먼저 정류장·시간대 차이를 설명하고, 시간 감소가 승객 편익과 같은지 따진 뒤, 예측을 부록으로 넣을 경우 점수의 의미를 설명할 수 있다. 여러 모델 이름을 늘리기보다 이 세 질문에 필요한 근거부터 읽는다.
+
+| 질문 | 우선 읽을 자료와 확인 범위 | 이번 결과에 연결되는 부분 | 적용하지 않은 부분 |
+|---|---|---|---|
+| 평균이 어떤 정류장·시간대 차이를 가리는가 | 박수진·양재환(2025), 위 1절의 본문 765–768쪽 | [같은 노선을 고정한 07~22시 비교](overnight-hour-report.md), [14개 구간 비교](overnight-segment-report.md) | Soft-DTW 군집 모델을 학습하거나 논문의 15분 BMS 자료를 재현하지 않음 |
+| 빠른 버스가 곧 승객 전체의 이득인가 | 하희동·김도경·최영우(2025), 위 2절의 자료·방법과 운영 대안 | [운행·승차 공동 표본](overnight-operations-report.md), [연속 구간 합산](overnight-path-report.md) | 승객 대기·추가 보행·재차 시간을 계산하지 않음 |
+| 구간을 넓히면 좋아 보이는 예측을 어떻게 평가하는가 | Gneiting·Raftery(2007), [Strictly Proper Scoring Rules, Prediction, and Estimation](https://sites.stat.washington.edu/raftery/Research/PDF/Gneiting2007jasa.pdf), 6.2절 식 (43) | 포함률과 함께 구간 폭·누락 벌점을 평가한 [가을·겨울 추가 검증](overnight-confirmation-report.md) | 높은 포함률만으로 좋은 모델이라고 판단하지 않음 |
+| 평소보다 느린 시각을 실제 사고라고 불러도 되는가 | FHWA(2016), [Chapter 3 정의·표 3](https://www.fhwa.dot.gov/publications/research/operations/16064/004.cfm); Anbaroğlu·Cheng·Heydecker(2015), [논문 2.1~2.3절과 한계](https://discovery.ucl.ac.uk/id/eprint/1473173/) | [요일·시각을 고려한 저속 기준](overnight-conditional-report.md)과 [예측 중앙값 기반 점수](overnight-conditional-report.md) | 사고·공사 정답이 없으므로 비반복 사건 탐지 성공으로 명명하지 않음 |
+
+아래 자료는 더 깊게 확장할 때 읽을 후보이다. **읽은 범위와 구현한 범위가 다르다.** 초록만 확인한 논문은 방법 검증의 근거로 사용하지 않았다.
+
+| 후속 질문 | 원문·실제 확인 범위 | 이번에 가져온 원칙 또는 보류 조건 |
+|---|---|---|
+| 정차·승하차·재진입 지체를 나눌 수 있는가 | Alhadidi·Rakha, [Estimating Transit Vehicle Dwell Times at Bus Stops](https://arxiv.org/abs/2104.09266), 사전원고 자료·방법 절 | 차량 시각·속도·GPS 등 더 세밀한 입력이 필요하다. 시간당 평균으로 성분을 복원하지 않았다. |
+| 운행횟수만으로 버스 몰림을 알 수 있는가 | Daganzo·Pilachowski, [Reducing bunching with bus-to-bus cooperation](https://escholarship.org/uc/item/0551g0zw), 2009년 작업 원고 서론·2절 | 앞뒤 차량 간격과 승객 수요의 피드백을 구분한다. 현재 집계는 배차간격 분산·군집 운행의 관측치가 아니다. |
+| 가로변 정류장 용량 공식을 가져와도 되는가 | Gu 등(2010), [On the capacity of isolated, curbside bus stops](https://escholarship.org/uc/item/8zc6p9kb), 대학 저장소 서지·초록만 확인 | 교통신호와 분리된 정류장 가정을 확인해야 한다. 본문을 확보하지 못했으며 강남대로 용량 계산에 사용하지 않았다. |
+| 예측구간을 보정할 때 무엇을 분리해야 하는가 | Romano·Patterson·Candès(2019), [Conformalized Quantile Regression](https://proceedings.neurips.cc/paper_files/paper/2019/file/5103c3584b063c431bd1268e9b5e76fb-Paper.pdf), PDF 4~5쪽 | 학습과 보정, 잔차 점수와 순위를 구분했다. [실행한 보정](overnight-interval-report.md)은 축소 금지·이동 창을 포함하므로 원 알고리즘의 보장을 그대로 주장하지 않는다. |
+| 시계열 피드백을 언제 이용할 수 있는가 | Zaffran 등(2022), [Adaptive Conformal Predictions for Time Series](https://proceedings.mlr.press/v162/zaffran22a.html), 초록·서론; Xu·Xie(2021), [EnbPI](https://proceedings.mlr.press/v139/xu21h.html), PDF 3~4쪽 식 (2)·알고리즘 1 | 예측 시점에 확정된 오차만 이용했다. ACI·AgACI나 EnbPI의 부트스트랩 앙상블은 구현하지 않았다. |
+| 잔차의 시간적 구조도 예측할 수 있는가 | Xu·Xie(2023), [Sequential Predictive Conformal Inference for Time Series](https://proceedings.mlr.press/v202/xu23r.html), 공식 학회 초록·서지만 확인 | 후속 후보로 남긴다. 이번 고정 모델의 가을·겨울 결과를 본 뒤 추가 학습하지 않았다. |
+| 많은 구간을 비교할 때 과신을 줄이려면 | Romano·Wolf(2005), [Stepwise Multiple Testing as Formalized Data Snooping](https://www.econ.uzh.ch/dam/jcr%3Affffffff-935a-b0d6-ffff-ffffa286d4d1/etca.pdf), 초록·서론·표준화 설명 일부 | [동시 변동폭 민감도](overnight-segment-report.md)를 추가했다. 정식 단계적 검정 구현이나 유한 표본 오류율 보장을 주장하지 않는다. |
+
+확인 범위와 출처는 [버스 병목 문헌](overnight-bottleneck-references.json), [구간 점수·보정](overnight-supplement-references.json), [시계열 구간](overnight-interval-references.json), [저속 기준](overnight-conditional-references.json), [후속 자료](overnight-followup-references.json)에 남겼다. 논문 원문을 저장소에 재배포하지 않고 서지·자체 요약·확인 범위를 공개한다.
+
+자료 우선순위도 갱신했다. 지역 기상·2025년 버스·주변 도로·지하철 집계는 이미 수집·분석했지만, **시간 필드 정의, 당시 정류장과 신호·횡단보도 이력, 차량별 도착·출발**은 여전히 핵심 공백이다. 2023년 11월 강남역 중앙정류소 확장·횡단보도 설치의 공식 자료를 찾았으므로 2023년을 동일한 시설 조건으로 가정하지 않는다. 구체적으로 확인할 항목과 확보 뒤의 분석은 [외부 확인 요청](verification-request.md)과 [종합 보고서의 다음 수집 순서](overnight-summary.md)에 정리했다.

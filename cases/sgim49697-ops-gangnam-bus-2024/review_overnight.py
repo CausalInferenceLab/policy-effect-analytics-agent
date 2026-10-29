@@ -14,7 +14,8 @@ OUTPUT = "results/overnight/review"
 FIELDS = ["id", "description", "value", "unit", "source", "field", "selector", "interpretation"]
 FROZEN_MANIFESTS = ["forecast/selection_manifest.json", "forecast_baselines/supplement_manifest.json",
                     "relative_ablation/development_manifest.json", "interval_calibration/preparation_manifest.json",
-                    "conditional_low/development_manifest.json", "conditional_margin/preparation_manifest.json"]
+                    "conditional_low/development_manifest.json", "conditional_margin/preparation_manifest.json",
+                    "confirmation/selection_manifest.json"]
 
 
 def digest(path):
@@ -133,6 +134,7 @@ def verify_local():
     from gangnam.overnight_baseline_runner import verify_manifest
     from gangnam.overnight_conditional_low import verify as conditional
     from gangnam.overnight_conditional_margin import verify as margin
+    from gangnam.overnight_confirmation_data import verify as confirmation
     from gangnam.overnight_forecast_data import allowed_months
     from gangnam.overnight_interval_calibration import verify as interval
     from gangnam.overnight_relative_ablation import verify as ablation
@@ -142,7 +144,8 @@ def verify_local():
         raise ValueError("동결 시험 허용 기간 변경")
     sizes = {}
     for name, check in [("baselines", verify_manifest), ("relative_ablation", ablation),
-                        ("interval_calibration", interval), ("conditional_low", conditional), ("conditional_margin", margin)]:
+                        ("interval_calibration", interval), ("conditional_low", conditional), ("conditional_margin", margin),
+                        ("confirmation", confirmation)]:
         manifest = check()[-1]
         sizes[name] = len(manifest["entries"])
     original = json.loads((CASE / "results/overnight/forecast/selection_manifest.json").read_text(encoding="utf-8"))
@@ -155,7 +158,7 @@ def main():
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--check", action="store_true", help="공개 집계의 현재 수치와 저장된 검증 명세 대조 (기본)")
     mode.add_argument("--write", action="store_true", help="공개 집계에서 핵심 수치·명세를 생성")
-    parser.add_argument("--local-artifacts", action="store_true", help="로컬 모델·개발 캐시가 있을 때 6개 실험 동결 추가 검증")
+    parser.add_argument("--local-artifacts", action="store_true", help="로컬 모델·개발 캐시가 있을 때 7개 실험 동결 추가 검증")
     args = parser.parse_args()
     try:
         result = review(CASE, write=args.write)

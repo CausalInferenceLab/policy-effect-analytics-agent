@@ -1,9 +1,9 @@
 {
   "scope": "공개 집계의 수치·선택 조건·해시 대조. 원본 재파싱·모델 재학습·인과 검증을 대신하지 않음",
-  "claims": 48,
-  "source_tables": 11,
-  "spec_sha256": "763e25736864b9d67d6464f8e386d2ff0db404250d5ae81a68b32141b2777f67",
-  "code_sha256": "abee5f9f908d0a8072a4ff1a8379b429a999d9486410fb60e379e55bde144f90",
+  "claims": 78,
+  "source_tables": 17,
+  "spec_sha256": "e0b1c82b12e2f32218150c2899e81d547f137ea4dd6ae406124aaffa840c8aaa",
+  "code_sha256": "755e2c827659ca0d1b0e4f03651ea41468e7aa722b682a133bde176d80eaddc7",
   "inputs": {
     "results/overnight/persistence_segments/segment_comparisons.csv": "4ca073975abe93f05ebdc0602619f19272886f99071e166e2c6170bbda30d3ee",
     "results/overnight/path_sums/comparisons.csv": "8efd28f0aee2795c817c71ecea0f1bc61b1b6db16e1c40c48f0a0ef9a9d2d08c",
@@ -15,9 +15,15 @@
     "results/overnight/weather_performance/metrics.csv": "da13959989da83c2ebde12fc2d35ddf08f45cf51c34943341bdee21eee338f43",
     "results/overnight/conditional_low/metrics.csv": "b46709a7d4c5c50d0f6909eb6844bd69b507fd076be0ec064bfffcb7cd50c5d7",
     "results/overnight/conditional_margin/metrics.csv": "8e8d0954c96ae240e547e4382606594691fb03f02df9d5577cde2a6b4faca58c",
-    "results/overnight/alert_replay/metrics.csv": "d41a8e285d41553d7790806a5332bdc651dc8d493f6d24674a1a0adc2aaa5796"
+    "results/overnight/alert_replay/metrics.csv": "d41a8e285d41553d7790806a5332bdc651dc8d493f6d24674a1a0adc2aaa5796",
+    "results/overnight/confirmation/quantile_metrics.csv": "1c6eaf31319c637faf6c2129394a1823b1073e98472bd50b74dccc3ea2c5e9ab",
+    "results/overnight/confirmation/probability_metrics.csv": "ba311a7f9f35295e2000379d5f9804e166319213e8d14287b3a597117385469a",
+    "results/overnight/confirmation/quantile_paired.csv": "51da23f67691beda402eca768a7b4dc435f9b1dbaf7a6b1badf8a2d6a497cb51",
+    "results/overnight/confirmation/probability_paired.csv": "979ad68179250e779b0439aa872a9cf47aed9aa5cc46dcecb16dd46e7095f1dc",
+    "results/overnight/matched_directions/comparisons.csv": "82a2184c89b18ba653a19a8a703d8ba24573d3e89ef93081e88d3c39890654af",
+    "results/overnight/matched_directions/paired_gaps.csv": "12bae824c5ee1658d51bef2a944c2f64dce22dd085627614264a4bb3c9bc4282"
   },
-  "summary_sha256": "e5ff4992a0d0da2f294e269ba6708cbd312265b04d13049b1db8583f669219ed",
+  "summary_sha256": "a58b15c06f405aa4e2e9dc4136e7c6f466359fa37fa2adfc1cd58c6cf1f19cd8",
   "public_freezes": {
     "manifests": {
       "results/overnight/forecast/selection_manifest.json": "f6611a6fa8f2ee692318de3b126e1d5c7378dc6feb75a7765182cad372d7ab03",
@@ -25,7 +31,8 @@
       "results/overnight/relative_ablation/development_manifest.json": "abba42792796e7ebe2dfcf206f1c21cf191612329c22879f99efa26abcc581cc",
       "results/overnight/interval_calibration/preparation_manifest.json": "4937ae22d1db8d300dfaacd41fcfc6bbc6e16032a7adc9eeff496764312efd63",
       "results/overnight/conditional_low/development_manifest.json": "05e623be2656d5e3e14f201661c61f97f2121c026cd32863391ae397f715e627",
-      "results/overnight/conditional_margin/preparation_manifest.json": "3e7e456b45ef9e8a9c14f24fdf5437ff2e6ccd3d7b6933806c5a3703215f4e1b"
+      "results/overnight/conditional_margin/preparation_manifest.json": "3e7e456b45ef9e8a9c14f24fdf5437ff2e6ccd3d7b6933806c5a3703215f4e1b",
+      "results/overnight/confirmation/selection_manifest.json": "d242ac858c55380cfb2ddfbd0c2244010d375b48627ecc21d79d4ec04cb838f8"
     },
     "verified_public_files": {
       "gangnam/overnight_bus_data.py": "d8006d2a927d615127b1b41c787333659a1689bb8a0c155c296094d1c72cda47",
@@ -72,7 +79,15 @@
       "results/overnight/interval_calibration/preparation_manifest.json": "4937ae22d1db8d300dfaacd41fcfc6bbc6e16032a7adc9eeff496764312efd63",
       "results/overnight/forecast_baselines/evaluation_audit.json": "98ae19c2560933e40c208c966fcb8233311b42869c97c268c8814aeecaa8056b",
       "results/overnight/conditional_low/evaluation_audit.json": "b66339ce26332c1f7beb6fa855cc8ba08baa4369cc063d0ee60593121be98be3",
-      "gangnam/overnight_conditional_margin.py": "73b2810005ca39690d97e7b525869dcaeafbcbfc8ceb4e8f4a50f87c0c559844"
+      "gangnam/overnight_conditional_margin.py": "73b2810005ca39690d97e7b525869dcaeafbcbfc8ceb4e8f4a50f87c0c559844",
+      "overnight_confirmation_config.yaml": "81a850f8ccea4eff22766027db770505160214f7e215f297597c33916ede1fbd",
+      "data_contract.yaml": "035f7a70caad6d33f5d4f48e7b457a89d84c72dc489af35512488a80f8416d47",
+      "results/overnight/relative_ablation/development_manifest.json": "abba42792796e7ebe2dfcf206f1c21cf191612329c22879f99efa26abcc581cc",
+      "results/overnight/conditional_margin/preparation_manifest.json": "3e7e456b45ef9e8a9c14f24fdf5437ff2e6ccd3d7b6933806c5a3703215f4e1b",
+      "results/overnight/forecast/extraction_test.json": "90a1ca9c186b48247d7afd0ae89af21a4811e8496128108b3878016e01ce8ee2",
+      "gangnam/overnight_confirmation_data.py": "7e7ccb8c9a339035c7029d271c84ef1e8213ad9d23676c744e39f3e773ac2c7a",
+      "gangnam/overnight_confirmation.py": "75e81b11e981ed1f3f5506e863d62d7575773f36c0612a6969597d1a7fcb8950",
+      "gangnam/topis.py": "2e7453542ee268882adcdd6beb989e6bcdc0932c2852e354aabc62ab64e7f147"
     },
     "excluded_local_artifacts": "data/·runs/의 원본·캐시·모델은 --local-artifacts에서만 확인"
   }

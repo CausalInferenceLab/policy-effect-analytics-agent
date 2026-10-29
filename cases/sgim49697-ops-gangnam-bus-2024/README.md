@@ -1,66 +1,49 @@
-# 강남대로 광역버스 분산과 단기 교통 예측
+# 강남대로 버스 분산 이후의 방향별 변화와 단기 예측
 
-**2025년 연장과 예측 기준 비교:** [방향별 지속성](overnight-persistence-report.md)에서 같은 사전 셀의 남행·북행 수준 차이가 다음 해에도 남는지 확인했다. [상대 저속·속도 범위의 단순 기준 비교](overnight-baseline-report.md)는 경보량 제한의 손실과 속도 구간의 개선·저녁 보정 과제를 보여 준다. 모두 기존 결과를 보존한 탐색적 확장이다.
+**“강남역 버스는 양방향으로 좋아졌을까?”** 2024년 광역버스 분산 전후의 기록을 방향·구간·시간별로 확인하고 다음 해까지 연결한 학생 프로젝트다. 작성자 `sgim49697-ops`, 트랙 **B. 가설과 분석**. 일반도로 속도 범위·저속 경보 예측은 별도 확장으로 다룬다.
 
-[인접 구간의 지속성과 집중도](overnight-segment-report.md)에서는 신분당선강남역으로 향하는 남행·북행 구간의 반대 변화가 2025년에도 남는지 확인했다. 같은 계절의 연도 비교는 지역 기상 9개 조합에서도 방향별 부호가 유지되며, 단일 구간·노선 제외 결과와 다음에 필요한 차량 단위 자료를 함께 정리했다.
+먼저 **[확장 탐색 종합 보고서](overnight-summary.md)**를 읽으면 된다. 남행 강조 구간은 2024년 사전 대비 그해 여름 −48.45%, 북행 강조 구간은 +32.59%였다. 2025년에도 수준 차이가 남았고, 인접 구간 합·같은 노선의 16시간 공동 표본에서도 반대 양상을 확인했다. 버스 기록의 시간 단위·정차 경계는 미확인이므로 실제 분 단위 절감이나 정책의 인과 효과로 해석하지 않는다.
 
-**추가 교차검증:** [공통 운영·카드 총계·요금 기간](overnight-operations-report.md)에서 같은 버스 표본의 시간·운행횟수·승차를 비교하고, 일별 카드 14개월로 중앙 정류장 월 합계를 검증했다. [주변 일반도로·교통량](overnight-road-report.md)은 다른 방향별 양상과 공간 대표성의 한계를 보여 준다. 그림 6장과 전체 비교·실패 결과를 제공한다. 10시간 탐색은 계속 진행 중이다.
+**[공개 핵심 수치](results/overnight/review/key_numbers.csv)**는 원본 집계의 선택 조건과 연결된다. Python 3.12에서 `python review_overnight.py --check`를 실행하면 원본·모델·외부 패키지 없이 수치와 공개 동결 해시를 대조할 수 있다. [재현 안내](overnight-reproduction.md)는 공개 검토, 기존 로컬 모델 검증, 원자료 계산의 의존성과 한계를 구분한다.
 
-2024년 버스 운행 조정 전후 일반도로의 퇴근 시간 속도를 비교하고, 같은 자료의 과거 168시간으로 다음 1·3시간 속도를 예측하는 학생 프로젝트다. 작성자는 `sgim49697-ops`, 트랙은 **B. 가설과 분석**이다.
+작업 제안 [이슈 #53](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/issues/53), [계획 PR #54](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/54), [구현·결과 PR #55](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/55). 작업 브랜치는 `sgim49697-ops/gangnam-pipeline`이며 PR은 초안이다. 최초 일반도로·GPU 모델 비교는 아래 이전 분석 문서에 보존했다. 2026년 잠금 시험값은 사용하지 않았다.
 
-작업 제안: [이슈 #53](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/issues/53).
+## 최신 결과와 근거
 
-**20개월 실자료의 수집·정책 비교·5개 모델의 3개 시드 학습·9개 모델의 세 기간 평가를 완료했다.** [결과 보고서](report.md)와 [해석·한계](discussion.md)를 먼저 읽으면 된다. [계획 PR #54](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/54), [구현·결과 PR #55](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/55)를 분리했으며 작업 브랜치는 `sgim49697-ops/gangnam-pipeline`이다. 사용자 요청에 따라 24시간 대기 대신 명시적 탐색 모드를 사용한다. 시간 표기·0값·측정 일관성·비교 도로 노출·그래프는 검증된 사실과 구별해 가정으로 남긴다.
-
-## 문서와 설정
-
-**10시간 확장 탐색 진행:** [노선군 분리·시간대·승객 기록](overnight-route-report.md)에서 사전 관측으로 고정한 정책 후보 밖 집단의 저녁 남행 −7.32%, 북행 +11.89%를 확인했다. 4개 집계 방식에서 부호가 유지되지만 인과 효과는 아니다. 전체 승객 가중치 비교 24개는 보류했으며, 관측된 제한 표본의 비교는 별도로 보고했다. [2025년 저속 경보 고정 시험](overnight-forecast-report.md)도 완료했다. 절대 저속은 41개 관측에 불과하고 경보 정밀도 10.6~15.4%라 운영 채택을 보류한다. 상대 저속·속도 범위는 별도 탐색 후보로 남긴다. [동시 정책·연구·2022 원본 점검](overnight-context-report.md), [카드·환승·출도착 자료 점검](overnight-auxiliary-report.md)에서는 같은 날 GTX-A 구성역 개통, 정류장 이력과 집계 한계를 추가 확인했다. [첫 결과: 관측 누락·지역 기상](overnight-observation-report.md), [자료 정의·접근 근거](overnight-evidence.md), [전체 탐색 계획과 진행 기록](overnight-plan.md)을 함께 제공한다.
-
-**최신 확장 분석:** [노선 이동·전년 비교·가을 지속성](directional-report.md)에서 2023년 4~8월과 2024년 9~10월을 추가했다. 북행 증가는 표본을 바꿔도 남았고, 남행의 큰 감소 구간은 계속 관측된 표본에서 가을에도 확인됐다. 남행 전체의 기록 누락과 부족한 기상 공통 표본 때문에 전체 정책 효과·날씨 보정 효과는 확정하지 않는다. 노선 이동표와 비교 그림 5장을 제공한다.
-
-**후속 분석 완료:** [정류장·방향별 결과](followup-report.md)에서 4~8월 버스·교통량 원본 20개와 주변 도로 88개 링크를 분석했다. 남행 강남역의 특정 구간에서 기록 운행시간 지수가 약 48% 낮아졌지만 북행은 다른 양상을 보였다. 단위·집계 정의가 미확인인 지수를 실제 분 단위나 인과 효과로 해석하지 않는다. [관련 논문 2편과 공식 자료 검토](literature.md), [추가 자료·저속 경보 후속 계획](followup-plan.md)을 함께 제공한다.
-
-| 파일 | 역할 |
+| 읽을 내용 | 문서 |
 |---|---|
-| [overnight-route-report.md](overnight-route-report.md) | 노선군·시간·날짜·기상 민감도, 승객 가중 실패와 추가 원본 형식 점검 |
-| [overnight-context-report.md](overnight-context-report.md) | GTX-A·요금상품·관련 연구, 2022년 비교 제외와 82개 기존 ZIP의 전체 행 구조 감사 |
-| [overnight-auxiliary-report.md](overnight-auxiliary-report.md) | 월별 카드의 역사적 ID 대조, 승하차·환승 공개 키와 출도착 결측 점검, 그림 3장 |
-| [overnight-forecast-plan.md](overnight-forecast-plan.md) / [overnight_forecast_config.yaml](overnight_forecast_config.yaml) | 2025 저속 경보의 시간 분할·지연 조건·모델 선택·시험 전 동결 규칙 |
-| [overnight-forecast-report.md](overnight-forecast-report.md) | 고정 시험 24개 모델, 절대·상대 저속 경보, 속도 범위, 실패 진단과 그림 4장 |
-| [requirements-overnight.txt](requirements-overnight.txt) | 기존 CPU 환경에 확률 경보 평가용 scikit-learn을 추가한 고정 의존성 |
-| [overnight-observation-report.md](overnight-observation-report.md) | 시간대·집계·누락 분해·지역 기상 비교의 첫 확장 결과와 그림 4장 |
-| [overnight-plan.md](overnight-plan.md) / [overnight_config.yaml](overnight_config.yaml) | 10시간 탐색의 12개 방향·판정 기준·진행 기록 |
-| [overnight-evidence.md](overnight-evidence.md) / [overnight-evidence-sources.json](overnight-evidence-sources.json) | 공식 자료 정의·접근성·잘못된 과거 기상 응답의 제외 근거 |
-| [overnight.py](overnight.py) / [overnight-weather-sources.json](overnight-weather-sources.json) | 확장 수집·분석 명령과 검증된 기상 응답 560개의 출처 |
-| [report.md](report.md) | 정책 비교·9개 모델 성능·그림·학습 자원 |
-| [discussion.md](discussion.md) | 결과 해석·한계·계획에서 바뀐 것 |
-| [followup-plan.md](followup-plan.md) | 추가 자료의 실제 접근성·품질, 추천 주제 3개·다음 실행·외부 확인 질문 |
-| [followup-report.md](followup-report.md) | 정류장·방향·시간대별 버스 지수와 주변 도로·교통량의 실행 결과·그림 |
-| [directional-report.md](directional-report.md) | 노선 이동·전년 동기간·가을·날씨 공통 표본의 결과와 다음 분석 조건 |
-| [directional_config.yaml](directional_config.yaml) / [directional.py](directional.py) | 확장 탐색 규칙과 수집·추출·기상·분석·그림 진입점 |
-| [directional-sources.json](directional-sources.json) / [directional-weather-sources.json](directional-weather-sources.json) / [directional-history-sources.json](directional-history-sources.json) | 버스 39개·기상 화면 24개·역사적 정류장 CSV 2개의 출처·해시 |
-| [results/directional/run_manifest.json](results/directional/run_manifest.json) | 확장 분석 코드·입력·파생 결과의 무결성 기록 |
-| [literature.md](literature.md) | 2025년 관련 논문 2편·공식 분석자료의 적용과 한계 |
-| [followup_config.yaml](followup_config.yaml) / [followup-policy.yaml](followup-policy.yaml) | 후속 탐색 규칙·당시 노선군·정류장 번호와 현재 ID의 구분 |
-| [followup-sources.json](followup-sources.json) / [research-sources.json](research-sources.json) | 후속 원본 20개·문헌 출처와 해시 |
-| [followup.py](followup.py) / [results/followup/audit.json](results/followup/audit.json) | 추가 수집·추출·분석·그림의 진입점과 품질 감사 |
-| [discovery-sources.json](discovery-sources.json) | 추가 공식 원본 11개의 요청·크기·해시 |
-| [discovery_config.yaml](discovery_config.yaml) | 결과를 본 뒤 정한 표본·결합·상대 저속 진단 규칙 |
-| [discover.py](discover.py) | 추가 원본 수집·주간 품질 점검·저장된 예측의 저속 진단 |
-| [results/discovery/data_audit.json](results/discovery/data_audit.json) | 추가 자료의 결측·중복·결합률 |
-| [results/forecast_metrics.csv](results/forecast_metrics.csv) | 3개 시험 기간·3개 평가 집단·1/3시간 오차 집계 |
-| [plan.md](plan.md) | 범위·고정 규칙·단계별 완료 조건·진행 기록 |
-| [plan.yaml](plan.yaml) | 저장소 공통 엔진 스키마의 정책 분석 계획 |
-| [corridors.yaml](corridors.yaml) | 링크·방향·가중치·기간·품질 기준 |
-| [ml_config.yaml](ml_config.yaml) | 시간 분할·모델 후보·학습·평가 규약 |
-| [data_contract.yaml](data_contract.yaml) | 자료 정의·이용 조건·공휴일·그래프의 근거 상태 |
-| [evidence.md](evidence.md) | 직접 확인한 근거와 새로 발견한 자료 차이 |
-| [source-manifest.json](source-manifest.json) | 원본 20개의 다운로드 인자·크기·해시. 속도값 없음 |
-| [verification-request.md](verification-request.md) | 외부 AI·기관 확인을 위한 후속 질문. 미발송 |
-| [model-notes.md](model-notes.md) | 모델 출처·구현 범위·GPU 검증 설명 |
+| 추천 프로젝트·주요 결과·채택/보류·추가 수집 순위 | [종합 보고서](overnight-summary.md) |
+| 변화 시점과 32개월의 지속성 | [장기 궤적](overnight-timeline-report.md) |
+| 강조 구간·단일 노선/구간 제외·공동 변동 범위·운영 기록 | [구간 분석](overnight-segment-report.md) |
+| 옆 구간으로 기록이 이동했는지와 순서 키 | [인접 구간 합](overnight-path-report.md) |
+| 같은 노선·같은 날짜의 7~22시 모양 | [시간대 공동 표본](overnight-hour-report.md) |
+| 방향 전체의 2025년 연장·지역 기상 비교 | [지속성](overnight-persistence-report.md) |
+| 노선군·집계·승객 가중의 한계 | [노선군](overnight-route-report.md), [관측·누락](overnight-observation-report.md) |
+| 시간·운행횟수·승차 공동 표본과 카드 합계 | [운영·카드](overnight-operations-report.md) |
+| 주변 일반도로·교통량·이름/범위 민감도 | [도로 맥락](overnight-road-report.md) |
+| 지하철 8역·24개월 수요 맥락 | [지하철](overnight-subway-report.md) |
+| 환승·출도착·정류장 이력·2022년 제외·동시 변화 | [보조 자료](overnight-auxiliary-report.md), [정책·연구 맥락](overnight-context-report.md) |
+| 최초 고정 시험과 단순 예측 기준 | [예측 결과](overnight-forecast-report.md), [기준 비교](overnight-baseline-report.md) |
+| 반복 패턴과 다른 조건부 저속·차이 점수 | [조건부 저속](overnight-conditional-report.md) |
+| 구간 보정·비 올 때 오류·실제 발행 예산 | [구간 보정](overnight-interval-report.md), [기상 성능](overnight-weather-performance-report.md), [순차 경보](overnight-alert-report.md) |
+| 미열람 2025년 9~12월의 고정 후보 확인 | [가을·겨울 추가 검증](overnight-confirmation-report.md) |
+| 자료 정의·접근 조건·외부 AI에 전달할 질문 | [근거](overnight-evidence.md), [확인 요청서](verification-request.md) |
+| 단계별 실행·검증·커밋 근거 | [확장 계획·진행 기록](overnight-plan.md), [재현 안내](overnight-reproduction.md) |
+
+각 보고서에서 설정 YAML, 전체 CSV, 출처 JSON, 그림과 입력/출력 해시로 이동할 수 있다. 원본·Parquet·개별 예측·모델은 `data/`와 `runs/`에 보존하고 Git에서 제외한다. 공개 원본의 결측·손상·기간 불일치와 분석 조건 실패를 보고서에서 제외하지 않았다.
+
+## 이전 분석과 최초 계획
+
+| 문서·설정 | 역할 |
+|---|---|
+| [report.md](report.md), [discussion.md](discussion.md), [model-notes.md](model-notes.md) | 최초 20개월 일반도로·GPU 모델 비교·해석·학습 기록 |
+| [followup-report.md](followup-report.md), [followup-plan.md](followup-plan.md), [literature.md](literature.md) | 최초 버스·주변 도로 확장과 관련 논문·공식 분석자료 |
+| [directional-report.md](directional-report.md), [directional_config.yaml](directional_config.yaml) | 노선 이동·전년·가을·기상 비교의 출발점 |
+| [plan.md](plan.md), [plan.yaml](plan.yaml), [corridors.yaml](corridors.yaml), [ml_config.yaml](ml_config.yaml), [data_contract.yaml](data_contract.yaml) | 최초 범위·프로토콜·고정 규칙과 진행 기록 |
+| [evidence.md](evidence.md), [source-manifest.json](source-manifest.json), [discovery-sources.json](discovery-sources.json) | 최초 근거와 원본 다운로드 인자·해시 |
 | [research-request.md](research-request.md) | 최초 외부 조사 요청서 |
 
-받은 「강남대로 버스 정책 분석과 교통 예측 모델 단기 실행계획.md」는 원문 그대로 보존했다. 최신 실행 규칙은 그 원문에 덮어쓰지 않고 위 설정과 계획에 반영한다.
+받은 「강남대로 버스 정책 분석과 교통 예측 모델 단기 실행계획.md」는 원문 그대로 보존했다. 최초 프로토콜 4개를 수정하지 않고 후속 규칙을 별도 설정에 기록했다. 아래 환경·실행 예시는 최초 일반도로 분석의 기록이며, 확장 탐색의 현재 실행은 [재현 안내](overnight-reproduction.md)를 먼저 따른다.
 
 ## 실행 환경
 

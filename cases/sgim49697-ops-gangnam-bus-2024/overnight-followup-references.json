@@ -67,6 +67,36 @@
       "application": "2023년과 2024년의 물리 환경 동일성을 가정하지 않는 근거. 2024년 6월 버스 조정과 별개 사건이며 2024-02-27 영상 게시일을 공사일로 사용하지 않음.",
       "local_path": "data/overnight/probes/gangnam_crosswalk_20231129.pdf",
       "sha256": "9ee8696e4ab30181316cc88f45c28f5d300720388339c329dac50bbfdca4b1fa"
+    },
+    {
+      "title": "T Data 일자별-시간대별-버스노선별-구간별-운행시간 API 1039",
+      "url": "https://t-data.seoul.go.kr/category/dataviewopenapi.do?data_id=1039",
+      "path": "data/overnight/probes/tdata_route_section_1039.html",
+      "review_scope": "공식 출력 명세의 speed_XXh·trip_time_XXh, 운행 이용횟수, 필수 기준일·인증키와 현재 월1회 안내 확인. 값 설명·샘플이 비어 있어 시간 단위·집계 경계·OA-21217 동등성 미확정.",
+      "application": "OA-21217 담당기관에 필드 대응을 확인할 구체적인 보조 명세. 실제 API 호출·신규 인증·신청은 하지 않음.",
+      "retrieved_at": "2026-10-29T01:29:39.139670+00:00",
+      "sha256": "adaa52363299ece76f4e5b74faaa30337e4eeba3148d4650e0182a0197a67fca",
+      "bytes": 62245
+    },
+    {
+      "title": "교통정보시스템(TOPIS) 서비스 일시중단 안내, 2024-08-01",
+      "url": "https://data.seoul.go.kr/together/notice/datasetNoticeView.do?bbsCd=10008&ditcCd=&pageIndex=1&seq=c8c3b684c5f06d58ed26779e3ea120b8",
+      "path": "data/overnight/probes/topis_service_pause_20240802.html",
+      "review_scope": "2024-08-02 21:00~08-03 11:00 예정 중단, 상암센터 운영서버 오프라인 백업, 대상 목록에 평균 운행시간·승차·운행횟수 포함을 확인.",
+      "application": "서비스 접근 중단과 원천 수집 중단·과거 월 파일 결측 원인은 구분. 주 분석의 평일 17~19시와 겹치지 않으며 관측된 지수 변화 원인으로 사용하지 않음.",
+      "retrieved_at": "2026-10-29T01:29:39.610185+00:00",
+      "sha256": "7cf6a93e57b773dc88d6f28c6ab551f8ca57bd16ac49c3ebd12c2a481bdcf11f",
+      "bytes": 52251
+    },
+    {
+      "title": "서울시 교통 관련 데이터 제공 내역, 2025-03 파일",
+      "url": "https://t-data.seoul.go.kr/assets/images/srvyPdf/%E2%98%85%EB%8D%B0%EC%9D%B4%ED%84%B0%EC%A0%9C%EA%B3%B5%ED%98%84%ED%99%A9202503.pdf",
+      "path": "data/overnight/probes/tdata_available_categories_202503.pdf",
+      "review_scope": "1쪽 전체의 15개 제공 분류. 버스 배차·위치, 신호와 C-ITS 분류 존재만 확인.",
+      "application": "구체적 역사 자료의 보유 기간·무료 공개·신호 주기 제공을 입증하지 않으므로 후속 문의의 분류 안내로만 사용.",
+      "retrieved_at": "2026-10-29T01:29:39.270198+00:00",
+      "sha256": "a263ff88ed4243fa5e27cd209769d47d3f57913912e8bc1cd0f2d3f7b2454ccb",
+      "bytes": 199183
     }
   ]
 }

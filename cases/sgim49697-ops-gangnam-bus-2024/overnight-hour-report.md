@@ -36,3 +36,25 @@
 ## 재현과 검증
 
 기존 검증 캐시가 있는 사례 환경에서 `overnight.py hour-shape`, `overnight.py hour-shape-plots`를 실행한다. [사전 선택](results/overnight/hour_shape/eligibility.csv), [공동 관측 상태](results/overnight/hour_shape/joint_states.csv), [일별 지수](results/overnight/hour_shape/daily.csv), [입력·설정·결과 해시](results/overnight/hour_shape/audit.json)를 제공한다. 원시 기준값은 Git 제외 Parquet다. 한 시간 결측의 공동 제외, 미래 결과 변경의 사전 선택 불변, 선택 노선 0개의 결측 유지, 중복 키 거부 테스트 2개가 통과했다.
+
+## 같은 노선을 양방향에서 맞추어도 차이가 남는가
+
+위 표본은 남행 15개·북행 20개로 노선 구성이 다르다. 사전 선택표에 공통으로 존재하는 **14개 노선 ID**를 후보로 고정하고, 양방향의 07~22시 **32개 값이 같은 노선·날짜에서 모두 양수**일 때만 남겼다. 사전 2023·2024년 각각 공동 관측률 80% 조건을 적용해 14개가 모두 통과했다. [규칙](overnight_matched_directions_config.yaml)은 결과 계산 전에 `b047dc6`에 커밋했다. 앞선 방향별 결과를 본 뒤의 구성 민감도이며 독립 확인 실험은 아니다.
+
+각 `노선×구간×시간`을 양방향 공동 날짜의 자체 2024년 사전 평균으로 기준화하고, 같은 노선·날짜의 17~19시를 동일 가중으로 비교했다. 한 방향의 한 시간이라도 무효이면 그 노선·날짜의 양쪽 모두를 제외한다. 사후에 관측되지 않는 노선도 **고정 14개 분모**에 남긴다. 비교마다 방향별 날짜·관측률이 같고, 양쪽의 일별 관측률 80%와 20일·관측률 차이 10%p 조건을 모두 충족했다.
+
+| 비교 | 남행 변화 | 북행 변화 | 북행 변화율 − 남행 변화율 |
+|---|---:|---:|---:|
+| 2024 사전 → 2024 여름 | **−49.80%** | **+40.52%** | +90.31%p |
+| 2024 사전 → 2025 사전 | −46.75% | +40.92% | +87.67%p |
+| 2024 사전 → 2025 여름 | **−46.02%** | **+40.96%** | +86.97%p |
+| 2025 사전 → 2025 여름 | +1.39% | +0.03% | −1.36%p |
+| 2024 여름 → 2025 여름 | +7.53% | +0.31% | −7.22%p |
+
+![같은 노선과 날짜의 방향 비교](results/overnight/matched_directions/matched_changes.png)
+
+2024년 여름의 개별 주 재표집 범위는 남행 [−52.95, −45.41]%, 북행 [+35.22, +45.44]%다. 두 방향에 **같은 달력 주를 함께 재표집**한 변화율 차이는 [+83.03, +97.33]%p였다. 각 기간 6개 주의 기술적 변동 범위이며 다중 탐색을 보정한 인과 검정이 아니다. 2025년 내부 변화 및 두 여름 사이 변화는 양방향의 개별 범위와 변화율 차이 범위 모두 0을 포함한다.
+
+2024 사전/여름·2025 사전/여름의 유효 날짜는 27/29/27/28일, 고정 분모의 공동 양수 노선·날짜 비율은 92.36/100/92.06/92.86%다. 전체 방향별 비교 10개와 변화율 차이 5개가 관측 조건을 통과했다. **서로 다른 노선 구성이 방향 차이의 전부라는 설명과는 맞지 않는다.** 다만 같은 노선 ID가 같은 차량·회차·승객을 뜻하지 않으며, 두 강조 구간은 정확히 반대편의 같은 물리 구간도 아니다. 위 차이를 인과 이중차분 효과나 왕복 시간 차이로 해석하지 않는다. 표본·기준 날짜가 다른 앞의 15/20개 노선 수치와 크기를 혼합하지 않는다.
+
+`overnight.py matched-directions`와 `overnight.py matched-directions-plots`로 재현한다. [방향별 비교](results/overnight/matched_directions/comparisons.csv), [공동 주 재표집 차이](results/overnight/matched_directions/paired_gaps.csv), [일별 표](results/overnight/matched_directions/daily.csv), [선택표](results/overnight/matched_directions/eligibility.csv), [누락 분모](results/overnight/matched_directions/joint_states.csv), [감사 명세](results/overnight/matched_directions/audit.json)를 제공한다. 한쪽 결측의 양쪽 제외·미래 누락의 사전 선택 불변·고정 분모·중복 키·공동 재표집의 완전 비례 관계·입력 순서 불변 테스트 3개가 통과했다.

@@ -1,0 +1,73 @@
+{
+  "completed_at": "2026-10-29T01:03:44.035343+00:00",
+  "configuration": {
+    "version": 1,
+    "mode": "posthoc_after_confirmation_metrics",
+    "source_audit": "results/overnight/confirmation/evaluation_audit.json",
+    "period": [
+      "2025-09-01",
+      "2025-12-31"
+    ],
+    "models": [
+      "catboost_frozen_quantile",
+      "weekly_empirical",
+      "calendar_empirical"
+    ],
+    "horizons": [
+      1,
+      3
+    ],
+    "subgroups": [
+      "nonholiday_weekday",
+      "nonholiday_weekend",
+      "public_holiday"
+    ],
+    "minimum_rows": 100,
+    "minimum_calendar_weeks": 8,
+    "leave_one_week_out": {
+      "slices": [
+        "all_hours",
+        "evening_17_19"
+      ],
+      "left": "catboost_frozen_quantile",
+      "right": [
+        "weekly_empirical",
+        "calendar_empirical"
+      ],
+      "metric": "interval_score_alpha_0.2",
+      "interpretation": "같은 저장 예측 손실에서 한 주씩 제외한 점수 차이 범위이며 신뢰구간이 아님"
+    },
+    "holiday_definition": "holidays_KR_0_107_same_as_frozen_feature_generation; descriptive_calendar_label",
+    "interpretation": [
+      "새 고정 시험의 사전 지정 지표와 구별하는 사후 진단",
+      "공개 휴일을 원인으로 판정하거나 다른 사건명을 추정하지 않음",
+      "원래 예측·모델·임계값·검증 결과를 바꾸지 않음"
+    ]
+  },
+  "inputs": {
+    "results/overnight/confirmation/evaluation_audit.json": "861000795b743d99b5970d98b12bc8121772c3289ee5454a402f3c1f40f8ad5d",
+    "overnight_confirmation_review_config.yaml": "164cdedc9e248b91f6794bd549c9cadf99ff6dee6b34a44cab6e36604de508df",
+    "gangnam/overnight_confirmation_review.py": "21f194aadfe76b82ca35b1be8ed1b119a5f703034ecc485e3b23e53c6c91fb02",
+    "data/overnight/confirmation/predictions/h1_quantile_catboost_frozen_quantile.parquet": "04b07715a41f27ecd65be76eb0e88a8a66cf9d31c9613ddf43423832f0e4a289",
+    "data/overnight/confirmation/predictions/h1_quantile_weekly_empirical.parquet": "9d7e62132dc7f5c290b12b3f041417801004ad012e1b42e26d294ab167170a66",
+    "data/overnight/confirmation/predictions/h1_quantile_calendar_empirical.parquet": "39f3cae3ebf359d563cf7eb75924d6a17728c5625900166b9f5f821a5e026f22",
+    "data/overnight/confirmation/predictions/h3_quantile_catboost_frozen_quantile.parquet": "b0efe89ca1f1ffac017205b497fe0071e0ec5fa8d496be6994e1194808c4d377",
+    "data/overnight/confirmation/predictions/h3_quantile_weekly_empirical.parquet": "c4455a79d200cb7535139c6ae53eda07f85011bebd80b01a893d3393ec1be7ed",
+    "data/overnight/confirmation/predictions/h3_quantile_calendar_empirical.parquet": "12e524616bb0bbd23a7685dc00e41d90da55e7aba8733e087f6585afc56cb5b0"
+  },
+  "observed_holiday_dates": [
+    "2025-10-03",
+    "2025-10-05",
+    "2025-10-06",
+    "2025-10-07",
+    "2025-10-08",
+    "2025-10-09",
+    "2025-12-25"
+  ],
+  "outputs": {
+    "calendar_groups.csv": "ca249ea69db8dc0e9412d74172881e1a6389e1ba47ebe94625f549773bc76bb7",
+    "leave_one_week_out.csv": "f05af9203630de2fb903fadf2243d65ea0110f2f0942e524d0e5cff13a9ce444",
+    "weekly_differences.csv": "abea51a66c33171630b03ec4aa0a3f3220f0fa1ad5fe8d98053f362ed861eb5f"
+  },
+  "interpretation": "추가 검증 결과를 본 뒤 정한 진단. 단일 주 제외 범위는 신뢰구간이 아니며 모델·예측을 변경하지 않음."
+}
