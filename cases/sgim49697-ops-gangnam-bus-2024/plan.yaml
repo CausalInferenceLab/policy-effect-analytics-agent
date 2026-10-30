@@ -39,4 +39,4 @@ data_sources:
     url: https://topis.seoul.go.kr/refRoom/openRefRoom_1.do
     license: other
     path: data/panel.csv
-    notes: 개별 월별 원자료 이용 조건 미확인. 다른 통계·지도 자료의 공공누리 표시를 전용하지 않는다. data_contract.yaml 관문 충족 전 실행 금지
+    notes: 개별 월별 원자료 이용 조건 미확인. 다른 통계·지도 자료의 공공누리 표시를 전용하지 않는다. 초기 설계 기록이며 최종 탐색 실행 규칙은 analysis-plan.yaml과 data/README.md 참조

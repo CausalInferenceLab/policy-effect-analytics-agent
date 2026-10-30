@@ -1,9 +1,0 @@
-{
-  "code_sha256": "2145edcd15f82d9324b05f5bfcc820cc779375f4000a101d5ea40543909ff4af",
-  "inputs": {
-    "feature_availability.csv": "90446c6624bd8741e939e5a4de26d8daf1f881668bcb81de365479f9e2d64c4e"
-  },
-  "outputs": {
-    "archive_availability.png": "456f6f3b922a3793af3327c9dd95aff5ff5b51aac75edcebea82217ac7b96e27"
-  }
-}

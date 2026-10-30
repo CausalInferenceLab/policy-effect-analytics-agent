@@ -1,40 +1,53 @@
-# 강남대로 버스 분산 이후의 방향별 변화와 단기 예측
+# 강남대로 버스 운행 변화와 월별 도로 속도 예측
 
-**2024년 광역버스 분산 이후, 같은 강남대로의 버스 기록은 왜 남행과 북행에서 반대로 변했을까?** 공공데이터의 대상·정의·관측 가능성을 확인하고, 다른 원인 후보와 다음 해 기록을 대조한 학생 프로젝트다. 작성자 `sgim49697-ops`, 트랙 B. 가설과 분석.
+2024년 6월 29일 버스 운행 조정 뒤 강남대로의 이동 기록이 어떻게 달라졌는지 살펴본 학생 프로젝트다. **남행·북행의 변화가 달랐다는 관찰**과 **공개가 늦은 월별 파일로 어디까지 예측할 수 있는가**를 다룬다. 정책의 인과 효과나 실시간 예측 서비스가 완성됐다는 주장은 하지 않는다.
 
-## 처음 읽는 순서
+먼저 [프로젝트 설명 HTML](project-overview.html)을 브라우저에서 열면 배경 → 데이터 → 분석 → 결과 → 활용 순서로 읽을 수 있다. 간결한 결과는 [report.md](report.md), 해석·활용의 한계는 [discussion.md](discussion.md), 실행 범위와 진행 기록은 [plan.md](plan.md)에 있다.
 
-1. **[프로젝트 설명 HTML](project-overview.html)** — 정책 배경 → 데이터와 비교 집단 → 방법 → 발견 → 원인 후보 → 학습·예측 → 활용. 파일을 내려받아 브라우저로 열면 인터넷 없이 본문과 도표를 읽고 인쇄할 수 있다.
-2. **[결과 요약](report.md) · [해석과 활용](discussion.md)** — 확인한 사실과 아직 판단할 수 없는 내용을 짧게 읽는다.
-3. **[상세 종합](deepening-summary.md) · [공개 검토와 재현](deepening-reproduction.md)** — 집계표, 데이터 정의, 학습 조건, 계산 의존성을 확인한다.
+| 공개 구성 | 내용 |
+|---|---|
+| 설명·설계 | 이 문서, HTML, 계획·결과·토론, 데이터 안내, 설정 2개 |
+| 실행 코드 6개 | 수집, 버스 비교, CPU 예측, 공통 함수, 제출 검사, HTML 검사 |
+| 출처·기록 | 원본 68개 파일 계약, 결과·코드 해시를 담은 실행 명세 |
+| 결과 6개 | 비교표 2개, HTML 근거 수치표 2개, 그림 2개 |
 
-관측 가능한 서울버스 고정 13개에서 2024년 여름의 정규화 시간 기록 지수는 남행 −49.71%, 북행 +41.03% 변했다. 이 13개는 정책 대상 광역버스 20개와 다른 집단이다. 시간 값의 단위·정차 경계가 미확정이므로 실제 분 단위 절감이나 정책의 인과효과로 읽지 않는다. 일반도로 속도 예측은 별도 실험이다.
+사례 파일은 총 24개다. 저장소 루트의 테스트 3개와 기존 카탈로그 변경 2개를 합쳐 PR 변경 파일은 29개다. 원본·모델·새 실행 결과는 Git에 넣지 않는다.
 
-## 다운로드한 공개 파일 검증
+## 설치와 빠른 확인
 
-Python 3.12에서 사례 폴더로 이동해 실행한다. 외부 패키지·원자료·모델·GPU·인증키·네트워크가 필요하지 않다.
+아래 명령은 **이 사례 폴더에서** 실행한다. HTML과 기본 수치 검사는 Python 3.11 이상 표준 라이브러리만으로 가능하다.
 
 ```bash
-cd cases/sgim49697-ops-gangnam-bus-2024
-python review_submission.py --check
+python review_submission.py
+uv venv --python 3.12 .venv
+uv pip install --python .venv/bin/python -r requirements.txt
 ```
 
-이 명령은 핵심 수치 229개, 직접 근거 35개, 공개 산출물 155개와 HTML의 표시 수치를 대조한다. [추가 수치 151개](results/deepening/review/key_numbers.csv)와 [이전 수치 78개](results/overnight/review/key_numbers.csv)에서 원래 집계표의 행·열·선택 조건으로 돌아갈 수 있다. 전체 로컬 감사와 재학습은 수행하지 않는다.
+Windows에서는 `.venv/bin/python`을 `.venv/Scripts/python.exe`로 바꾼다. PyTorch·CUDA는 필요 없다. 기본 검사는 저장된 결과의 무결성을 확인하며, 학습을 다시 돌렸다는 의미는 아니다.
 
-## 질문별 근거
+## 원본부터 실행
 
-| 확인할 내용 | 안내 |
-|---|---|
-| 데이터 정의·당시 노선·폐선 영향 | [시간 필드](deepening-definition-report.md), [역사 목록](deepening-history-report.md), [고정 13개 비교](deepening-cohort-report.md) |
-| 새 정류소 운영·주변 도로·시행일 이전 변화 | [운영 이력](deepening-infrastructure-report.md), [도로 공간 차이](deepening-road-report.md), [전환 주간](deepening-transition-report.md) |
-| 월별 자료 공개 지연과 예측 | [공개 시각](deepening-availability-report.md), [학습·성능 비교](deepening-archive-report.md) |
-| 자료 수집·문헌·초기 설계 | [데이터 보관 안내](data/README.md), [문헌](deepening-literature.md), [최초 계획](plan.md) |
-| 전체 계산 경로·과거 실험 | [재현 안내](deepening-reproduction.md), [과거 기록 보관 안내](archive.md) |
+원본 내려받기 주소·요청 인자·크기·SHA-256은 [source-manifest.json](source-manifest.json)에 고정되어 있다. 기존 탐색 보고서·감사 JSON·모델 없이 아래 순서로 실행할 수 있다. 공급자가 원본을 교체하면 해시 불일치로 중단한다.
 
-## 저장 범위
+```bash
+.venv/bin/python fetch.py --run-id collect-01
+.venv/bin/python estimate.py --inputs runs/collect-01/inputs.json --run-id bus-01
+.venv/bin/python forecast.py features --inputs runs/collect-01/inputs.json --run-id features-01
+.venv/bin/python forecast.py train --features runs/features-01/features.json --run-id train-01
+.venv/bin/python forecast.py evaluate --features runs/features-01/features.json --training runs/train-01/training.json --run-id evaluation-01
+.venv/bin/python review_submission.py --bus-results runs/bus-01/comparisons.csv --forecast-results runs/evaluation-01/metrics.csv
+```
 
-코드·설정·출처 명세·테스트와 설명에 필요한 집계·그림을 공개한다. [공개·보관 목록](submission-manifest.json)에 파일별 경로·해시·사유를 기록했다. 상세 관측표·개별 예측·중간 결과·과거 보고서는 원래 경로에 로컬 보관하고 Git 추적에서 제외한다. 원자료·가중치·실행 캐시도 Git에 넣지 않는다.
+각 실행 ID는 새 이름이어야 한다. 기존 데이터·모델을 덮어쓰지 않고 `runs/<ID>/` 아래에 입력·설정·코드 해시와 결과를 기록한다. 다운로드와 전체 정규화는 자료량에 따라 오래 걸린다. 최소 25 GiB 여유 공간을 권장하며 학습은 CPU 스레드 2개로 순차 실행한다. 재학습은 라이브러리·플랫폼 차이에 따라 작은 수치 차이가 날 수 있다.
 
-최초 실행계획 원문과 동결 설정은 보존했다. 2026년 잠금 시험값은 사용하지 않았다. 원자료의 정의·정책 노선의 당시 ID 대응·역사적 공개 시각에는 미확인 사항이 남아 있다.
+기존 로컬 자료가 있으면 `fetch.py --run-id collect-02 --reuse-cache`로 명세에 해시가 등록된 정규화 파일을 재사용할 수 있다. 다른 폴더에 있으면 `--local-source-root /자료가_있는_사례폴더`를 함께 지정한다. 버스만 확인하려면 `--kind bus_time`, 도로만 수집하려면 `--kind road_speed`를 쓴다.
 
-저장소 기본 검사는 루트에서 `make check PY=.venv/bin/python`으로 실행한다. 선택 ML 패키지가 없는 환경에서는 일부 검사가 건너뛰어진다. 이번 정리의 검증과 변경 범위는 [진행 기록](deepening-plan.md)에 남긴다.
+## 무엇이 재현되는가
+
+- 버스: 원래 14개와 공식 폐선 542번 제외 13개를 동일 날짜/원래 관측률 두 조건으로 비교한 30행 전체.
+- 예측: 달력만/공개된 과거 월 자료를 사용하는 CatBoost 8회와 3개월 경험 프로필 기준선. 두 기간·두 예측 간격·전체/저녁/링크별/월별 조건을 모두 포함한다.
+- 과거의 경보·승객 가중·GPU·지하철 등 보조 분석은 HTML의 **역사적 수치 스냅샷**으로 남는다. 229개 수치 전체의 해시는 검증하지만, 축약 코드로 그 실험 전부를 다시 수행하지는 않는다. 핵심 비교표와 직접 대조되는 수치의 목록은 [run_manifest.json](run_manifest.json)에 있다.
+
+초기 [plan.yaml](plan.yaml)은 공통 엔진용 DiD 설계 기록이다. 최종 분석의 실행 규칙은 [analysis-plan.yaml](analysis-plan.yaml)이며, 이 사례를 `core.agent`로 실행하는 경로는 최종 재현 절차가 아니다.
+
+확장 탐색 코드·중간 보고서·개별 테스트는 저장소 밖의 보관본으로 옮겼다. 이력 기준점은 `89156f6b9ac4fc8d0990e1297ba3f3e367197fa4`이며, 보관본에는 원래 경로와 SHA-256이 있다. 공개 실행은 보관본에 의존하지 않는다.

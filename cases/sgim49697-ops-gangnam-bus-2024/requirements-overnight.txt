@@ -1,3 +1,0 @@
-# 추가 저속 경보의 로지스틱 기준모델과 확률·구간 평가 환경.
--r requirements.txt
-scikit-learn==1.9.1
