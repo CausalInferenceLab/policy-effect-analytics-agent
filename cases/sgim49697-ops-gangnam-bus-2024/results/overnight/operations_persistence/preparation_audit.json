@@ -1,8 +1,0 @@
-{
-  "config_sha256": "8fe031e424cd554710c48f32ab59f630d512f138ad6f381fac6a2241ffe46670",
-  "source_manifest_sha256": "4b897a4b238cea683b9e39ad4b769ba6b8259da49aa0d96ff5d68a6fcd039889",
-  "registry_sha256": "78c072f3d5496d385bfaf8a4be45ea5545d0e49d5324d54ee2e81ba65b571779",
-  "code_sha256": "684af0690c28ef4c7c48330029965e146882eb3c4eefd0e205a4c49ffef15ab5",
-  "extraction_audit_sha256": "42223da1fd76144351972f1f25e9cfb2b3d534c2d493381d86c7ebbdd07eb1c6",
-  "rows_scanned": 12224033
-}

@@ -22,7 +22,7 @@
 
 2023년 4월 이후에는 이 필드들에 추가 변경이 없다. 그러나 공식 2025년 공지에는 중앙차로·정류소·횡단보도 변경이 기록돼 있다. 따라서 “ID·이름·거리·차선수가 같다”는 것은 **공개 속성 기록의 안정성**이다. 물리적 도로·검지 표본·신호 운영이 불변이었다는 증거가 아니다. 속성 기록의 갱신 시점과 행정상 차선수의 정의도 미확인이다.
 
-[전체 월별 상태](results/deepening/metadata/monthly_status.csv), [속성 원문 값](results/deepening/metadata/variants.csv), [11개 변경 필드](results/deepening/metadata/adjacent_changes.csv), [감사 명세](results/deepening/metadata/audit.json). 이 감사는 기존 추출 명세를 읽었으며 속도 관측값을 다시 열지 않았다.
+[전체 월별 상태](results/deepening/metadata/monthly_status.csv), [속성 원문 값](archive.md#results) (`results/deepening/metadata/variants.csv`, 로컬 보관), [11개 변경 필드](results/deepening/metadata/adjacent_changes.csv), [감사 명세](results/deepening/metadata/audit.json). 이 감사는 기존 추출 명세를 읽었으며 속도 관측값을 다시 열지 않았다.
 
 ## 새 정류소의 ID와 실제 집계 기록
 
@@ -44,7 +44,7 @@
 - 원본의 날짜 자체는 1월 9일부터 시작한다. 1~8일은 날짜 부재다. 1월 25일 새 중앙 28개 조합은 행이 있지만 24시간 모두 공란이며, 26일은 27개가 공란·1개가 행 부재였다. 실제 버스가 운행하지 않았다는 뜻이 아니다.
 - 4,940개 노선·정류소·날짜 중 고유 행 1,283개, 행 부재 2,593개, 날짜 부재 1,040개, 복수 기록 격리 24개다. 일 합계와 24시간이 모두 유효한 행은 **0개**여서 합계 일치 검증을 통과했다고 주장하지 않는다.
 
-공식 안내일과 **양수 집계 기록의 첫 출현**이 맞는다는 근거를 얻었다. 개별 차량의 첫 통과 시각이나 모든 차량의 실제 경로를 관측한 것은 아니다. [전체 상태](results/deepening/infrastructure/trip_support_daily.csv), [노선·정류소별 요약](results/deepening/infrastructure/trip_support_summary.csv), [원본 감사](results/deepening/infrastructure/trip_support_audit.json).
+공식 안내일과 **양수 집계 기록의 첫 출현**이 맞는다는 근거를 얻었다. 개별 차량의 첫 통과 시각이나 모든 차량의 실제 경로를 관측한 것은 아니다. [전체 상태](archive.md#results) (`results/deepening/infrastructure/trip_support_daily.csv`, 로컬 보관), [노선·정류소별 요약](results/deepening/infrastructure/trip_support_summary.csv), [원본 감사](results/deepening/infrastructure/trip_support_audit.json).
 
 개통 전후·공란·복수 기록의 6개 날짜는 Pandas CSV 판독으로 다시 확인했다. 기존 스트리밍 집계 함수를 호출하지 않고 3개 주간 파일을 읽어 **780개 상태·3,900개 수치가 일치**했다. [대조 명세](results/deepening/infrastructure/trip_support_validation.json).
 

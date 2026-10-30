@@ -1,6 +1,6 @@
 # 확장 탐색 1차: 시간대·관측 누락·지역 기상으로 다시 본 방향 차이
 
-2026-10-29 실행. [10시간 계획](overnight-plan.md)의 E01·E02·E04·E05·E07·E08에서 얻은 첫 결과다. 이후 승객·노선군·공간·다년 자료와 예측 탐색을 이어간다. 원래 계획·프로토콜·결과와 2026년 잠금 시험값은 보존했다.
+2026-10-29 실행. [10시간 계획](archive.md#reports) (`overnight-plan.md`, 로컬 보관)의 E01·E02·E04·E05·E07·E08에서 얻은 첫 결과다. 이후 승객·노선군·공간·다년 자료와 예측 탐색을 이어간다. 원래 계획·프로토콜·결과와 2026년 잠금 시험값은 보존했다.
 
 가장 남는 질문은 **“남행에서 빠져나간 노선의 기록과 계속 운행한 버스의 변화를 구분하면, 저녁의 병목 이동을 어디까지 설명할 수 있나?”**다. 북행의 저녁 증가가 다른 시간대보다 크고 집계법을 바꾸어도 방향이 남는다. 남행 전체에서는 사후 관측 누락이 크며, 그 누락은 정책 후보 노선에 집중된다. 지역 기상 자료를 새로 확보했지만 기상 표본의 비교 가능성은 아직 시간 정렬에 민감하다.
 
@@ -48,7 +48,7 @@
 
 ## 지역 시간별 기상은 진전이지만 강건한 결론까지는 아니다
 
-[자료 정의·수집 결과](overnight-evidence.md)에 근거해 서초·강남·서울 3개 관측소에서 26,157개 시간의 강수 관측과 26,246개 시간의 기온을 확보했다. 기상 결측은 그대로 유지했다. 공통 층 보존율의 분모는 기상 관측이 있는 날만이 아니라 **모든 버스 유효 날짜**다.
+[자료 정의·수집 결과](archive.md#reports) (`overnight-evidence.md`, 로컬 보관)에 근거해 서초·강남·서울 3개 관측소에서 26,157개 시간의 강수 관측과 26,246개 시간의 기온을 확보했다. 기상 결측은 그대로 유지했다. 공통 층 보존율의 분모는 기상 관측이 있는 날만이 아니라 **모든 버스 유효 날짜**다.
 
 서초 401·기본 시간 정렬에서 북행 저녁의 강수+기온 층을 맞추면 +9.50%다. 사전 27일, 사후 24일을 남겨 20일·80% 조건을 통과한다. 남은 공통 층은 **해당 시간대 강수 1mm 미만**과 세 기온 구간이다. 비가 많은 조건까지 비교가 성립한다는 뜻이 아니다. 한 층은 사후 2일뿐이어서 층별 추정의 불안정성도 남는다.
 
@@ -69,8 +69,8 @@
 .venv/bin/python -c 'from gangnam.overnight_observation_plots import plot; plot()'
 ```
 
-- [버스 집계 비교 1,560행](results/overnight/bus/aggregation_comparisons.csv), [일별 주 분석 지수](results/overnight/bus/daily_indices_primary.csv), [누락 분해](results/overnight/bus/missingness_by_route_segment.csv)
-- [기상 비교 3,456행](results/overnight/weather/comparisons.csv), [공통 층별 표본](results/overnight/weather/common_strata.csv), [원본 기상 품질](results/overnight/weather/hourly_quality.csv)
+- [버스 집계 비교 1,560행](results/overnight/bus/aggregation_comparisons.csv), [일별 주 분석 지수](archive.md#results) (`results/overnight/bus/daily_indices_primary.csv`, 로컬 보관), [누락 분해](archive.md#results) (`results/overnight/bus/missingness_by_route_segment.csv`, 로컬 보관)
+- [기상 비교 3,456행](results/overnight/weather/comparisons.csv), [공통 층별 표본](archive.md#results) (`results/overnight/weather/common_strata.csv`, 로컬 보관), [원본 기상 품질](results/overnight/weather/hourly_quality.csv)
 - [버스 패널 감사](results/overnight/bus/panel_audit.json), [기상 감사](results/overnight/weather/audit.json), [기상 비교 감사](results/overnight/weather/comparison_audit.json)
 - 모든 집계법의 일별 상세와 큰 패널·원본은 Git 제외 경로에 보존하고 해시를 기록했다. 원문·초기 프로토콜·이전 결과는 변경하지 않았다.
 

@@ -60,8 +60,8 @@
 
 [서울시 요금 이력](https://news.seoul.go.kr/traffic/archives/345)에 따르면 2025년 6월 28일 지하철 교통카드 일반 기본요금이 1,400원에서 1,550원으로 바뀌었다. 2025년 계절 비교의 대안 설명으로 남기며 현재 자료로 버스 전환량을 계산하지 않는다.
 
-2024년은 [K-패스](https://www.molit.go.kr/mtc/USR/N0201/m_36770/dtl.jsp?id=95089685&lcmspage=1)와 [더 경기패스](https://gnews.gg.go.kr/news/news_view.do?number=202404241436287416C109&s_code=C109&type_m=main)가 5월 1일부터 시행됐다. 이번 일별 사전 창은 그 뒤지만 기존 월 카드 4~5월 기준은 시행 전후를 함께 포함한다. [구성역·기후동행카드 등 기존 동시 정책](overnight-context-report.md)과 함께 해석해야 한다.
+2024년은 [K-패스](https://www.molit.go.kr/mtc/USR/N0201/m_36770/dtl.jsp?id=95089685&lcmspage=1)와 [더 경기패스](https://gnews.gg.go.kr/news/news_view.do?number=202404241436287416C109&s_code=C109&type_m=main)가 5월 1일부터 시행됐다. 이번 일별 사전 창은 그 뒤지만 기존 월 카드 4~5월 기준은 시행 전후를 함께 포함한다. [구성역·기후동행카드 등 기존 동시 정책](archive.md#reports) (`overnight-context-report.md`, 로컬 보관)과 함께 해석해야 한다.
 
 다음에는 같은 표본에서 구간별 지속성을 나누고 북행 증가가 특정 구간·노선에 집중되는지 확인한다. 모든 기간·관측소에서 조건을 통과한 것이 아니므로 전체 결과에 포괄적으로 ‘기상 보정 완료’라는 표현을 붙이지 않는다.
 
-사례 환경에서 `python overnight.py persistence`, `python overnight.py persistence-plots`로 재현한다. [관측 상태 분해](results/overnight/persistence/record_states.csv), [2025 사전 유지율](results/overnight/persistence/pre2025_retention.csv), [감사 명세](results/overnight/persistence/audit.json), [관련 출처](overnight-supplement-references.json)를 함께 제공한다. 기존 예측 모델·코드 동결과 2026년 잠금 자료는 유지했다.
+사례 환경에서 `python overnight.py persistence`, `python overnight.py persistence-plots`로 재현한다. [관측 상태 분해](results/overnight/persistence/record_states.csv), [2025 사전 유지율](archive.md#results) (`results/overnight/persistence/pre2025_retention.csv`, 로컬 보관), [감사 명세](results/overnight/persistence/audit.json), [관련 출처](overnight-supplement-references.json)를 함께 제공한다. 기존 예측 모델·코드 동결과 2026년 잠금 자료는 유지했다.

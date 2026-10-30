@@ -1,9 +1,0 @@
-{
-  "code_sha256": "006ac0b7b9e8e3ae4f046c65e9bb5c45ff5c6d7510152ca2e7d8bf3d15326e4f",
-  "inputs": {
-    "comparisons.csv": "6374340c70d612001d6bd3ccc09661109567b3dfbb993579a16f649441ebf53c"
-  },
-  "outputs": {
-    "hourly_changes.png": "5292469e09890abc53beb900090ccb2425daa6c3a57600afe2c0fbceeb9ddd9f"
-  }
-}

@@ -44,7 +44,7 @@
 | 2024 | 16,075 | 2,684 | 1,345 |
 | 2025 | 16,388 | 2,805 | 1,408 |
 
-이 표는 **시종점 설명을 제외한 키의 값 충돌**이다. 같은 설명까지 가진 행에서도 값 충돌이 있으므로 설명 중복만 제거하면 해결되는 문제가 아니다. 숨겨진 식별자 등 원인을 이 파일만으로 확정하지 않는다. 자세한 분모·설명별 충돌과 예시는 [키 감사](results/deepening/gyeonggi/key_audit.csv), [예시](results/deepening/gyeonggi/description_ambiguity_examples.csv)에 있다.
+이 표는 **시종점 설명을 제외한 키의 값 충돌**이다. 같은 설명까지 가진 행에서도 값 충돌이 있으므로 설명 중복만 제거하면 해결되는 문제가 아니다. 숨겨진 식별자 등 원인을 이 파일만으로 확정하지 않는다. 자세한 분모·설명별 충돌과 예시는 [키 감사](results/deepening/gyeonggi/key_audit.csv), [예시](archive.md#results) (`results/deepening/gyeonggi/description_ambiguity_examples.csv`, 로컬 보관)에 있다.
 
 2024년 시간 파일 두 개의 경계에는 내용이 완전히 같은 행 1개도 있었다. 안양시 8번, 12월 주말 13~14시의 921이라는 값이다. 이 단일 중복과 서로 다른 값의 충돌은 별개로 기록했다.
 
@@ -62,7 +62,7 @@
 
 ![인허가 지역·노선명별 대표일 수록 상태](results/deepening/gyeonggi/candidate_coverage.png)
 
-그림은 실제로 발견된 지역·이름 29개와 미수록 이름 2개를 모두 보여 준다. 녹색은 그 달의 평일·토요일 대표일이 모두 수록됐다는 뜻이다. 회색은 이 파일의 미수록이며 실제 운행 중단을 뜻하지 않는다. [전체 이름 수록](results/deepening/gyeonggi/policy_name_presence.csv), [품질과 월 목록](results/deepening/gyeonggi/candidate_coverage.csv), [후보의 원래 대표일 집계](results/deepening/gyeonggi/candidate_representative_day_trips.csv)를 함께 공개한다.
+그림은 실제로 발견된 지역·이름 29개와 미수록 이름 2개를 모두 보여 준다. 녹색은 그 달의 평일·토요일 대표일이 모두 수록됐다는 뜻이다. 회색은 이 파일의 미수록이며 실제 운행 중단을 뜻하지 않는다. [전체 이름 수록](results/deepening/gyeonggi/policy_name_presence.csv), [품질과 월 목록](results/deepening/gyeonggi/candidate_coverage.csv), [후보의 원래 대표일 집계](archive.md#results) (`results/deepening/gyeonggi/candidate_representative_day_trips.csv`, 로컬 보관)를 함께 공개한다.
 
 ## 이번 판단과 다음 자료
 

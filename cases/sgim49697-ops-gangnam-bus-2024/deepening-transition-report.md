@@ -6,7 +6,7 @@
 
 기존 14개 링크·4개 시간대·두 집계법을 유지했다. 각 해 2023~2025년 5월 20일~8월 16일의 평일에서 원래 공휴일을 제외하고, 결측은 채우지 않았다. 새 분기점을 찾거나 결과에 따라 기간·링크를 고르지 않았다. 버스 운행시간 자료와 다른 **일반도로 속도(km/h)** 분석이다.
 
-주별 그림의 0주는 매년 6월 29일 다음 첫 월요일을 시작으로 한다. 각 해 원래 사전 기간 평균 대비 변화율이며, 최소 3일 관측을 요구한다. 1,794개 집계 중 46개는 2023년 마지막 부분 주의 관측일이 2일이라 제외됐다. 점과 선은 신뢰구간이 아니다. [전체 주별 표](results/deepening/transition/weekly.csv)에 실패한 주도 남겼다.
+주별 그림의 0주는 매년 6월 29일 다음 첫 월요일을 시작으로 한다. 각 해 원래 사전 기간 평균 대비 변화율이며, 최소 3일 관측을 요구한다. 1,794개 집계 중 46개는 2023년 마지막 부분 주의 관측일이 2일이라 제외됐다. 점과 선은 신뢰구간이 아니다. [전체 주별 표](archive.md#results) (`results/deepening/transition/weekly.csv`, 로컬 보관)에 실패한 주도 남겼다.
 
 ![주변과 핵심 네 집단의 연도별 주간 변화](results/deepening/transition/weekly_group_evening.png)
 
@@ -14,7 +14,7 @@
 
 ## 시행일 전부터 보이는 낮은 값
 
-다음은 전환 경계의 일부 일별 저녁 평균이다. 전체 링크·날짜는 [일별 표](results/deepening/transition/daily.csv)와 위 그림에 공개한다. 주변 남행은 영동1교·양재시민의숲의 원래 네 링크를 고정 길이로 가중했다.
+다음은 전환 경계의 일부 일별 저녁 평균이다. 전체 링크·날짜는 [일별 표](archive.md#results) (`results/deepening/transition/daily.csv`, 로컬 보관)와 위 그림에 공개한다. 주변 남행은 영동1교·양재시민의숲의 원래 네 링크를 고정 길이로 가중했다.
 
 | 날짜 | 주변 남행 | 영동1교 북단→남단 `1210010200` | 교육개발원입구→영동1교 북단 `1210011200` |
 |---|---:|---:|---:|
@@ -31,7 +31,7 @@
 
 6월 20일처럼 앞선 낮은 날짜도 있으므로 6월 26~27일을 새 확정 변화점으로 선언하지 않는다. 이 자료만으로 사전 공정·선행 대응·날씨·신호·표본 구성 중 무엇이 원인인지 구별할 수 없다. 북행도 모든 링크가 같은 방향으로 움직이지 않는다.
 
-이 경계를 확인하기 위해 세 해에 동일한 6월 24일~7월 5일, 36일 전체를 원본 XML로 다시 읽었다. 여섯 월 파일의 927,745행을 스캔해 14개 링크×36일×24시간 = **12,096개 값·결측 상태가 모두 일치**했다. 지정한 경계의 추출을 확인한 것이며, 측정 방식 자체나 전체 월의 모든 도로를 검증한 것은 아니다. [원본 대조 명세](results/deepening/transition/raw_check.json), [셀별 대조](results/deepening/transition/raw_check_cells.csv).
+이 경계를 확인하기 위해 세 해에 동일한 6월 24일~7월 5일, 36일 전체를 원본 XML로 다시 읽었다. 여섯 월 파일의 927,745행을 스캔해 14개 링크×36일×24시간 = **12,096개 값·결측 상태가 모두 일치**했다. 지정한 경계의 추출을 확인한 것이며, 측정 방식 자체나 전체 월의 모든 도로를 검증한 것은 아니다. [원본 대조 명세](results/deepening/transition/raw_check.json), [셀별 대조](archive.md#results) (`results/deepening/transition/raw_check_cells.csv`, 로컬 보관).
 
 ## 추세를 넣으면 달라지는 해석
 
@@ -75,7 +75,7 @@
 ## 근거·검증·재현
 
 - [고정 분석 규칙](deepening_transition_config.yaml), [원본 대조 규칙](deepening_transition_check_config.yaml), [입력 명세](results/deepening/transition/input_manifest.json).
-- [회귀 전체 270행](results/deepening/transition/fixed_date_regressions.csv), [기상 회귀 전체 216행](results/deepening/transition/weather_regressions.csv), [적합값·잔차](results/deepening/transition/fitted_descriptions.csv). 각 회귀는 양쪽 최소 20일·80% 보존 및 행렬 계수 조건을 통과했다.
+- [회귀 전체 270행](results/deepening/transition/fixed_date_regressions.csv), [기상 회귀 전체 216행](results/deepening/transition/weather_regressions.csv), [적합값·잔차](archive.md#results) (`results/deepening/transition/fitted_descriptions.csv`, 로컬 보관). 각 회귀는 양쪽 최소 20일·80% 보존 및 행렬 계수 조건을 통과했다.
 - [감사 결과](results/deepening/transition/audit.json): 일별 8,464행, 이전 일별 5,312행 재현. [독립 계수 대조](results/deepening/transition/result_validation.json): 기존 설계·적합 함수를 호출하지 않고 QR 잔차화로 486행의 1,674수치를 재계산, 최대 오차 `3.64e-12` 이하.
 - [Bernal 등 ITS 정정문](https://researchonline.lshtm.ac.uk/4657832/1/2017_lopezbernal_IJE_correction.pdf) 1쪽과 [저자 코드](https://github.com/gasparrini/2017_lopezbernal_IJE_codedata/blob/master/Rcode.R)의 날짜 중심화·자기상관 점검을 참고했다. 여기서는 해당 논문의 식별 가정을 확보한 인과 ITS를 구현했다고 주장하지 않는다. 실제 관측 간 잔차 1시차 상관도 표에 남겼으며 주말·결측 때문에 일정한 하루 간격의 상관과는 다르다.
 

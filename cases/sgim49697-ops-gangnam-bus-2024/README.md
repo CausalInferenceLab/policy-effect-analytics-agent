@@ -1,118 +1,40 @@
 # 강남대로 버스 분산 이후의 방향별 변화와 단기 예측
 
-**“강남역 버스는 양방향으로 좋아졌을까?”** 2024년 광역버스 분산 전후의 기록을 방향·구간·시간별로 확인하고 다음 해까지 연결한 학생 프로젝트다. 작성자 `sgim49697-ops`, 트랙 **B. 가설과 분석**. 일반도로 속도 범위·저속 경보 예측은 별도 확장으로 다룬다.
+**2024년 광역버스 분산 이후, 같은 강남대로의 버스 기록은 왜 남행과 북행에서 반대로 변했을까?** 공공데이터의 대상·정의·관측 가능성을 확인하고, 다른 원인 후보와 다음 해 기록을 대조한 학생 프로젝트다. 작성자 `sgim49697-ops`, 트랙 B. 가설과 분석.
 
-**[프로젝트 설명 HTML](project-overview.html)**은 2024년 6월 29일 강남대로 광역버스 분산의 배경과 질문, 사용한 데이터셋, 비교 방법, 방향별 결과, 원인 후보의 확인 범위, 별도의 속도 예측 실험, 발견별 활용 방안을 순서대로 읽는 설명서다. 파일 하나를 내려받아 브라우저로 열면 인터넷 없이도 본문·도표·표·부록이 보인다(JavaScript는 인쇄 버튼과 목차 표시에만 쓴다). 휴대전화 화면과 인쇄/PDF 저장을 지원한다. GitHub에서는 HTML 코드가 표시되므로 파일을 다운로드한 뒤 연다. 화면 수치와 근거의 일치는 사례 폴더에서 `python review_overview.py --check`로 확인한다.
+## 처음 읽는 순서
 
-먼저 **[최신 종합 보고서](deepening-summary.md)**를 읽으면 된다. 폐선 노선을 제외한 고정 13개에서도 2024년 여름 기록 지수는 남행 −49.71%·북행 +41.03%였고, 정류소 안내군을 나눠도 다음 해까지 반대 양상이 남았다. 주변 도로는 시행일 전부터 일부 하락해 단일 정책으로 설명하기 어려웠다. 버스 기록의 시간 단위·정차 경계는 미확인이므로 실제 분 단위 절감이나 정책의 인과 효과로 해석하지 않는다. [첫 탐색의 결과](overnight-summary.md)는 그대로 보존했다.
+1. **[프로젝트 설명 HTML](project-overview.html)** — 정책 배경 → 데이터와 비교 집단 → 방법 → 발견 → 원인 후보 → 학습·예측 → 활용. 파일을 내려받아 브라우저로 열면 인터넷 없이 본문과 도표를 읽고 인쇄할 수 있다.
+2. **[결과 요약](report.md) · [해석과 활용](discussion.md)** — 확인한 사실과 아직 판단할 수 없는 내용을 짧게 읽는다.
+3. **[상세 종합](deepening-summary.md) · [공개 검토와 재현](deepening-reproduction.md)** — 집계표, 데이터 정의, 학습 조건, 계산 의존성을 확인한다.
 
-**2026-10-29 추가 탐색:** [역사 자료](deepening-history-report.md)와 [중앙차로·정류소 이동](deepening-infrastructure-report.md)을 공식 문서와 실제 운행 기록으로 대조했다. 예측은 월별 파일의 공개 지연을 반영한 [8개 CPU 모형](deepening-archive-report.md)을 새로 학습했다. 같은 조건의 달력 모형보다 H1 MAE가 여름 29.29%·가을 21.26% 낮았지만 12월 예측구간 포괄률은 74.10%였다. [기존 경보 평가](deepening-episode-report.md)는 높은 정밀도와 부족한 시작 감지를 구별한다. 다음 우선 자료는 시간 필드 정의, 당시 신호·회전량·차로 통제, 차량별 도착·출발이다.
+관측 가능한 서울버스 고정 13개에서 2024년 여름의 정규화 시간 기록 지수는 남행 −49.71%, 북행 +41.03% 변했다. 이 13개는 정책 대상 광역버스 20개와 다른 집단이다. 시간 값의 단위·정차 경계가 미확정이므로 실제 분 단위 절감이나 정책의 인과효과로 읽지 않는다. 일반도로 속도 예측은 별도 실험이다.
 
-**[추가 핵심 수치](results/deepening/review/key_numbers.csv)**와 **[이전 핵심 수치](results/overnight/review/key_numbers.csv)**는 근거 집계의 선택 조건과 연결된다. Python 3.12에서 `python review_deepening.py --check`, `python review_overnight.py --check`로 원본·모델·외부 패키지 없이 수치와 공개 해시를 대조할 수 있다. [최신 재현 안내](deepening-reproduction.md)는 공개 검토·로컬 동결·원자료 계산을 설명하며, [문헌 안내](deepening-literature.md)는 실제 읽은 범위와 적용 여부를 기록한다.
+## 다운로드한 공개 파일 검증
 
-작업 제안 [이슈 #53](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/issues/53), [계획 PR #54](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/54), [구현·결과 PR #55](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/55). 작업 브랜치는 `sgim49697-ops/gangnam-pipeline`이며 PR은 초안이다. 최초 일반도로·GPU 모델 비교는 아래 이전 분석 문서에 보존했다. 2026년 잠금 시험값은 사용하지 않았다.
-
-## 최신 결과와 근거
-
-| 읽을 내용 | 문서 |
-|---|---|
-| 최신 추천·수집 우선순위·재현 | [종합](deepening-summary.md), [문헌](deepening-literature.md), [공개 검토·재현](deepening-reproduction.md) |
-| 추가 탐색: 실제 시설·노선군의 운영 변화 | [중앙차로·새 정류소·월별 속성·공식 안내군 비교](deepening-infrastructure-report.md): 1월 11일 실제 집계 기록과 전체 경계 상태 |
-| 추가 탐색: 과거 ID·폐선 구성·시간 명세 | [역사 목록](deepening-history-report.md), [13개 노선 비교](deepening-cohort-report.md), [정의 확인](deepening-definition-report.md), [진행 계획](deepening-plan.md) |
-| 추가 탐색: 경기 노선 이용객의 실제 범위 | [대표일·이름 후보·중복 감사](deepening-gyeonggi-report.md): 2023~2025년 330만 행, 월 합계·역사 노선 ID와 구별 |
-| 추가 탐색: 같은 강남대로의 다른 변화 | [양재천 주변 14개 링크 비교](deepening-road-report.md), [공개 형상·표준링크 대응](deepening-geometry-report.md): 일반도로 공간 차이와 동시 공사 근거 |
-| 추가 탐색: 시행일 전의 변화와 추세 가정 | [전환 주간·고정일 회귀·기상 비교](deepening-transition-report.md): 12,096개 원본 값/상태와 1,674개 계수 대조, 사전 하락과 모형별 부호 차이 |
-| 추가 탐색: 경보가 실제로 준비되는 시점 | [저속 구간의 시작·재알림](deepening-episode-report.md), [월별 파일 공개 지연](deepening-availability-report.md): 시간별 정밀도와 시작 감지, 최근 입력의 접근 조건 |
-| 추가 탐색: 공개 과거 월만 쓰는 예측 | [별도 8회 학습과 같은 조건의 달력 비교](deepening-archive-report.md): 시드 17 H1 MAE가 여름 29.29%·가을 21.26% 낮음, 가을 구간 포괄률 한계 포함 |
-| 추천 프로젝트·주요 결과·채택/보류·추가 수집 순위 | [종합 보고서](overnight-summary.md) |
-| 변화 시점과 32개월의 지속성 | [장기 궤적](overnight-timeline-report.md) |
-| 강조 구간·단일 노선/구간 제외·공동 변동 범위·운영 기록 | [구간 분석](overnight-segment-report.md) |
-| 옆 구간으로 기록이 이동했는지와 순서 키 | [인접 구간 합](overnight-path-report.md) |
-| 같은 노선·같은 날짜의 7~22시 모양 | [시간대 공동 표본](overnight-hour-report.md) |
-| 방향 전체의 2025년 연장·지역 기상 비교 | [지속성](overnight-persistence-report.md) |
-| 노선군·집계·승객 가중의 한계 | [노선군](overnight-route-report.md), [관측·누락](overnight-observation-report.md) |
-| 시간·운행횟수·승차 공동 표본과 카드 합계 | [운영·카드](overnight-operations-report.md) |
-| 주변 일반도로·교통량·이름/범위 민감도 | [도로 맥락](overnight-road-report.md) |
-| 지하철 8역·24개월 수요 맥락 | [지하철](overnight-subway-report.md) |
-| 환승·출도착·정류장 이력·2022년 제외·동시 변화 | [보조 자료](overnight-auxiliary-report.md), [정책·연구 맥락](overnight-context-report.md) |
-| 최초 고정 시험과 단순 예측 기준 | [예측 결과](overnight-forecast-report.md), [기준 비교](overnight-baseline-report.md) |
-| 반복 패턴과 다른 조건부 저속·차이 점수 | [조건부 저속](overnight-conditional-report.md) |
-| 구간 보정·비 올 때 오류·실제 발행 예산 | [구간 보정](overnight-interval-report.md), [기상 성능](overnight-weather-performance-report.md), [순차 경보](overnight-alert-report.md) |
-| 미열람 2025년 9~12월의 고정 후보 확인 | [가을·겨울 추가 검증](overnight-confirmation-report.md) |
-| 자료 정의·접근 조건·외부 AI에 전달할 질문 | [근거](overnight-evidence.md), [확인 요청서](verification-request.md) |
-| 단계별 실행·검증·커밋 근거 | [확장 계획·진행 기록](overnight-plan.md), [재현 안내](overnight-reproduction.md) |
-
-각 보고서에서 설정 YAML, 전체 CSV, 출처 JSON, 그림과 입력/출력 해시로 이동할 수 있다. 원본·Parquet·개별 예측·모델은 `data/`와 `runs/`에 보존하고 Git에서 제외한다. 공개 원본의 결측·손상·기간 불일치와 분석 조건 실패를 보고서에서 제외하지 않았다.
-
-## 이전 분석과 최초 계획
-
-| 문서·설정 | 역할 |
-|---|---|
-| [report.md](report.md), [discussion.md](discussion.md), [model-notes.md](model-notes.md) | 최초 20개월 일반도로·GPU 모델 비교·해석·학습 기록 |
-| [followup-report.md](followup-report.md), [followup-plan.md](followup-plan.md), [literature.md](literature.md) | 최초 버스·주변 도로 확장과 관련 논문·공식 분석자료 |
-| [directional-report.md](directional-report.md), [directional_config.yaml](directional_config.yaml) | 노선 이동·전년·가을·기상 비교의 출발점 |
-| [plan.md](plan.md), [plan.yaml](plan.yaml), [corridors.yaml](corridors.yaml), [ml_config.yaml](ml_config.yaml), [data_contract.yaml](data_contract.yaml) | 최초 범위·프로토콜·고정 규칙과 진행 기록 |
-| [evidence.md](evidence.md), [source-manifest.json](source-manifest.json), [discovery-sources.json](discovery-sources.json) | 최초 근거와 원본 다운로드 인자·해시 |
-| [research-request.md](research-request.md) | 최초 외부 조사 요청서 |
-
-받은 「강남대로 버스 정책 분석과 교통 예측 모델 단기 실행계획.md」는 원문 그대로 보존했다. 최초 프로토콜 4개를 수정하지 않고 후속 규칙을 별도 설정에 기록했다. 아래 환경·실행 예시는 최초 일반도로 분석의 기록이며, 확장 탐색의 현재 실행은 [재현 안내](overnight-reproduction.md)를 먼저 따른다.
-
-## 실행 환경
-
-아래 명령은 현재 구현 브랜치에서 실행할 수 있다. 저장소 루트에서 개인 폴더로 이동한다.
+Python 3.12에서 사례 폴더로 이동해 실행한다. 외부 패키지·원자료·모델·GPU·인증키·네트워크가 필요하지 않다.
 
 ```bash
 cd cases/sgim49697-ops-gangnam-bus-2024
-uv venv --python 3.12 .venv
-uv pip install --python .venv/bin/python -r requirements.txt
-uv pip check --python .venv/bin/python
-.venv/bin/python -c "import sys; print(sys.executable)"
+python review_submission.py --check
 ```
 
-GPU는 장비·드라이버와 [공식 PyTorch 안내](https://pytorch.org/blog/pytorch-2-13-release-blog/) 및 [NVIDIA 호환성](https://docs.nvidia.com/deploy/cuda-compatibility/minor-version-compatibility.html)을 확인한 뒤 설치한다. 이 장비의 검증 환경은 RTX 5070 Ti, 드라이버 610.88, Python 3.12.12, PyTorch 2.13.0/cu130이다.
+이 명령은 핵심 수치 229개, 직접 근거 35개, 공개 산출물 155개와 HTML의 표시 수치를 대조한다. [추가 수치 151개](results/deepening/review/key_numbers.csv)와 [이전 수치 78개](results/overnight/review/key_numbers.csv)에서 원래 집계표의 행·열·선택 조건으로 돌아갈 수 있다. 전체 로컬 감사와 재학습은 수행하지 않는다.
 
-```bash
-nvidia-smi
-uv pip install --python .venv/bin/python -r requirements-gpu.lock
-uv pip show --python .venv/bin/python torch torchvision torchaudio
-uv pip check --python .venv/bin/python
-.venv/bin/python smoke.py
-```
+## 질문별 근거
 
-`smoke.py`는 합성자료만 사용한다. DLinear·PatchTST 각 100 step, 그래프 모델 각 2 step, CatBoost와 단순 기준선, 고정 revision Chronos2 추론을 검증한다. 실제 연구 성능이 아니다. CPU 환경에서는 `smoke.py --device cpu --models last_value weekly_naive weekday_hour_mean catboost`를 사용한다.
+| 확인할 내용 | 안내 |
+|---|---|
+| 데이터 정의·당시 노선·폐선 영향 | [시간 필드](deepening-definition-report.md), [역사 목록](deepening-history-report.md), [고정 13개 비교](deepening-cohort-report.md) |
+| 새 정류소 운영·주변 도로·시행일 이전 변화 | [운영 이력](deepening-infrastructure-report.md), [도로 공간 차이](deepening-road-report.md), [전환 주간](deepening-transition-report.md) |
+| 월별 자료 공개 지연과 예측 | [공개 시각](deepening-availability-report.md), [학습·성능 비교](deepening-archive-report.md) |
+| 자료 수집·문헌·초기 설계 | [데이터 보관 안내](data/README.md), [문헌](deepening-literature.md), [최초 계획](plan.md) |
+| 전체 계산 경로·과거 실험 | [재현 안내](deepening-reproduction.md), [과거 기록 보관 안내](archive.md) |
 
-## 수집·분석 순서
+## 저장 범위
 
-```bash
-# 70e8ec7에서 결과를 보기 전 가정·제외 링크·계산 예산을 고정했다.
-.venv/bin/python validate.py
-.venv/bin/python fetch.py --scope ml --workers 4
-.venv/bin/python audit.py
-.venv/bin/python estimate.py
-.venv/bin/python forecast.py train --run exploration_20261028 --models all --graph data/graph/edges.csv
-for split in pre_test transition post_test; do
-  .venv/bin/python forecast.py evaluate --run exploration_20261028 --models all --split "$split" --graph data/graph/edges.csv
-  .venv/bin/python forecast.py compare --run exploration_20261028 --models all --split "$split" --graph data/graph/edges.csv
-done
-.venv/bin/python summarize.py --run exploration_20261028
-```
+코드·설정·출처 명세·테스트와 설명에 필요한 집계·그림을 공개한다. [공개·보관 목록](submission-manifest.json)에 파일별 경로·해시·사유를 기록했다. 상세 관측표·개별 예측·중간 결과·과거 보고서는 원래 경로에 로컬 보관하고 Git 추적에서 제외한다. 원자료·가중치·실행 캐시도 Git에 넣지 않는다.
 
-새 실행에는 새 `--run` 이름을 사용한다. 실행 중 오류가 나면 로그·부분 결과를 보존하고 원인을 해결한 뒤 다른 실행 이름으로 재시작한다. 실제 학습에서는 독립적인 CPU CatBoost와 GPU 모델 작업을 동시에 실행할 수 있다. GPU 모델끼리는 순차 실행한다.
+최초 실행계획 원문과 동결 설정은 보존했다. 2026년 잠금 시험값은 사용하지 않았다. 원자료의 정의·정책 노선의 당시 ID 대응·역사적 공개 시각에는 미확인 사항이 남아 있다.
 
-`validate.py`는 현재 `mode: exploratory`와 가정 목록을 출력한다. `assumed`는 공식 확인 완료를 뜻하지 않는다. 탐색 모드와 사용자 요청 근거가 없으면 기존의 검증 완료·커밋 후 24시간 관문이 적용된다. 어떤 모드에서도 미커밋 설정으로 실자료를 실행하지 않는다.
-
-`audit.py`는 원자료의 결측 사유, train 관측률로 고른 링크, 분할별 공통 창, 메타데이터 변경 이력을 기록한다. `data/graph/edges.csv`는 전 기간에 안정적인 동일 도로·방향의 종점명→시점명 연결이다. 동반 근거는 `verified: false`, `status: assumed`이며 역사적 회전 가능성을 검증한 지도가 아니다.
-
-공식 ASOS 108 일별 CSV와 결측 정의를 확보하면 `weather.py 입력.csv --evidence 근거.json` 후 `estimate.py --weather data/weather/daily.csv`로 비우천 민감도를 추가할 수 있다. 아직 빈 표시의 정의를 확인하지 못했으므로 이번 실행에서 기상 결측을 무강수로 바꾸지 않는다. 예측 입력에 미래 실제 날씨를 쓰지 않는다.
-
-`fetch.py` 기본 실행은 기준을 만족할 때 `data/panel.csv`를 만든다. 비교군 부족이면 `data/descriptive.csv`만 만든다. 개인 `estimate.py`는 `runs/policy/`에 기술통계·DiD·주별 격차·민감도·그림·보고서를 생성한다. **공통 `make flow`는 이 개인 실행기를 호출하지 않는다.** 개인 진단은 위 명령으로 재현한다.
-
-## 저장·검증 규칙
-
-원본·Parquet·기상자료는 `data/`, 예측 행·체크포인트·실행 로그는 `runs/`에 두며 Git에서 제외한다. 실행 폴더는 덮어쓰지 않는다. 월별 파일의 개별 이용 조건은 미확정으로 남기고 공개 산출물은 필요한 집계·자체 그림·해석·출처로 제한한다. 체크포인트와 개별 예측은 재배포하지 않는다. 다른 참여자의 사례와 `core/`, `site/`는 수정하지 않는다.
-
-저장소 루트의 기본 검증은 `make check PY=.venv/bin/python`이다. 선택 ML 의존성까지 설치한 환경에서는 아래 명령으로 사례 테스트를 모두 실행한다.
-
-```bash
-cases/sgim49697-ops-gangnam-bus-2024/.venv/bin/python -m pytest tests/test_gangnam_bus.py
-```
+저장소 기본 검사는 루트에서 `make check PY=.venv/bin/python`으로 실행한다. 선택 ML 패키지가 없는 환경에서는 일부 검사가 건너뛰어진다. 이번 정리의 검증과 변경 범위는 [진행 기록](deepening-plan.md)에 남긴다.

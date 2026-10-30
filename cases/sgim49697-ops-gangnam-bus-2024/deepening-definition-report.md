@@ -47,4 +47,4 @@ T Data의 `dataprovide` 화면에서 **2021년 응답 샘플**을 추가 확인�
 .venv/bin/python deepening.py definitions-audit
 ```
 
-[규칙](deepening_definitions_config.yaml), [감사·출처와 해시](results/deepening/definitions/audit.json), [필드 설명 전체](results/deepening/definitions/fields.csv), [요청 인자](results/deepening/definitions/request_parameters.csv), [허용한 예시 값](results/deepening/definitions/selected_sample_values.csv)를 공개한다. 원문 HTML은 Git 제외 경로에 보존한다.
+[규칙](deepening_definitions_config.yaml), [감사·출처와 해시](results/deepening/definitions/audit.json), [필드 설명 전체](results/deepening/definitions/fields.csv), [요청 인자](results/deepening/definitions/request_parameters.csv), [허용한 예시 값](archive.md#results) (`results/deepening/definitions/selected_sample_values.csv`, 로컬 보관)를 공개한다. 원문 HTML은 Git 제외 경로에 보존한다.

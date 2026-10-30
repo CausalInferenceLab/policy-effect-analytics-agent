@@ -29,7 +29,7 @@
 | 5~8월 조건부 | 1,225 | 2,569 | 2 / 13시간 | 4 | 2 |
 | 9~12월 조건부 | 1,171 | 2,479 | 2 / 12시간 | 0 | 0 |
 
-시작 시각을 아는 구간의 분모는 각각 725·727·1,221·1,171개다. 전체 [구간 목록](results/deepening/episodes/episodes.csv)과 [관측률](results/deepening/episodes/coverage.csv)을 공개했다. 두 라벨의 구간이 일부 겹칠 수 있으므로 3,849개를 독립적인 실제 정체 사건 수로 해석하지 않는다.
+시작 시각을 아는 구간의 분모는 각각 725·727·1,221·1,171개다. 전체 [구간 목록](archive.md#results) (`results/deepening/episodes/episodes.csv`, 로컬 보관)과 [관측률](results/deepening/episodes/coverage.csv)을 공개했다. 두 라벨의 구간이 일부 겹칠 수 있으므로 3,849개를 독립적인 실제 정체 사건 수로 해석하지 않는다.
 
 ## 알림 수를 줄일 때 유지되는 것과 놓치는 것
 

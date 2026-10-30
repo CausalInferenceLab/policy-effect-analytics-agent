@@ -1,9 +1,0 @@
-{
-  "code_sha256": "b7bf2df20e67a8f6050c177cdbbe4e3607ade979a0669cc2d3f9602c0bb73c94",
-  "inputs": {
-    "comparisons.csv": "a32b285208211892199162bd11c03f7b6f29f132f87f799c5b50f2cf1916ede7"
-  },
-  "outputs": {
-    "common_operations_levels.png": "65e9d45fd96edeefc31009a7b0557e463e07413ece688bebec6a2e7f2920def7"
-  }
-}

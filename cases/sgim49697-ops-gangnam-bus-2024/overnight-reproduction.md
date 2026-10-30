@@ -1,27 +1,25 @@
 # 확장 탐색을 읽고 검증하는 순서
 
-공개 자료만으로 핵심 결과를 대조하는 경로와, 원본·모델을 가진 로컬 실행을 구별한다. 모든 새 분석은 이 사례 폴더 안의 `gangnam/overnight_*.py`, `overnight.py`, `results/overnight/`에 있다. 공통 엔진이나 다른 참여자의 사례를 실행·수정할 필요가 없다.
+공개 결과 검증과 원본·상세 산출물·모델을 가진 로컬 실행을 구별한다. 첫 탐색의 코드와 설정은 원래 경로에 보존했다. 결과 폴더에는 [공개·보관 목록](submission-manifest.json)에 지정한 파일만 Git으로 배포한다.
 
 ## 1. 원본·모델 없이 공개 결과 확인
 
-Python 3.12에서 사례 폴더의 검증기를 실행한다. 외부 패키지 설치·네트워크·GPU·인증키가 필요하지 않다.
+Python 3.12에서 사례 폴더의 검증기를 실행한다. 외부 패키지·네트워크·GPU·인증키가 필요하지 않다.
 
 ```bash
 cd cases/sgim49697-ops-gangnam-bus-2024
-python review_overnight.py --check
+python review_submission.py --check
 ```
 
-이 명령은 [수치 선택 명세](overnight_review_spec.json)의 고유 조건으로 CSV 행을 찾아 저장된 [핵심 수치](results/overnight/review/key_numbers.csv)와 대조한다. 중복 선택, 보류 표시, 비수치 값, CSV 너비 오류, 사례 밖 경로, 파일 해시 변경은 실패한다. 최초 계획 원문·프로토콜 4개와 기존 실험의 **공개** 동결 파일도 확인한다. 보고서의 개별 문장을 자동으로 모두 검증하거나 원자료를 재파싱하는 도구는 아니다.
+이 명령이 확인하는 229개 중 첫 탐색의 수치는 78개다. [수치 선택 명세](overnight_review_spec.json)의 고유 조건으로 근거 CSV 17개를 읽어 [핵심 수치](results/overnight/review/key_numbers.csv)와 대조한다. 중복 선택·품질 실패·비유한 숫자·해시 불일치를 거절하며 최초 원문과 프로토콜도 확인한다. 최신 HTML의 표시값과 추가 탐색 수치도 함께 확인한다.
 
-실제 검증에서는 필요한 공개 파일만 임시 폴더에 복사하고 Python `-I -S`로 실행했다. 해당 폴더에는 Git 이력·원본·모델·가상환경·외부 패키지가 없었다. `--write`는 핵심 수치·검증 명세를 새로 만드는 유지보수 명령이므로 단순 검토에는 사용하지 않는다.
+상세 셀·과거 그림·중복 보고서는 원래 경로에 로컬 보관한다. 전체 산출물과 모델 동결 확인은 2절의 로컬 감사다. 원자료를 재파싱하거나 문서의 모든 문장을 검증하는 도구는 아니다. 정리 과정에서 원래 수치·감사 명세를 다시 만들지 않았다.
 
-읽는 순서는 [종합 보고서](overnight-summary.md) → [장기 궤적](overnight-timeline-report.md) → [인접 구간 합](overnight-path-report.md) → [같은 노선의 시간대](overnight-hour-report.md)다. 각 문서 끝에서 전체 CSV·감사 명세·설정을 확인할 수 있다. 예측은 [최초 시험](overnight-forecast-report.md), [기준 비교](overnight-baseline-report.md), [조건부 저속](overnight-conditional-report.md), [가을·겨울 추가 검증](overnight-confirmation-report.md) 순서로 읽는다.
-
-시간대 분석의 마지막 확장인 `overnight.py matched-directions` → `overnight.py matched-directions-plots`는 `hour-shape`의 사전 선택표·감사 명세와 기존 `multiyear`/`forecast_bus_test` 시간 캐시가 필요하다. 같은 노선 14개의 양방향 공동 날짜를 확인하며 별도 `results/overnight/matched_directions/`에 저장한다. 원래 시간대 결과와 예측 동결 파일을 덮어쓰지 않는다.
+현재 결과는 [최신 종합](deepening-summary.md)을 먼저 읽고, 첫 탐색의 상세 보고서가 필요하면 [과거 기록 안내](archive.md#reports)를 따른다. `overnight.py matched-directions` 단계는 기존 `hour-shape` 선택표·감사 명세와 `multiyear`/`forecast_bus_test` 캐시가 있어야 실행할 수 있다.
 
 ## 2. 기존 로컬 실행의 무결성 확인
 
-원본·캐시·모델이 보존된 현재 환경에서는 아래 명령으로 동결된 입력까지 확인한다. 모델 파일을 새로 학습하거나 시험 기간을 추가로 열지 않는다.
+상세 결과·원본·캐시·모델이 보존된 현재 환경에서는 아래 명령으로 동결된 입력까지 확인한다. 공개 복제본만 가진 경우에는 [보관 파일 복구 안내](archive.md#restore)를 먼저 확인한다. 모델 파일을 새로 학습하거나 시험 기간을 추가로 열지 않는다.
 
 ```bash
 .venv/bin/python review_overnight.py --check --local-artifacts
@@ -37,13 +35,13 @@ uv pip show --python .venv/bin/python numpy pandas catboost scikit-learn
 .venv/bin/python -c "import sys; print(sys.executable)"
 ```
 
-Windows 네이티브 환경은 `.venv\Scripts\python.exe` 경로를 사용하고 활성화 후 `where.exe python`으로 인터프리터를 확인한다. 확장 실험은 CPU로 실행했으며 PyTorch가 필요하지 않다. 이전 GPU 모델 비교는 원래 [실행 안내](README.md)·[모델 기록](model-notes.md)과 별개다.
+Windows 네이티브 환경은 `.venv\Scripts\python.exe` 경로를 사용하고 활성화 후 `where.exe python`으로 인터프리터를 확인한다. 확장 실험은 CPU로 실행했으며 PyTorch가 필요하지 않다. 이전 GPU 모델 비교는 [초기 실행 안내의 보관본](archive.md#reports)·[모델 기록](model-notes.md)과 별개다.
 
 ## 3. 원본부터 계산할 때의 의존 관계
 
 **아래는 단계 간 관계를 설명하는 실행 지도이며, 공개 복제본에서 순서대로 붙여 넣으면 끝나는 설치 스크립트가 아니다.** 원본·Parquet·개별 예측·체크포인트는 Git에 없다. 출처 명세의 URL·요청·크기·해시로 원본을 다시 받을 수 있는지 먼저 확인해야 한다. 원격 기관이 파일을 바꾸면 기존 파일을 덮어쓰지 않고 재현 불가 사유를 기록한다.
 
-| 분석 묶음 | 앞서 필요한 입력 | 진입 단계 (`overnight.py <stage>`) | 공개 결과 |
+| 분석 묶음 | 앞서 필요한 입력 | 진입 단계 (`overnight.py <stage>`) | 산출 위치(일부 로컬 보관) |
 |---|---|---|---|
 | 버스 기초 | `followup.py collect/prepare/analyze`, `directional.py collect/prepare/analyze`로 만들어진 당시 정류장·16시간 캐시 | `bus-prepare` → `bus-sensitivity` → `routes`, `route-plots` | `bus/`의 상태·선택·노선군·시간대 |
 | 지역 기상 | 공식 AWS 공개 응답과 버스 기초 | `weather-collect` → `weather-prepare` → `weather-analysis`, `route-weather` | `weather/`·기상 출처 |

@@ -47,6 +47,6 @@
 .venv/bin/python deepening.py history-audit
 ```
 
-[출처·원본 해시](deepening-history-sources.json), [설정](deepening_identity_config.yaml), [파일 품질](results/deepening/history/file_audit.csv), [기준일별 관측](results/deepening/history/snapshot_audit.csv), [정류장 이력](results/deepening/history/target_stop_history.csv), [정책일 양쪽 기록](results/deepening/history/policy_bracketing_records.csv), [노선 이력](results/deepening/history/target_route_history.csv), [교차 대조](results/deepening/history/cross_source_checks.csv), [감사 입력](results/deepening/history/identity_audit.json)을 함께 공개한다. 원본은 `data/deepening/history/`에 보존하고 Git에 올리지 않는다.
+[출처·원본 해시](deepening-history-sources.json), [설정](deepening_identity_config.yaml), [파일 품질](results/deepening/history/file_audit.csv), [기준일별 관측](results/deepening/history/snapshot_audit.csv), [정류장 이력](archive.md#results) (`results/deepening/history/target_stop_history.csv`, 로컬 보관), [정책일 양쪽 기록](archive.md#results) (`results/deepening/history/policy_bracketing_records.csv`, 로컬 보관), [노선 이력](archive.md#results) (`results/deepening/history/target_route_history.csv`, 로컬 보관), [교차 대조](results/deepening/history/cross_source_checks.csv), [감사 입력](results/deepening/history/identity_audit.json)을 함께 공개한다. 원본은 `data/deepening/history/`에 보존하고 Git에 올리지 않는다.
 
 고정 13개와 폐선 전후 기록 확인은 [완료 보고서](deepening-cohort-report.md)에 있다. 다음 우선순위는 경기·인천 노선의 역사적 ID·경로 및 운행시간의 단위·정차 경계 명세다. 현재 좌표 기록만으로 2024년 정책 효과나 물리적 원인을 확정할 수는 없다.

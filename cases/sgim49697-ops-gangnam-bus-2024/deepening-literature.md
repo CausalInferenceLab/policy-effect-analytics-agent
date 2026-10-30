@@ -1,6 +1,6 @@
 # 두 번째 탐색에 연결한 연구와 공식 분석자료
 
-2026-10-29에 확인한 원문과 기존에 읽은 자료를 질문별로 연결한다. 앞선 [문헌 기록](literature.md)은 보존했다. 아래는 실제 읽은 부분의 요약이며 논문 전체를 재현했다는 뜻이 아니다. 새 원문의 URL·확인 범위·크기·해시는 [출처 명세](deepening-sources.json)와 [참고 출처](deepening-reference-sources.json)에 있다.
+2026-10-29에 확인한 원문과 기존에 읽은 자료를 질문별로 연결한다. 앞선 [문헌 기록](archive.md#reports) (`literature.md`, 로컬 보관)은 보존했다. 아래는 실제 읽은 부분의 요약이며 논문 전체를 재현했다는 뜻이 아니다. 새 원문의 URL·확인 범위·크기·해시는 [출처 명세](deepening-sources.json)와 [참고 출처](deepening-reference-sources.json)에 있다.
 
 ## 먼저 읽을 세 자료
 

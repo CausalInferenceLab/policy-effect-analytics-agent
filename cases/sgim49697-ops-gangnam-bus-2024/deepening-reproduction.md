@@ -1,25 +1,33 @@
 # 두 번째 탐색의 공개 검토와 로컬 재현
 
-추가 결과는 `deepening.py`, `gangnam/deepening_*.py`, `results/deepening/`와 별도 문서에 있다. [첫 탐색의 재현 안내](overnight-reproduction.md)는 이전 캐시·모델을 만드는 의존 경로를 설명한다. 기존 원본·모델·동결 파일은 보존했다.
+추가 분석은 `deepening.py`, `gangnam/deepening_*.py`와 별도 보고서에 있다. [첫 탐색의 재현 안내](overnight-reproduction.md)는 이전 캐시·모델을 만드는 의존 경로를 설명한다. 원본·모델·동결 파일은 로컬에 보존한다.
 
 ## 1. 공개 파일만 검토
 
-Python 3.12에서 사례 폴더의 두 명령을 실행한다. 외부 패키지·원자료·모델·GPU·인증키·네트워크가 필요하지 않다.
+Python 3.12에서 사례 폴더의 명령을 실행한다. 외부 패키지·원자료·모델·GPU·인증키·네트워크가 필요하지 않다.
 
 ```bash
 cd cases/sgim49697-ops-gangnam-bus-2024
-python review_overnight.py --check
-python review_deepening.py --check
-python review_record_support.py --check
+python review_submission.py --check
 ```
 
-첫 명령은 이전 핵심 수치 78개와 기존 공개 동결을 확인한다. 두 번째는 [선택 명세](deepening_review_spec.json)에 지정된 **추가 수치 151개·근거 CSV/JSON 18개·산출물 69개**를 확인한다. CSV는 정확히 하나인 선택 행과 품질 조건을, JSON은 지정 경로의 유한 숫자와 필수 불일치 0 조건을 확인한다. 산출물 명세 23개의 해시, 검토기·공용 보조 코드, 기존 공개 동결도 대조한다. 저장된 [검토표](results/deepening/review/key_numbers.csv)를 보고 출처 행으로 돌아갈 수 있다. 세 번째 명령은 [집단별 기록 비율 표](results/deepening/review/record_support.csv)를 첫 종합의 남행 기록 누락 CSV와 고정 노선 목록에서 다시 계산해 대조한다. 분모는 원본에 날짜가 있는 날의 고정 셀이다.
+이 명령은 첫 탐색 수치 78개와 추가 수치 151개, 직접 근거 35개, 공개 보존 산출물 155개를 확인한다. 기존 수치 추출 함수를 사용하여 유일한 선택 행·품질 조건·유한 숫자를 대조하고, 원래 검토표·선택 명세·검토 코드·보존된 동결 파일의 해시를 확인한다. HTML의 근거 52개·표시 수치 87곳·파생식 4개도 같은 검토표와 대조한다. [추가 검토표](results/deepening/review/key_numbers.csv), [공개·보관 목록](submission-manifest.json)
 
-이 검사는 공개 집계의 일관성 검사다. 원자료를 다시 파싱하거나 모델을 새로 학습하지 않으며 문서의 모든 문장을 자동 판정하지 않는다. `--write`는 유지보수용으로 검토표·명세를 다시 만드는 명령이므로 일반 검토에서는 사용하지 않는다. 두 검토기는 같은 폴더에 있어야 한다.
+2026-10-30 정리에서 상세 행·중간 결과와 중복 문서를 Git 추적에서 제외했다. 제외된 484개 파일은 이 명령으로 검사하지 않으며 원래 위치에 로컬 보관한다. 기존 감사 명세가 참조하는 제외 파일의 경로·해시는 역사적 기록으로 남겨 두었다. 없는 파일을 건너뛰고 전체 감사가 통과했다고 표시하지 않는다.
 
-실제 검증에서는 필요한 공개 파일 181개(13,893,090바이트)만 빈 임시 폴더에 복사했다. Python `-I -S`의 실행기에서 그 폴더만 모듈 경로에 추가해 두 검토기를 실행했고 모두 통과했다. 해당 폴더에 Git·원자료·모델·가상환경은 없었다.
+이 검사는 공개 집계의 일관성 검사다. 원자료를 다시 파싱하거나 모델을 새로 학습하지 않으며 인과 가정이나 문서의 모든 문장을 자동 판정하지 않는다. 수치·명세를 다시 만드는 `--write`는 정리나 일반 검토에 사용하지 않는다. 공개 파일만 복사한 환경의 검증 결과는 [진행 기록](deepening-plan.md)에 남긴다.
 
-## 2. 이미 보존된 로컬 실행 확인
+## 2. 상세 산출물과 모델이 있는 로컬 실행 확인
+
+상세 산출물이 남아 있는 현재 작업 폴더에서는 다음 전체 검토기를 그대로 사용한다. 공개 복제본만으로는 제외 파일이 없어서 실패한다. 복구 방법은 [보관 안내](archive.md#restore)를 따른다.
+
+```bash
+.venv/bin/python review_overnight.py --check
+.venv/bin/python review_deepening.py --check
+.venv/bin/python review_record_support.py --check
+```
+
+이 경로는 추가 수치 151개·원래 산출물 69개·기존 공개 동결 전체와 기록 비율 재집계를 확인한다. 아래는 그다음의 선택적 모델 동결 확인이다.
 
 원본·캐시·모델이 있는 현재 환경에서 기존 동결을 검사하는 명령이다. 첫 명령은 앞선 실험의 로컬 입력을 확인한다. 두 번째는 **완료된 학습 명세가 존재할 때** 모델 8개·기준선 2개와 입력/코드 해시를 확인하고 종료한다. 명세가 없는 새 복제본에서 검증용으로 두 번째 명령을 실행하면 안 된다.
 
@@ -44,7 +52,7 @@ Windows 네이티브는 `.venv\Scripts\python.exe`를 사용하며 활성화 후
 
 아래는 명령 간 관계이며 새 복제본에서 바로 붙여 넣어 완주하는 자동 실행 스크립트가 아니다. 원본·Parquet·모델·개별 예측은 Git에 없다. 출처 명세의 공개 URL이 현재도 같은 내용을 주는지 크기·해시로 먼저 확인해야 한다. 일부 단계는 앞선 [첫 탐색의 캐시](overnight-reproduction.md)가 필요하다.
 
-| 분석 | 필요한 입력 | `deepening.py`의 실행 단계 | 공개 결과 |
+| 분석 | 필요한 입력 | `deepening.py`의 실행 단계 | 산출 위치(일부 로컬 보관) |
 |---|---|---|---|
 | 역사 정류장·노선 | 공식 목록의 고정 요청, 기존 정류장/노선 선택 | `history-prepare` → 요청 명세 커밋 → `history-collect` → `history-audit` | `history/` |
 | 시간 필드 명세 | 보존된 T Data 페이지·예시와 출처 해시 | `definitions-audit` | `definitions/` |
@@ -89,4 +97,4 @@ OPENBLAS_NUM_THREADS=2 OMP_NUM_THREADS=2 MKL_NUM_THREADS=2 cases/sgim49697-ops-g
 git diff --check
 ```
 
-실제 검사 수·결과와 원격 CI는 [진행 기록](deepening-plan.md)에 남긴다. 기존 `plan.yaml`, `corridors.yaml`, `data_contract.yaml`, `ml_config.yaml`, 사용자 제공 실행계획 원문, 첫 탐색 코드·결과·동결 및 2026년 잠금은 보존한다. 변경 위치는 사례 내부의 추가 탐색 파일과 관련 테스트이며, README는 최신 진입점만 갱신한다.
+실제 검사 수·결과와 원격 CI는 [진행 기록](deepening-plan.md)에 남긴다. 기존 `plan.yaml`, `corridors.yaml`, `data_contract.yaml`, `ml_config.yaml`, 사용자 제공 실행계획 원문, 첫 탐색 코드·결과·동결 및 2026년 잠금은 보존한다. 상세 결과의 보존 위치는 공개 목록과 로컬 보관 목록으로 구분한다. 변경 위치는 사례 내부의 추가 탐색 파일과 관련 테스트이며, README는 최신 진입점만 갱신한다.

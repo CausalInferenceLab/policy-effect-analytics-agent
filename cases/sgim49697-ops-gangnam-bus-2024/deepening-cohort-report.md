@@ -46,7 +46,7 @@
 
 기존 Parquet 변환기를 재사용하지 않는 별도 CSV 판독기로 2024년 8월 두 ZIP의 **4,659,851행**을 끝까지 검사했다. 시간 2,256,663행과 횟수 2,403,188행의 헤더·열 수를 확인하고, 폐선 경계의 **8월 22·23·24·26일**에 대해 14개 노선·2구간·16시간·3자료의 **5,376개 값/상태를 대조해 불일치 0건**이었다. 0·공란·행 부재 및 반복 정류장 방문을 구별한다.
 
-이 검사는 폐선 전후 네 날짜의 좁은 독립 대조다. 32개월 모든 값이 별도 판독기로 재생성됐다는 뜻은 아니다. 출처와 원본 해시는 [원본 대조 감사](results/deepening/cohort/raw_retirement_audit.json), 날짜·노선·자료별 결과는 [대조표](results/deepening/cohort/raw_retirement_spotcheck.csv)에 있다.
+이 검사는 폐선 전후 네 날짜의 좁은 독립 대조다. 32개월 모든 값이 별도 판독기로 재생성됐다는 뜻은 아니다. 출처와 원본 해시는 [원본 대조 감사](results/deepening/cohort/raw_retirement_audit.json), 날짜·노선·자료별 결과는 [대조표](archive.md#results) (`results/deepening/cohort/raw_retirement_spotcheck.csv`, 로컬 보관)에 있다.
 
 ## 재현과 남은 질문
 
@@ -58,6 +58,6 @@
 .venv/bin/python deepening.py cohort-plots
 ```
 
-[구성 규칙](deepening_cohort_config.yaml), [독립 대조 규칙](deepening_raw_check_config.yaml), [입출력 해시·원래 결과 재현](results/deepening/cohort/audit.json), [방향별 비교](results/deepening/cohort/comparisons.csv), [같은 날짜의 방향 격차](results/deepening/cohort/paired_gaps.csv), [일별 지수](results/deepening/cohort/daily.csv), [날짜 유지](results/deepening/cohort/date_retention.csv), [월별 기록 상태](results/deepening/cohort/monthly_record_states.csv), [시간·횟수 지원](results/deepening/cohort/positive_time_count_support.csv), [542번 일별 상태](results/deepening/cohort/retired_route_daily.csv), [그림 해시](results/deepening/cohort/figures.json)를 공개한다. 세밀한 격자와 원본은 Git 제외 경로에 보존한다.
+[구성 규칙](deepening_cohort_config.yaml), [독립 대조 규칙](deepening_raw_check_config.yaml), [입출력 해시·원래 결과 재현](results/deepening/cohort/audit.json), [방향별 비교](results/deepening/cohort/comparisons.csv), [같은 날짜의 방향 격차](results/deepening/cohort/paired_gaps.csv), [일별 지수](archive.md#results) (`results/deepening/cohort/daily.csv`, 로컬 보관), [날짜 유지](results/deepening/cohort/date_retention.csv), [월별 기록 상태](archive.md#results) (`results/deepening/cohort/monthly_record_states.csv`, 로컬 보관), [시간·횟수 지원](archive.md#results) (`results/deepening/cohort/positive_time_count_support.csv`, 로컬 보관), [542번 일별 상태](archive.md#results) (`results/deepening/cohort/retired_route_daily.csv`, 로컬 보관), [그림 해시](results/deepening/cohort/figures.json)를 공개한다. 세밀한 격자와 원본은 Git 제외 경로에 보존한다.
 
 남은 핵심은 시간 필드의 정확한 단위·정차 경계, 경기·인천 노선의 당시 ID/경로, 승강장·신호·검지 및 동시 도로 변화다. 이번 결과로 노선 구성의 한 가지 대안 설명은 좁혔지만 정책 원인을 식별한 것은 아니다.

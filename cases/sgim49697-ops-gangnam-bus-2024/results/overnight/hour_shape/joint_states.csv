@@ -1,9 +1,0 @@
-segment,period,expected_route_days,joint_positive_route_days,excluded_route_days
-south,pre2024,435,403,32
-south,post2024,435,435,0
-south,pre2025,405,375,30
-south,post2025,420,392,28
-north,pre2024,580,537,43
-north,post2024,580,574,6
-north,pre2025,540,509,31
-north,post2025,560,531,29
