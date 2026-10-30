@@ -11,7 +11,7 @@ from pathlib import Path
 from urllib.parse import urlsplit
 
 CASE = Path(__file__).resolve().parent
-SOURCE = "results/deepening/review/key_numbers.csv"
+SOURCES = ("results/deepening/review/key_numbers.csv", "results/overnight/review/key_numbers.csv")
 
 
 class OverviewParser(HTMLParser):
@@ -81,7 +81,7 @@ class OverviewParser(HTMLParser):
 
 
 def check(page=CASE / "project-overview.html", base=CASE):
-    """표시값·메타데이터·파생식을 독립 CSV와 대조하며 브라우저 검사를 대신하지 않는다."""
+    """표시값·메타데이터·파생식을 두 공개 검토표와 대조하며 브라우저 검사를 대신하지 않는다."""
     content = page.read_text(encoding="utf-8")
     if "@@" in content or re.search(r"@import|url\s*\(", content, re.IGNORECASE):
         raise ValueError("미완성 토큰 또는 외부 CSS 자원 참조")
@@ -93,18 +93,20 @@ def check(page=CASE / "project-overview.html", base=CASE):
     if parser.active_number is not None or any(key not in parser.identifiers for key in parser.anchors):
         raise ValueError("미완성 수치 요소 또는 없는 문서 내 앵커")
     data = json.loads("".join(parser.report_data))
-    if data.get("schema_version") != 1 or data.get("source") != SOURCE:
+    if data.get("schema_version") != 2 or set(data.get("sources", {})) != set(SOURCES):
         raise ValueError("지원하지 않는 근거 형식·경로")
     if not re.fullmatch(r"[0-9a-f]{40}", data.get("analysis_commit", "")):
         raise ValueError("분석 근거 커밋 형식 오류")
-    source = base / SOURCE
-    if hashlib.sha256(source.read_bytes()).hexdigest() != data["source_sha256"]:
-        raise ValueError("공개 검토표의 해시가 달라짐")
-    with source.open(encoding="utf-8", newline="") as stream:
-        rows = list(csv.DictReader(stream))
-    reference = {row["id"]: {**row, "value": float(row["value"])} for row in rows}
-    if len(reference) != len(rows):
-        raise ValueError("공개 검토표 수치 ID 중복")
+    reference = {}
+    for path in SOURCES:
+        source = base / path
+        if hashlib.sha256(source.read_bytes()).hexdigest() != data["sources"][path]:
+            raise ValueError("공개 검토표의 해시가 달라짐: " + path)
+        with source.open(encoding="utf-8", newline="") as stream:
+            for row in csv.DictReader(stream):
+                if row["id"] in reference:
+                    raise ValueError("공개 검토표 수치 ID 중복: " + row["id"])
+                reference[row["id"]] = {**row, "value": float(row["value"])}
     claims = data["claims"]
     if not claims or not parser.numbers:
         raise ValueError("표시 수치·근거 누락")
