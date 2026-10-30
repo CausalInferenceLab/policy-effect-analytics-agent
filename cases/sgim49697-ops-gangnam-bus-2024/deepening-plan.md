@@ -143,3 +143,10 @@
 - 읽고 대조한 보고서: `deepening-transition-report.md`(6월 29일 이전 하락 표를 `transition/daily.csv`와 직접 대조, 회귀 부호 변화 −0.231→+0.971), `deepening-gyeonggi-report.md`(3,303,980행·수요일/토요일 대표일·날짜·역사 ID 부재·값 충돌), `deepening-geometry-report.md`(56개 보간점 반올림 일치·실제 위치 변경 해석 금지), `deepening-history-report.md`(44개 파일 373,590행, 542번 17개 기준일 존재). HTML의 인용과 일치했다. 원본 XML·XLSX·역사 목록은 다시 열지 않았고 각 보고서가 기록한 독립 대조 결과(`raw_check.json` 불일치 0 등)에 의존한다.
 - 검증: `review_deepening.py --write` 후 `--check`(151개·출처 18개), `review_record_support.py --check`, `review_overview.py --check`(근거 51개·표시 수치 62곳), `tests/test_gangnam_review_record_support.py`와 `test_gangnam_deepening_review.py`, Ruff, 기존 Playwright 점검 재통과. 1장·12월 칸은 데스크톱·모바일 화면을 직접 열어 확인했다(`/tmp/gangnam-claude-review/output/playwright/claude6-*.png`, 저장소 밖).
 - 남은 한계: 정책 후보 노선 ID와 당시 노선의 대응은 미확정이다. 고정 13개가 정책 대상이 아닌 이상, 본문 수치는 정책 노선의 변화가 아니라 같은 도로를 쓰는 다른 버스의 기록 변화다. 따라서 정책 효과 질문에는 간접 근거일 뿐이다.
+
+### 2026-10-30 — 인쇄 시 main 포커스 테두리 수정
+
+- 결함: 키보드로 `.skip` 링크를 실행해 `main`(`tabindex="-1"`)에 포커스가 남은 채 인쇄하면 브라우저 기본 포커스 outline이 PDF 각 쪽에 큰 검은 테두리로 남았다(`/tmp/gangnam-overview-preview/output/playwright/final-review-print-2.png`, `-3.png`를 직접 열람해 확인).
+- 수정: `project-overview.html`의 `@media print` 맨 앞에 `main:focus,main:focus-visible{outline:none}`만 추가했다. 일반 화면 규칙은 건드리지 않았다. 데이터·수치·근거 버전은 변경하지 않았다.
+- 검증(Playwright, 실제 파일 주소): `.skip`에 포커스 후 Enter로 `main`이 활성 요소가 된 상태에서 화면 미디어의 main outline-style은 `auto`(1px, 표시 유지), print 미디어는 `none`이었다. 같은 상태로 만든 PDF 9쪽 중 2쪽을 PyMuPDF로 렌더링해 열람했고 테두리가 없었다(`/tmp/gangnam-claude-review/output/playwright/focus-fix-2.png`, 저장소 밖). `review_overview.py --check`와 `git diff --check` 결과는 커밋 전에 확인했다.
+- 남은 이슈: 새 이슈 없음. 다른 요소(링크·버튼·요약)의 인쇄 시 포커스 표시는 점검하지 않았다.
