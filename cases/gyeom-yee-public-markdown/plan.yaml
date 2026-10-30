@@ -1,0 +1,183 @@
+# 분석 계획서 (사전 등록) — 데이터를 열어보기 "전에" 작성하고 먼저 PR 하세요.
+# 스키마: core/schema/plan.py  (정의되지 않은 필드는 검증 오류가 납니다)
+# 작성 요령: docs/strategy/plan-guide.md  |  완성 예시: cases/t3-land-permit-2025/plan.yaml
+#
+# 정책 근거
+#  - 행정안전부 보도자료(2026.8.24) "복잡한 표·그림 대신 고품질 텍스트로 행안부, AI 친화적 보고서 전면 도입"
+#    https://www.mois.go.kr/frt/bbs/type010/commonSelectBoardArticle.do?bbsId=BBSMSTR_000000000008&nttId=128940
+#    · 2026.3월 시범운영 시작: 서술형 작성 권장, "표 안의 표" 같은 복잡한 양식 지양, 보도자료를 마크다운으로 함께 제공
+#    · 2026.8.24 가이드라인 간소화 + 전면 실시, 실·국장 보고서까지 확대
+#  - 국가인공지능전략위원회(2026.3.5 발표): 분과 회의·토론 결과를 마크다운(.md)으로 작성해 누리집 공개
+#    https://kitpa.org/news/1175 (한국정보기술신문, 2026.3.8)
+#
+# 측정 범위: 두 단계로 본다.
+#  1단계(1차 지표) 보도자료 형식이 실제로 바뀌었는가 — 바뀌지 않았다면 뒤의 효과도 생길 수 없다.
+#  2단계(2차 지표) 그 결과 기계가 더 잘 읽고(기계 판독 오류), 언론에서 더 널리 쓰였는가(언론 확산).
+# 보도자료가 밝힌 나머지 기대 효과(직원 작성 시간 단축, AI 요약 정확도)는 기관 간 비교 가능한 공개 자료가 없어
+# 추정하지 않고 discussion.md 에 한계와 다음 과제로 적는다.
+
+case_id: gyeom-yee-public-markdown
+title: "행정안전부 'AI 친화적 보고서' 도입(2026.3 시범)이 보도자료 형식·기계 판독·언론 확산에 미친 효과"
+question: >
+  행정안전부가 2026년 3월 'AI 친화적 보고서' 작성 방식(서술형 작성, 복잡한 표 지양, 마크다운 병행 제공)을
+  시범 도입한 뒤, 같은 방식을 도입하지 않은 다른 중앙행정기관과 비교해 행안부 보도자료의
+  서술형 문장 비율이 높아지고 표 사용이 줄었는가? 그리고 그 결과 공개 파서로 텍스트화할 때의 표 손상이 줄고,
+  보도자료 1건당 언론 기사 수가 늘었는가?
+synthetic_data: false
+
+# 한 행 = 기관 x 월. 월별 값은 그 달 정책브리핑에 올라온 해당 기관 보도자료 전체를 집계한 것.
+unit: {name: 중앙행정기관, id_col: org_id}
+time: {col: month_idx, freq: month, start: 0, end: 32}   # 0 = 2024-01, 26 = 2026-03, 32 = 2026-09 (마지막 완결 월)
+
+treatment:
+  definition: >
+    행정안전부. 첫 처치 월 = 2026-03 (month_idx 26, 시범운영 시작. 시작 '일'은 보도자료에 없어 월 단위로 둔다).
+    2026-08-24 전면 실시(month_idx 31)는 처치 강도가 커진 시점으로 보고 이벤트 스터디의 사후 계수(+5, +6)로 따로 읽는다.
+  group_col: treated
+  treat_time: 26
+control:
+  definition: >
+    정책브리핑(korea.kr)에 보도자료를 올리는 다른 중앙행정기관(부·처·청) 중 2024-01~2026-09 모든 달에
+    보도자료가 1건 이상 있는 기관. 다음은 뺀다:
+    (1) 국가인공지능전략위원회 — 같은 달 마크다운 전환을 발표해 처치 기관에 가깝다
+    (2) 행안부 소속 청(경찰청·소방청) — 행안부 가이드라인이 번질 수 있다
+    (3) 분석 기간 중 조직 개편으로 명칭·기능이 바뀌어 같은 단위로 이을 수 없는 기관
+    (4) 기간 중 'AI 친화 문서'·'마크다운' 작성 지침을 발표한 것이 확인된 기관
+  rationale: >
+    중앙행정기관은 같은 정책브리핑 게시 체계와 한글(HWP) 기반 보도자료 양식, 같은 언론 환경을 공유한다.
+    정부 전체에 걸친 AI 활용 기조처럼 모든 기관이 함께 받는 충격은 대조군이 흡수한다.
+    행안부만 2026.3월에 문서 작성 지침을 바꿨으므로, 지침이 없었다면 행안부 보도자료 형식이 따랐을 추세를
+    다른 기관의 추세가 대신 보여 준다.
+
+outcomes:
+  - name: 서술형 문장 비율
+    col: narrative_share
+    definition: >
+      해당 월 해당 기관 보도자료 본문(HTML 태그 제거 후)의 문장·항목 중 '~다.'로 끝나는 서술문의 비율.
+      분모 = 문장 끝(마침표) 또는 항목 기호(○, □, -, ·, ▲)로 나뉜 문장·항목 수. 표 안의 글자는 뺀다.
+    unit: "비율(0~1)"
+    primary: true
+    expected_direction: increase
+  - name: 보도자료 1건당 표 수
+    col: tables_per_release
+    definition: "해당 월 본문 HTML의 <table> 개수 합 ÷ 해당 월 보도자료 건수"
+    unit: "개/건"
+    expected_direction: decrease
+  - name: 중첩 표 포함 보도자료 비율
+    col: nested_table_share
+    definition: "<table> 안에 다시 <table>이 있는 보도자료 수 ÷ 해당 월 보도자료 건수 (가이드라인의 '표 안의 표')"
+    unit: "비율(0~1)"
+    expected_direction: decrease
+  - name: 마크다운 첨부 제공 비율
+    col: md_attach_share
+    definition: "첨부파일에 .md(또는 마크다운 변환본)가 있는 보도자료 수 ÷ 해당 월 보도자료 건수. 정책이 실제로 집행됐는지 보는 확인용 지표"
+    unit: "비율(0~1)"
+    expected_direction: increase
+  # 2단계: 기계 판독 — 보도자료가 밝힌 "AI가 보고서를 인식하는 오류 감소"의 대리 지표
+  - name: 기계 판독 표 손상률
+    col: parse_table_loss
+    definition: >
+      해당 월 보도자료의 첨부 PDF를 버전을 고정한 공개 파서(pdfplumber, 버전은 fetch.py에 고정)로 텍스트화했을 때,
+      원문 표의 셀 중 행·열 위치를 잃거나 빈 값으로 추출된 셀의 비율. 분모 = 첨부 PDF의 표 셀 수 합.
+      표가 없는 보도자료는 손상 셀 0, 분모 0으로 넣어 표를 줄인 효과도 반영한다(표 셀이 0인 달은 결측).
+      PDF가 없고 HWPX만 있는 보도자료는 빼고, 그 비율을 기록한다
+    unit: "비율(0~1)"
+    expected_direction: decrease
+  # 2단계: 언론 확산 — 텍스트가 읽기 쉬우면 기자·AI 기반 뉴스 도구가 더 쉽게 재사용한다는 가설
+  - name: 보도자료 1건당 언론 기사 수(로그)
+    col: log_articles_per_release
+    definition: >
+      log(1 + 해당 월 보도자료별 관련 기사 수의 평균). 관련 기사 = 빅카인즈에서 보도자료 승인일부터 7일 안에
+      기관명과 보도자료 제목의 핵심어(명사 상위 3개)가 함께 나오는 기사. 기사 원문은 저장하지 않고 건수만 쓴다
+    unit: "log(건)"
+    expected_direction: increase
+  - name: 첫 기사까지 걸린 시간
+    col: hours_to_first_article
+    definition: "보도자료 승인 시각부터 첫 관련 기사까지의 시간 중위값(7일 안에 기사가 없으면 168시간으로 둔다)"
+    unit: "시간"
+    expected_direction: decrease
+
+estimator:
+  method: event_study
+  cluster_col: org_id
+  ref_period: -1          # 2026-02
+  window: [-12, 6]        # 2025-03 ~ 2026-09. -12 이전은 양끝 binning
+  alpha: 0.05
+
+assumptions:
+  - name: 평행추세
+    description: "지침이 없었다면 행안부와 다른 기관의 서술형 비율·표 사용 추세는 같았을 것"
+    check: pretrend_test
+  - name: 미리 반응하지 않음
+    description: "시범운영 전(2026.1~2월)에 행안부가 미리 형식을 바꾸지 않았을 것. 가짜 시작일 검정으로 확인"
+    check: placebo_time
+  - name: 대조군 오염 없음
+    description: >
+      국가AI전략위원회 발표(2026.3.5)와 행안부 전면 실시(2026.8.24) 뒤 다른 부처가 비슷한 지침을 따랐다면
+      대조군도 처치를 받아 효과가 작게 추정된다. 기관별 누리집·보도자료에서 'AI 친화'·'마크다운' 지침 발표를 확인해
+      해당 기관을 빼거나, 빼기 어려우면 한계로 기록한다
+    check: manual
+  - name: 동시 정책 없음
+    description: >
+      같은 시기 행안부에만 적용된 다른 문서 양식 변경(보도자료 서식 개편, 정책브리핑 게시 방식 변경, 담당 부서 교체)이 없을 것.
+      정책브리핑이 본문 HTML 변환 방식을 바꿨다면 모든 기관에 같이 나타나므로 대조군이 흡수한다
+    check: manual
+  - name: 측정 일관성
+    description: "정책브리핑 본문 HTML이 원문 HWP의 표 구조를 기간 내내 같은 방식으로 옮긴다. 표본 보도자료를 원문과 대조해 확인한다"
+    check: manual
+  - name: 언론 관심 변화 없음
+    description: >
+      언론 기사 수는 보도자료 형식보다 현안의 크기에 크게 좌우된다. 같은 시기 행안부에만 큰 현안(재난, 선거,
+      조직 개편)이 몰리면 형식과 무관하게 기사가 늘어난다. 월별 행안부 관련 전체 기사 수(보도자료와 무관한 기사 포함)를
+      함께 보고, 큰 현안이 있던 달은 discussion.md 에 표시한다
+    check: manual
+
+refutations:
+  - kind: placebo_time
+    params: {shift: 6}          # 가짜 시작일 2025-09 — 효과가 없어야 통과
+  - kind: placebo_outcome
+    params: {col: releases}     # 월별 보도자료 건수 — 문서 형식 지침이 건수까지 바꿀 이유는 없다.
+                                # 공통 실행기(core/pipeline.py)가 아직 placebo_outcome 을 실행하지 않으므로
+                                # releases 를 결과로 한 번 더 돌려 discussion.md 에 함께 보고한다.
+  - kind: drop_unit
+    params: {unit: 과학기술정보통신부}   # AI 정책 주무부처라 자체적으로 비슷한 변화를 겪었을 수 있다. 빼고 다시 추정해 비교.
+                                      # drop_unit 도 수동 실행 후 discussion.md 에 보고한다.
+
+abstention:
+  - when: pretrend_rejected
+    verdict: not_identified
+  - when: few_treated_clusters
+    verdict: conditional
+    note: "처치 기관이 행안부 1곳 → 무작위화 추론. 대조 기관 수가 곧 p값의 해상도(최소 1/(N+1))"
+  - when: placebo_significant
+    verdict: conditional
+  - when: ci_crosses_zero
+    verdict: conditional
+    note: "효과 없음이 아니라 '판별 불가'로 보고"
+  - when: few_clusters
+    verdict: conditional
+
+thresholds: {pretrend_alpha: 0.10, min_clusters: 20, min_pre_periods: 3}
+
+data_sources:
+  - name: "문화체육관광부_정책브리핑_보도자료 API"
+    provider: "문화체육관광부 (공공데이터포털, 정책브리핑 korea.kr)"
+    url: "https://www.data.go.kr/data/15095295/openapi.do"
+    license: KOGL-1
+    notes: >
+      부처명·제목·본문(HTML)·승인일·첨부파일·원문 URL을 받는다. 조회 기간 제한, 엔드포인트, 이용허락 범위는
+      fetch.py 작성 단계에서 상세 페이지로 다시 확인한다(2026.10.30 계획 작성 시점에 상세 페이지 접속 실패).
+      원자료와 가공한 패널은 올리지 않고 fetch.py로 각자 받는다.
+  - name: "행정안전부 보도자료 게시판 (첨부파일 형식 확인용)"
+    provider: "행정안전부"
+    url: "https://www.mois.go.kr/frt/bbs/type010/commonSelectBoardList.do?bbsId=BBSMSTR_000000000008"
+    license: KOGL-1
+    notes: "정책브리핑에 마크다운 첨부가 없을 때 md_attach_share 를 행안부 누리집 첨부 목록으로 보완한다. 이용허락 유형은 게시물별로 확인한다"
+  - name: "빅카인즈 뉴스 검색 (기사 건수·게재 시각)"
+    provider: "한국언론진흥재단 BIG KINDS"
+    url: "https://www.bigkinds.or.kr/"
+    license: other
+    notes: >
+      기사 저작권은 각 언론사에 있으므로 원문은 저장·배포하지 않고 건수와 게재 시각만 집계한다.
+      API 이용 조건(회원·신청 필요 여부, 호출 한도)과 자동 수집 허용 여부는 fetch.py 작성 전에 확인하고,
+      허용되지 않으면 log_articles_per_release·hours_to_first_article 는 빼고 그 사실을 커밋 메시지와 discussion.md 에 적는다
