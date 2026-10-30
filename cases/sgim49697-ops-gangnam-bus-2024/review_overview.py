@@ -134,9 +134,11 @@ def check(page=CASE / "project-overview.html", base=CASE):
             expected = ("−" if value < 0 else "+") + f"{abs(value):.{digits}f}"
         if "".join(number["text"]).strip() != expected:
             raise ValueError("화면 표시 수치 불일치: " + str(attrs))
-    required = {"question", "method", "findings", "evidence", "forecast", "conclusion", "references", "bus-controls", "forecast-controls", "print-button"}
-    if not required.issubset(parser.identifiers):
-        raise ValueError("필수 설명·상호작용 영역 누락")
+    chapters = ["problem", "data", "method", "findings", "causes", "forecast", "uses", "references"]
+    if not set(chapters + ["opening", "main", "print-button", "report-data"]).issubset(parser.identifiers):
+        raise ValueError("필수 장·상호작용 영역 누락")
+    if not set(chapters).issubset(parser.anchors):
+        raise ValueError("장 목차 링크 누락")
     return {"claims": len(claims), "displayed_numbers": len(parser.numbers), "derived": len(derived),
             "anchors": len(parser.anchors), "bytes": page.stat().st_size}
 
