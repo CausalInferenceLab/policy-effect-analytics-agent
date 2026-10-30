@@ -1960,6 +1960,130 @@
       "unit": "건",
       "interpretation": "검사 범위 안의 건수; 결측·시행일·단위·인과 식별을 추가로 증명하지 않음",
       "expected": 0
+    },
+    {
+      "id": "archive_summer_h1_three_month_profile_median_mae",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "summer",
+        "horizon": "1",
+        "name": "published_three_month_profile",
+        "seed": "0",
+        "scope": "primary_all_hours"
+      },
+      "field": "median_mae",
+      "description": "공개 최근 3개월 경험 분위수 기준선 / median_mae",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "달력 모형보다 강한 단순 기준선. 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_summer_h1_three_month_profile_coverage",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "summer",
+        "horizon": "1",
+        "name": "published_three_month_profile",
+        "seed": "0",
+        "scope": "primary_all_hours"
+      },
+      "field": "coverage",
+      "description": "공개 최근 3개월 경험 분위수 기준선 / coverage",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "달력 모형보다 강한 단순 기준선. 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_autumn_h1_three_month_profile_median_mae",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "autumn",
+        "horizon": "1",
+        "name": "published_three_month_profile",
+        "seed": "0",
+        "scope": "primary_all_hours"
+      },
+      "field": "median_mae",
+      "description": "공개 최근 3개월 경험 분위수 기준선 / median_mae",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "달력 모형보다 강한 단순 기준선. 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "archive_autumn_h1_three_month_profile_coverage",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "autumn",
+        "horizon": "1",
+        "name": "published_three_month_profile",
+        "seed": "0",
+        "scope": "primary_all_hours"
+      },
+      "field": "coverage",
+      "description": "공개 최근 3개월 경험 분위수 기준선 / coverage",
+      "unit": "필드별 km/h 또는 비율",
+      "interpretation": "달력 모형보다 강한 단순 기준선. 5월11일 이후 공통 원점, 기존 2025년을 다시 본 후속 평가"
+    },
+    {
+      "id": "cohort_south_pre2025_from_pre2024_change_pct",
+      "source": "results/deepening/cohort/comparisons.csv",
+      "where": {
+        "cohort": "retained_13_original_coverage_rule",
+        "segment": "south",
+        "comparison": "pre_year_over_year"
+      },
+      "field": "change_pct",
+      "description": "고정 13개 노선 / change_pct",
+      "unit": "%",
+      "interpretation": "기록의 변화, 물리 시간 단위·인과 효과 미확인",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "cohort_north_pre2025_from_pre2024_change_pct",
+      "source": "results/deepening/cohort/comparisons.csv",
+      "where": {
+        "cohort": "retained_13_original_coverage_rule",
+        "segment": "north",
+        "comparison": "pre_year_over_year"
+      },
+      "field": "change_pct",
+      "description": "고정 13개 노선 / change_pct",
+      "unit": "%",
+      "interpretation": "기록의 변화, 물리 시간 단위·인과 효과 미확인",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "cohort_south_summer2025_from_pre2025_change_pct",
+      "source": "results/deepening/cohort/comparisons.csv",
+      "where": {
+        "cohort": "retained_13_original_coverage_rule",
+        "segment": "south",
+        "comparison": "summer2025"
+      },
+      "field": "change_pct",
+      "description": "고정 13개 노선 / change_pct",
+      "unit": "%",
+      "interpretation": "기록의 변화, 물리 시간 단위·인과 효과 미확인",
+      "require": {
+        "quality_pass": "True"
+      }
+    },
+    {
+      "id": "cohort_north_summer2025_from_pre2025_change_pct",
+      "source": "results/deepening/cohort/comparisons.csv",
+      "where": {
+        "cohort": "retained_13_original_coverage_rule",
+        "segment": "north",
+        "comparison": "summer2025"
+      },
+      "field": "change_pct",
+      "description": "고정 13개 노선 / change_pct",
+      "unit": "%",
+      "interpretation": "기록의 변화, 물리 시간 단위·인과 효과 미확인",
+      "require": {
+        "quality_pass": "True"
+      }
     }
   ],
   "output_manifests": [

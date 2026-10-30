@@ -1,8 +1,8 @@
 {
   "scope": "공개 집계의 선택 조건·수치·산출물 해시 대조. 원자료 재파싱·모델 학습·인과 검증을 대신하지 않음",
-  "claims": 133,
+  "claims": 141,
   "source_tables": 17,
-  "spec_sha256": "dcef4a110933a535f5da87c0c247972fd9c818842b72f17912d3b04cbb8e2ad4",
+  "spec_sha256": "24414e281c4ae3108c7425c3a824b23f0e2aafb30bb857812db33b5589091f58",
   "code_sha256": "5489f5da3fa2126e24e7d207b5dff3408317b54281c561f34a96aba7bba6fd5a",
   "helper_sha256": "755e2c827659ca0d1b0e4f03651ea41468e7aa722b682a133bde176d80eaddc7",
   "inputs": {
@@ -187,5 +187,5 @@
     },
     "excluded_local_artifacts": "data/·runs/의 원본·캐시·모델은 --local-artifacts에서만 확인"
   },
-  "summary_sha256": "6baffdbc0a795dec4619e36e21d95c662107408fe068d148ce75373e55d80815"
+  "summary_sha256": "1cb9652fc13da7d222e956afc5cb7028836d98794e7af3e23984238e828f3c65"
 }
