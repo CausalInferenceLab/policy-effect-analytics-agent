@@ -45,6 +45,12 @@ projects:
     topic: local-gov-merger
     issue: 27
 
+  - case: inshining-elderly-driver
+    owner: inshining
+    track: B
+    topic: traffic-safety
+    issue: 58
+
   # 멘토 예시 (mentor: true) — 프로젝트 화면 맨 아래에 따로 보입니다
   - case: t3-climate-card-seongnam
     owner: jsshin2022

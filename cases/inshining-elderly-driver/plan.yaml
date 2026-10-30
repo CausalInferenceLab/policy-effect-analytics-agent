@@ -1,0 +1,170 @@
+# 계획 검토용 초안 / 사전등록 미완료 / 효과 추정 미실행.
+# analysis_approved=false; 비교군 적격성 승인=false; 추정 실행 승인=false.
+# 위 상태는 설명이며 스키마나 파이프라인의 실행 차단 기능이 아니다.
+# 핵심 설계·자료 노출·수동 보류 조건은 README.md, 정책 근거는 policy-sources.md 참조.
+# 이 파일은 현재 상위 스키마에 맞춘 호환 초안이다.
+# event_study는 코호트별 시차 DiD를 구현하지 않는다. 실행 지원 전에는 make flow로
+# 원하는 ATT를 계산했다고 간주하지 않는다. abstention은 실행 후 판정 규칙일 뿐이다.
+case_id: inshining-elderly-driver
+title: "고령운전자 면허 자진반납 인센티브와 초기 교통안전 성과"
+question: >
+  고령운전자 면허 자진반납 인센티브를 제공하기 시작한 지역에서,
+  같은 시점에 아직 제공하지 않은 지역과 비교해,
+  65세 이상 주민인구 1만 명당 65세 이상 가해운전자 사고건수가 달라졌는가?
+synthetic_data: false
+
+unit:
+  name: 시군구
+  id_col: region_id
+time:
+  col: year
+  freq: year
+  start: 2014
+  end: 2019
+
+treatment:
+  definition: >
+    조례 제정일 자체가 아닌, 공식 사업 공고로 확인한 인센티브 제공 개시를 처치로 정의한다.
+    first_treat는 지역별 최초 제공 연도이며, 도입 연도는 부분 노출일 수 있다.
+    treated는 관측 기간 안에 제공을 시작한 지역=1, 미도입이 확인된 지역=0이다.
+    미도입 지역의 first_treat는 결측으로 둔다. 시점 미확인은 별도로 구분해 제외한다.
+    광역 사업이 이미 적용되는 지역을 자체 조례가 없다는 이유로 미처치로 분류하지 않는다.
+    소급 반납 자격 기준일, 발표일, 신청일, 지급일, 예산·추첨 조건은 별도 정책 기록에 남긴다.
+    실제 반납 여부·반납률·지원금 수령은 처치변수로 대체하지 않는다.
+  group_col: treated
+  first_treat_col: first_treat
+control:
+  definition: >
+    각 비교 시점에 인센티브 제공이 아직 시작되지 않았다고 공식 자료로 확인한 지역.
+    이미 도입한 지역과 도입 여부가 불명확한 지역은 대조군으로 사용하지 않는다.
+  rationale: >
+    공통 연도 충격을 받으면서 처치가 없을 때의 변화를 대신할 후보이다.
+    정책 전 추세, 연령 구성, 공간 경계, 동시 정책, 인접 지역 파급을 별도로 점검한다.
+    유사한 사전 추세가 반사실의 타당성을 입증하지는 않으며,
+    비교군이 소진된 시점의 효과는 추정하지 않는다.
+
+outcomes:
+  - name: "65세 이상 주민인구 1만 명당 고령 가해운전자 사고건수"
+    col: crashes65_per_10000_residents
+    definition: >
+      10000 × 해당 시군구에서 해당 연도에 발생한 가해운전자(1당사자)
+      65세 이상 교통사고건수 / 직전 연도 12월 말 해당 시군구 65세 이상 주민등록인구.
+      사고 발생지와 주민 거주지가 일치한다고 가정하지 않는다.
+      주 관심 효과는 관측·대조군 지원이 있는 최초 제공 다음 해(+1)의 코호트별 ATT이며,
+      지원되는 코호트만 처치 시군구 수로 가중한다. 구체 추정은 README.md의 실행 조건 충족 후 수행한다.
+    unit: "건/65세 이상 주민 1만 명/년"
+    primary: true
+    expected_direction: decrease
+
+estimator:
+  # 현재 스키마는 did/event_study/its만 허용한다.
+  # 원하는 방법: 아직 미도입 지역을 비교군으로 하는 코호트별 ATT 및 이벤트 스터디.
+  # 아래 설정만으로 그 방법이 구현되지 않는다. 현행 TWFE 시차 결과는 인과 해석 보류.
+  method: event_study
+  cluster_col: province_id
+  ref_period: -1
+  window: [-3, 1]
+  alpha: 0.05
+
+assumptions:
+  - name: 평행추세
+    description: >
+      정책이 없었다면 처치·대조 지역 사고율의 변화가 비교 가능했을 것이다.
+      사전 그림·효과 규모·공동 검정과 검정력을 함께 확인한다.
+      p값이 0.10 이상이어도 가정이 입증된 것으로 간주하지 않는다.
+    check: pretrend_test
+  - name: 정책 개시와 노출의 정확한 분류
+    description: >
+      실제 제공 개시·적용 지역·대상 연령·지원 지속 여부를 확인한다.
+      도입 0년은 부분 노출로 분리하고 주 관심은 +1로 둔다.
+      발표 선반영, 소급 자격, 지급 지연·추첨을 기록한다.
+    check: manual
+  - name: 차등 동시 충격과 파급의 제한
+    description: >
+      2019년 전국 교육제도의 지역별 차등 영향, 부산 도심의 2019-11-11 안전속도5030 시행,
+      다른 안전 사업, 대중교통 변화와
+      인접 지역 파급이 정책 도입 시점과 함께 결과를 바꾸지 않았는지 점검한다.
+      연도 효과는 전국 공통 성분만 조정하므로 교란이 모두 제거됐다고 주장하지 않는다.
+    check: manual
+  - name: 측정과 비교군의 일관성
+    description: >
+      사고·분모의 연령·지역·시점을 맞추고 행정경계 변경 및 합계행 중복을 처리한다.
+      시점마다 아직 미도입 대조군이 존재해야 하며, 지역 행 수와 독립 정책 군집 수를 구분한다.
+    check: manual
+
+# 현행 pipeline은 first_treat_col 시차 경로에서 placebo_time을 실행하지 않으며
+# placebo_outcome도 실행하지 않는다. 이름만 등록해 수행된 것으로 오인하지 않도록 비워 둔다.
+# 실제 도입 전 자료의 가짜 시점 검정과 비고령자 보조 진단은 실행법 검증 후 명세한다.
+refutations: []
+
+abstention:
+  - when: staggered_adoption
+    verdict: not_identified
+    note: "현행 일반 TWFE로 시차 도입 자료를 분석한 결과는 원하는 인과 효과로 해석하지 않는다."
+  - when: pretrend_rejected
+    verdict: not_identified
+    note: "사전 추세 불일치의 크기·원인과 대체 설명을 보고한다."
+  - when: few_clusters
+    verdict: conditional
+    note: "시도·정책 공동 시행 단위가 적다. 적절한 소수 군집 추론 확인 전 유의성을 과신하지 않는다."
+  - when: few_treated_clusters
+    verdict: conditional
+    note: "처치 지역 수와 독립 정책 수를 구분한다. 자동 무작위화 추론은 무작위 도입의 증거가 아니다."
+  - when: short_pre_period
+    verdict: not_identified
+    note: "사전 관측이 3개 연도 미만이면 해당 코호트의 주 분석을 보류한다."
+  - when: ci_crosses_zero
+    verdict: conditional
+    note: "효과 없음이 아니라 방향·크기가 불확실하다고 보고한다."
+
+thresholds:
+  pretrend_alpha: 0.10
+  min_clusters: 20
+  min_pre_periods: 3
+
+data_sources:
+  - name: "시도 시군구별·월별 (노인운전자) 교통사고 — 경찰DB"
+    provider: 한국도로교통공단 TAAS
+    url: "https://taas.koroad.or.kr/sta/acs/exs/typical.do?menuId=WEB_KMP_OVT_UAS_ASA"
+    license: other
+    notes: >
+      2026-10-27 화면에서 가해운전자 1당사자 65세 이상 정의와
+      2014~2018/2019년 시군구 표를 확인하고 공개 XML 원본 4개를 확보했다.
+      전체 페이지·지역 합계·독립 공표 전국 총계를 검증했다. 사고1379행 중
+      이름·경계 확인이 필요한11행을 분리하고1368행을 직전12월 인구와 잠정 결합했다.
+      이는 기존 로컬 작업의 상태이며 이번 PR에서 재생성·재검증한 자료가 아니다.
+      최종 경계 통일과 처치 결합은 미완료다. 현재 범위와 한계는 README.md에 적는다.
+      이용 시 출처·자료링크 표시 안내는 확인했으며, 자동수집·가공·재배포 조건은 추가 확인한다.
+      other는 자유 이용 허가를 뜻하지 않는다. 수집은 확인된 공개 다운로드 경로를 우선한다.
+  - name: "행정동별 연령별 주민등록인구"
+    provider: 행정안전부 주민등록 인구통계
+    url: "https://jumin.mois.go.kr/ageStatMonth.do"
+    license: other
+    notes: >
+      2013~2018년 12월 전국 시군구 원본 CSV 6개 확보. 65~99세 및100세이상 합산,
+      남녀계·등록구분전체(거주자·거주불명자·재외국민), 외국인제외.
+      연령 합계·시도 합계·일반구와 도시 합계 검사를 통과했다.
+      재외국민은2015년1월부터 전체에 포함되는 정의 변화가 있다.
+      경계 대응과 상세 이용 조건 확인은 미완료이며 이번 PR은 데이터·검사 산출물을 포함하지 않는다.
+  - name: "인센티브 제공 개시·변경 공고와 조례"
+    provider: "지자체 공식 공고·법제처 자치법규"
+    url: "https://www.busan.go.kr/nbtnews/1361473"
+    license: other
+    notes: >
+      부산·서울·경기 제공 시점, 전주의2020년부터 시행 설명, 군산의2020년 최초 시행 근거 확보.
+      전주 답변은 최초라는 명시어가 없어 모든 선행사업 부재를 확정하지 않는다.
+      전국 정책 시점과 최종 비교군 적격성은 확정되지 않았다.
+      정책별 공식 URL·게시일·시점 정밀도·잠정 역할과 미확인 조건은 policy-sources.md에 정리한다.
+      부안은 소급 자격과 실제 개시·예고의 불확실성 때문에 hold다.
+      candidate는 확정 미처치가 아니며 hold/unknown을 0으로 바꾸지 않는다.
+      모든 지역의 분석·비교군·추정 실행 승인은 false다.
+      보도자료와 조례의 이용 조건은 동일하다고 가정하지 않는다.
+  - name: "시도 경찰청별 고령운전자 자진반납 현황"
+    provider: 경찰청
+    url: "https://www.data.go.kr/data/15065567/fileData.do"
+    license: other
+    notes: >
+      보조 기술통계 후보. 지방청과 2015~2024년의 65세 이상/전체 컬럼을 메타데이터에서 확인했다.
+      시군구 주 결과에 복제하거나 인구비례로 배분하지 않는다. 경기남부·북부 등 관할 대응이 필요하다.
+      포털에는 이용허락범위 제한 없음이라고 표시되어 있으나 CC0 등으로 임의 변환하지 않는다.
+      원본 값·정의·파일 버전을 확인하기 전에는 분석 확보 완료로 표시하지 않는다.
