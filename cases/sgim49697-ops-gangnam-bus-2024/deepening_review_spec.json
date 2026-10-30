@@ -2084,6 +2084,132 @@
       "require": {
         "quality_pass": "True"
       }
+    },
+    {
+      "id": "support_policy_candidate_pre2024_positive_fraction",
+      "source": "results/deepening/review/record_support.csv",
+      "where": {
+        "group": "policy_candidate",
+        "period": "pre2024"
+      },
+      "field": "positive_fraction_source_dates",
+      "description": "정책 후보로 연결한 노선 / 양수 기록 비율",
+      "unit": "비율",
+      "interpretation": "남행 저녁 17~19시, 공통 사전 표본, 2024 사전→여름. 분모는 원본에 날짜가 있는 날의 고정 셀. 시간 개선·무운행 환산 아님"
+    },
+    {
+      "id": "support_policy_candidate_post2024_positive_fraction",
+      "source": "results/deepening/review/record_support.csv",
+      "where": {
+        "group": "policy_candidate",
+        "period": "post2024"
+      },
+      "field": "positive_fraction_source_dates",
+      "description": "정책 후보로 연결한 노선 / 양수 기록 비율",
+      "unit": "비율",
+      "interpretation": "남행 저녁 17~19시, 공통 사전 표본, 2024 사전→여름. 분모는 원본에 날짜가 있는 날의 고정 셀. 시간 개선·무운행 환산 아님"
+    },
+    {
+      "id": "support_other_or_unclassified_pre2024_positive_fraction",
+      "source": "results/deepening/review/record_support.csv",
+      "where": {
+        "group": "other_or_unclassified",
+        "period": "pre2024"
+      },
+      "field": "positive_fraction_source_dates",
+      "description": "기타·분류 미확정 노선 / 양수 기록 비율",
+      "unit": "비율",
+      "interpretation": "남행 저녁 17~19시, 공통 사전 표본, 2024 사전→여름. 분모는 원본에 날짜가 있는 날의 고정 셀. 시간 개선·무운행 환산 아님"
+    },
+    {
+      "id": "support_other_or_unclassified_post2024_positive_fraction",
+      "source": "results/deepening/review/record_support.csv",
+      "where": {
+        "group": "other_or_unclassified",
+        "period": "post2024"
+      },
+      "field": "positive_fraction_source_dates",
+      "description": "기타·분류 미확정 노선 / 양수 기록 비율",
+      "unit": "비율",
+      "interpretation": "남행 저녁 17~19시, 공통 사전 표본, 2024 사전→여름. 분모는 원본에 날짜가 있는 날의 고정 셀. 시간 개선·무운행 환산 아님"
+    },
+    {
+      "id": "support_retained_14_pre2024_positive_fraction",
+      "source": "results/deepening/review/record_support.csv",
+      "where": {
+        "group": "retained_14",
+        "period": "pre2024"
+      },
+      "field": "positive_fraction_source_dates",
+      "description": "고정 14개 노선 / 양수 기록 비율",
+      "unit": "비율",
+      "interpretation": "남행 저녁 17~19시, 공통 사전 표본, 2024 사전→여름. 분모는 원본에 날짜가 있는 날의 고정 셀. 시간 개선·무운행 환산 아님"
+    },
+    {
+      "id": "support_retained_14_post2024_positive_fraction",
+      "source": "results/deepening/review/record_support.csv",
+      "where": {
+        "group": "retained_14",
+        "period": "post2024"
+      },
+      "field": "positive_fraction_source_dates",
+      "description": "고정 14개 노선 / 양수 기록 비율",
+      "unit": "비율",
+      "interpretation": "남행 저녁 17~19시, 공통 사전 표본, 2024 사전→여름. 분모는 원본에 날짜가 있는 날의 고정 셀. 시간 개선·무운행 환산 아님"
+    },
+    {
+      "id": "support_policy_candidate_routes",
+      "source": "results/deepening/review/record_support.csv",
+      "where": {
+        "group": "policy_candidate",
+        "period": "pre2024"
+      },
+      "field": "routes",
+      "description": "정책 후보로 연결한 노선 수",
+      "unit": "건",
+      "interpretation": "남행 저녁 17~19시, 공통 사전 표본, 2024 사전→여름. 분모는 원본에 날짜가 있는 날의 고정 셀. 시간 개선·무운행 환산 아님",
+      "expected": 20
+    },
+    {
+      "id": "support_other_routes",
+      "source": "results/deepening/review/record_support.csv",
+      "where": {
+        "group": "other_or_unclassified",
+        "period": "pre2024"
+      },
+      "field": "routes",
+      "description": "기타·분류 미확정 노선 수",
+      "unit": "건",
+      "interpretation": "남행 저녁 17~19시, 공통 사전 표본, 2024 사전→여름. 분모는 원본에 날짜가 있는 날의 고정 셀. 시간 개선·무운행 환산 아님",
+      "expected": 49
+    },
+    {
+      "id": "support_retained14_policy_candidate_routes",
+      "source": "results/deepening/review/record_support.csv",
+      "where": {
+        "group": "retained_14",
+        "period": "pre2024"
+      },
+      "field": "policy_candidate_routes",
+      "description": "고정 14개 노선 중 정책 후보 분류 노선 수",
+      "unit": "건",
+      "interpretation": "남행 저녁 17~19시, 공통 사전 표본, 2024 사전→여름. 분모는 원본에 날짜가 있는 날의 고정 셀. 시간 개선·무운행 환산 아님",
+      "expected": 0
+    },
+    {
+      "id": "archive_december_calendar_only_coverage",
+      "source": "results/deepening/archive_forecast/metrics.csv",
+      "where": {
+        "period": "autumn",
+        "horizon": "1",
+        "name": "calendar_only",
+        "seed": "17",
+        "scope": "month_2025-12"
+      },
+      "field": "coverage",
+      "description": "같은 조건 달력 / 12월 coverage",
+      "unit": "비율",
+      "interpretation": "시드17, 12월 H1, 기존 2025년을 다시 본 후속 평가"
     }
   ],
   "output_manifests": [

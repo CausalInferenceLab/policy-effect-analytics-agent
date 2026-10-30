@@ -10,9 +10,10 @@ Python 3.12에서 사례 폴더의 두 명령을 실행한다. 외부 패키지�
 cd cases/sgim49697-ops-gangnam-bus-2024
 python review_overnight.py --check
 python review_deepening.py --check
+python review_record_support.py --check
 ```
 
-첫 명령은 이전 핵심 수치 78개와 기존 공개 동결을 확인한다. 두 번째는 [선택 명세](deepening_review_spec.json)에 지정된 **추가 수치 141개·근거 CSV/JSON 17개·산출물 69개**를 확인한다. CSV는 정확히 하나인 선택 행과 품질 조건을, JSON은 지정 경로의 유한 숫자와 필수 불일치 0 조건을 확인한다. 산출물 명세 23개의 해시, 검토기·공용 보조 코드, 기존 공개 동결도 대조한다. 저장된 [검토표](results/deepening/review/key_numbers.csv)를 보고 출처 행으로 돌아갈 수 있다.
+첫 명령은 이전 핵심 수치 78개와 기존 공개 동결을 확인한다. 두 번째는 [선택 명세](deepening_review_spec.json)에 지정된 **추가 수치 151개·근거 CSV/JSON 18개·산출물 69개**를 확인한다. CSV는 정확히 하나인 선택 행과 품질 조건을, JSON은 지정 경로의 유한 숫자와 필수 불일치 0 조건을 확인한다. 산출물 명세 23개의 해시, 검토기·공용 보조 코드, 기존 공개 동결도 대조한다. 저장된 [검토표](results/deepening/review/key_numbers.csv)를 보고 출처 행으로 돌아갈 수 있다. 세 번째 명령은 [집단별 기록 비율 표](results/deepening/review/record_support.csv)를 첫 종합의 남행 기록 누락 CSV와 고정 노선 목록에서 다시 계산해 대조한다. 분모는 원본에 날짜가 있는 날의 고정 셀이다.
 
 이 검사는 공개 집계의 일관성 검사다. 원자료를 다시 파싱하거나 모델을 새로 학습하지 않으며 문서의 모든 문장을 자동 판정하지 않는다. `--write`는 유지보수용으로 검토표·명세를 다시 만드는 명령이므로 일반 검토에서는 사용하지 않는다. 두 검토기는 같은 폴더에 있어야 한다.
 

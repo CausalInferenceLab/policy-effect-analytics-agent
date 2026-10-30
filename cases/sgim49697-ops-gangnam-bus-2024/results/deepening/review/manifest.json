@@ -1,8 +1,8 @@
 {
   "scope": "공개 집계의 선택 조건·수치·산출물 해시 대조. 원자료 재파싱·모델 학습·인과 검증을 대신하지 않음",
-  "claims": 141,
-  "source_tables": 17,
-  "spec_sha256": "24414e281c4ae3108c7425c3a824b23f0e2aafb30bb857812db33b5589091f58",
+  "claims": 151,
+  "source_tables": 18,
+  "spec_sha256": "853ab9e9edfe1614b8440cafb47cb352067fdf9b971591488f9283a8df5201ef",
   "code_sha256": "5489f5da3fa2126e24e7d207b5dff3408317b54281c561f34a96aba7bba6fd5a",
   "helper_sha256": "755e2c827659ca0d1b0e4f03651ea41468e7aa722b682a133bde176d80eaddc7",
   "inputs": {
@@ -22,7 +22,8 @@
     "results/deepening/infrastructure/history_audit.json": "bb5ae44bb16336c94b49397c6f4cea387773c58cadfb1e3b3ab9a7eb40d1f63a",
     "results/deepening/infrastructure/group_validation.json": "e1a5daceef0e50fe3f1f5270088bd1c49c9fbf255cb2003d82da6d8aefd6436f",
     "results/deepening/infrastructure/trip_support_audit.json": "36b8111d985773f20217df3da8d365b45cbe3005d72cdefe945b32a23aaf8ced",
-    "results/deepening/infrastructure/trip_support_validation.json": "a1148caca9d1a195c27cfb01d2d36c6db7e207be0402c41e2530447514eb2547"
+    "results/deepening/infrastructure/trip_support_validation.json": "a1148caca9d1a195c27cfb01d2d36c6db7e207be0402c41e2530447514eb2547",
+    "results/deepening/review/record_support.csv": "e545dd9e510cbcf38910160bfbd3603661caf8e667c5a6060a549503660a9b28"
   },
   "output_manifests": {
     "results/deepening/archive_forecast/evaluation_audit.json": "2575c70dd4e54c3b02bb68ff9790ff275b1b85622f8878f979cc2dbb30298a84",
@@ -187,5 +188,5 @@
     },
     "excluded_local_artifacts": "data/·runs/의 원본·캐시·모델은 --local-artifacts에서만 확인"
   },
-  "summary_sha256": "1cb9652fc13da7d222e956afc5cb7028836d98794e7af3e23984238e828f3c65"
+  "summary_sha256": "3e195dba5833fde5d49fa0f94c899b7a910fde8b7d12d27900e83bf0b862c808"
 }
