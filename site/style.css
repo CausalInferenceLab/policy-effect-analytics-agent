@@ -1,9 +1,17 @@
+/* 글꼴: 에스코어 드림(S-Core Dream) — 코어 고딕 D를 만든 에스코어의 무료 글꼴. 상업적 이용 무료, 웹폰트는 눈누 npm 패키지(jsdelivr).
+   400 본문 · 700 강조 · 800 큰 제목. 글꼴을 받기 전에는 시스템 고딕으로 먼저 보여 준다(font-display: swap). */
+@font-face { font-family: "S-Core Dream"; font-weight: 400; font-style: normal; font-display: swap;
+  src: url("https://cdn.jsdelivr.net/npm/@noonnu/s-coredream-4regular@0.0.1/S-CoreDream-4Regular.woff") format("woff") }
+@font-face { font-family: "S-Core Dream"; font-weight: 700; font-style: normal; font-display: swap;
+  src: url("https://cdn.jsdelivr.net/npm/@noonnu/s-coredream-6bold@0.0.1/S-CoreDream-6Bold.woff") format("woff") }
+@font-face { font-family: "S-Core Dream"; font-weight: 800; font-style: normal; font-display: swap;
+  src: url("https://cdn.jsdelivr.net/npm/@noonnu/s-coredream-8heavy@0.0.1/S-CoreDream-8Heavy.woff") format("woff") }
 :root {
   --paper: #f6f7f9; --surface: #fff; --sunk: #eef0f3; --ink: #14171c; --ink2: #3f4550; --muted: #5e6673; --hair: #dde0e5;
   --accent: #1d4e89; --accent-soft: #e4edf7;
   --go: #1e6a4d; --go-bg: #e0f1e8; --warn: #8a5900; --warn-bg: #fbeed3; --stop: #9c2b33; --stop-bg: #f8e2e4;
   --r-treat: #7a3e9d; --r-treat-bg: #f1e6f7; --r-out: #1b5e9b; --r-out-bg: #e3eef8; --r-cov: #5b6470; --r-cov-bg: #eceef1;
-  --sans: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
+  --sans: "S-Core Dream", "Apple SD Gothic Neo", "Malgun Gothic", system-ui, sans-serif;
   --mono: ui-monospace, SFMono-Regular, Menlo, monospace;
 }
 @media (prefers-color-scheme: dark) {
@@ -17,7 +25,8 @@
 * { box-sizing: border-box }
 [hidden] { display: none !important }
 html { scroll-behavior: smooth }
-body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.7 var(--sans); word-break: keep-all; overflow-wrap: break-word }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 16px/1.75 var(--sans); letter-spacing: -0.01em; word-break: keep-all; overflow-wrap: break-word }
+h1, h2, h3, b, strong, th { letter-spacing: -0.02em }
 a { color: var(--accent) }
 code { font-family: var(--mono); font-size: .88em; background: var(--sunk); padding: 1px 5px; border-radius: 4px }
 
@@ -482,3 +491,7 @@ html.js:not(.calm) .lin-svg .edges path { transition: stroke-dashoffset 1.2s eas
 @media (max-width: 760px) { .levels { grid-template-columns: minmax(0, 1fr) } }
 @media (prefers-reduced-motion: reduce) { .flow a, .levels a { transition: none } .flow a:hover, .levels a:hover { transform: none } }
 @media (prefers-color-scheme: dark) { .sticker { box-shadow: 2px 2px 0 #000 } }
+
+/* 숫자·날짜도 같은 글꼴로 (예전 고정폭 글꼴 라벨 정리) */
+.flow .n, .issue-card .date, .step .n, .rank-item .rn, .onto .rel, .when, .kpi .v, .stepno { font-family: var(--sans) }
+.hero.home h1 { font-weight: 800; letter-spacing: -0.04em }
