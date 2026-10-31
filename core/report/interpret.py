@@ -34,7 +34,7 @@ def fmt(v: float, col: str, unit: str | None = None) -> str:
 
 
 def _ok(lo, hi, col, unit) -> bool:
-    if lo is None or hi is None or any(map(math.isnan, (lo, hi))) or hi < lo:
+    if lo is None or hi is None or not all(map(math.isfinite, (lo, hi))) or hi < lo:
         return False
     return not (is_log(col, unit) and hi - lo > WIDE_LOG)
 
