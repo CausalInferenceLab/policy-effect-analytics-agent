@@ -1,5 +1,5 @@
 :root {
-  --paper: #f6f7f9; --surface: #fff; --sunk: #eef0f3; --ink: #14171c; --ink2: #3f4550; --muted: #6b7280; --hair: #dde0e5;
+  --paper: #f6f7f9; --surface: #fff; --sunk: #eef0f3; --ink: #14171c; --ink2: #3f4550; --muted: #5e6673; --hair: #dde0e5;
   --accent: #1d4e89; --accent-soft: #e4edf7;
   --go: #1e6a4d; --go-bg: #e0f1e8; --warn: #8a5900; --warn-bg: #fbeed3; --stop: #9c2b33; --stop-bg: #f8e2e4;
   --r-treat: #7a3e9d; --r-treat-bg: #f1e6f7; --r-out: #1b5e9b; --r-out-bg: #e3eef8; --r-cov: #5b6470; --r-cov-bg: #eceef1;
@@ -38,7 +38,7 @@ h3 { font-size: 17px; margin: 0 0 6px }
 .sub { color: var(--ink2); max-width: 68ch; margin: 0 0 18px }
 section { padding: 52px 0 6px; scroll-margin-top: 60px }
 .muted { color: var(--muted); font-size: 14px }
-.small { font-size: 13px }
+.small { font-size: 14px }
 
 .cta { display: flex; gap: 10px; flex-wrap: wrap; margin: 20px 0 0 }
 .btn { display: inline-block; padding: 10px 18px; border-radius: 999px; font-weight: 600; text-decoration: none; font-size: 15px }
@@ -64,7 +64,7 @@ section { padding: 52px 0 6px; scroll-margin-top: 60px }
 .gates, .tags { display: flex; gap: 6px; flex-wrap: wrap; margin: 10px 0 4px }
 .dots { letter-spacing: 2px; color: var(--accent) }
 
-.ask { margin-top: 26px; max-width: 820px }
+.ask { margin-top: 26px }
 .ask textarea, .search input { width: 100%; font: inherit; font-size: 17px; padding: 14px 16px; border-radius: 14px; border: 1px solid var(--hair); background: var(--surface); color: var(--ink) }
 .ask textarea { min-height: 64px; resize: vertical }
 .ask textarea:focus, .search input:focus, select:focus, .ai-grid input:focus { outline: 2px solid var(--accent); border-color: transparent }
@@ -110,8 +110,8 @@ select { font: inherit; font-size: 14px; padding: 6px 10px; border-radius: 10px;
 .issue-card { text-decoration: none; color: inherit; display: flex; flex-direction: column; gap: 6px }
 .issue-card .date { font: 600 13px var(--mono); color: var(--muted) }
 
-table { width: 100%; border-collapse: collapse; font-size: 14px }
-th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--hair); vertical-align: top }
+table { width: 100%; border-collapse: collapse; font-size: 15px }
+th, td { text-align: left; padding: 12px; border-bottom: 1px solid var(--hair); vertical-align: top }
 th { color: var(--muted); font-weight: 600; white-space: nowrap }
 .tablewrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--hair); border-radius: 12px }
 .banner { border-radius: 12px; padding: 12px 16px; margin: 14px 0; font-weight: 600 }
@@ -214,8 +214,8 @@ footer { margin-top: 64px; color: var(--muted); font-size: 13px; border-top: 1px
   .arrow { transform: rotate(90deg); justify-self: center }
   .layer { grid-template-columns: minmax(0, 1fr) }
   .lin-grid { grid-template-columns: minmax(0, 1fr) }
-  .nav .links { flex-wrap: nowrap; overflow-x: auto; white-space: nowrap; scrollbar-width: none; padding-bottom: 2px }
-  .nav .links::-webkit-scrollbar { display: none }
+  .nav .links { flex-wrap: wrap }
+  section, .issue { scroll-margin-top: 140px }
   .proj-grid { grid-template-columns: minmax(0, 1fr) }
 }
 
@@ -229,19 +229,26 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .mark { position: relative; width: 26px; height: 14px; flex: none }
 .mark::before { content: ""; position: absolute; left: 3px; right: 3px; top: 6px; height: 2px; background: var(--accent); border-radius: 1px }
 .mark::after { content: ""; position: absolute; left: 13px; top: 3px; width: 8px; height: 8px; border-radius: 50%; background: var(--accent); box-shadow: -9px -3px 0 -3px var(--ink) }
-.nav .links a { padding: 2px 0 }
+.nav .links a { padding: 6px 0 }
 .nav .links a[aria-current] { color: var(--ink); font-weight: 700; box-shadow: inset 0 -2px 0 var(--accent) }
 .crumb { display: inline-block; font-size: 14px; color: var(--muted); margin-bottom: 4px }
 .crumb a { color: var(--muted) }
 
-.hero.home { padding: 56px 0 8px; max-width: 780px }
-.hero.home h1 { font-size: clamp(32px, 5.4vw, 52px); font-weight: 800; letter-spacing: -.035em; line-height: 1.12; margin: 0 0 14px }
-.ask { margin-top: 28px; max-width: 780px }
-.chat-form { background: var(--surface); border: 1.5px solid var(--ink); border-radius: 16px; padding: 6px 6px 6px 4px; align-items: center }
-.chat-form textarea { border: 0; background: transparent; min-height: 52px; padding: 10px 12px; resize: none; font-size: 17px }
+.hero.home { padding: 56px 0 8px }
+.hero.home h1 { font-size: clamp(32px, 5.4vw, 52px); font-weight: 800; letter-spacing: -.035em; line-height: 1.25; margin: 0 0 14px }
+.ask { margin-top: 28px }
+.chat-form { display: grid; grid-template-columns: minmax(0, 1fr) auto; background: var(--surface); border: 1.5px solid var(--ink); border-radius: 16px; padding: 12px; gap: 8px }
+.chat-form textarea { grid-column: 1 / -1; border: 0; background: transparent; min-height: 64px; padding: 4px; resize: none; font-size: 17px; scrollbar-width: thin; scrollbar-color: var(--muted) transparent; scrollbar-gutter: stable }
+.chat-form textarea::-webkit-scrollbar { width: 10px }
+.chat-form textarea::-webkit-scrollbar-track { background: transparent }
+.chat-form textarea::-webkit-scrollbar-thumb { background: var(--muted); background-clip: padding-box; border: 3px solid transparent; border-radius: 999px }
+.chat-form textarea::-webkit-scrollbar-thumb:hover { background-color: var(--ink2) }
+@media (forced-colors: active) {
+  .chat-form textarea { scrollbar-color: auto }
+}
 .chat-form textarea:focus { outline: none }
 .chat-form:focus-within { box-shadow: 0 0 0 3px var(--accent-soft); border-color: var(--accent) }
-.chat-form .btn { height: 44px; padding: 0 22px; border-radius: 12px }
+.chat-form .btn { grid-column: 2; justify-self: end; height: 44px; padding: 0 22px; border-radius: 12px }
 
 .sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px }
 .more { font-size: 14px; font-weight: 600; text-decoration: none; white-space: nowrap }
@@ -257,7 +264,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .answer h3 { margin: 6px 0 4px; font-size: 17.5px; line-height: 1.45; color: var(--ink) }
 .answer .tags { margin: 0 }
 .a-line { margin: 0; color: var(--ink2); font-size: 15px; line-height: 1.6 }
-.a-meta { margin: 6px 0 0; color: var(--muted); font-size: 13px }
+.a-meta { margin: 8px 0 0; color: var(--muted); font-size: 14px }
 .glyph { margin: 0 }
 .glyph svg { width: 100%; height: 34px; display: block; overflow: visible }
 .glyph .zero { stroke: var(--ink); stroke-width: 1.5 }
@@ -265,7 +272,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .glyph .est { fill: var(--warn); stroke: var(--surface); stroke-width: 2 }
 .glyph.g-go .band { stroke: var(--go) } .glyph.g-go .est { fill: var(--go) }
 .glyph.g-stop .band { stroke: var(--muted); opacity: .5; stroke-linecap: butt } .glyph.g-stop .est { fill: var(--muted) }
-.glyph figcaption { font-size: 12.5px; color: var(--muted); text-align: center; line-height: 1.4 }
+.glyph figcaption { font-size: 13px; color: var(--muted); text-align: center; line-height: 1.5 }
 .glyph .eff { color: var(--ink); font-weight: 700 }
 .glyph.g-stop .eff { color: var(--muted); font-weight: 600 }
 dl.legend { display: grid; gap: 10px 22px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); margin: 8px 0 }
