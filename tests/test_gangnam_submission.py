@@ -16,6 +16,7 @@ CASE = Path(
 )
 sys.path.insert(0, str(CASE))
 from _shared import checked, new_run  # noqa: E402
+from review_overview import check as check_overview  # noqa: E402
 from review_submission import check, compare_tables  # noqa: E402
 
 
@@ -59,6 +60,26 @@ def test_changed_evidence_is_rejected(tmp_path, name):
         stream.write("\n")
     with pytest.raises(ValueError, match="해시 불일치"):
         check(base)
+
+
+@pytest.mark.parametrize("figure", ["daily", "monthly", "sensitivity", "removed"])
+def test_changed_figure_data_is_rejected(tmp_path, figure):
+    base = public_copy(tmp_path)
+    page = base / "project-overview.html"
+    assert check_overview(page=page, base=base)["figures"] == 15
+    content = page.read_text(encoding="utf-8")
+    start = content.index('id="report-data">') + len('id="report-data">')
+    end = content.index("</script>", start)
+    data = json.loads(content[start:end])
+    if figure == "daily":
+        data["figures"]["daily"]["rows"][0][3] += 1
+    elif figure == "removed":
+        del data["figures"]["weekly"]
+    else:
+        data["figures"][figure]["points"][0]["value"] += 0.01
+    page.write_text(content[:start] + json.dumps(data, ensure_ascii=False) + content[end:], encoding="utf-8")
+    with pytest.raises(ValueError, match="그림"):
+        check_overview(page=page, base=base)
 
 
 def test_full_table_comparison_rejects_missing_condition(tmp_path):

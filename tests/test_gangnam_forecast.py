@@ -107,3 +107,23 @@ def test_cpu_quantile_training_smoke():
     assert fitted["training_rows"] == 60 and 1 <= fitted["iterations"] <= 12
     assert q.shape == (60, 3) and np.isfinite(q).all() and (np.diff(q, axis=1) >= 0).all()
     assert crossing.shape == (60,)
+
+
+def test_example_week_is_the_first_full_week_of_the_period():
+    cfg = dict(timezone="Asia/Seoul", splits=dict(autumn=["2025-09-03", "2025-09-30"]))
+    start, end = model.example_week(cfg)
+    assert start == pd.Timestamp("2025-09-08", tz="Asia/Seoul")
+    assert end - start == pd.Timedelta("7D")
+    with pytest.raises(ValueError, match="온전한 주"):
+        model.example_week(
+            dict(timezone="Asia/Seoul", splits=dict(autumn=["2025-09-02", "2025-09-12"]))
+        )
+
+
+def test_feature_groups_follow_the_source_columns():
+    assert model.feature_group("link_id") == "calendar"
+    assert model.feature_group("archive_lag_1344__missing") == "lag"
+    assert model.feature_group("archive_available_1848") == "lag"
+    assert model.feature_group("archive_profile_3_q50") == "profile_3"
+    with pytest.raises(ValueError, match="분류되지 않은"):
+        model.feature_group("speed_kmh")

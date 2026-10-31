@@ -268,7 +268,68 @@ def load_panel(inputs, cfg):
     return panel, audits
 
 
-def analyze(panel, cfg):
+def hourly_changes(kept, routes, dates, cfg):
+    """같은 공동 표본에서 07~22시를 한 시간씩 따로 비교한다."""
+    rows = []
+    for hour in cfg["hours"]:
+        daily = daily_paired(kept, routes, dates, [hour], cfg["minimum_coverage"])
+        for name in ["summer2024", "post2025_from_pre2024"]:
+            before, after = cfg["comparisons"][name]
+            for segment in ["south", "north"]:
+                result = describe_comparison(
+                    daily[daily.segment.eq(segment)],
+                    cfg["calendar"][before],
+                    cfg["calendar"][after],
+                    cfg,
+                )
+                rows.append(
+                    dict(
+                        hour=hour,
+                        segment=segment,
+                        comparison=name,
+                        change_pct=result["change_pct"],
+                        before_days=result["before_days"],
+                        after_days=result["after_days"],
+                    )
+                )
+    return pd.DataFrame(rows)
+
+
+def weekly_trajectory(panel, cfg, holidays, baseline, reference):
+    """기록 기간의 평일 저녁 지수를 본 분석과 같은 사전 기준으로 계산해 주 평균으로 묶는다."""
+    fixed = set().union(*cfg["calendar"].values(), *cfg["selection_reference_dates"].values())
+    weekdays = pd.bdate_range(*cfg["record_window"]).strftime("%Y-%m-%d")
+    dates = sorted({d for d in weekdays if d not in set(holidays)} | fixed)
+    matrix, joint = joint_directions(panel, cfg["routes"], cfg["hours"], dates)
+    _, check, normalized = select_routes(
+        matrix, joint, cfg["selection_reference_dates"], cfg["minimum_pre_joint_coverage"]
+    )
+    check.columns = [f"{segment}_h{hour:02}" for segment, hour in check.columns]
+    if not check.index.equals(baseline.index) or not np.allclose(
+        check.to_numpy(), baseline.to_numpy(), rtol=0, atol=1e-9
+    ):
+        raise ValueError("주별 궤적의 사전 기준값이 본 분석과 다릅니다")
+    kept = normalized[normalized.index.get_level_values("route") != cfg["retired_route"]["id"]]
+    daily = daily_paired(
+        kept, len(cfg["routes"]) - 1, dates, cfg["report_hours"], cfg["minimum_coverage"]
+    )
+    joined = reference.merge(daily, on=["date", "segment"], suffixes=("", "_all"))
+    if len(joined) != len(reference) or not np.allclose(
+        joined["index"], joined["index_all"], rtol=0, atol=1e-9, equal_nan=True
+    ):
+        raise ValueError("주별 궤적의 달력 날짜 값이 본 분석과 다릅니다")
+    daily = daily.dropna(subset=["index"])
+    daily["week_start"] = (
+        pd.to_datetime(daily.date).dt.to_period("W-SUN").dt.start_time.dt.strftime("%Y-%m-%d")
+    )
+    return (
+        daily.groupby(["week_start", "segment"])["index"]
+        .agg(index_mean="mean", days="count")
+        .reset_index()
+    )
+
+
+def analyze(panel, cfg, holidays):
     calendar = cfg["calendar"]
     dates = sorted(set().union(*calendar.values(), *cfg["selection_reference_dates"].values()))
     matrix, joint = joint_directions(panel, cfg["routes"], cfg["hours"], dates)
@@ -336,6 +397,8 @@ def analyze(panel, cfg):
         paired_gaps=pd.DataFrame(gaps),
         daily=pd.concat(dailies, ignore_index=True),
         baseline=baseline.reset_index(),
+        hourly=hourly_changes(kept, len(cfg["routes"]) - 1, dates, cfg),
+        weekly=weekly_trajectory(panel, cfg, holidays, baseline, native),
     )
 
 
@@ -343,7 +406,7 @@ def run(inputs_path, run_id):
     inputs = verify_inputs(load_json(inputs_path))
     out = new_run(run_id)
     panel, audit = load_panel(inputs, config()["bus"])
-    tables = analyze(panel, config()["bus"])
+    tables = analyze(panel, config()["bus"], config()["forecast"]["holidays"]["dates"])
     for name, frame in tables.items():
         frame.to_csv(out / (name + ".csv"), index=False)
     write_json(

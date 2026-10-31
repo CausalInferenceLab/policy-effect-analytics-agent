@@ -118,3 +118,61 @@ def test_same_date_sensitivity_never_admits_new_dates():
     result = bus.accepted_dates_only(data, reference)
     assert result["index"].iloc[0] == 90 and pd.isna(result["index"].iloc[1])
     assert result.coverage.tolist() == [1.0, 1.0]
+
+
+def test_figure_tables_follow_the_fixed_baseline():
+    weekdays = pd.bdate_range("2024-06-03", "2024-06-14").strftime("%Y-%m-%d").tolist()
+    routes, hours = ["r0", "r1", "r2"], [8, 17, 18, 19]
+    cfg = dict(
+        routes=routes,
+        hours=hours,
+        report_hours=[17, 18, 19],
+        record_window=["2024-06-03", "2024-06-14"],
+        retired_route=dict(id="r2"),
+        minimum_coverage=0.5,
+        minimum_pre_joint_coverage=0.5,
+        minimum_days=1,
+        maximum_coverage_gap=1.0,
+        calendar=dict(
+            pre2024=["2024-06-03", "2024-06-04"],
+            post2024=["2024-06-10", "2024-06-11"],
+            post2025=["2024-06-12"],
+        ),
+        selection_reference_dates=dict(
+            pre2023=["2024-06-05"], pre2024=["2024-06-03", "2024-06-04"]
+        ),
+        comparisons=dict(
+            summer2024=["pre2024", "post2024"], post2025_from_pre2024=["pre2024", "post2025"]
+        ),
+    )
+    panel = pd.MultiIndex.from_product(
+        [weekdays, routes, ["south", "north"], hours], names=["date", "route", "segment", "hour"]
+    ).to_frame(index=False)
+    second = panel.date.ge("2024-06-10")
+    panel["value"] = 10.0
+    panel.loc[second & panel.segment.eq("south"), "value"] = 5.0
+    panel.loc[second & panel.segment.eq("north"), "value"] = 15.0
+    dates = sorted(
+        set().union(*cfg["calendar"].values(), *cfg["selection_reference_dates"].values())
+    )
+    matrix, joint = bus.joint_directions(panel, routes, hours, dates)
+    _, baseline, normalized = bus.select_routes(
+        matrix, joint, cfg["selection_reference_dates"], cfg["minimum_pre_joint_coverage"]
+    )
+    baseline.columns = [f"{segment}_h{hour:02}" for segment, hour in baseline.columns]
+    kept = normalized[normalized.index.get_level_values("route") != "r2"]
+    native = bus.daily_paired(kept, 2, dates, cfg["report_hours"], cfg["minimum_coverage"])
+
+    weekly = bus.weekly_trajectory(panel, cfg, ["2024-06-06"], baseline, native)
+    south, north = (weekly[weekly.segment.eq(s)] for s in ["south", "north"])
+    assert south.index_mean.tolist() == [100, 50] and north.index_mean.tolist() == [100, 150]
+    assert south.days.tolist() == [4, 5]
+
+    hourly = bus.hourly_changes(kept, 2, dates, cfg)
+    assert len(hourly) == len(hours) * 2 * 2
+    evening = hourly[hourly.hour.eq(18) & hourly.comparison.eq("summer2024")]
+    assert evening.set_index("segment").change_pct.round(6).to_dict() == {"south": -50, "north": 50}
+
+    shifted = baseline * 2
+    with pytest.raises(ValueError, match="사전 기준값"):
+        bus.weekly_trajectory(panel, cfg, [], shifted, native)

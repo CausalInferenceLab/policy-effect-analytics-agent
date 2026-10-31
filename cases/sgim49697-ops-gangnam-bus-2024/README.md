@@ -43,6 +43,7 @@ gangnam_run="reproduce-$(date -u +%Y%m%dT%H%M%SZ)" &&
 .venv/bin/python forecast.py features --inputs "runs/${gangnam_run}-collect/inputs.json" --run-id "${gangnam_run}-features" &&
 .venv/bin/python forecast.py train --features "runs/${gangnam_run}-features/features.json" --run-id "${gangnam_run}-train" &&
 .venv/bin/python forecast.py evaluate --features "runs/${gangnam_run}-features/features.json" --training "runs/${gangnam_run}-train/training.json" --run-id "${gangnam_run}-evaluation" &&
+.venv/bin/python forecast.py explain --models "runs/${gangnam_run}-train" --predictions "runs/${gangnam_run}-evaluation" --run-id "${gangnam_run}-explain" &&
 .venv/bin/python review_submission.py --bus-results "runs/${gangnam_run}-bus/comparisons.csv" --forecast-results "runs/${gangnam_run}-evaluation/metrics.csv"
 ```
 
@@ -54,6 +55,7 @@ gangnam_run="reproduce-$(date -u +%Y%m%dT%H%M%SZ)" &&
 
 - 버스: 원래 14개와 공식 폐선 542번 제외 13개를 동일 날짜/원래 관측률 두 조건으로 비교한 30행 전체.
 - 예측: 달력만/공개된 과거 월 자료를 사용하는 CatBoost 8회와 3개월 경험 프로필 기준선. 두 기간·두 예측 간격·전체/저녁/링크별/월별 조건을 모두 포함한다.
+- HTML 그림 자료: `estimate.py`는 비교표와 함께 일별(`daily.csv`)·시간대별(`hourly.csv`)·주별(`weekly.csv`) 표를 쓴다. `forecast.py explain`은 학습·평가를 다시 하지 않고 저장된 모형과 예측에서 모형별 반복 수(`models.csv`), 입력 중요도(`importance.csv`), 가을 평가 첫 주 예시(`example_week.csv`)를 만든다. `review_overview.py --check`는 일별·월별·발행 시점·표본 규칙 그림을 공개 비교표·예측 지표표와 대조하고, 시간대·주별·모형·예시 주·중요도 그림은 로컬 실행 결과의 생성 명령과 SHA-256 기록만 확인한다.
 - 과거의 경보·승객 가중·GPU·지하철 등 보조 분석은 HTML의 **역사적 수치 스냅샷**으로 남는다. 229개 수치를 담은 두 표의 해시를 검증하고 핵심 62개를 최종 비교표와 대조한다. 나머지 167개를 포함한 보조 실험 전체를 축약 코드로 다시 수행하지는 않는다. 목록과 원래 출처의 해시는 [run_manifest.json](run_manifest.json)에 있다.
 
 초기 [plan.yaml](plan.yaml)은 공통 엔진용 DiD 설계 기록이다. 최종 분석의 실행 규칙은 [analysis-plan.yaml](analysis-plan.yaml)이며, 이 사례를 `core.agent`로 실행하는 경로는 최종 재현 절차가 아니다.

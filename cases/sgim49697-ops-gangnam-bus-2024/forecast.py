@@ -763,6 +763,106 @@ def evaluate(features_path, training_path, run_id):
     return out
 
 
+def feature_group(column):
+    """모형 입력 열을 설명용 네 묶음으로 나눈다. 결측 표시 열은 원래 열의 묶음을 따른다."""
+    base = column.removesuffix("__missing")
+    if base in CALENDAR:
+        return "calendar"
+    for prefix, group in [
+        ("archive_lag_", "lag"),
+        ("archive_available_", "lag"),
+        ("archive_profile_1_", "profile_1"),
+        ("archive_profile_3_", "profile_3"),
+    ]:
+        if base.startswith(prefix):
+            return group
+    raise ValueError("분류되지 않은 특징 열: " + column)
+
+
+def example_week(cfg, period="autumn"):
+    """평가 기간의 첫 온전한 월~일 주를 설정에서 정한다. 결과를 보고 고르지 않는다."""
+    start, end = (pd.Timestamp(day, tz=cfg["timezone"]) for day in cfg["splits"][period])
+    monday = pd.offsets.Week(weekday=0).rollforward(start)
+    if monday + pd.Timedelta("6D") > end:
+        raise ValueError("평가 기간 안에 온전한 주가 없습니다")
+    return monday, monday + pd.Timedelta("7D")
+
+
+def explain(models_dir, predictions_dir, run_id):
+    """저장된 모형·예측에서 반복 수, 특징 중요도, 예시 주의 예측을 꺼낸다. 학습·평가는 하지 않는다."""
+    import joblib
+
+    cfg = config()["forecast"]
+    out = new_run(run_id)
+    read, models, importance = [], [], []
+    for horizon in cfg["horizons"]:
+        for name in cfg["feature_sets"]:
+            for seed in cfg["training"]["seeds"]:
+                path = Path(models_dir) / f"h{horizon}_{name}_s{seed}.joblib"
+                read.append(reference(path))
+                # joblib은 사용자가 지정한 로컬 파일만 읽는다. 외부 모델을 내려받지 않는다.
+                model = joblib.load(path)
+                if model["seed"] != seed or model["quantiles"] != QUANTILES:
+                    raise ValueError("저장 모형의 시드·분위수가 파일 이름과 다릅니다")
+                models.append(
+                    dict(
+                        name=name,
+                        horizon=horizon,
+                        seed=seed,
+                        depth=model["parameter"],
+                        iterations=model["iterations"],
+                        training_rows=model["training_rows"],
+                        input_columns=len(model["schema"]["columns"]),
+                    )
+                )
+                estimator = model["estimator"]
+                values = estimator.get_feature_importance(type="PredictionValuesChange")
+                for feature, value in zip(estimator.feature_names_, values, strict=True):
+                    importance.append(
+                        dict(
+                            name=name,
+                            horizon=horizon,
+                            seed=seed,
+                            feature=feature,
+                            group=feature_group(feature),
+                            importance=float(value),
+                        )
+                    )
+    start, end = example_week(cfg)
+    weeks = []
+    for name, seed in [
+        ("published_archive", cfg["training"]["primary_seed"]),
+        ("calendar_only", cfg["training"]["primary_seed"]),
+        ("published_three_month_profile", 0),
+    ]:
+        path = Path(predictions_dir) / f"autumn_h1_{name}_s{seed}.parquet"
+        read.append(reference(path))
+        frame = pd.read_parquet(path)
+        if set(frame.link_id) != set(cfg["primary_links"]):
+            raise ValueError("예측 파일의 평가 링크가 설정과 다릅니다")
+        frame = frame[frame.target_start.ge(start) & frame.target_start.lt(end)]
+        if len(frame) != 7 * 24 * len(cfg["primary_links"]):
+            raise ValueError("예시 주의 시간 격자가 비었습니다")
+        weeks.append(frame[["link_id", "target_start", "speed_kmh", *QCOLS]].assign(name=name))
+    tables = dict(
+        models=pd.DataFrame(models),
+        importance=pd.DataFrame(importance),
+        example_week=pd.concat(weeks, ignore_index=True),
+    )
+    for table, frame in tables.items():
+        frame.to_csv(out / f"{table}.csv", index=False)
+    write_json(
+        out / "result.json",
+        dict(
+            read=read,
+            example_week=[str(start), str(end)],
+            outputs={table: reference(out / f"{table}.csv") for table in tables},
+            scope="저장된 모형·예측의 설명용 요약. 새 학습·평가가 아님",
+        ),
+    )
+    return out
+
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description=__doc__)
     steps = parser.add_subparsers(dest="step", required=True)
@@ -770,6 +870,7 @@ if __name__ == "__main__":
         ("features", ["inputs"]),
         ("train", ["features"]),
         ("evaluate", ["features", "training"]),
+        ("explain", ["models", "predictions"]),
     ]:
         sub = steps.add_parser(name)
         sub.add_argument("--run-id", required=True)
@@ -780,5 +881,7 @@ if __name__ == "__main__":
         print(make_features(args.inputs, args.run_id))
     elif args.step == "train":
         print(train_models(args.features, args.run_id))
-    else:
+    elif args.step == "evaluate":
         print(evaluate(args.features, args.training, args.run_id))
+    else:
+        print(explain(args.models, args.predictions, args.run_id))
