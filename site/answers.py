@@ -131,6 +131,10 @@ def effect_text(est, lo, hi, col: str, unit: str | None) -> tuple[str, str]:
     """(효과, 95% 범위)를 사람이 읽는 말로. 로그 지표는 %, 범위가 너무 넓으면 그렇다고 말한다."""
     if est is None or lo is None or hi is None:
         return "-", "-"
+    if not (math.isfinite(lo) and math.isfinite(hi)):
+        return interpret.fmt(est, col, unit) if math.isfinite(
+            est
+        ) else "-", "범위를 정할 수 없음(비교 단위가 너무 적음)"
     if _is_log(col, unit):
         if hi - lo > 1.0:
             return f"{(math.exp(est) - 1) * 100:+.1f}%", "범위가 너무 넓어 크기를 말할 수 없음"
