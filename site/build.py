@@ -147,6 +147,7 @@ def page(
     return f"""<!doctype html><html lang="ko"{gc_attr}><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>{e(title)}</title>
 <meta name="description" content="{d}">{og}
+<link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
 <style>{CSS}</style><script src="{up}track.js" defer></script></head><body>
 <a class="skip" href="#main">본문으로 건너뛰기</a>
 <nav class="nav" aria-label="주 메뉴"><div class="in"><a class="brand" href="{up}index.html"><span class="mark" aria-hidden="true"></span>정책 효과 분석</a>
