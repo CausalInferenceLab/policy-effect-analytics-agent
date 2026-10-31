@@ -48,9 +48,13 @@ def test_public_copy_verifies_without_local_experiments(tmp_path):
     )
 
 
-def test_changed_evidence_is_rejected(tmp_path):
+@pytest.mark.parametrize(
+    "name",
+    ["results/deepening/review/key_numbers.csv", "project-overview.html", "review_overview.py"],
+)
+def test_changed_evidence_is_rejected(tmp_path, name):
     base = public_copy(tmp_path)
-    path = base / "results/deepening/review/key_numbers.csv"
+    path = base / name
     with path.open("a") as stream:
         stream.write("\n")
     with pytest.raises(ValueError, match="해시 불일치"):
@@ -84,3 +88,15 @@ def test_initial_plan_remains_a_valid_common_engine_record():
         and plan.estimator.method == "did"
         and not plan.synthetic_data
     )
+
+
+def test_discussion_exports_meaningful_site_fields(monkeypatch):
+    pytest.importorskip("pyfixest", reason="사이트 연동 검사는 공통 엔진 의존성이 있는 환경에서 실행")
+    monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[1] / "site"))
+    from answers import read_discussion
+
+    parsed = read_discussion(CASE)
+    assert parsed["has_one_line"] and "인과 효과는 판단할 수 없다" in parsed["summary"]
+    assert len(parsed["cautions"]) == 4
+    assert "사후" in parsed["cautions"][3] or "결과를 본 뒤" in parsed["cautions"][3]
+    assert "초기" in parsed["plan_changed"] and "기존 결과를 본 뒤" in parsed["plan_changed"]

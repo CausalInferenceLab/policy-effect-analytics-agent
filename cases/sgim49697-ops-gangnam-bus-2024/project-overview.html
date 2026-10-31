@@ -356,7 +356,7 @@ tr.hl th,tr.hl td{background:var(--amber)}
 <tr><th scope="row">남행 서울버스 13개 노선 <span class="dt-sub">강남역 앞 22011→22009</span></th><td data-label="정책대로라면">광역버스가 빠졌으니 덜 막힌다</td><td data-label="실제 기록">구간 시간 기록 <strong class="south-text"><span class="num" data-claim="cohort_south_summer2024_change_pct" data-sign="signed">−49.71</span>%</strong> → 빨라짐. 2025년 여름에도 <span class="num" data-claim="cohort_south_post2025_from_pre2024_change_pct" data-sign="signed">−46.02</span>%</td><td data-label="정책과 맞나"><span class="tag fit">맞음</span> 정책 목표와 같은 방향</td></tr>
 <tr><th scope="row">북행 서울버스 13개 노선 <span class="dt-sub">강남역 앞 22008→22010</span></th><td data-label="정책대로라면">오후에 북행으로 돌린 용인 노선이 들어와 더 막힐 수 있다</td><td data-label="실제 기록">구간 시간 기록 <strong class="north-text"><span class="num" data-claim="cohort_north_summer2024_change_pct" data-sign="signed">+41.03</span>%</strong> → 느려짐. 18시는 <span class="num" data-claim="hour_north_18" data-sign="signed">+50.99</span>%. 2025년 여름에도 <span class="num" data-claim="cohort_north_post2025_from_pre2024_change_pct" data-sign="signed">+40.95</span>%</td><td data-label="정책과 맞나"><span class="tag fit">맞음</span> 정책이 옮긴 부담과 같은 방향 (목표는 아님)</td></tr>
 <tr><th scope="row">일반 차량, 강남역 앞 <span class="dt-sub">핵심 6개 링크</span></th><td data-label="정책대로라면">바꾼 것은 버스 정류소라 큰 변화가 없다. 가로변에 서는 광역버스가 늘어 남행이 조금 느려질 수는 있다</td><td data-label="실제 기록">속도 남행 <span class="num" data-claim="road_core_south_change_pct" data-sign="signed">−2.18</span>%, 북행 <span class="num" data-claim="road_core_north_change_pct" data-sign="signed">+1.92</span>% → 거의 그대로</td><td data-label="정책과 맞나"><span class="tag flat">영향 작음</span> 가로변 정차로 일반 차로가 크게 느려지지는 않음</td></tr>
-<tr><th scope="row">일반 차량, 영동1교·양재시민의숲 <span class="dt-sub">강남역 남쪽 양재천 주변 8개 링크</span></th><td data-label="정책대로라면">정책이 정차 방식을 바꾼 곳이 아니다</td><td data-label="실제 기록">속도 남행 <span class="num" data-claim="road_bridge_south_change_pct" data-sign="signed">−24.62</span>%, 북행 <span class="num" data-claim="road_bridge_north_change_pct" data-sign="signed">−19.54</span>% → <strong>양방향 모두</strong> 느려짐. 일부 링크는 시행 전부터 하락</td><td data-label="정책과 맞나"><span class="tag off">다른 모양</span> 같은 날 개통한 양재천 우안도로가 붙는 교차로의 병목으로 보임(<a href="#bridge">5장</a>)</td></tr>
+<tr><th scope="row">일반 차량, 영동1교·양재시민의숲 <span class="dt-sub">강남역 남쪽 양재천 주변 8개 링크</span></th><td data-label="정책대로라면">정책이 정차 방식을 바꾼 곳이 아니다</td><td data-label="실제 기록">속도 남행 <span class="num" data-claim="road_bridge_south_change_pct" data-sign="signed">−24.62</span>%, 북행 <span class="num" data-claim="road_bridge_north_change_pct" data-sign="signed">−19.54</span>% → <strong>양방향 모두</strong> 느려짐. 일부 링크는 시행 전부터 하락</td><td data-label="정책과 맞나"><span class="tag off">다른 모양</span> 같은 날 개통한 양재천 우안도로 접속 교차로의 변화가 우선 점검할 원인 후보(<a href="#bridge">5장</a>)</td></tr>
 </tbody>
 </table>
 </div>
@@ -562,7 +562,7 @@ tr.hl th,tr.hl td{background:var(--amber)}
 </table>
 </div>
 <div class="prose"><p>영동1교 주변을 링크 하나씩 보면 하락이 한 곳에 몰려 있습니다. 양방향 모두 <strong>다리 남쪽 끝으로 들어가는 링크</strong>는 절반 안팎 느려졌고, 그곳을 <strong>빠져나가는 링크</strong>는 오히려 빨라졌습니다. 북행은 오전·한낮의 하락이 저녁보다 컸습니다(<a href="https://github.com/CausalInferenceLab/policy-effect-analytics-agent/blob/d5300b4ada671ccdddf6833201775c6c5c8444d4/cases/sgim49697-ops-gangnam-bus-2024/deepening-road-report.md" target="_blank" rel="noopener noreferrer">도로 비교 보고서</a>). 이 구역은 처음부터 계획한 비교가 아니라, 강남대로 하행 전체의 속도 하락이 어디서 나왔는지 찾다가 눈에 띈 곳입니다.</p></div>
-<p class="sowhat"><b>그래서</b>광역버스 일부가 가로변에 서게 된 강남역 앞에서도 일반 차량은 눈에 띄게 느려지지 않았습니다. 영동1교 앞 하락은 같은 날 개통한 양재천 우안도로가 붙는 교차로의 병목으로 보이며, 버스 정책 때문으로 보기 어렵습니다(<a href="#bridge">5장</a>). 강남대로 전체 평균을 버스 정책 평가에 쓰면 이 하락을 정책 탓으로 잘못 돌리게 됩니다.</p>
+<p class="sowhat"><b>그래서</b>광역버스 일부가 가로변에 서게 된 강남역 앞에서도 일반 차량은 눈에 띄게 느려지지 않았습니다. 영동1교 앞 하락은 같은 날 개통한 양재천 우안도로의 접속 교차로 변화와 함께 점검할 필요가 있습니다(<a href="#bridge">5장</a>). 강남대로 전체 평균만으로는 버스 정책과 도로 변화의 영향을 구분할 수 없습니다.</p>
 </div>
 </section>
 
@@ -601,37 +601,37 @@ tr.hl th,tr.hl td{background:var(--amber)}
 </ul>
 </div>
 </div>
-<h3 class="finding" id="bridge">영동1교 앞 일반 차량 하락은 왜 버스 정책 때문이 아닌가</h3>
-<div class="prose"><p>같은 날(6/29) 개통한 <a href="https://seocho.newstool.co.kr/view.php?aid=14251&amp;eid=8854" target="_blank" rel="noopener noreferrer">양재천 우안도로</a>는 우면동에서 강남대로로 들어가는 1.2km, 왕복 4차로의 새 길입니다. 우면동 쪽에서 양재천을 따라 와 <strong>영동1교 교차로</strong>에 붙습니다. 정책 대상인 용인 방면 노선은 <a href="https://mediahub.seoul.go.kr/archives/2011484" target="_blank" rel="noopener noreferrer">서울시 안내</a>에 따르면 오전에는 반포IC→신논현→강남→양재IC로, 오후에는 거꾸로 신양재IC→강남→신논현→반포IC로 다닙니다. 두 설명이 예상하게 하는 모양을 실제 기록과 대 보았습니다.</p></div>
+<h3 class="finding" id="bridge">영동1교 앞 일반 차량 하락, 어떤 원인을 먼저 확인할까</h3>
+<div class="prose"><p>같은 날(6/29) 개통한 <a href="https://seocho.newstool.co.kr/view.php?aid=14251&amp;eid=8854" target="_blank" rel="noopener noreferrer">양재천 우안도로</a>는 우면동에서 강남대로로 들어가는 1.2km, 왕복 4차로의 새 길입니다. 우면동 쪽에서 양재천을 따라 와 <strong>영동1교 교차로</strong>에 붙습니다. 정책 대상인 용인 방면 노선은 <a href="https://mediahub.seoul.go.kr/archives/2011484" target="_blank" rel="noopener noreferrer">서울시 안내</a>에 따르면 오전에는 반포IC→신논현→강남→양재IC로, 오후에는 거꾸로 신양재IC→강남→신논현→반포IC로 다닙니다. 두 설명에서 단순화해 예상한 패턴을 실제 기록과 비교했습니다. 아래 예상은 다른 조건이 같다는 가정이며, 패턴의 일치나 불일치만으로 원인을 확정하거나 배제할 수 없습니다.</p></div>
 <figure class="match causes" aria-labelledby="bridge-cap">
 <p class="fig-title" id="bridge-cap">영동1교·양재시민의숲 주변 일반 차량 속도, 두 설명과 실제 기록</p>
 <div class="table-wrap" role="region" aria-label="영동1교 하락 원인 점검 표" tabindex="0">
 <table class="stack">
-<thead><tr><th scope="col">점검</th><th scope="col">버스 노선 변화가 원인이라면</th><th scope="col">새 길이 붙은 교차로가 원인이라면</th><th scope="col">실제 기록</th></tr></thead>
+<thead><tr><th scope="col">점검</th><th scope="col">버스 경로 변화만 가정하면</th><th scope="col">교차로 병목을 가정하면</th><th scope="col">실제 기록</th></tr></thead>
 <tbody>
-<tr><th scope="row">시작 시점</th><td data-label="버스 노선 변화가 원인이라면">6/29 시행 뒤부터</td><td data-label="새 길이 붙은 교차로가 원인이라면">개통 무렵. 마무리 공사·통제로 조금 먼저 나타날 수 있음</td><td data-label="실제 기록">정책 시행 전인 6/26~27 평일부터 낮아지고, 7/1부터 더 낮아짐(<a href="https://github.com/CausalInferenceLab/policy-effect-analytics-agent/blob/d5300b4ada671ccdddf6833201775c6c5c8444d4/cases/sgim49697-ops-gangnam-bus-2024/deepening-transition-report.md" target="_blank" rel="noopener noreferrer">전환 주간 보고서</a>) <span class="tag off">버스와 어긋남</span></td></tr>
-<tr><th scope="row">시간대</th><td data-label="버스 노선 변화가 원인이라면">용인 노선이 방향을 바꾼 오후에 몰림. 오전은 경로가 그대로</td><td data-label="새 길이 붙은 교차로가 원인이라면">신호·차로 구조는 하루 종일 작동</td><td data-label="실제 기록">북행은 오전·한낮 하락이 저녁보다 큼 <span class="tag fit">교차로와 맞음</span></td></tr>
-<tr><th scope="row">방향</th><td data-label="버스 노선 변화가 원인이라면">오후 남행 버스는 빠지고 북행으로 들어오므로, 남행은 그대로이거나 빨라지고 북행만 느려짐</td><td data-label="새 길이 붙은 교차로가 원인이라면">교차로로 들어가는 양방향이 함께 느려짐</td><td data-label="실제 기록">남행 <span class="nowrap"><span class="num" data-claim="road_bridge_south_change_pct" data-sign="signed">−24.62</span>%</span>, 북행 <span class="nowrap"><span class="num" data-claim="road_bridge_north_change_pct" data-sign="signed">−19.54</span>%</span>. 남행이 더 크게 느려짐 <span class="tag fit">교차로와 맞음</span></td></tr>
-<tr><th scope="row">위치</th><td data-label="버스 노선 변화가 원인이라면">버스가 지나는 길을 따라 고르게</td><td data-label="새 길이 붙은 교차로가 원인이라면">교차로 바로 앞 링크에 몰리고, 지나면 회복</td><td data-label="실제 기록">다리 남쪽 끝으로 들어가는 링크만 절반 안팎 느려지고, 빠져나가는 링크는 빨라짐 <span class="tag fit">교차로와 맞음</span></td></tr>
-<tr><th scope="row">강남역 앞</th><td data-label="버스 노선 변화가 원인이라면">정류소를 가장 많이 바꾼 곳이라 영향이 가장 커야 함</td><td data-label="새 길이 붙은 교차로가 원인이라면">영향 없음</td><td data-label="실제 기록">일반 차량 <span class="nowrap"><span class="num" data-claim="road_core_south_change_pct" data-sign="signed">−2.18</span>%</span> / <span class="nowrap"><span class="num" data-claim="road_core_north_change_pct" data-sign="signed">+1.92</span>%</span>, 거의 그대로 <span class="tag off">버스와 어긋남</span></td></tr>
+<tr><th scope="row">시작 시점</th><td data-label="버스 경로 변화만 가정하면">6/29 시행 뒤부터</td><td data-label="교차로 병목을 가정하면">개통 무렵. 마무리 공사·통제로 조금 먼저 나타날 수 있음</td><td data-label="실제 기록">정책 시행 전인 6/26~27 평일부터 낮아지고, 7/1부터 더 낮아짐(<a href="https://github.com/CausalInferenceLab/policy-effect-analytics-agent/blob/d5300b4ada671ccdddf6833201775c6c5c8444d4/cases/sgim49697-ops-gangnam-bus-2024/deepening-transition-report.md" target="_blank" rel="noopener noreferrer">전환 주간 보고서</a>) <span class="tag off">단순 가정과 불일치</span></td></tr>
+<tr><th scope="row">시간대</th><td data-label="버스 경로 변화만 가정하면">용인 노선이 방향을 바꾼 오후에 몰림. 오전은 경로가 그대로</td><td data-label="교차로 병목을 가정하면">신호·차로 구조는 하루 종일 작동</td><td data-label="실제 기록">북행은 오전·한낮 하락이 저녁보다 큼 <span class="tag fit">가정과 일치</span></td></tr>
+<tr><th scope="row">방향</th><td data-label="버스 경로 변화만 가정하면">오후 남행 버스는 빠지고 북행으로 들어오므로, 남행은 그대로이거나 빨라지고 북행만 느려짐</td><td data-label="교차로 병목을 가정하면">교차로로 들어가는 양방향이 함께 느려짐</td><td data-label="실제 기록">남행 <span class="nowrap"><span class="num" data-claim="road_bridge_south_change_pct" data-sign="signed">−24.62</span>%</span>, 북행 <span class="nowrap"><span class="num" data-claim="road_bridge_north_change_pct" data-sign="signed">−19.54</span>%</span>. 남행이 더 크게 느려짐 <span class="tag fit">가정과 일치</span></td></tr>
+<tr><th scope="row">위치</th><td data-label="버스 경로 변화만 가정하면">버스가 지나는 길을 따라 고르게</td><td data-label="교차로 병목을 가정하면">교차로 바로 앞 링크에 몰리고, 지나면 회복</td><td data-label="실제 기록">다리 남쪽 끝으로 들어가는 링크만 절반 안팎 느려지고, 빠져나가는 링크는 빨라짐 <span class="tag fit">가정과 일치</span></td></tr>
+<tr><th scope="row">강남역 앞</th><td data-label="버스 경로 변화만 가정하면">정류소를 가장 많이 바꾼 곳이라 영향이 가장 커야 함</td><td data-label="교차로 병목을 가정하면">영향 없음</td><td data-label="실제 기록">일반 차량 <span class="nowrap"><span class="num" data-claim="road_core_south_change_pct" data-sign="signed">−2.18</span>%</span> / <span class="nowrap"><span class="num" data-claim="road_core_north_change_pct" data-sign="signed">+1.92</span>%</span>, 거의 그대로 <span class="tag off">단순 가정과 불일치</span></td></tr>
 </tbody>
 </table>
 </div>
 <figcaption>수치는 2024년 여름 저녁을 시행 전 6주와 견준 변화율입니다. 링크별 모양과 시간대별 결과는 <a href="https://github.com/CausalInferenceLab/policy-effect-analytics-agent/blob/d5300b4ada671ccdddf6833201775c6c5c8444d4/cases/sgim49697-ops-gangnam-bus-2024/deepening-road-report.md" target="_blank" rel="noopener noreferrer">도로 비교 보고서</a>에 있습니다.</figcaption>
 </figure>
-<div class="prose"><p>다섯 점검 모두 버스 설명과 어긋납니다. 시간대·방향·위치 세 가지는 새 길이 붙은 교차로의 병목 설명과 그대로 맞습니다. 그래서 <strong>영동1교 앞 하락의 주원인은 버스 정책이 아니라 양재천 우안도로 개통과 맞물린 교차로 변화</strong>로 판단합니다. 남은 불확실성은 세 가지입니다.</p>
+<div class="prose"><p>위 비교에는 단순한 버스 경로 변화 가정만으로 설명하기 어려운 패턴이 있습니다. 교차로 병목 가정과 일치하는 부분도 있어, <strong>양재천 우안도로 개통과 맞물린 교차로 변화를 우선 검증할 원인 후보</strong>로 봅니다. 관측 패턴만으로 주원인을 확정하거나 버스 정책의 영향을 배제할 수 없습니다. 남은 불확실성은 세 가지입니다.</p>
 <ul>
-<li>오후 용인 노선은 북행으로 이 교차로를 지날 것으로 보여, 북행 저녁 하락에는 버스 몫이 조금 섞였을 수 있습니다. 다만 같은 구간이 오전에도 크게 느려져 주원인으로 보기는 어렵습니다.</li>
+<li>오후 용인 노선은 북행으로 이 교차로를 지날 것으로 보여 버스 정책의 영향도 남아 있습니다. 실제 운행 횟수와 교통량이 없어 그 영향의 크기나 방향을 분리할 수 없습니다.</li>
 <li>교차로의 신호·차로 운영이 실제로 바뀌었는지는 공개 자료에서 찾지 못했습니다.</li>
 <li>6/26~27에 먼저 낮아진 이유(마무리 공사, 차로 통제, 신호 시험 운영 등)도 확인하지 못했습니다.</li>
 </ul></div>
-<p class="sowhat"><b>그래서</b>이 하락은 버스 정책 평가와 떼어 도로 쪽 과제로 넘깁니다. 2025년 여름에도 이어진 만큼, 서초구·서울시가 영동1교 교차로의 신호 배분을 점검할 근거가 됩니다. 확정하려면 이 교차로의 개통 전후 신호 주기·차로 운영 이력과, 정책 노선이 영동1교교차로 정류소(22043·22044)를 지난 횟수의 전후 비교가 필요합니다.</p>
+<p class="sowhat"><b>그래서</b>이 하락은 버스 정책과 도로 변화를 함께 점검할 후속 과제로 남깁니다. 2025년 여름에도 이어진 만큼, 영동1교 교차로를 우선 조사할 근거가 됩니다. 두 영향을 구분하려면 이 교차로의 개통 전후 신호 주기·차로 운영 이력과, 정책 노선이 영동1교교차로 정류소(22043·22044)를 지난 횟수의 전후 비교가 필요합니다.</p>
 <div class="verdict-box">
 <p class="fig-title">판정</p>
 <dl>
 <div><dt>관측</dt><dd><strong>확실하다.</strong> 남행↓·북행↑, 시행 주, 퇴근 시간, 1년 지속.</dd></div>
 <div><dt>정책과의 관계</dt><dd>시점·시간대·방향이 정책 설계와 맞고, 폐선·승객 감소·옆 구간 이동·2025년 시설 같은 단순한 다른 설명은 들어맞지 않는다.</dd></div>
-<div><dt>영동1교 하락</dt><dd><strong>버스 정책이 주원인일 가능성은 낮다.</strong> 같은 날 개통한 양재천 우안도로가 붙는 교차로의 병목으로 본다. 확정하려면 그 교차로의 개통 전후 신호·차로 운영 이력이 필요하다.</dd></div>
+<div><dt>영동1교 하락</dt><dd><strong>원인 후보의 우선 점검이 필요하다.</strong> 양재천 우안도로 접속 교차로의 변화는 관측 패턴과 부합하는 가설이다. 주원인과 버스 정책의 기여는 미확정이며, 개통 전후 신호·차로 운영 이력이 필요하다.</dd></div>
 <div><dt>정책 효과</dt><dd><strong>판단 불가.</strong> 같은 날의 다른 사건과 시간 값의 정의를 가를 자료가 없다. 가장 먼저 필요한 자료는 OA-21217의 정의와 2024년 6~7월 일별 공사·신호 기록이다(<a href="#u6">7장 ⑥</a>).</dd></div>
 </dl>
 </div>
