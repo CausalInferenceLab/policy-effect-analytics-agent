@@ -36,7 +36,7 @@ from core.discovery.ontology import (  # noqa: E402
 OUT = ROOT / "_site"
 REPO = "https://github.com/CausalInferenceLab/policy-effect-analytics-agent"
 SITE = "https://causalinferencelab.github.io/policy-effect-analytics-agent"
-DESC = "뉴스와 SNS에서 궁금해하는 정책이 정말 효과가 있었는지 공공데이터로 확인하는 오픈소스"
+DESC = "뉴스 속 그 정책, 진짜 먹혔을까? 공공데이터로 직접 확인해 보는 시민 데이터 과학자 놀이터 (오픈소스)"
 CSS = (HERE / "style.css").read_text(encoding="utf-8")
 
 GATE_Q = {"when": "언제 시작했나", "who": "누가 받았나", "what": "무엇으로 재나"}
@@ -85,27 +85,27 @@ def goatcounter_code() -> str:
 TERMS = [
     (
         "처치 · 대조",
-        "정책을 받은 쪽이 처치, 받지 않은 쪽이 대조입니다. 대조는 '정책이 없었다면'을 대신 보여줍니다.",
+        "정책을 받은 동네가 처치, 안 받은 '쌍둥이 동네'가 대조예요. 대조가 '정책이 없었다면?'을 대신 보여 줘요.",
     ),
     (
         "이중차분",
-        "정책 지역의 전후 변화에서 대조 지역의 전후 변화를 뺍니다. 경기·계절처럼 둘 다 겪은 변화가 지워집니다.",
+        "받은 동네의 전후 변화에서 쌍둥이 동네의 전후 변화를 빼요. 경기·계절처럼 다 같이 겪은 변화는 지워지고 정책 몫만 남아요.",
     ),
     (
         "평행 추세",
-        "정책 전에 두 집단이 나란히 움직였어야 이중차분이 성립합니다. 가장 먼저 확인합니다.",
+        "정책 전에 두 동네가 나란히 걷고 있었어야 비교가 공정해요. 그래서 제일 먼저 확인해요.",
     ),
     (
         "사전 등록",
-        "데이터를 보기 전에 무엇을 어떻게 볼지 plan.yaml에 적어 커밋합니다. 결과를 보고 말을 바꾸지 않기 위해서입니다.",
+        "답을 보기 전에 정답지를 봉인하기. 무엇을 어떻게 볼지 plan.yaml에 먼저 적어 커밋해요. 결과를 보고 말을 바꾸지 않으려고요.",
     ),
     (
         "무작위화 추론",
-        "정책 지역이 몇 곳뿐일 때, 가짜 정책 지역을 수백 번 뽑아 비교해 우연인지 판단합니다.",
+        "정책 지역이 몇 곳뿐이면, 가짜 정책 지역을 바꿔 가며 비교해 '이 정도 차이는 우연으로도 나오나?'를 봐요.",
     ),
     (
         "판정",
-        "효과 근거 있음 · 크기를 판별하지 못함 · 판단 불가 세 가지입니다. 판단 불가도 정직한 결과입니다.",
+        "효과 근거 있음 · 크기를 판별하지 못함 · 판단 불가 세 가지예요. '판단 불가'도 정직한 답이에요.",
     ),
 ]
 
@@ -477,8 +477,10 @@ def index_page(topics, policies, issues, datasets, projects=(), answers=(), line
     )
     body = f"""
 <div class="hero home">
-<h1>그 정책, 정말 효과가 있었을까?</h1>
-<p class="lede">사람들이 묻는 정책을 공공데이터로 확인합니다. 정책을 받은 곳과 안 받은 곳을 비교하고, 데이터로 판단할 수 없으면 판단할 수 없다고 말합니다.</p>
+<p class="sticker" aria-hidden="true">시민 데이터 과학자 모드 ON</p>
+<h1>그 정책, 진짜 먹혔을까?</h1>
+<p class="lede">뉴스 보다가 궁금했던 그 정책, 직접 확인해 봐요. 공공데이터를 찾아 드리고 '받은 동네 vs 안 받은 동네'를 비교하는 법을 알려 드려요.
+데이터가 모른다고 하면 모른다고 말하는 것까지가 이 사이트의 규칙이에요.</p>
 {flow}
 
 <div class="ask" id="ask">
@@ -519,13 +521,15 @@ AI도 결과를 계산하지 않습니다. 주제·데이터·계획을 함께 �
 <div class="rows">{ready_rows}</div></section>
 </div>
 
-<section id="next"><h2>다음에 할 수 있는 것</h2>
-<div class="next">
-<a href="results.html#reuse"><b>우리 지역에도 같은 분석을</b><span>비슷한 결과를 복사해 처치·대조만 바꿔 시작합니다.</span></a>
-<a href="projects.html"><b>분석에 참여하기</b><span>참여자 {n_people}명이 {n_answers}개 결과를 냈습니다. 세 가지 참여 방식과 진행 상황.</span></a>
-<a href="data.html"><b>데이터부터 보기</b><span>공공데이터 {len(datasets)}개를 역할·단위·받는 법으로 정리했습니다.</span></a>
-<a href="impact.html"><b>이 사이트의 성과</b><span>쓰임·외부 검증·결과의 질·참여를 매일 다시 셉니다.</span></a>
-</div></section>
+<section id="next"><h2>나는 몇 레벨 시민 데이터 과학자?</h2>
+<p class="sub">코딩을 몰라도 레벨 1부터 시작할 수 있어요. 한 칸씩 올라가 보세요.</p>
+<ol class="levels">
+<li><a href="#ask"><span class="lv">Lv.1</span><b>궁금해하기</b><span>대화창에 정책 하나 물어보기. 주제·데이터·조심할 점을 같이 정리해 드려요.</span></a></li>
+<li><a href="results.html"><span class="lv">Lv.2</span><b>읽고 가져가기</b><span>결과 하나 열어 판정을 읽고, 인용문을 복사해 가기. 지금 {n_answers}개 있어요.</span></a></li>
+<li><a href="data.html"><span class="lv">Lv.3</span><b>데이터 만져 보기</b><span>공공데이터 {len(datasets)}개 중 {board.ready_count(datasets)}개는 오늘 바로 받을 수 있어요. CSV로 같은 결과도 확인해 보기.</span></a></li>
+<li><a href="projects.html"><span class="lv">Lv.4</span><b>같이 만들기</b><span>우리 동네 정책으로 분석 제안하기. 이미 {n_people}명이 하고 있어요.</span></a></li>
+</ol>
+<p class="small muted">이 사이트가 잘 쓰이고 있는지는 <a href="impact.html">성과</a>에서 매일 다시 세요.</p></section>
 <script type="application/json" id="catalog">{catalog_json(topics, policies, issues, datasets, answers)}</script>
 <script src="ask.js"></script><script src="board.js" defer></script>"""
     return page("정책 효과 분석 플랫폼", body, "index.html", path="index.html")
@@ -712,9 +716,9 @@ def data_page(datasets, topics, issues) -> str:
     terms = "".join(f"<div><dt>{a}</dt><dd>{b}</dd></div>" for a, b in TERMS)
     body = f"""
 <div class="hero" style="padding-bottom:0">
-<h1>효과를 재려면 어떤 데이터가 필요할까</h1>
-<p class="lede">정책 효과를 재려면 세 종류의 데이터가 필요합니다. <b>누가 언제 정책을 받았는지</b>, <b>무엇이 달라졌는지</b>,
-<b>결과에 영향을 준 다른 요인</b>입니다. 주제별로 받을 수 있는 공공데이터 {len(datasets)}개를 이 기준으로 정리했습니다.</p></div>
+<h1>재료부터 챙겨 볼까요</h1>
+<p class="lede">정책 효과를 재는 데 필요한 재료는 세 가지예요. <b>누가 언제 정책을 받았는지</b>, <b>무엇이 달라졌는지</b>,
+<b>결과를 흔드는 다른 요인</b>. 주제별로 받을 수 있는 공공데이터 {len(datasets)}개를 이 기준으로 정리했어요.</p></div>
 
 <section style="padding-top:32px"><h2>데이터를 이렇게 연결합니다</h2>
 <p class="sub">주제 → 이슈 → 데이터셋 → 제공 포털로 이어지고, 데이터셋마다 역할·단위·받는 법이 붙습니다.</p>
@@ -913,7 +917,7 @@ def topic_page(t, policies, issues, datasets, projects=(), answers=(), lineages=
         )
     else:
         body.append(
-            f"<p class='empty'>아직 연결한 데이터가 없습니다. <a href='{REPO}/blob/main/docs/tracks/ontology.md'>데이터 찾기(트랙 A)</a>로 채울 수 있습니다.</p>"
+            f"<p class='empty'>아직 빈칸이에요. 첫 데이터를 찾아 줄래요? <a href='{REPO}/blob/main/docs/tracks/ontology.md'>데이터 찾기 안내(트랙 A)</a></p>"
         )
     body.append("</section>")
     # 3. 계보
@@ -937,7 +941,7 @@ def topic_page(t, policies, issues, datasets, projects=(), answers=(), lineages=
             )
     else:
         body.append(
-            f"<p class='empty'>아직 이 주제의 계보가 없습니다. 이슈에서 지표까지 어떤 데이터를 어떻게 가공하는지 "
+            f"<p class='empty'>아직 실이 안 이어졌어요. 이슈에서 지표까지 어떤 데이터를 어떻게 가공하는지 "
             f"<a href='{REPO}/blob/main/catalog/lineage/_template.yaml'>계보 템플릿</a>으로 그려 주세요.</p>"
         )
     body.append("</section>")
@@ -952,7 +956,7 @@ def topic_page(t, policies, issues, datasets, projects=(), answers=(), lineages=
             body.append(f"<h3>그래도 말할 수 있는 것</h3><ul class='said'>{outs}</ul>")
     else:
         body.append(
-            f"<p class='empty'>아직 분석 결과가 없습니다. <a class='btn primary' href='../index.html#ask'>이 주제로 질문하기</a> "
+            f"<p class='empty'>아직 아무도 비교해 보지 않았어요. 첫 번째 시민 데이터 과학자가 되어 볼래요? <a class='btn primary' href='../index.html#ask'>이 주제로 질문하기</a> "
             f"<a class='btn ghost' href='{REPO}/issues/new?template=case-proposal.yml' data-track='propose-case'>분석 제안하기</a></p>"
         )
     pmine = [p for p in proj.by_topic(list(projects), t.id) if not p["stages"][2]]
@@ -1000,7 +1004,7 @@ def topic_page(t, policies, issues, datasets, projects=(), answers=(), lineages=
         )
     else:
         body.append(
-            "<p class='empty'>분석 결과가 나오면 시점별 효과 그림이 여기에 자동으로 그려집니다.</p>"
+            "<p class='empty'>분석 결과가 나오면 여기에 시점별 효과 그림이 저절로 그려져요.</p>"
         )
     if t.pitfalls:
         items = "".join(f"<li>{e(x)}</li>" for x in t.pitfalls)

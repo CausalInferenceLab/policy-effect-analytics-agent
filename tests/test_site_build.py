@@ -211,7 +211,7 @@ def test_answer_pages_for_users(tmp_path, monkeypatch):
     assert cat["results"] and all("page" in x for x in cat["results"])
     # 첫 화면: 흐름 띠·질문 → 이슈 보드(흐름 지도) → 이미 나온 답 → 지금 이슈 → 다음에 할 수 있는 것
     assert home.index('id="ask"') < home.index('id="topics"') < home.index('id="answers"')
-    assert 'id="next"' in home and "results.html#reuse" in home and "impact.html" in home
+    assert 'id="next"' in home and 'class="levels"' in home and "impact.html" in home
     assert 'id="reuse"' in (out / "results.html").read_text(encoding="utf-8")
     # 주제 페이지(이슈 보드)에는 분석 단계가 있고, 결과 CSV는 엑셀용 BOM 을 붙인다
     for t in (out / "topics").glob("*.html"):
