@@ -1,86 +1,69 @@
-# 강남대로 광역버스 분산과 단기 교통 예측
+# 강남대로 버스 운행 변화와 월별 도로 속도 예측
 
-2024년 버스 운행 조정 전후 일반도로의 퇴근 시간 속도를 비교하고, 같은 자료의 과거 168시간으로 다음 1·3시간 속도를 예측하는 학생 프로젝트다. 작성자는 `sgim49697-ops`, 트랙은 **B. 가설과 분석**이다.
+2024년 6월 29일 버스 운행 조정 뒤 강남대로의 이동 기록이 어떻게 달라졌는지 살펴본 학생 프로젝트다. **남행·북행의 변화가 달랐다는 관찰**과 **공개가 늦은 월별 파일로 어디까지 예측할 수 있는가**를 다룬다. 정책의 인과 효과나 실시간 예측 서비스가 완성됐다는 주장은 하지 않는다.
 
-작업 제안: [이슈 #53](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/issues/53).
+먼저 [프로젝트 설명 HTML](project-overview.html)을 브라우저에서 열면 배경 → 데이터 → 분석 → 결과 → 활용 순서로 읽을 수 있다. 간결한 결과는 [report.md](report.md), 해석·활용의 한계는 [discussion.md](discussion.md), 실행 범위와 진행 기록은 [plan.md](plan.md)에 있다.
 
-**현재는 계획·자료 구조 확인 단계다.** 월별 원본 20개를 확보했고 실행 코드는 후속 구현 PR로 분리한다. 실제 정책 효과와 모델 성능은 아직 계산하지 않았다. 시간 표기·결측·이용 조건·2023년 속성 변경·비교 도로 노출에 미해결 사항이 있다.
-
-## 문서와 설정
-
-| 파일 | 역할 |
+| 공개 구성 | 내용 |
 |---|---|
-| [plan.md](plan.md) | 범위·고정 규칙·단계별 완료 조건·진행 기록 |
-| [plan.yaml](plan.yaml) | 저장소 공통 엔진 스키마의 정책 분석 계획 |
-| [corridors.yaml](corridors.yaml) | 링크·방향·가중치·기간·품질 기준 |
-| [ml_config.yaml](ml_config.yaml) | 시간 분할·모델 후보·학습·평가 규약 |
-| [data_contract.yaml](data_contract.yaml) | 자료 정의·이용 조건·공휴일·그래프의 근거 상태 |
-| [evidence.md](evidence.md) | 직접 확인한 근거와 새로 발견한 자료 차이 |
-| [source-manifest.json](source-manifest.json) | 원본 20개의 다운로드 인자·크기·해시. 속도값 없음 |
-| [verification-request.md](verification-request.md) | 외부 AI·기관 확인을 위한 후속 질문. 미발송 |
-| [model-notes.md](model-notes.md) | 모델 출처·구현 범위·GPU 검증 설명 |
-| [research-request.md](research-request.md) | 최초 외부 조사 요청서 |
+| 설명·설계 | 이 문서, HTML, 계획·결과·토론, 데이터 안내, 설정 2개 |
+| 실행 코드 6개 | 수집, 버스 비교, CPU 예측, 공통 함수, 제출 검사, HTML 검사 |
+| 출처·기록 | 원본 68개 파일 계약, 결과·코드 해시를 담은 실행 명세 |
+| 결과 6개 | 비교표 2개, HTML 근거 수치표 2개, 그림 2개 |
 
-받은 「강남대로 버스 정책 분석과 교통 예측 모델 단기 실행계획.md」는 원문 그대로 보존했다. 최신 실행 규칙은 그 원문에 덮어쓰지 않고 위 설정과 계획에 반영한다.
+사례 파일은 총 24개다. 저장소 루트의 테스트 3개와 기존 카탈로그 변경 2개를 합쳐 `main` 대비 제출 구성은 29개다. 계획 브랜치를 대상으로 하는 PR #55의 변경 파일 수와는 기준이 다르다. 원본·모델·새 실행 결과는 Git에 넣지 않는다.
 
-## 실행 환경
+## 설치와 빠른 확인
 
-아래 명령은 후속 구현 브랜치 기준이다. 저장소 루트에서 개인 폴더로 이동한다.
+아래 명령은 **이 사례 폴더에서** Python 3.11 이상으로 실행한다. 빠른 검사는 표준 라이브러리만 사용하며 데이터 다운로드·학습을 시작하지 않는다.
 
 ```bash
-cd cases/sgim49697-ops-gangnam-bus-2024
-uv venv --python 3.12 .venv
+python review_submission.py && python review_overview.py --check
+```
+
+이 검사는 공개 파일의 무결성, 수치표 229개 항목 중 핵심 비교표와 연결되는 62개, HTML 표시값을 대조한다. 원본부터 재계산하거나 모델을 새로 학습한 검사와는 구분한다.
+
+재계산할 새 환경에만 아래 의존성을 설치한다. 기존 `.venv`가 있으면 재생성하지 않고 그 환경을 사용한다.
+
+```bash
+uv venv --python 3.12 .venv &&
 uv pip install --python .venv/bin/python -r requirements.txt
-uv pip check --python .venv/bin/python
-.venv/bin/python -c "import sys; print(sys.executable)"
 ```
 
-GPU는 장비·드라이버와 [공식 PyTorch 안내](https://pytorch.org/blog/pytorch-2-13-release-blog/) 및 [NVIDIA 호환성](https://docs.nvidia.com/deploy/cuda-compatibility/minor-version-compatibility.html)을 확인한 뒤 설치한다. 이 장비의 검증 환경은 RTX 5070 Ti, 드라이버 610.88, Python 3.12.12, PyTorch 2.13.0/cu130이다.
+Windows의 Python 실행파일 경로는 `.venv/Scripts/python.exe`다. 아래 연속 실행 예시는 Bash/WSL 기준이다. PyTorch·CUDA는 필요 없다.
+
+## 원본부터 실행
+
+원본 내려받기 주소·요청 인자·크기·SHA-256은 [source-manifest.json](source-manifest.json)에 고정되어 있다. 기존 탐색 보고서·감사 JSON·모델 없이 아래 순서로 실행할 수 있다. 공급자가 원본을 교체하면 해시 불일치로 중단한다. `&&`로 연결해 앞 단계가 실패하면 다음 분석을 실행하지 않는다.
 
 ```bash
-nvidia-smi
-uv pip install --python .venv/bin/python -r requirements-gpu.lock
-uv pip show --python .venv/bin/python torch torchvision torchaudio
-uv pip check --python .venv/bin/python
-.venv/bin/python smoke.py
+gangnam_run="reproduce-$(date -u +%Y%m%dT%H%M%SZ)" &&
+.venv/bin/python fetch.py --run-id "${gangnam_run}-collect" &&
+.venv/bin/python estimate.py --inputs "runs/${gangnam_run}-collect/inputs.json" --run-id "${gangnam_run}-bus" &&
+.venv/bin/python forecast.py features --inputs "runs/${gangnam_run}-collect/inputs.json" --run-id "${gangnam_run}-features" &&
+.venv/bin/python forecast.py train --features "runs/${gangnam_run}-features/features.json" --run-id "${gangnam_run}-train" &&
+.venv/bin/python forecast.py evaluate --features "runs/${gangnam_run}-features/features.json" --training "runs/${gangnam_run}-train/training.json" --run-id "${gangnam_run}-evaluation" &&
+.venv/bin/python forecast.py explain --models "runs/${gangnam_run}-train" --predictions "runs/${gangnam_run}-evaluation" --run-id "${gangnam_run}-explain" &&
+.venv/bin/python review_submission.py --bus-results "runs/${gangnam_run}-bus/comparisons.csv" --forecast-results "runs/${gangnam_run}-evaluation/metrics.csv"
 ```
 
-`smoke.py`는 합성자료만 사용한다. DLinear·PatchTST 각 100 step, 그래프 모델 각 2 step, CatBoost와 단순 기준선, 고정 revision Chronos2 추론을 검증한다. 실제 연구 성능이 아니다. CPU 환경에서는 `smoke.py --device cpu --models last_value weekly_naive weekday_hour_mean catboost`를 사용한다.
+각 실행 ID는 새 이름이어야 한다. 기존 데이터·모델을 덮어쓰지 않고 `runs/<ID>/` 아래에 입력·설정·코드 해시와 결과를 기록한다. 다운로드와 전체 정규화는 자료량에 따라 오래 걸린다. 최소 25 GiB 여유 공간을 권장하며 학습은 CPU 스레드 2개로 순차 실행한다. 재학습은 라이브러리·플랫폼 차이에 따라 작은 수치 차이가 날 수 있다.
 
-## 수집·분석 순서
+기존 로컬 자료가 있으면 위 `fetch.py` 명령에 `--reuse-cache`를 붙여 명세에 해시가 등록된 정규화 파일을 재사용할 수 있다. 다른 폴더에 있으면 `--local-source-root /자료가_있는_사례폴더`를 함께 지정한다. 버스만 확인하려면 `--kind bus_time`으로 수집한 뒤 `estimate.py`까지만 실행한다. 도로만 확인하려면 `--kind road_speed`로 수집한 뒤 `forecast.py`의 세 단계를 실행한다.
 
-```bash
-# 현재도 가능: 원본·메타데이터만 수집. 속도 수치를 해석하지 않는다.
-.venv/bin/python fetch.py --metadata-only
-.venv/bin/python fetch.py --scope ml --metadata-only
-.venv/bin/python validate.py --structural-only
+## 무엇이 재현되는가
 
-# 공식 정의·역사적 노출을 확인하고 설정을 커밋한 지 24시간 이상 지난 뒤 실행.
-.venv/bin/python validate.py
-.venv/bin/python fetch.py
-.venv/bin/python estimate.py
-.venv/bin/python fetch.py --scope ml
-.venv/bin/python forecast.py train --run main_v1 --models all
-.venv/bin/python forecast.py evaluate --run main_v1 --models all --split pre_test
-.venv/bin/python forecast.py evaluate --run main_v1 --models all --split transition
-.venv/bin/python forecast.py evaluate --run main_v1 --models all --split post_test
-.venv/bin/python forecast.py compare --run main_v1 --models all --split post_test
-```
+- 버스: 원래 14개와 공식 폐선 542번 제외 13개를 동일 날짜/원래 관측률 두 조건으로 비교한 30행 전체.
+- 예측: 달력만/공개된 과거 월 자료를 사용하는 CatBoost 8회와 3개월 경험 프로필 기준선. 두 기간·두 예측 간격·전체/저녁/링크별/월별 조건을 모두 포함한다.
+- HTML 그림 자료: `estimate.py`는 비교표와 함께 일별(`daily.csv`)·시간대별(`hourly.csv`)·주별(`weekly.csv`) 표를 쓴다. `forecast.py explain`은 학습·평가를 다시 하지 않고 저장된 모형과 예측에서 모형별 반복 수(`models.csv`), 입력 중요도(`importance.csv`), 가을 평가 첫 주 예시(`example_week.csv`)를 만든다. `review_overview.py --check`는 일별·월별·발행 시점·표본 규칙 그림을 공개 비교표·예측 지표표와 대조하고, 시간대·주별·모형·예시 주·중요도 그림은 로컬 실행 결과의 생성 명령과 SHA-256 기록만 확인한다.
+- 과거의 경보·승객 가중·GPU·지하철 등 보조 분석은 HTML의 **역사적 수치 스냅샷**으로 남는다. 229개 수치를 담은 두 표의 해시를 검증하고 핵심 62개를 최종 비교표와 대조한다. 나머지 167개를 포함한 보조 실험 전체를 축약 코드로 다시 수행하지는 않는다. 목록과 원래 출처의 해시는 [run_manifest.json](run_manifest.json)에 있다.
 
-현재 `validate.py`는 미해결 근거를 출력하고 종료 코드 2를 반환하는 것이 정상이다. `--structural-only`는 설정 문법·구조 점검용이며 분석 허가가 아니다. `pending`은 출처를 확인한 뒤에만 `verified`로 바꾼다. 24시간 경과만으로 자료 관문이 해제되지 않는다.
+초기 [plan.yaml](plan.yaml)은 공통 엔진용 DiD 설계 기록이다. 최종 분석의 실행 규칙은 [analysis-plan.yaml](analysis-plan.yaml)이며, 이 사례를 `core.agent`로 실행하는 경로는 최종 재현 절차가 아니다.
 
-검증된 그래프가 없으면 `all`의 DCRNN·STGCN은 보류 기록을 남긴다. 그래프를 확보한 경우 `--graph data/graph/edges.csv`를 학습·평가 양쪽에 전달한다. CSV는 `source_link,target_link,weight`, 같은 경로의 `edges.source.json`은 `verified,source,sha256,node_ids,valid_from,valid_to`를 갖춰야 한다. 전체 학습·평가 기간의 유효성을 요구한다.
+확장 탐색 코드·중간 보고서·개별 테스트는 저장소 밖의 보관본으로 옮겼다. 이력 기준점은 `89156f6b9ac4fc8d0990e1297ba3f3e367197fa4`이며, 보관본에는 원래 경로와 SHA-256이 있다. 공개 실행은 보관본에 의존하지 않는다.
 
-비우천 민감도는 공식 ASOS 108 일별 CSV를 `weather.py 입력.csv --evidence 근거.json`으로 정규화하고 `estimate.py --weather data/weather/daily.csv`로 실행한다. 근거에는 `verified,source,raw_sha256,unit,blank_precipitation`이 필요하며 빈칸을 0으로 바꾸려면 공식 정의가 있어야 한다. 예측 입력에는 미래 실제 날씨를 쓰지 않는다.
+## 역사 자료와 공식 사이트 표시
 
-`fetch.py` 기본 실행은 기준을 만족할 때 `data/panel.csv`를 만든다. 비교군 부족이면 `data/descriptive.csv`만 만든다. 개인 `estimate.py`는 `runs/policy/`에 기술통계·DiD·주별 격차·민감도·그림·보고서를 생성한다. **공통 `make flow`는 이 개인 실행기를 호출하지 않는다.** 개인 진단은 위 명령으로 재현한다.
+보조 탐색은 HTML의 근거 부록에 연결된 **과거 고정 커밋**에서 읽을 수 있다. 이 링크는 당시 결과를 확인하기 위한 것이며 현재 실행 파일 안내가 아니다. 현재 재현에는 위 명령과 이 폴더의 최종 설정을 사용한다. 원본별 이용 조건의 확인 상태는 [데이터 안내](data/README.md)에 정리했다.
 
-## 저장·검증 규칙
-
-원본·Parquet·기상자료는 `data/`, 예측 행·체크포인트·실행 로그는 `runs/`에 두며 Git에서 제외한다. 실행 폴더는 덮어쓰지 않는다. 실자료 결과 공개 전 이용 조건을 확인하고 필요한 집계·그림·해석만 후속 결과 PR에 넣는다. 다른 참여자의 사례와 `core/`, `site/`는 수정하지 않는다.
-
-저장소 루트의 기본 검증은 `make check PY=.venv/bin/python`이다. 선택 ML 의존성까지 설치한 환경에서는 아래 명령으로 사례 테스트를 모두 실행한다.
-
-```bash
-cases/sgim49697-ops-gangnam-bus-2024/.venv/bin/python -m pytest tests/test_gangnam_bus.py
-```
+공식 사이트의 분석 결과 목록은 `flow_log.json`을 읽는다. 이 사례는 별도 탐색 파이프라인을 사용해 해당 파일을 생성하지 않으므로, 이 PR만으로 공식 결과 목록에 자동 노출되지는 않는다. 프로젝트 등록과 분석 결과 노출은 별개다. 사이트 연동은 후속 논의로 남기며, 실제로 실행하지 않은 공통 엔진의 완료 로그를 만들지 않는다.
