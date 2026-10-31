@@ -209,13 +209,13 @@ def test_answer_pages_for_users(tmp_path, monkeypatch):
         .replace("<\\/", "</")
     )
     assert cat["results"] and all("page" in x for x in cat["results"])
-    # 첫 화면: 질문 → 이미 나온 답 → 주제·이슈 → 다음에 할 수 있는 것
-    assert home.index('id="ask"') < home.index('id="answers"') < home.index('id="topics"')
+    # 첫 화면: 흐름 띠·질문 → 이슈 보드(흐름 지도) → 이미 나온 답 → 지금 이슈 → 다음에 할 수 있는 것
+    assert home.index('id="ask"') < home.index('id="topics"') < home.index('id="answers"')
     assert 'id="next"' in home and "results.html#reuse" in home and "impact.html" in home
     assert 'id="reuse"' in (out / "results.html").read_text(encoding="utf-8")
-    # 주제 페이지는 '지금 말할 수 있는 것'으로 시작하고, 결과 CSV는 엑셀용 BOM 을 붙인다
+    # 주제 페이지(이슈 보드)에는 분석 단계가 있고, 결과 CSV는 엑셀용 BOM 을 붙인다
     for t in (out / "topics").glob("*.html"):
-        assert 'id="now"' in t.read_text(encoding="utf-8"), t.name
+        assert "id='s-analysis'" in t.read_text(encoding="utf-8"), t.name
     raw = (out / "api" / "results.csv").read_bytes()
     assert raw.startswith(b"\xef\xbb\xbf") and b"rule_out" in raw.splitlines()[0]
 
@@ -250,3 +250,25 @@ def test_impact_page_and_tracking(tmp_path, monkeypatch):
     assert 'data-gc="policy-effect"' in mod.page("t", "", "index.html")
     monkeypatch.setenv("GOATCOUNTER_CODE", 'bad code"><script>')
     assert "data-gc" not in mod.page("t", "", "index.html")
+
+
+def test_issue_boards_show_the_whole_flow(tmp_path, monkeypatch):
+    """이슈 보드: 홈의 흐름 띠·흐름 지도, 주제마다 다섯 단계, 계수가 있는 결과는 대시보드 그림."""
+    mod = _load_build()
+    monkeypatch.setattr(mod, "OUT", tmp_path / "_site")
+    mod.main()
+    out = tmp_path / "_site"
+    home = (out / "index.html").read_text(encoding="utf-8")
+    assert 'class="flow"' in home and home.count('class="topic fm-row"') == len(mod.load_topics())
+    assert (out / "board.js").exists()
+    for t in mod.load_topics():
+        page = (out / "topics" / f"{t.id}.html").read_text(encoding="utf-8")
+        ids = [f"id='s-{k}'" for k in ("issue", "data", "lineage", "analysis", "dashboard")]
+        assert all(i in page for i in ids), t.id
+        assert page.index(ids[0]) < page.index(ids[-1])
+    pt = (out / "topics" / "public-transit.html").read_text(encoding="utf-8")
+    assert 'class="lin-svg"' in pt and 'class="es"' in pt and "data-tip=" in pt
+    kpi = json.loads((out / "api" / "metrics.json").read_text(encoding="utf-8"))
+    sp = kpi["supply"]
+    assert sp["topics"] == len(mod.load_topics()) and 0 <= sp["complete"] <= sp["topics"]
+    assert sp["ready"] <= sp["datasets"] and "north_star" in kpi

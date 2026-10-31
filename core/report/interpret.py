@@ -17,7 +17,8 @@ WIDE_LOG = 1.0
 
 
 def is_log(col: str, unit: str | None = None) -> bool:
-    return (col or "").startswith("log") or "log" in (unit or "").lower()
+    u = (unit or "").lower()
+    return (col or "").startswith("log") or "log" in u or "로그" in u
 
 
 def _u(unit: str | None) -> str:
