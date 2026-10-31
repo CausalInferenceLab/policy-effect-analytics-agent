@@ -124,7 +124,7 @@ def read_discussion(case: Path) -> dict:
 
 
 def _is_log(col: str, unit: str | None) -> bool:
-    return col.startswith("log") or "log" in (unit or "").lower()
+    return interpret.is_log(col, unit)
 
 
 def effect_text(est, lo, hi, col: str, unit: str | None) -> tuple[str, str]:
@@ -192,6 +192,7 @@ def load_answers() -> list[dict]:
                     "n": r.get("n_obs"),
                     "clusters": r.get("n_clusters"),
                     "primary": r.get("outcome") == primary,
+                    "coefs": (r.get("extra") or {}).get("coefs") or [],
                     "est": r.get("estimate"),
                     "lo": r.get("ci_low"),
                     "hi": r.get("ci_high"),
@@ -424,6 +425,13 @@ def rule_out(a: dict) -> str:
     return f"그래도 말할 수 있는 것(배제 범위) — {r['said']['rule_out']}" if r else ""
 
 
+def _chart(e, a: dict) -> str:
+    import board
+
+    c = board.event_chart(e, a)
+    return f"<div class='es-one'>{c}</div><script src='../board.js' defer></script>" if c else ""
+
+
 def said_block(e, a: dict) -> str:
     """근거 섹션: 지표별 배제 범위 · 검출 한계."""
     items = [v for r in a["results"] for v in (r.get("said") or {}).values()]
@@ -573,7 +581,7 @@ def page_body(e, a: dict, topics_by_id: dict, datasets_by_url: dict) -> str:
 {_usage(e, a)}
 <section id="evidence"><h2>근거</h2>{changed}
 <div class="tablewrap"><table><tr><th>결과 지표</th><th>추정 효과</th><th>95% 범위</th><th>판정</th><th>주의</th></tr>{rows}</table></div>
-{dim_note}{said_block(e, a)}
+{dim_note}{_chart(e, a)}{said_block(e, a)}
 <p class="small"><a href="{e(a["case"])}.csv" download data-track="csv-download">숫자 내려받기 (CSV)</a> · <a href="../api/results.json">전체 결과 API (JSON)</a> · <a href="../api/results.csv" download data-track="csv-download">전체 결과 CSV</a></p>
 <div class="figs">{figs}</div>
 {("<h3>작성자가 적은 한계</h3>" + cautions) if cautions else ""}</section>

@@ -28,6 +28,7 @@ EVENTS = {
     "propose": "질문을 제안으로 올리기",
     "search": "결과 검색",
     "reproduce": "재현 기록 열기",
+    "flow-stage": "홈 흐름 띠의 단계 누름",
 }
 TAKE = ("cite-copy", "link-copy", "csv-download")
 
@@ -60,7 +61,9 @@ def weekly(days: list[str], weeks: int = 12, today: date | None = None) -> list[
     return list(cnt.items())
 
 
-def compute(metrics: dict, answers: list[dict], projects: list[dict]) -> dict:
+def compute(
+    metrics: dict, answers: list[dict], projects: list[dict], supply: dict | None = None
+) -> dict:
     """화면과 api/metrics.json 이 함께 쓰는 지표. 측정 못 한 값은 None."""
     g = metrics.get("github") or {}
     use = metrics.get("usage")
@@ -81,13 +84,22 @@ def compute(metrics: dict, answers: list[dict], projects: list[dict]) -> dict:
         else sum(v for k, v in use.get("pages", {}).items() if "/answers/" in k or "results" in k)
     )
     take = None if not use else sum(ev(k) or 0 for k in TAKE)
+    board_views = (
+        None if not use else sum(v for k, v in use.get("pages", {}).items() if "/topics/" in k)
+    )
+    weekly_take = None
+    if use and use.get("days"):
+        weekly_take = round((take or 0) * 7 / use["days"], 1)
     return {
+        "north_star": {"name": "주간 가져간 답", "value": weekly_take},
+        "supply": supply or {},
         "measured_at": metrics.get("fetched_at"),
         "usage_on": bool(use),
         "usage_days": (use or {}).get("days"),
         "use": {
             "pageviews": None if not use else use.get("pageviews"),
             "result_views": result_views,
+            "board_views": board_views,
             "take": take,
             "events": {k: ev(k) for k in EVENTS},
             "site_questions": sum(i["kind"] == "site_question" for i in issues) if g else None,
@@ -212,6 +224,7 @@ def body(e, k: dict) -> str:
     rows_use = "".join(
         [
             _row(e, "방문(페이지뷰)", u["pageviews"], None, use_how),
+            _row(e, "이슈 보드 조회", u.get("board_views"), None, "주제(이슈 보드) 페이지"),
             _row(e, "분석 결과 화면 조회", u["result_views"], None, "결과 목록 + 결과 페이지"),
             _row(
                 e,
@@ -318,6 +331,63 @@ def body(e, k: dict) -> str:
             ),
         ]
     )
+    sp = k.get("supply") or {}
+    rows_s = "".join(
+        [
+            _row(
+                e,
+                "다섯 단계를 모두 채운 이슈 보드",
+                sp.get("complete"),
+                sp.get("topics"),
+                "이슈 · 공공데이터 · 계보 · 분석 · 대시보드가 모두 있는 주제",
+                fmt=lambda v: f"{v}/{sp.get('topics')}",
+                target_text="지금 이슈 주제 전부",
+            ),
+            _row(
+                e,
+                "주제당 채운 단계(평균)",
+                sp.get("avg_stages"),
+                None,
+                "다섯 단계 중",
+                fmt=lambda v: f"{v}/5",
+            ),
+            _row(
+                e,
+                "지금 이슈 중 대시보드까지 있는 것",
+                sp.get("issues_with_dashboard"),
+                sp.get("issues"),
+                "지금 이슈의 주제에 시점별 효과 그림이 있는가",
+                fmt=lambda v: f"{v}/{sp.get('issues')}",
+                target_text="전부",
+            ),
+            _row(
+                e,
+                "오늘 바로 받을 수 있는 데이터",
+                sp.get("ready"),
+                None,
+                "승인 없음 · 즉시 · 자동승인",
+                fmt=lambda v: f"{v}/{sp.get('datasets')}",
+            ),
+            _row(
+                e,
+                "계보로 이어진 데이터",
+                sp.get("in_lineage"),
+                None,
+                "계보 YAML 에서 쓰는 데이터셋 (나머지는 아직 어느 지표로도 이어지지 않음)",
+                fmt=lambda v: f"{v}/{sp.get('datasets')}",
+            ),
+            _row(
+                e,
+                "법령 목록 경과일",
+                sp.get("legal_age"),
+                None,
+                "마지막 법제처 수집 뒤 지난 날 (14일 넘으면 주제 페이지에 경고)",
+                fmt=lambda v: f"{v}일",
+            ),
+        ]
+    )
+    ns = k.get("north_star") or {}
+    ns_v = "측정 전" if ns.get("value") is None else f"{ns['value']}회"
     head = "<tr><th>지표</th><th class='num'>지금</th><th class='num'>목표</th><th>상태</th><th>어디서 셈</th></tr>"
 
     def table(rows):
@@ -340,6 +410,10 @@ def body(e, k: dict) -> str:
 <p class="lede">이 사이트가 목표대로 쓰이는지 매일 다시 셉니다. 목표는 <a href="{REPO}/blob/main/docs/ops/roadmap.md">점검과 다음 계획</a>에서 정했고,
 못 센 칸은 0이 아니라 '측정 전'으로 둡니다.{f" 마지막 집계 {e(when)} UTC." if when else ""}</p></div>
 {setup}
+<section id="north" style="padding-top:28px"><div class="now"><h2>북극성 지표: 주간 가져간 답 <span class="ns">{e(ns_v)}</span></h2>
+<p class="muted" style="margin:0">일주일 동안 사람들이 결과의 인용문·링크·CSV를 가져간 횟수입니다. 이 사이트의 목적은 공공데이터로 확인한 답이 <b>판정을 넘지 않는 형태로</b> 밖에서 쓰이는 것이라, 방문 수가 아니라 이것을 중심에 둡니다.
+나머지 표는 이 숫자를 움직이는 입력(도달 → 이해 → 가져감 → 참여)과 공급(이슈 보드가 얼마나 채워졌나), 지켜야 할 선(신뢰)입니다. 정의: <a href="{REPO}/blob/main/docs/ops/metrics.md">metrics.md</a></p></div></section>
+<section id="supply"><h2>흐름 완성도와 데이터 접근성</h2><p class="sub">이슈에서 대시보드까지 이어진 정도. 사용자가 볼 것이 있어야 쓰임도 생깁니다.</p>{table(rows_s)}</section>
 <section id="use"><h2>쓰임</h2><p class="sub">사람들이 결과를 찾고, 가져가고, 질문하는지.</p>{table(rows_use)}</section>
 <section id="external"><h2>외부 검증</h2><p class="sub">레포를 모르는 사람이 혼자 결과를 찾아 판정을 넘지 않게 인용하는지. 1단계 관문입니다.
 진행 방법: <a href="{REPO}/blob/main/docs/ops/user-test.md">사용자 과업 테스트</a></p>{table(rows_ext)}</section>

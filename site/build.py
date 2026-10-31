@@ -65,7 +65,7 @@ COLLECT_KO = {
 }
 NAV = [
     ("results.html", "분석 결과"),
-    ("index.html#topics", "주제"),
+    ("index.html#topics", "이슈 보드"),
     ("issues.html", "지금 이슈"),
     ("data.html", "데이터"),
     ("projects.html", "참여"),
@@ -421,32 +421,28 @@ def rank_topics(topics, issues, trends: dict, today: str | None = None):
     return rows, has_q, has_s, basis
 
 
-def topic_rows(topics, issues, answers, trends: dict) -> tuple[str, str]:
-    """홈의 주제 목록: 질문 수 → 검색 관심도 → 최근 시행·발표 순. (목록 HTML, 순서 기준 설명)"""
+def topic_rows(topics, issues, answers, trends: dict, datasets=(), lineages=()) -> tuple[str, str]:
+    """홈의 흐름 지도: 질문 수 → 검색 관심도 → 최근 시행·발표 순으로 주제 × 다섯 단계. (HTML, 순서 기준 설명)"""
+    import board
+
     rows, has_q, _has_s, basis = rank_topics(topics, issues, trends)
     issue_topics = {i.topic for i in issues}
     out = []
     for t, q, _s, last in rows:
-        n_res = sum(a["topic"] == t.id for a in answers)
         side = []
-        if n_res:
-            side.append(f'<span class="badge info">결과 {n_res}</span>')
         if t.id in issue_topics:
             side.append('<span class="badge plain">지금 이슈</span>')
         if has_q and q:
             side.append(f'<span class="badge plain">질문 {q}</span>')
-        out.append(
-            f'<a class="topic" data-topic="{t.id}" href="topics/{t.id}.html">'
-            f"<b>{e(t.name)}</b><span class='q'>{e(t.question)}</span>"
-            f'<span class="side">{"".join(side)}'
-            + (f'<span class="when">{last[:7].replace("-", ".")}</span>' if last else "")
-            + "</span></a>"
-        )
-    return "".join(out), basis
+        if last:
+            side.append(f'<span class="when">{last[:7].replace("-", ".")}</span>')
+        out.append((t, board.topic_stages(t, issues, datasets, lineages, answers), "".join(side)))
+    return board.flow_map(e, out), basis
 
 
-def index_page(topics, policies, issues, datasets, projects=(), answers=()) -> str:
+def index_page(topics, policies, issues, datasets, projects=(), answers=(), lineages=()) -> str:
     import answers as ans
+    import board
 
     chips = "".join(
         f'<button class="chip" type="button" data-ask="{e(x)}">{e(x)}</button>'
@@ -454,17 +450,36 @@ def index_page(topics, policies, issues, datasets, projects=(), answers=()) -> s
     )
     n_answers = sum(not a["mentor"] and not a["synthetic"] for a in answers)
     n_people = len({p["owner"] for p in projects if not p["mentor"]})
-    topic_html, basis = topic_rows(topics, issues, answers, load_trends())
+    topic_html, basis = topic_rows(topics, issues, answers, load_trends(), datasets, lineages)
+    tot = board.totals(issues, datasets, lineages, answers)
+    flow = board.flow_strip(
+        e,
+        tot,
+        {
+            "issue": "issues.html",
+            "data": "data.html",
+            "lineage": "lineage.html",
+            "analysis": "results.html",
+            "dashboard": "#topics",
+        },
+        board.ready_count(datasets),
+    )
     issue_rows = "".join(
         f'<a class="issue-row" href="issues.html#{i.id}"><span class="when">{e(i.effective)}</span>'
         f"<b>{e(i.name)}</b>"
         f'<span class="side"><span class="badge {SUPPORT[i.design][1]}">{DESIGN_SHORT[i.design]}</span></span></a>'
         for i in issues[:4]
     )
+    ready_rows = "".join(
+        f'<a class="issue-row" href="{e(d.url)}"><span class="when">{e(d.provider[:20])}</span><b>{e(d.name)}</b>'
+        f'<span class="side"><span class="badge plain">{e(d.time)}</span><span class="badge info">{e(d.approval)}</span></span></a>'
+        for d in [d for d in datasets if d.approval in board.READY and "outcome" in d.roles][:4]
+    )
     body = f"""
 <div class="hero home">
 <h1>그 정책, 정말 효과가 있었을까?</h1>
 <p class="lede">사람들이 묻는 정책을 공공데이터로 확인합니다. 정책을 받은 곳과 안 받은 곳을 비교하고, 데이터로 판단할 수 없으면 판단할 수 없다고 말합니다.</p>
+{flow}
 
 <div class="ask" id="ask">
 <div id="chat-log" class="chat-log" aria-live="polite" hidden></div>
@@ -489,15 +504,19 @@ def index_page(topics, policies, issues, datasets, projects=(), answers=()) -> s
 AI도 결과를 계산하지 않습니다. 주제·데이터·계획을 함께 정리할 뿐이고, 숫자는 레포의 분석 코드가 냅니다. 법률 자문이 아닙니다.</p></div>
 </div></div>
 
+<section id="topics"><div class="sec-head"><h2>이슈 보드</h2></div>
+<p class="sub">주제마다 이슈 → 공공데이터 → 계보 → 분석 → 대시보드가 어디까지 채워졌는지 보입니다. 칸의 숫자는 개수, 빈칸은 채울 곳입니다. {basis}</p>
+{topic_html}</section>
+
 {ans.strip(e, list(answers), topics)}
 
 <div class="two">
-<section id="topics"><div class="sec-head"><h2>주제</h2></div>
-<p class="sub small">{basis}</p>
-<div class="rows" id="cards">{topic_html}</div></section>
 <section id="issues"><div class="sec-head"><h2>지금 이슈</h2><a class="more" href="issues.html">{len(issues)}개 분석 가이드</a></div>
 <p class="sub small">논쟁 중인 정책을 어떤 비교로, 어떤 데이터로 볼 수 있는지 정리했습니다.</p>
 <div class="rows">{issue_rows}</div></section>
+<section id="data-ready"><div class="sec-head"><h2>바로 받을 수 있는 데이터</h2><a class="more" href="data.html">{len(datasets)}개 전체</a></div>
+<p class="sub small">정리한 공공데이터 {len(datasets)}개 중 {board.ready_count(datasets)}개는 키 발급 즉시 또는 키 없이 오늘 받을 수 있습니다. 데이터마다 단위·기간·받는 법·이용 조건을 적었습니다.</p>
+<div class="rows">{ready_rows}</div></section>
 </div>
 
 <section id="next"><h2>다음에 할 수 있는 것</h2>
@@ -508,7 +527,7 @@ AI도 결과를 계산하지 않습니다. 주제·데이터·계획을 함께 �
 <a href="impact.html"><b>이 사이트의 성과</b><span>쓰임·외부 검증·결과의 질·참여를 매일 다시 셉니다.</span></a>
 </div></section>
 <script type="application/json" id="catalog">{catalog_json(topics, policies, issues, datasets, answers)}</script>
-<script src="ask.js"></script>"""
+<script src="ask.js"></script><script src="board.js" defer></script>"""
     return page("정책 효과 분석 플랫폼", body, "index.html", path="index.html")
 
 
@@ -823,8 +842,10 @@ def legal_block(t) -> str:
     )
 
 
-def topic_page(t, policies, issues, datasets, projects=(), answers=()) -> str:
+def topic_page(t, policies, issues, datasets, projects=(), answers=(), lineages=()) -> str:
+    """이슈 보드: 이슈 → 공공데이터 → 계보 → 분석 → 대시보드 순서로 한 장에."""
     import answers as ans
+    import board
     import projects as proj
 
     by_id = {p.id: p for p in policies}
@@ -832,15 +853,28 @@ def topic_page(t, policies, issues, datasets, projects=(), answers=()) -> str:
     _, lab, cls = readiness(t)
     my_issues = [i for i in issues if i.topic == t.id]
     my_ds = [d for d in datasets if t.id in d.topics]
+    my_lin = [lin for lin in lineages if lin.topic == t.id]
+    mine = [a for a in answers if a["topic"] == t.id]
+    st = board.topic_stages(t, issues, datasets, lineages, answers)
+    tb = {t.id: t}
     body = [
-        f"<div class='hero' style='padding-bottom:0'><nav class='crumb' aria-label='위치'><a href='../index.html#topics'>주제</a></nav>"
-        f"<h1>{e(t.name)}</h1><p class='lede'>{e(t.question)}</p>"
-        f'<div class="gates"><span class="badge {cls}">{lab}</span></div></div>',
-        ans.topic_box(e, [a for a in answers if a["topic"] == t.id], topics_by_id={t.id: t}),
-        "<section style='padding-top:32px'><h2>1. 이 주제의 정책</h2>",
-        f"<p class='muted'>모으는 방법: {COLLECT_KO[t.collect.method]} — {e(t.collect.note)}</p>",
-        timeline_svg(t.events),
+        f"<div class='hero board-hero'><nav class='crumb' aria-label='위치'><a href='../index.html#topics'>이슈 보드</a></nav>"
+        f"<h1>{e(t.name)}</h1><p class='lede'>{e(t.question)}</p></div>",
+        board.rail(e, st),
     ]
+    # 1. 이슈
+    body.append(f"<section id='s-issue' class='stage'>{board.stage_head(e, 'issue')}")
+    if my_issues:
+        items = "".join(
+            f'<a class="issue-row" href="../issues.html#{i.id}"><span class="when">{e(i.effective)}</span>'
+            f"<b>{e(i.name)}</b><span class='q'>{e(i.issue)}</span></a>"
+            for i in my_issues
+        )
+        body.append(f"<div class='rows'>{items}</div>")
+    body.append(
+        f"<h3>이 주제의 정책 시점</h3><p class='muted small'>모으는 방법: {COLLECT_KO[t.collect.method]} — {e(t.collect.note)}</p>"
+    )
+    body.append(timeline_svg(t.events))
     snap = ROOT / "catalog" / "snapshots" / f"law_{t.id}.csv"
     if t.collect.method == "law_ordinance":
         if snap.exists():
@@ -856,30 +890,80 @@ def topic_page(t, policies, issues, datasets, projects=(), answers=()) -> str:
                 "<p class='card'>법제처 API로 지역별 조례와 시행일을 자동으로 모을 주제입니다. "
                 "법제처 인증값이 레포에 등록되면 다음 갱신 때 채워집니다.</p>"
             )
-    body.append(legal_block(t))
-    if my_issues:
-        items = "".join(
-            f'<li><a href="../issues.html#{i.id}">{e(i.name)}</a> <span class="muted">({e(i.effective)})</span></li>'
-            for i in my_issues
-        )
-        body.append(f"<h3 style='margin-top:18px'>지금 이슈</h3><ul>{items}</ul>")
-    body.append("</section><section><h2>2. 세 가지 확인</h2><div class='grid3'>")
-    for k, g in t.gates.items():
-        body.append(
-            f'<div class="card"><h3>{GATE_Q[k]}</h3><span class="badge {GATE_CLASS[g.status]}">'
-            f"{GATE_STATUS_KO[g.status]}</span><p>{e(g.note)}</p></div>"
-        )
-    body.append("</div></section>")
+    body.append(
+        "<details class='more-box'><summary>관련 법령·행정규칙 보기</summary>"
+        + legal_block(t)
+        + "</details>"
+    )
+    gates = "".join(
+        f'<div><dt>{GATE_Q[k]}</dt><dd><span class="badge {GATE_CLASS[g.status]}">{GATE_STATUS_KO[g.status]}</span> {e(g.note)}</dd></div>'
+        for k, g in t.gates.items()
+    )
+    body.append(
+        f"<h3>분석 전에 확인할 세 가지 <span class='badge {cls}'>{lab}</span></h3><dl class='legend'>{gates}</dl></section>"
+    )
+    # 2. 공공데이터
+    body.append(f"<section id='s-data' class='stage'>{board.stage_head(e, 'data')}")
     if my_ds:
         order = ["treatment", "outcome", "covariate"]
         body.append(
-            f"<section><h2>3. 받을 수 있는 데이터 ({len(my_ds)}개)</h2>"
-            "<p class='sub'>역할별 전체 목록은 <a href='../data.html'>데이터 지도</a>에 있습니다.</p>"
+            board.access_summary(e, my_ds)
             + dataset_table(sorted(my_ds, key=lambda d: order.index(d.roles[0])))
-            + "</section>"
+            + "<p class='small muted'>역할: 처치(누가 언제 정책을 받았나) · 결과(무엇이 변했나) · 통제(다른 요인). 전체 목록은 <a href='../data.html'>데이터</a>에 있습니다.</p>"
+        )
+    else:
+        body.append(
+            f"<p class='empty'>아직 연결한 데이터가 없습니다. <a href='{REPO}/blob/main/docs/tracks/ontology.md'>데이터 찾기(트랙 A)</a>로 채울 수 있습니다.</p>"
+        )
+    body.append("</section>")
+    # 3. 계보
+    body.append(f"<section id='s-lineage' class='stage'>{board.stage_head(e, 'lineage')}")
+    if my_lin:
+        names = {}
+        ds_name = {d.id: d.name for d in datasets}
+        iss_name = {i.id: i.name for i in issues}
+        verdicts = {a["case"]: a["verdict"] for a in answers}
+        for lin in my_lin:
+            for s in lin.steps:
+                if s.kind == "issue":
+                    names[s.id] = iss_name.get(s.ref, s.ref or s.title)
+                elif s.kind == "dataset" and s.ref:
+                    names[s.id] = ds_name.get(s.ref, s.ref)
+            body.append(
+                f"<h3>{e(lin.title)}</h3>"
+                + board.lineage_svg(e, lin, names, verdicts, up="../")
+                + f"<p class='small muted'>점선은 계획이거나 아직 없는 데이터(빈칸)입니다. 마우스를 올리면 설명이 보입니다. "
+                f"<a href='../lineage.html#{e(lin.id)}'>단계별 설명</a> · <a href='{REPO}/blob/main/catalog/lineage/{e(lin.id)}.yaml'>YAML</a></p>"
+            )
+    else:
+        body.append(
+            f"<p class='empty'>아직 이 주제의 계보가 없습니다. 이슈에서 지표까지 어떤 데이터를 어떻게 가공하는지 "
+            f"<a href='{REPO}/blob/main/catalog/lineage/_template.yaml'>계보 템플릿</a>으로 그려 주세요.</p>"
+        )
+    body.append("</section>")
+    # 4. 분석
+    body.append(f"<section id='s-analysis' class='stage'>{board.stage_head(e, 'analysis')}")
+    if mine:
+        body.append(
+            f'<div class="answers">{"".join(ans.card(e, a, tb, up="../") for a in mine)}</div>'
+        )
+        outs = "".join(f"<li>{e(ans.rule_out(a))}</li>" for a in mine if ans.rule_out(a))
+        if outs:
+            body.append(f"<h3>그래도 말할 수 있는 것</h3><ul class='said'>{outs}</ul>")
+    else:
+        body.append(
+            f"<p class='empty'>아직 분석 결과가 없습니다. <a class='btn primary' href='../index.html#ask'>이 주제로 질문하기</a> "
+            f"<a class='btn ghost' href='{REPO}/issues/new?template=case-proposal.yml' data-track='propose-case'>분석 제안하기</a></p>"
+        )
+    pmine = [p for p in proj.by_topic(list(projects), t.id) if not p["stages"][2]]
+    if pmine:
+        body.append(
+            "<h3>진행 중인 분석</h3><div class='grid proj-grid'>"
+            + "".join(proj.project_card(e, p, tb, up="../") for p in pmine)
+            + "</div>"
         )
     if ps:
-        body.append("<section><h2>4. 분석 설계</h2>")
+        cards = []
         for p in ps:
             sup, scls = SUPPORT[p.design]
             pits = (
@@ -889,25 +973,39 @@ def topic_page(t, policies, issues, datasets, projects=(), answers=()) -> str:
                 if p.pitfalls
                 else ""
             )
-            body.append(
-                f'<div class="card" style="margin-bottom:12px"><h3>{e(p.name)}</h3>'
-                f"<p class='muted'>{e(p.summary)}</p>"
+            cards.append(
+                f'<div class="card"><h3>{e(p.name)}</h3><p class="muted">{e(p.summary)}</p>'
                 f"<p><b>{DESIGN_SHORT[p.design]}</b> — {DESIGN_PLAIN[p.design]} "
                 f'<span class="badge {scls}">{sup}</span></p>{pits}</div>'
             )
-        body.append("</section>")
-    mine = proj.by_topic(list(projects), t.id)
-    if mine:
-        tb = {t.id: t}
         body.append(
-            "<section><h2>이 주제의 프로젝트</h2><p class='sub'>참여자와 멘토가 이 주제로 진행 중인 분석입니다.</p>"
-            '<div class="grid proj-grid">'
-            + "".join(proj.project_card(e, p, tb, up="../") for p in mine)
-            + "</div></section>"
+            "<details class='more-box'><summary>이 주제의 분석 설계 보기</summary><div class='grid'>"
+            + "".join(cards)
+            + "</div></details>"
+        )
+    body.append("</section>")
+    # 5. 대시보드
+    body.append(f"<section id='s-dashboard' class='stage'>{board.stage_head(e, 'dashboard')}")
+    body.append(board.kpis(e, mine, len(my_ds), board.ready_count(my_ds)))
+    charts = [board.event_chart(e, a) for a in mine]
+    charts = [c for c in charts if c]
+    if charts:
+        body.append(
+            "<div class='es-grid'>"
+            + "".join(
+                f"<div class='es-item'>{c}<p class='small'><a href='../{e(a['page'])}'>{e(a['title'])}</a></p></div>"
+                for a, c in zip([a for a in mine if board.chart_result(a)], charts, strict=True)
+            )
+            + "</div><p class='small muted'>점은 시점별 차이, 세로선은 95% 구간, 회색 바탕은 정책 시작 뒤입니다. 시작 전 점들이 0 근처에 모여 있어야 비교가 믿을 만합니다.</p>"
+        )
+    else:
+        body.append(
+            "<p class='empty'>분석 결과가 나오면 시점별 효과 그림이 여기에 자동으로 그려집니다.</p>"
         )
     if t.pitfalls:
         items = "".join(f"<li>{e(x)}</li>" for x in t.pitfalls)
-        body.append(f"<section><h2>주의할 점</h2><ul>{items}</ul></section>")
+        body.append(f"<h3>이 주제에서 조심할 점</h3><ul>{items}</ul>")
+    body.append("</section><script src='../board.js' defer></script>")
     return page(
         f"{t.name} · 정책 효과 분석 플랫폼",
         "\n".join(body),
@@ -930,11 +1028,14 @@ def main() -> None:
 
     answers = ans.load_answers()
     proj.attach_next_steps(projects, answers)
+    from core.discovery.lineage import load_lineages
+
+    lineages = load_lineages()
     if OUT.exists():
         shutil.rmtree(OUT)
     (OUT / "topics").mkdir(parents=True)
     pages = {
-        "index.html": index_page(topics, policies, issues, datasets, projects, answers),
+        "index.html": index_page(topics, policies, issues, datasets, projects, answers, lineages),
         "issues.html": issues_page(issues, datasets, topics),
         "data.html": data_page(datasets, topics, issues),
         "architecture.html": page(
@@ -947,13 +1048,12 @@ def main() -> None:
         (OUT / name).write_text(text, encoding="utf-8")
     for t in topics:
         (OUT / "topics" / f"{t.id}.html").write_text(
-            topic_page(t, policies, issues, datasets, projects, answers), encoding="utf-8"
+            topic_page(t, policies, issues, datasets, projects, answers, lineages),
+            encoding="utf-8",
         )
     # 트랙 A·C: 공개 API, 데이터 계보, 서비스
     import api
     import tracks
-
-    from core.discovery.lineage import load_lineages
 
     index = api.write_api(OUT, topics, issues, datasets, legal_summary)
     results = json.loads((OUT / "api" / "results.json").read_text(encoding="utf-8"))
@@ -1009,10 +1109,17 @@ def main() -> None:
     )
     shutil.copy(HERE / "ask.js", OUT / "ask.js")
     shutil.copy(HERE / "track.js", OUT / "track.js")
+    shutil.copy(HERE / "board.js", OUT / "board.js")
     # 성과: data/cache/metrics.json(Actions) + 레포 파일 → impact.html · api/metrics.json
+    import board
     import impact
 
-    kpi = impact.compute(impact.load(), answers, projects)
+    legal_dates = [
+        json.loads(f.read_text(encoding="utf-8")).get("fetched", "")
+        for f in (ROOT / "catalog" / "snapshots").glob("legal_*.source.json")
+    ]
+    sup = board.supply(topics, issues, datasets, lineages, answers, max(legal_dates, default=""))
+    kpi = impact.compute(impact.load(), answers, projects, sup)
     (OUT / "api" / "metrics.json").write_text(
         json.dumps(kpi, ensure_ascii=False, indent=1), encoding="utf-8"
     )
