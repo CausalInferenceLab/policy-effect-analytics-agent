@@ -11,11 +11,11 @@ from __future__ import annotations
 import math
 
 STAGES = [
-    ("issue", "이슈", "지금 논쟁 중인 정책과 시행일"),
-    ("data", "공공데이터", "받을 수 있는 공개 자료"),
-    ("lineage", "계보", "데이터가 지표가 되는 길"),
-    ("analysis", "분석", "받은 곳과 안 받은 곳 비교"),
-    ("dashboard", "대시보드", "시점별 효과 그림"),
+    ("issue", "이슈", "다들 궁금해하는 그 정책, 언제 무엇이 바뀌었나"),
+    ("data", "공공데이터", "오늘 바로 받을 수 있는 재료"),
+    ("lineage", "계보", "재료가 지표가 되기까지 실 잇기"),
+    ("analysis", "분석", "받은 동네 vs 안 받은 동네"),
+    ("dashboard", "대시보드", "시점별로 한눈에"),
 ]
 READY = {"즉시", "자동승인", "없음"}
 KIND_COL = {"issue": 0, "policy": 0, "dataset": 1, "transform": 2, "metric": 3}
@@ -53,16 +53,17 @@ def ready_count(datasets) -> int:
 def flow_strip(e, tot: dict, links: dict, ready: int) -> str:
     """다섯 단계를 잇는 띠. 처음 열릴 때 한 번 왼쪽부터 차례로 그려진다(board.js · 동작 줄이기 설정 존중)."""
     notes = {
-        "issue": "논쟁 중인 정책",
-        "data": f"{ready}개는 오늘 바로 받기",
-        "lineage": "이슈→지표 연결",
-        "analysis": "판정까지 공개",
-        "dashboard": "시점별 효과 그림",
+        "issue": "궁금한 그 정책",
+        "data": f"{ready}개는 오늘 바로 줍줍",
+        "lineage": "데이터→지표 실 잇기",
+        "analysis": "받은 곳 vs 안 받은 곳",
+        "dashboard": "한눈에 보는 효과",
     }
+    icons = {"issue": "🤔", "data": "📦", "lineage": "🧵", "analysis": "⚖️", "dashboard": "📊"}
     items = "".join(
         f'<li style="--i:{i}"><a href="{links[k]}" data-track="flow-stage">'
         f'<span class="dot" aria-hidden="true"></span><span class="n" data-count="{tot[k]}">{tot[k]}</span>'
-        f"<b>{lab}</b><span class='note'>{e(notes[k])}</span></a></li>"
+        f"<b><span class='ic' aria-hidden='true'>{icons[k]}</span>{lab}</b><span class='note'>{e(notes[k])}</span></a></li>"
         for i, (k, lab, _d) in enumerate(STAGES)
     )
     return f'<ol class="flow" aria-label="이슈에서 대시보드까지">{items}</ol>'
