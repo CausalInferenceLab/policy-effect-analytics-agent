@@ -1,6 +1,6 @@
 # 기여 가이드
 
-GitHub가 처음이라면 [GitHub 따라 하기](docs/ops/github-onboarding.md)부터 보세요. 전체 흐름은 [멘티 참여 가이드](docs/ops/mentee-guide.md)에 있습니다.
+GitHub가 처음이라면 [GitHub 따라 하기](docs/ops/github-onboarding.md)부터 보세요. 전체 흐름은 [참여 가이드](docs/ops/mentee-guide.md)에 있습니다.
 
 ## 1. 한 사람, 한 작업 공간, 한 브랜치
 
@@ -20,7 +20,7 @@ GitHub가 처음이라면 [GitHub 따라 하기](docs/ops/github-onboarding.md)�
 | `cases/<내ID>-<주제>/` | 폴더 주인 | 자유롭게. 남의 폴더는 고치지 않습니다 |
 | `apps/<내ID>-<서비스>/` | 폴더 주인 | 정적 파일만, API 키 금지. `app.yaml` 필수 |
 | `catalog/` | 누구나 | 새 데이터셋·이슈·주제 제안. 원본 페이지에서 확인한 값만 적습니다 |
-| `core/`, `site/` | 멘토·메인테이너 | 먼저 이슈로 논의한 뒤 PR. 테스트 필수 |
+| `core/`, `site/` | 메인테이너 | 먼저 이슈로 논의한 뒤 PR. 테스트 필수 |
 | `.github/`, `docs/` | 운영진 | 개선 제안은 이슈로 |
 
 ## 3. 커밋 메시지
@@ -37,7 +37,7 @@ GitHub가 처음이라면 [GitHub 따라 하기](docs/ops/github-onboarding.md)�
 
 1. 최신 `main`에서 브랜치를 만들고 작업한 뒤 `make check`로 검사합니다.
 2. PR을 올리고 템플릿 체크리스트를 채웁니다. 작업 중이면 Draft PR로 일찍 올리세요.
-3. 멘토 또는 다른 멘티 1명 승인 + 자동 검사 통과 뒤 **Squash merge**로 합칩니다.
+3. 메인테이너 또는 다른 참여자 1명 승인 + 자동 검사 통과 뒤 **Squash merge**로 합칩니다.
 4. 합친 뒤에는 브랜치를 지우고 `git switch main && git pull`.
 
 ## 5. 분석 원칙 (리뷰에서 확인합니다)

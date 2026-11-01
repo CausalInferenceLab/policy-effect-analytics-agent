@@ -522,3 +522,14 @@ html.js:not(.calm) .lin-svg .edges path { transition: stroke-dashoffset 1.2s eas
 .faces a:hover img { transform: translateY(-3px) }
 @media (max-width: 760px) { .personas, .shows { grid-template-columns: minmax(0, 1fr) } }
 @media (prefers-reduced-motion: reduce) { .show, .show:hover, .faces a:hover img { transition: none; transform: none } }
+
+/* ── 참여 화면: 내 분석이 사이트에 올라가기까지 ── */
+ol.path { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 10px; counter-reset: st }
+ol.path li { counter-increment: st; position: relative; padding: 14px 14px 14px; border-radius: 14px; background: var(--surface); border: 1px solid var(--hair); display: flex; flex-direction: column; gap: 6px }
+ol.path li::before { content: counter(st); width: 26px; height: 26px; border-radius: 50%; background: var(--ink); color: var(--paper); display: grid; place-items: center; font-weight: 800; font-size: 13px }
+ol.path b { font-size: 15.5px }
+ol.path span { font-size: 13.5px; color: var(--ink2); line-height: 1.55 }
+ol.path code { font-size: 12px; word-break: break-all }
+details.todo[open] summary { font-weight: 700; color: var(--ink) }
+@media (max-width: 960px) { ol.path { grid-template-columns: repeat(2, minmax(0, 1fr)) } }
+@media (max-width: 560px) { ol.path { grid-template-columns: minmax(0, 1fr) } }

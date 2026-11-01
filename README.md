@@ -35,7 +35,7 @@
 ## 지금까지 만든 것
 
 <!-- highlights:start -->
-**주제 10개 · 지금 이슈 7개 · 공공데이터 55개 · 계보 3개 · 참여자 프로젝트 9개(결과 6개) · 함께 만든 사람 10명**
+**주제 11개 · 지금 이슈 7개 · 공공데이터 55개 · 계보 3개 · 참여자 프로젝트 10개(결과 6개) · 함께 만든 사람 11명**
 
 | 프로젝트 | 주제 | 누가 | 지금 | 보기 |
 |---|---|---|---|---|
@@ -45,7 +45,8 @@
 | 토지거래허가구역 지정(2020.6.23, 잠실·삼성·대치·청담) 뒤 옆 동네 아파트 ㎡당 가격(풍선효과) | 부동산 거래 규제 | [@Hyun2](https://github.com/Hyun2) | 크기를 판별하지 못함 | [결과 보기](https://causalinferencelab.github.io/policy-effect-analytics-agent/answers/hyun2-land-permit-spillover-2020.html) |
 | 서울 25개 자치구 출산지원금 변경과 출생등록 변화 비교 | 출산·혼인 지원 | [@ingyeoking13](https://github.com/ingyeoking13) | 판단 불가 | [결과 보기](https://causalinferencelab.github.io/policy-effect-analytics-agent/answers/ingyeoking13-seoul-birth-support.html) |
 | 대구시 대형마트 의무휴업일 평일 전환과 지역 소매업 판매 | 대형마트 의무휴업 | [@jgkim1008](https://github.com/jgkim1008) | 판단 불가 | [결과 보기](https://causalinferencelab.github.io/policy-effect-analytics-agent/answers/jgkim1008-daegu-mart-holiday.html) |
-| 서울 기후동행카드 시범사업 전후 지하철 승차 흐름 비교 | 대중교통 요금 지원 | [@jm-git-163](https://github.com/jm-git-163) | 해석 단계 | [폴더](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/tree/main/cases/jm-git-163-climate-card) |
+| 강남대로 광역버스 분산 전후 일반도로 속도 변화 | 도로교통 운영 | [@sgim49697-ops](https://github.com/sgim49697-ops) | 해석 단계 | [폴더](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/tree/main/cases/sgim49697-ops-gangnam-bus-2024) |
+| 서울 기후동행카드 시범사업 전후 지하철 승차 흐름 비교 | 대중교통 요금 지원 | [@jm-git-163](https://github.com/jm-git-163) | 수집 단계 | [폴더](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/tree/main/cases/jm-git-163-climate-card) |
 | 행정안전부 'AI 친화적 보고서' 도입(2026.3 시범)이 보도자료 형식·기계 판독·언론 확산에 미친 효과 | 디지털포용·무인정보단말기 접근성 | [@gyeom-yee](https://github.com/gyeom-yee) | 계획 단계 | [폴더](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/tree/main/cases/gyeom-yee-public-markdown) |
 | 녹색교통지역 5등급 운행제한이 서울 도심 대기질에 미친 효과 | 대기질 | [@yesolee](https://github.com/yesolee) | 계획 단계 | [폴더](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/tree/main/cases/yesolee-green-traffic) |
 | 기후동행카드 성남 편입(2025.5.3)이 성남 분당선·경강선 역 평일 승차에 미친 효과 | 대중교통 요금 지원 | 멘토 예시 | 판단 불가 | [결과 보기](https://causalinferencelab.github.io/policy-effect-analytics-agent/answers/t3-climate-card-seongnam.html) |

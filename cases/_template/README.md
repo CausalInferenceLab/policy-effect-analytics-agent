@@ -5,7 +5,7 @@ git switch -c <내ID>/plan
 cp -r cases/_template cases/<내ID>-<주제>     # 예: cases/gildong-local-currency (소문자-하이픈)
 ```
 
-복사한 뒤 이 README는 내 분석 메모로 바꿔도 됩니다.
+복사한 뒤 이 README는 내 분석 메모로 바꿔도 됩니다. `catalog/projects.yaml`에 내 케이스를 한 줄 추가해야 사이트의 참여 화면·이슈 보드에 주제와 함께 나옵니다.
 
 ## 이 폴더의 파일
 
@@ -26,6 +26,9 @@ git add cases/<내ID>-<주제>/plan.yaml && git commit -m "plan(<내ID>-<주제>
 make flow CASE=cases/<내ID>-<주제>
 
 # 4) discussion.md 를 쓰고 다시 make flow → report.md 에 합쳐짐
+
+# 5) README 의 프로젝트 표 갱신 (레포 루트에서)
+make readme
 ```
 
 `make flow`는 plan.yaml 이 커밋되어 있지 않으면 계산하지 않습니다(사전 등록). 연습만 하려면 `make demo`를 쓰세요.

@@ -1,4 +1,4 @@
-# 멘티 참여 가이드
+# 참여 가이드
 
 커리어 방향과 해 보고 싶은 시도에 따라 **세 가지 방식** 중 하나로 기여합니다. 각자 공용 저장소의 내 폴더에 작업을 쌓고, 합쳐지면 [사이트](https://causalinferencelab.github.io/policy-effect-analytics-agent/)에 자동으로 올라갑니다.
 
@@ -18,7 +18,7 @@
 - [참여자 프로젝트](https://causalinferencelab.github.io/policy-effect-analytics-agent/projects.html): 누가 어떤 정책을 어디까지(계획 → 수집 → 분석 → 해석) 진행했는지, 열린 PR·작업 제안까지 한 화면에
 - [사이트 첫 화면](https://causalinferencelab.github.io/policy-effect-analytics-agent/): 궁금한 정책을 적으면 주제·관련 법령·데이터·분석 계획 초안을 대화로 정리해 줍니다.
 - [지금 이슈](https://causalinferencelab.github.io/policy-effect-analytics-agent/issues.html): 논쟁 중인 정책 7개의 분석 가이드 (기후동행카드 예시: [climate-card.md](../strategy/climate-card.md))
-- [데이터 지도](https://causalinferencelab.github.io/policy-effect-analytics-agent/data.html): 공공데이터 40개를 역할·단위·받는 법으로 정리
+- [데이터 지도](https://causalinferencelab.github.io/policy-effect-analytics-agent/data.html): 공공데이터를 역할·단위·받는 법으로 정리
 - [데이터 계보](https://causalinferencelab.github.io/policy-effect-analytics-agent/lineage.html): 이슈 → 정책 → 데이터 → 지표 → 분석의 연결과 주제별 빈칸 (트랙 A)
 - [서비스](https://causalinferencelab.github.io/policy-effect-analytics-agent/apps.html): 공개 API와 서비스 템플릿 (트랙 C)
 - 주제 페이지의 **관련 법령·행정규칙**: 법제처에서 근거 법률의 개정 이력, 지정·해제 공고, 관련 조례를 자동으로 모은 목록
@@ -60,11 +60,22 @@ make demo                                             # 예시를 연습용 폴�
 
 ## 짝 리뷰
 
-결과 PR에는 멘토 외에 **다른 멘티 1명**이 리뷰를 답니다. 리뷰는 세 가지만 봅니다: 처치 시점·대상이 출처와 맞는가, 대조가 처치와 비교할 만한가, 한 문장 해석이 판정을 넘지 않는가. 그리고 가능하면 직접 돌려 재현 이슈를 남깁니다.
+결과 PR에는 멘토 외에 **다른 참여자 1명**이 리뷰를 답니다. 리뷰는 세 가지만 봅니다: 처치 시점·대상이 출처와 맞는가, 대조가 처치와 비교할 만한가, 한 문장 해석이 판정을 넘지 않는가. 그리고 가능하면 직접 돌려 재현 이슈를 남깁니다.
 
 전체 점검과 계획: [roadmap.md](roadmap.md) · 외부 사용자 테스트: [user-test.md](user-test.md) · 성과 지표: [metrics.md](metrics.md)
 
-## 주차별 목표
+## 지금부터 참여하기
+
+2026년 가을 1기(9.7~11.1)는 끝났고, 지금은 누구나 같은 방식으로 이어서 참여합니다. 정해진 주차 없이 PR 하나에 한 단계씩 올리면 됩니다.
+
+1. [작업 제안 이슈](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/issues/new?template=case-proposal.yml)에 트랙과 주제를 적습니다. [이슈 보드](https://causalinferencelab.github.io/policy-effect-analytics-agent/#topics)의 빈칸이 좋은 출발점입니다.
+2. 위 6단계(트랙 B) 또는 트랙 가이드(A·C)대로 진행합니다. 결과가 나오면 `make readme`로 README 표를 갱신해 같은 PR에 넣습니다.
+3. 다른 참여자의 결과 PR 하나를 리뷰하거나 재현해 줍니다. 리뷰를 주고받는 것이 이 프로젝트의 품질 규칙입니다.
+
+내 진행 상황은 [참여 화면](https://causalinferencelab.github.io/policy-effect-analytics-agent/projects.html?me=)에서 주소 끝에 내 GitHub ID를 붙이면 내 카드만 보입니다.
+
+<details>
+<summary>1기 일정 (지난 기록)</summary>
 
 | 모임 | 주차 | 공통 |
 |---|---|---|
@@ -78,7 +89,9 @@ make demo                                             # 예시를 연습용 폴�
 | 모임 | A. 데이터 온톨로지 | B. 가설과 분석 | C. 서비스 개발 |
 |---|---|---|---|
 | 10.25(일) | 이슈 하나의 계보 YAML PR (`make lineage` 통과) | `plan.yaml` PR + `fetch.py`로 `data/panel.csv` | `apps/<내ID>-<서비스>/` 첫 화면 PR (API 하나 이상) |
-| 11.1(일) 공개 | 새 데이터셋 1개 이상 추가, 계보가 사이트에 표시 | `make flow` 결과 + `discussion.md`, 다른 멘티가 재현 | 기능 1개 완성 + README, 사이트에서 열림 |
+| 11.1(일) 공개 | 새 데이터셋 1개 이상 추가, 계보가 사이트에 표시 | `make flow` 결과 + `discussion.md`, 다른 참여자가 재현 | 기능 1개 완성 + README, 사이트에서 열림 |
+
+</details>
 
 트랙 B에서 지역마다 시작일이 다르거나(시차 도입) 정책 지역이 1~5곳(합성통제)이면 전용 모듈이 아직 준비 중입니다. 그 전까지는 같은 날 시작한 지역만 고르거나 무작위화 추론으로 1차 추정하고 한계에 적습니다.
 
@@ -96,7 +109,7 @@ cp -r apps/_template apps/<내ID>-<서비스>                 # C (예: apps/gil
 - 결과가 나오거나 단계가 바뀌면 `make readme`로 README의 '지금까지 만든 것' 표를 갱신해 같은 PR에 넣습니다.
 - 수정은 **내 파일·폴더만** 합니다. `catalog/datasets.yaml` 추가는 누구나 PR로 합니다. `core/`·`site/`를 고쳐야 하면 먼저 이슈를 열고 따로 PR을 올립니다.
 - `data/` 아래 파일은 git에 올라가지 않습니다. 데이터는 `fetch.py`로 각자 받게 합니다.
-- PR 하나에 한 단계만 담고, 멘토 또는 다른 멘티 1명 승인 + 자동 검사 통과 뒤 합칩니다.
+- PR 하나에 한 단계만 담고, 메인테이너 또는 다른 참여자 1명 승인 + 자동 검사 통과 뒤 합칩니다.
 
 ## 같이 보는 것 (담당자 없음, 모두)
 

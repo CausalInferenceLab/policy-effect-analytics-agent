@@ -145,6 +145,8 @@ def next_steps(p: dict, a: dict | None, registered: bool) -> list[str]:
         todo.append("make flow 실행 → 결과 PR")
     elif not st[3]:
         todo.append("discussion.md 에 해석·한계 쓰기")
+    if st[2] and a is None:
+        todo.append("핵심 비교 하나를 plan.yaml + make flow 로 → 사이트 결과·대시보드에 자동 공개")
     if a is not None:
         if st[3] and not a.get("has_one_line"):
             todo.append("discussion.md 에 '## 결과를 한 문장으로' 추가")
