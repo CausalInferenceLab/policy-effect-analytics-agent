@@ -67,6 +67,7 @@ def test_city_rows_keeps_only_basic_local_governments():
     assert set(d["region"]) == {"창원시", "수원시", "마산시"}
     assert d["year"].dtype.kind == "i" and d.loc[d["region"] == "마산시", "value"].isna().all()
 
+
 def test_city_rows_treats_zero_filled_defunct_codes_as_missing_and_keeps_7digit_codes():
     long = _long(
         [
@@ -171,6 +172,7 @@ def test_assemble_builds_balanced_panel_with_outcomes():
     )
     assert cw["fiscal_independence"].eq(30.0).all()
     assert np.allclose(panel["log_population"], np.log(panel["population"]))
+
 
 def test_assemble_uses_pre_reform_fiscal_series():
     years = (*fetch.YEARS, fetch.MERGE_YEAR)

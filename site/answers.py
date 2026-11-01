@@ -576,9 +576,15 @@ def card(e, a: dict, topics_by_id: dict, up: str = "") -> str:
     meta = [e(t.name) if t else "주제 미지정", f"@{e(a['owner'])}"]
     if a["finished"]:
         meta.append(e(a["finished"]))
-    v = {"identified": "go", "conditional": "warn"}.get(a["verdict"], "stop")
+    descriptive = a.get("execution_kind") == "descriptive_only"
+    v = (
+        "info"
+        if descriptive
+        else {"identified": "go", "conditional": "warn"}.get(a["verdict"], "stop")
+    )
+    dv = "descriptive" if descriptive else (a["verdict"] or "")
     return (
-        f'<a class="answer v-{v}" data-verdict="{e(a["verdict"] or "")}" href="{up}{e(a["page"])}">'
+        f'<a class="answer v-{v}" data-verdict="{e(dv)}" href="{up}{e(a["page"])}">'
         f'<div class="a-main"><div class="tags">{"".join(tags)}</div><h3>{e(a["title"])}</h3>'
         f'<p class="a-line">{e(card_line(a))}</p>'
         f'<p class="a-meta">{", ".join(meta)}</p></div>'
@@ -858,6 +864,10 @@ def legend(e) -> str:
         f"<div><dt>{verdict_chip(e, k)}</dt><dd>{e(VERDICT_PLAIN[k])}</dd></div>"
         for k in ("identified", "conditional", "not_identified")
     )
+    items += (
+        f'<div><dt><span class="badge info">{DESCRIPTIVE_LABEL}</span></dt>'
+        "<dd>인과 비교가 어려워 연도별 관측값만 정리한 결과예요. 숫자는 인용할 수 있지만 정책 효과로 읽으면 안 돼요.</dd></div>"
+    )
     return f"""<dl class="legend">{items}</dl>
 <p class="small muted">오른쪽 막대는 주 지표의 95% 범위, 점은 추정치, 세로선은 '변화 없음(0)'입니다. 막대가 세로선을 지나면 변화가 있었는지 말할 수 없습니다.</p>"""
 
@@ -868,6 +878,11 @@ def index_body(e, answers: list[dict], topics) -> str:
     examples = [a for a in answers if a["synthetic"] or a["mentor"]]
     no_result = [t for t in topics if not any(a["topic"] == t.id for a in answers)]
     gap = ", ".join(f'<a href="topics/{e(t.id)}.html">{e(t.name)}</a>' for t in no_result)
+    desc_chip = (
+        f'\n<button class="chip af" data-v="descriptive" aria-pressed="false">{DESCRIPTIVE_LABEL.split(" · ")[0]}</button>'
+        if any(a.get("execution_kind") == "descriptive_only" for a in real)
+        else ""
+    )
     return f"""
 <div class="hero" style="padding-bottom:0"><h1 class="h1-sm">분석 결과</h1>
 <p class="lede">시민 데이터 과학자들이 공공데이터로 '받은 동네 vs 안 받은 동네'를 비교한 결과예요. 결과마다 쉬운 말 답, 그대로 가져다 써도 되는 인용문, 쓴 데이터, 따라 해 보는 법이 붙어 있어요.</p></div>
@@ -877,7 +892,7 @@ def index_body(e, answers: list[dict], topics) -> str:
 <button class="chip af" data-v="" aria-pressed="true">전체 {len(real)}</button>
 <button class="chip af" data-v="identified" aria-pressed="false">효과 근거 있음</button>
 <button class="chip af" data-v="conditional" aria-pressed="false">크기를 판별하지 못함</button>
-<button class="chip af" data-v="not_identified" aria-pressed="false">판단 불가</button></div></div>
+<button class="chip af" data-v="not_identified" aria-pressed="false">판단 불가</button>{desc_chip}</div></div>
 <div class="answers" id="answer-cards">{"".join(card(e, a, tb) for a in real) or "<p class='card'>아직 없습니다.</p>"}</div>
 <p id="answer-empty" class="card" hidden>앗, 아직 없는 결과예요. <a href="index.html#ask">대화창에 물어보거나</a> <a href="{REPO}/issues/new?template=case-proposal.yml">첫 번째 분석을 제안해</a> 보세요.</p></section>
 <section id="read"><h2>판정 읽는 법</h2>{legend(e)}</section>

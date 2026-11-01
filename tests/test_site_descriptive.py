@@ -245,5 +245,5 @@ def test_descriptive_charts_use_one_column_and_link_originals(case):
     assert '<div class="figs" style="grid-template-columns: minmax(0, 1fr)">' in page
     assert page.count("원본 크기로 보기") == 4
     for name in a["figures"]:
-        url = f'../cases/{a["case"]}/{name}'
+        url = f"../cases/{a['case']}/{name}"
         assert f'<a href="{url}"><img src="{url}"' in page
