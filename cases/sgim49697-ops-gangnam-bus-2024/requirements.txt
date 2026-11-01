@@ -1,0 +1,10 @@
+# 최종 수집·정규화·CPU 예측 환경 (Python 3.12에서 검증).
+numpy==2.5.2
+pandas==2.3.3
+PyYAML==6.0.3
+requests==2.34.2
+openpyxl==3.1.5
+pyarrow==26.0.0
+catboost==1.2.10
+joblib==1.6.0
+threadpoolctl==3.7.0
