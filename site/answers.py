@@ -34,9 +34,9 @@ VERDICT = {
     "not_identified": ("판단 불가", "stop"),
 }
 VERDICT_PLAIN = {
-    "identified": "비교 대상보다 분명히 달라졌고, 다른 설명(같은 시기 사건·계절·미리 반응)도 걸러졌습니다.",
-    "conditional": "추정은 했지만 범위가 0을 포함하거나 조건이 약해, 효과가 있었는지·얼마나인지 말할 수 없습니다.",
-    "not_identified": "비교 자체가 성립하지 않아(정책 전부터 다르게 움직였거나 비교 단위가 너무 적음) 숫자를 효과로 읽으면 안 됩니다.",
+    "identified": "데이터가 '달라졌다'고 말해요. 비교 대상보다 분명히 달라졌고, 다른 설명(같은 시기 사건·계절·미리 반응)도 걸러졌어요.",
+    "conditional": "아직은 '모르겠다'예요. 추정은 했지만 범위가 0을 포함하거나 조건이 약해서, 효과가 있었는지·얼마나인지 말할 수 없어요.",
+    "not_identified": "이 비교로는 판정할 수 없어요. 정책 전부터 다르게 움직였거나 비교할 곳이 너무 적어서, 숫자를 효과로 읽으면 안 돼요.",
 }
 PRIMARY = ' <span class="badge info">주 지표</span>'
 LICENSE_KO = {
@@ -124,13 +124,17 @@ def read_discussion(case: Path) -> dict:
 
 
 def _is_log(col: str, unit: str | None) -> bool:
-    return col.startswith("log") or "log" in (unit or "").lower()
+    return interpret.is_log(col, unit)
 
 
 def effect_text(est, lo, hi, col: str, unit: str | None) -> tuple[str, str]:
     """(효과, 95% 범위)를 사람이 읽는 말로. 로그 지표는 %, 범위가 너무 넓으면 그렇다고 말한다."""
     if est is None or lo is None or hi is None:
         return "-", "-"
+    if not (math.isfinite(lo) and math.isfinite(hi)):
+        return interpret.fmt(est, col, unit) if math.isfinite(
+            est
+        ) else "-", "범위를 정할 수 없음(비교 단위가 너무 적음)"
     if _is_log(col, unit):
         if hi - lo > 1.0:
             return f"{(math.exp(est) - 1) * 100:+.1f}%", "범위가 너무 넓어 크기를 말할 수 없음"
@@ -192,6 +196,7 @@ def load_answers() -> list[dict]:
                     "n": r.get("n_obs"),
                     "clusters": r.get("n_clusters"),
                     "primary": r.get("outcome") == primary,
+                    "coefs": (r.get("extra") or {}).get("coefs") or [],
                     "est": r.get("estimate"),
                     "lo": r.get("ci_low"),
                     "hi": r.get("ci_high"),
@@ -424,6 +429,13 @@ def rule_out(a: dict) -> str:
     return f"그래도 말할 수 있는 것(배제 범위) — {r['said']['rule_out']}" if r else ""
 
 
+def _chart(e, a: dict) -> str:
+    import board
+
+    c = board.event_chart(e, a)
+    return f"<div class='es-one'>{c}</div><script src='../board.js' defer></script>" if c else ""
+
+
 def said_block(e, a: dict) -> str:
     """근거 섹션: 지표별 배제 범위 · 검출 한계."""
     items = [v for r in a["results"] for v in (r.get("said") or {}).values()]
@@ -573,7 +585,7 @@ def page_body(e, a: dict, topics_by_id: dict, datasets_by_url: dict) -> str:
 {_usage(e, a)}
 <section id="evidence"><h2>근거</h2>{changed}
 <div class="tablewrap"><table><tr><th>결과 지표</th><th>추정 효과</th><th>95% 범위</th><th>판정</th><th>주의</th></tr>{rows}</table></div>
-{dim_note}{said_block(e, a)}
+{dim_note}{_chart(e, a)}{said_block(e, a)}
 <p class="small"><a href="{e(a["case"])}.csv" download data-track="csv-download">숫자 내려받기 (CSV)</a> · <a href="../api/results.json">전체 결과 API (JSON)</a> · <a href="../api/results.csv" download data-track="csv-download">전체 결과 CSV</a></p>
 <div class="figs">{figs}</div>
 {("<h3>작성자가 적은 한계</h3>" + cautions) if cautions else ""}</section>
@@ -613,7 +625,7 @@ def index_body(e, answers: list[dict], topics) -> str:
     gap = ", ".join(f'<a href="topics/{e(t.id)}.html">{e(t.name)}</a>' for t in no_result)
     return f"""
 <div class="hero" style="padding-bottom:0"><h1 class="h1-sm">분석 결과</h1>
-<p class="lede">정책을 받은 곳과 안 받은 곳을 공공데이터로 비교한 결과입니다. 결과마다 쉬운 말 답, 인용해도 되는 문장, 쓴 데이터, 재현 방법이 있습니다.</p></div>
+<p class="lede">시민 데이터 과학자들이 공공데이터로 '받은 동네 vs 안 받은 동네'를 비교한 결과예요. 결과마다 쉬운 말 답, 그대로 가져다 써도 되는 인용문, 쓴 데이터, 따라 해 보는 법이 붙어 있어요.</p></div>
 <section id="answers" style="padding-top:24px">
 <div class="toolbar"><input id="answer-q" type="search" class="search" placeholder="정책·지역·주제로 찾기 (예: 창원, 대형마트)" aria-label="분석 결과 검색">
 <div class="chips" role="group" aria-label="판정 필터">
@@ -622,7 +634,7 @@ def index_body(e, answers: list[dict], topics) -> str:
 <button class="chip af" data-v="conditional" aria-pressed="false">크기를 판별하지 못함</button>
 <button class="chip af" data-v="not_identified" aria-pressed="false">판단 불가</button></div></div>
 <div class="answers" id="answer-cards">{"".join(card(e, a, tb) for a in real) or "<p class='card'>아직 없습니다.</p>"}</div>
-<p id="answer-empty" class="card" hidden>찾는 결과가 없습니다. <a href="index.html#ask">대화창에 물어보거나</a> <a href="{REPO}/issues/new?template=case-proposal.yml">분석을 제안해</a> 주세요.</p></section>
+<p id="answer-empty" class="card" hidden>앗, 아직 없는 결과예요. <a href="index.html#ask">대화창에 물어보거나</a> <a href="{REPO}/issues/new?template=case-proposal.yml">첫 번째 분석을 제안해</a> 보세요.</p></section>
 <section id="read"><h2>판정 읽는 법</h2>{legend(e)}</section>
 <section><h2>예시</h2><p class="sub">분석 흐름을 보여 주는 멘토 예시입니다.</p>
 <div class="answers">{"".join(card(e, a, tb) for a in examples)}</div></section>

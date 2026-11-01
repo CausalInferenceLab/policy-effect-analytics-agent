@@ -6,6 +6,12 @@
 #   답 페이지의 '이 결과를 얼마나 믿을 수 있나'와 카드의 '교차 재현됨' 배지로 나옵니다.
 version: 1
 projects:
+  - case: sgim49697-ops-gangnam-bus-2024
+    owner: sgim49697-ops
+    track: B
+    topic: traffic-operations
+    issue: 53
+
   - case: YoungjaeKang-retail-hours
     owner: YoungjaeKang
     track: B
@@ -50,6 +56,17 @@ projects:
     track: B
     topic: traffic-safety
     issue: 58
+
+  - case: jm-git-163-climate-card
+    owner: jm-git-163
+    track: B
+    topic: public-transit
+    issue: 48
+
+  - case: gyeom-yee-public-markdown
+    owner: gyeom-yee
+    track: B
+    topic: digital-inclusion
 
   # 멘토 예시 (mentor: true) — 프로젝트 화면 맨 아래에 따로 보입니다
   - case: t3-climate-card-seongnam

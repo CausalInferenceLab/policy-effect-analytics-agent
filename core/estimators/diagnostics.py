@@ -7,6 +7,7 @@ verdict(identified / conditional / not_identified)를 정한다.
 
 from __future__ import annotations
 
+import numpy as np
 import pandas as pd
 
 from .result import EffectResult
@@ -45,7 +46,7 @@ def apply_abstention(res: EffectResult, rules, thresholds=None) -> EffectResult:
     pre = res.assumptions_checked.get("pre_periods")
     if pre is not None and pre < min_pre:
         res.warn(f"사전 기간 {pre}기 < {min_pre}: 추세 비교 근거가 부족합니다.", "short_pre_period")
-    if res.ci_low <= 0 <= res.ci_high:
+    if not (np.isfinite(res.ci_low) and np.isfinite(res.ci_high)) or res.ci_low <= 0 <= res.ci_high:
         res.warn(
             "신뢰구간이 0을 포함합니다. '효과 없음'이 아니라 '효과 크기를 판별할 수 없음'으로 "
             "해석하세요.",
