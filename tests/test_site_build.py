@@ -210,7 +210,13 @@ def test_answer_pages_for_users(tmp_path, monkeypatch):
     )
     assert cat["results"] and all("page" in x for x in cat["results"])
     # 첫 화면: 흐름 띠·질문 → 이슈 보드(흐름 지도) → 이미 나온 답 → 지금 이슈 → 다음에 할 수 있는 것
-    assert home.index('id="ask"') < home.index('id="topics"') < home.index('id="answers"')
+    assert (
+        home.index('id="ask"')
+        < home.index('id="start"')
+        < home.index('id="showcase"')
+        < home.index('id="topics"')
+    )
+    assert home.count('class="show"') >= 3 and 'class="crew"' in home
     assert 'id="next"' in home and 'class="levels"' in home and "impact.html" in home
     assert 'id="reuse"' in (out / "results.html").read_text(encoding="utf-8")
     # 주제 페이지(이슈 보드)에는 분석 단계가 있고, 결과 CSV는 엑셀용 BOM 을 붙인다
@@ -272,3 +278,17 @@ def test_issue_boards_show_the_whole_flow(tmp_path, monkeypatch):
     sp = kpi["supply"]
     assert sp["topics"] == len(mod.load_topics()) and 0 <= sp["complete"] <= sp["topics"]
     assert sp["ready"] <= sp["datasets"] and "north_star" in kpi
+
+
+def test_readme_highlights_cover_every_project():
+    """README 의 프로젝트 표: 참여자 프로젝트가 모두 들어가고 결과 링크는 실제 답 페이지를 가리킨다."""
+    import sys
+
+    sys.path.insert(0, str(ROOT / "scripts"))
+    import readme_highlights
+
+    table = readme_highlights.table()
+    for case in (ROOT / "cases").iterdir():
+        if case.is_dir() and not case.name.startswith("_") and (case / "plan.yaml").exists():
+            assert case.name in table or (case / "README.md").exists(), case.name
+    assert "| 프로젝트 | 주제 | 누가 | 지금 | 보기 |" in table

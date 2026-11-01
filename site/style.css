@@ -495,3 +495,30 @@ html.js:not(.calm) .lin-svg .edges path { transition: stroke-dashoffset 1.2s eas
 /* 숫자·날짜도 같은 글꼴로 (예전 고정폭 글꼴 라벨 정리) */
 .flow .n, .issue-card .date, .step .n, .rank-item .rn, .onto .rel, .when, .kpi .v, .stepno { font-family: var(--sans) }
 .hero.home h1 { font-weight: 800; letter-spacing: -0.04em }
+
+/* ── 처음 온 사람: 세 갈래 안내 · 하이라이트 · 함께 만든 사람 ── */
+.personas { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px }
+.persona { display: flex; flex-direction: column; gap: 8px; padding: 18px; border-radius: 16px; background: var(--surface); border: 1px solid var(--hair); text-decoration: none; color: inherit }
+.persona:hover { border-color: var(--ink) }
+.persona .tag { align-self: flex-start; font-size: 13px; font-weight: 700; padding: 2px 10px; border-radius: 999px; background: var(--accent-soft); color: var(--accent) }
+.persona b { font-size: 16.5px; line-height: 1.5 }
+.persona .go-link { margin-top: auto; font-size: 14px; font-weight: 700; color: var(--accent) }
+.promise { margin: 16px 0 0; color: var(--ink2); font-size: 15px; max-width: 72ch }
+.shows { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px }
+.show { display: flex; flex-direction: column; border-radius: 16px; overflow: hidden; background: var(--surface); border: 1px solid var(--hair); text-decoration: none; color: inherit; transition: transform .15s ease, box-shadow .15s ease }
+.show:hover { transform: translateY(-3px); box-shadow: 0 10px 24px -14px rgba(20, 23, 28, .35) }
+.thumb { aspect-ratio: 16 / 9; background: #fff; border-bottom: 1px solid var(--hair); display: grid; place-items: center; overflow: hidden }
+.thumb img { width: 100%; height: 100%; object-fit: cover; object-position: top }
+.thumb .ph { font-size: 34px; font-weight: 800; color: var(--accent); opacity: .35 }
+.show-body { display: flex; flex-direction: column; gap: 6px; padding: 14px 16px 16px; flex: 1 }
+.show-body b { font-size: 16px; line-height: 1.45 }
+.show .who { display: flex; align-items: center; gap: 8px; font-size: 13.5px; color: var(--ink2) }
+.show .who .avatar { width: 22px; height: 22px }
+.show-meta { margin-top: auto; display: flex; gap: 8px; align-items: center; flex-wrap: wrap }
+.crew { margin-top: 18px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap }
+.faces { display: flex }
+.faces a { margin-left: -8px } .faces a:first-child { margin-left: 0 }
+.faces img { width: 40px; height: 40px; border-radius: 50%; border: 3px solid var(--paper); background: var(--sunk); display: block }
+.faces a:hover img { transform: translateY(-3px) }
+@media (max-width: 760px) { .personas, .shows { grid-template-columns: minmax(0, 1fr) } }
+@media (prefers-reduced-motion: reduce) { .show, .show:hover, .faces a:hover img { transition: none; transform: none } }

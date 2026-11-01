@@ -45,6 +45,17 @@ projects:
     topic: local-gov-merger
     issue: 27
 
+  - case: jm-git-163-climate-card
+    owner: jm-git-163
+    track: B
+    topic: public-transit
+    issue: 48
+
+  - case: gyeom-yee-public-markdown
+    owner: gyeom-yee
+    track: B
+    topic: digital-inclusion
+
   # 멘토 예시 (mentor: true) — 프로젝트 화면 맨 아래에 따로 보입니다
   - case: t3-climate-card-seongnam
     owner: jsshin2022
