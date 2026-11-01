@@ -142,9 +142,10 @@ class FetchTests(unittest.TestCase):
                     )
         panel = fetch.normalise(raw(records), set(fetch.CONTROL_STATIONS), "end", fetch.load_plan())
         results = run_plan(plan, panel)
-        self.assertEqual([result.outcome for result in results], ["no2", "pm25"])
-        for result, effect, tolerance in zip(results, [-0.003, -2], [0.0005, 0.2], strict=True):
-            self.assertAlmostEqual(result.estimate, effect, delta=tolerance)
+        self.assertEqual([result.outcome for result in results], ["no2"])
+        for result in results:
+            tolerance = 0.0005
+            self.assertAlmostEqual(result.estimate, -0.003, delta=tolerance)
             self.assertIn("randomization inference", result.assumptions_checked["inference"])
             coefficients = result.extra["coefs"]
             reference = coefficients.loc[coefficients.rel_time.eq(plan.estimator.ref_period)]
@@ -261,9 +262,19 @@ class FetchTests(unittest.TestCase):
             self.assertEqual(panel.attrs["source_files"], ["2017/2017년 01월.xlsx"])
 
     def test_main_saves_readable_date_and_provenance(self):
-        panel = fetch.normalise(raw([row(2017010101)]), CONTROLS, "end", PLAN)
+        records = [
+            row(2017010101, code, pm25=None)
+            for code in sorted(fetch.TREATED | set(fetch.CONTROL_STATIONS))
+        ]
+        panel = fetch.normalise(raw(records), set(fetch.CONTROL_STATIONS), "end", PLAN)
         panel.attrs["source_files"] = ["2017/2017년 01월.xlsx"]
-        plan = {"data_sources": [{"name": "에어코리아", "license": "KOGL-3"}]}
+        plan = {
+            **PLAN,
+            "outcomes": [{"col": "no2"}],
+            "data_sources": [
+                {"name": "에어코리아", "license": "KOGL-3", "path": "data/panel.no2.csv"}
+            ],
+        }
         with tempfile.TemporaryDirectory() as directory:
             output = Path(directory) / "panel.csv"
             with (
@@ -273,13 +284,73 @@ class FetchTests(unittest.TestCase):
                 patch.object(fetch, "build_panel", return_value=panel),
             ):
                 fetch.main()
+                original = hashlib.sha256(output.read_bytes()).hexdigest()
+                first_analysis = output.with_name("panel.no2.csv").read_bytes()
+                fetch.prepare_existing()
+                self.assertEqual(original, hashlib.sha256(output.read_bytes()).hexdigest())
+                self.assertEqual(first_analysis, output.with_name("panel.no2.csv").read_bytes())
             saved = pd.read_csv(output)
             self.assertIn("2017-01-01 00:00:00", saved.datetime.iloc[0])
-            self.assertEqual(saved.hour_idx.tolist(), [0])
-            self.assertEqual(saved.hour.tolist(), [0])
+            self.assertEqual(saved.hour_idx.unique().tolist(), [0])
+            self.assertEqual(saved.hour.unique().tolist(), [0])
+            analysis = pd.read_csv(output.with_name("panel.no2.csv"))
+            self.assertEqual(len(analysis), 11)
+            self.assertTrue(analysis.pm25.isna().all())
+            meta = json.loads(output.with_name("panel.no2.source.json").read_text())
+            self.assertEqual(meta["input_snapshot"]["sha256"], original)
+            self.assertEqual(meta["selection"]["hours_after"], 1)
             self.assertEqual(
                 json.loads(output.with_suffix(".source.json").read_text())["license"], "KOGL-3"
             )
+
+    def test_complete_hours_drop_same_time_for_every_station_and_preserve_zero(self):
+        stations = fetch.TREATED | CONTROLS
+        records = []
+        for code in sorted(stations):
+            for hour in range(1, 5):
+                if code == "111202" and hour == 3:
+                    continue  # 행 자체가 없는 시각도 전체에서 제외해야 한다.
+                value = None if code == "111202" and hour == 2 else 0
+                records.append(row(2017010100 + hour, code, no2=value, pm25=None))
+        full = fetch.normalise(raw(records), CONTROLS, "end", PLAN)
+        original = full.copy(deep=True)
+        selected = fetch.select_complete_hours(full, stations)
+        pd.testing.assert_frame_equal(full, original)
+        self.assertEqual(len(selected), 6)
+        self.assertEqual(sorted(selected.hour_idx.unique()), [0, 3])
+        self.assertTrue(
+            selected.groupby("station_id").hour_idx.apply(list).map(lambda x: x == [0, 3]).all()
+        )
+        self.assertTrue(selected.no2.eq(0).all())
+        self.assertTrue(selected.pm25.isna().all())
+        self.assertEqual(selected.attrs["selection"]["hours_before"], 4)
+        self.assertEqual(selected.attrs["selection"]["hours_after"], 2)
+
+    def test_complete_hours_reject_empty_overlap_or_changed_station_list(self):
+        stations = fetch.TREATED | CONTROLS
+        full = fetch.normalise(
+            raw([row(2017010101, code, no2=None) for code in sorted(stations)]),
+            CONTROLS,
+            "end",
+            PLAN,
+        )
+        with self.assertRaisesRegex(ValueError, "함께 관측한 시간"):
+            fetch.select_complete_hours(full, stations)
+        with self.assertRaisesRegex(ValueError, "측정소 명단 불일치"):
+            fetch.select_complete_hours(full.iloc[:-1], stations)
+
+    def test_complete_hours_reject_duplicate_station_hour(self):
+        full = fetch.normalise(
+            raw(
+                [row(2017010101, code) for code in sorted(fetch.TREATED | CONTROLS)]
+                + [row(2017010101)]
+            ),
+            CONTROLS,
+            "end",
+            PLAN,
+        )
+        with self.assertRaisesRegex(ValueError, "중복"):
+            fetch.select_complete_hours(full, fetch.TREATED | CONTROLS)
 
 
 if __name__ == "__main__":

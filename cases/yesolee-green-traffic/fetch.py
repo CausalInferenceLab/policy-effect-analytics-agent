@@ -1,12 +1,13 @@
 """에어코리아 월별 엑셀을 측정소 × 시간 패널로 정리한다.
 
 입력: data/raw/<연도>/<연도>년 <월>월.xlsx
-출력: data/panel.csv, data/panel.source.json
+출력: 전체 정리표 data/panel.csv, NO₂ 공통 관측시간 표 data/panel.no2.csv와 출처 JSON.
 본분석은 처치 2곳·대조 9곳이며, 선정 근거와 추가 점검은 plan.yaml·README.md에 적는다.
 """
 
 from __future__ import annotations
 
+import hashlib
 import json
 import re
 import sys
@@ -216,16 +217,119 @@ def build_panel(raw_dir=RAW, controls=None, hour_label=None, plan=None) -> pd.Da
     return panel
 
 
+def select_complete_hours(panel: pd.DataFrame, stations: set[str]) -> pd.DataFrame:
+    """사전 지정 측정소 모두 NO₂를 관측한 동일 시간만 남긴다. 원래 표는 변경하지 않는다."""
+    actual = set(panel["station_id"].astype(str))
+    if actual != stations:
+        raise ValueError(
+            f"측정소 명단 불일치: 누락 {sorted(stations - actual)}, 추가 {sorted(actual - stations)}"
+        )
+    if panel.duplicated(["station_id", "hour_idx"]).any():
+        raise ValueError("측정소×시간 중복을 해결하기 전 공통 시간을 선택할 수 없습니다.")
+    grouped = panel.groupby("hour_idx")
+    keep = grouped["station_id"].nunique().eq(len(stations)) & grouped["no2"].count().eq(
+        len(stations)
+    )
+    if not keep.any():
+        raise ValueError("모든 측정소에서 NO₂를 함께 관측한 시간이 없습니다.")
+    selected = panel.loc[panel["hour_idx"].isin(keep.index[keep])].copy().reset_index(drop=True)
+    hours = (
+        panel[["hour_idx", "datetime", "hour"]].drop_duplicates("hour_idx").set_index("hour_idx")
+    )
+    hours["kept"] = keep
+    hours["year"] = pd.to_datetime(hours["datetime"], utc=True).dt.tz_convert("Asia/Seoul").dt.year
+
+    def coverage(key):
+        return (
+            hours.groupby(key)["kept"]
+            .agg(kept_hours="sum", available_hours="size")
+            .reset_index()
+            .to_dict("records")
+        )
+
+    selected.attrs["selection"] = {
+        "rule": "all pre-specified stations have observed NO2 at the same hour",
+        "stations": sorted(stations),
+        "required_outcome": "no2",
+        "rows_before": len(panel),
+        "rows_after": len(selected),
+        "hours_before": len(keep),
+        "hours_after": int(keep.sum()),
+        "missing_fraction_before": {
+            col: float(panel[col].isna().mean()) for col in ["no2", "pm25"]
+        },
+        "coverage_by_year": coverage("year"),
+        "coverage_by_hour": coverage("hour"),
+    }
+    return selected
+
+
+def save_table(panel: pd.DataFrame, output: Path, source: dict) -> None:
+    output.parent.mkdir(parents=True, exist_ok=True)
+    temporary = output.with_suffix(".csv.tmp")
+    panel.to_csv(temporary, index=False, encoding="utf-8")
+    temporary.replace(output)
+    output.with_suffix(".source.json").write_text(
+        json.dumps(source, ensure_ascii=False, indent=2), encoding="utf-8"
+    )
+
+
+def prepare_analysis(full: pd.DataFrame, source: dict, plan: dict) -> pd.DataFrame:
+    if [outcome["col"] for outcome in plan["outcomes"]] != ["no2"]:
+        raise ValueError("NO₂만 추정하는 계획을 먼저 확정하세요.")
+    output = OUT.with_name("panel.no2.csv")
+    if Path(plan["data_sources"][0]["path"]) != Path("data/panel.no2.csv"):
+        raise ValueError("NO₂ 분석표 경로는 data/panel.no2.csv로 설정하세요.")
+    query = source.get("query", {})
+    if (
+        set(query.get("control_stations", [])) != set(CONTROL_STATIONS)
+        or query.get("hour_label") != HOUR_LABEL
+    ):
+        raise ValueError(
+            "전체 정리표의 대조군·시각 설정이 현재 수집기와 다릅니다. fetch.py로 다시 만드세요."
+        )
+    if source.get("rows") != len(full):
+        raise ValueError("전체 정리표의 행 수가 출처 기록과 다릅니다. 원본 스냅샷을 확인하세요.")
+    if not full["hour_idx"].between(plan["time"]["start"], plan["time"]["end"]).all():
+        raise ValueError("전체 정리표의 기간이 현재 계획과 다릅니다. fetch.py로 다시 만드세요.")
+    clock = pd.to_datetime(full["datetime"], utc=True).dt.tz_convert("Asia/Seoul")
+    if (clock.ge("2019-07-01") & clock.lt("2019-12-01")).any():
+        raise ValueError("시범 운영기 자료가 남아 있습니다. fetch.py로 다시 만드세요.")
+    selected = select_complete_hours(full, TREATED | set(CONTROL_STATIONS))
+    meta = dict(plan["data_sources"][0])
+    meta.update(
+        rows=len(selected),
+        fetched_at=source.get("fetched_at"),
+        prepared_at=datetime.now(UTC).isoformat(timespec="seconds"),
+        input_snapshot={
+            "path": "data/panel.csv",
+            "sha256": hashlib.sha256(OUT.read_bytes()).hexdigest(),
+        },
+        query=query,
+        selection=selected.attrs["selection"],
+    )
+    save_table(selected, output, meta)
+    print(f"[prepare] {len(full)}행 → 공통 관측시간 {len(selected)}행 → {output.name}")
+    return selected
+
+
+def prepare_existing() -> None:
+    """기존 전체 정리표로 NO₂ 표만 다시 만든다. 원자료와 전체 정리표를 보존한다."""
+    try:
+        full = pd.read_csv(OUT, dtype={"station_id": str, "measurement_time": str})
+        source = json.loads(OUT.with_suffix(".source.json").read_text(encoding="utf-8"))
+        prepare_analysis(full, source, load_plan())
+    except (ValueError, RuntimeError, OSError) as error:
+        sys.exit(f"prepare.py: {error}")
+
+
 def main() -> None:
     try:
         plan = load_plan()
         panel = build_panel(plan=plan)
-        OUT.parent.mkdir(parents=True, exist_ok=True)
-        temporary = OUT.with_suffix(".csv.tmp")
-        panel.to_csv(temporary, index=False, encoding="utf-8")
-        temporary.replace(OUT)
         source = dict(plan["data_sources"][0])
         source.update(
+            path="data/panel.csv",
             rows=len(panel),
             fetched_at=datetime.now(UTC).isoformat(timespec="seconds"),
             query={
@@ -234,9 +338,8 @@ def main() -> None:
                 "source_files": panel.attrs["source_files"],
             },
         )
-        OUT.with_suffix(".source.json").write_text(
-            json.dumps(source, ensure_ascii=False, indent=2), encoding="utf-8"
-        )
+        save_table(panel, OUT, source)
+        prepare_analysis(panel, source, plan)
     except (ValueError, RuntimeError, OSError) as error:
         sys.exit(f"fetch.py: {error}")
     print(f"[fetch] {len(panel)}행 → {OUT.relative_to(HERE)}")

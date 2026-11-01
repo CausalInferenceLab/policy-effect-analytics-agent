@@ -1,0 +1,139 @@
+{
+  "schema_version": "1",
+  "case_dir": "cases/yesolee-green-traffic",
+  "question": "녹색교통지역 5등급 차량 운행제한 과태료 부과(2019-12-01) 이후, 운행제한 시간(06~21시)의 종로·청계천로 NO₂·PM2.5 농도는 구역 밖 서울 도로변 측정소와 비교해 시행 전후 주별로 어떻게 달라졌는가?\n",
+  "status": "failed",
+  "verdict": null,
+  "started_at": "2026-10-18T11:23:43+00:00",
+  "ended_at": "2026-10-18T11:23:43+00:00",
+  "steps": [
+    {
+      "index": 1,
+      "step": "define_problem",
+      "title": "① 문제 정의",
+      "status": "ok",
+      "started_at": "2026-10-18T11:23:43+00:00",
+      "ended_at": "2026-10-18T11:23:43+00:00",
+      "duration_s": 0.018,
+      "message": "분석계획 검증 완료, 사전 등록(git 커밋) 확인: yesolee-green-traffic",
+      "artifacts": {
+        "plan": "plan.yaml",
+        "plan_sha256": "3aa359011193955c4c66e416fd37f719d862bae3669b49540645dbbb020fe55c",
+        "committed": true
+      }
+    },
+    {
+      "index": 2,
+      "step": "collect",
+      "title": "② 데이터 수집",
+      "status": "warn",
+      "started_at": "2026-10-18T11:23:43+00:00",
+      "ended_at": "2026-10-18T11:23:43+00:00",
+      "duration_s": 0.022,
+      "message": "기존 스냅샷 재사용 (새로 받으려면 파일 삭제 후 재실행) / 공공누리 3·4유형(변경금지) 포함 — 가공 데이터 재배포 불가",
+      "artifacts": {
+        "data": "data/panel.csv",
+        "data_sha256": "61c50a8d3b9c877f4d55c446cf1d510a044c68de7a0848f0faac97b2c0c1900d",
+        "licenses": [
+          "KOGL-3"
+        ],
+        "method": "기존 스냅샷 재사용 (새로 받으려면 파일 삭제 후 재실행)",
+        "source_meta": "data/panel.source.json"
+      }
+    },
+    {
+      "index": 3,
+      "step": "structure_metrics",
+      "title": "③ 지표 구조화·품질 점검",
+      "status": "failed",
+      "started_at": "2026-10-18T11:23:43+00:00",
+      "ended_at": "2026-10-18T11:23:43+00:00",
+      "duration_s": 0.215,
+      "message": "데이터 품질 점검 실패 — 결측률 pm25: 결측 33.5%",
+      "artifacts": {}
+    }
+  ],
+  "quality": [
+    {
+      "check": "필수 컬럼",
+      "value": 5,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "시간 컬럼 정수형",
+      "value": "int64",
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "결측률 station_id",
+      "value": 0.0,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "결측률 hour_idx",
+      "value": 0.0,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "결측률 treated",
+      "value": 0.0,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "결측률 no2",
+      "value": 0.0326,
+      "status": "warn",
+      "message": "결측 3.3%"
+    },
+    {
+      "check": "결측률 pm25",
+      "value": 0.3346,
+      "status": "failed",
+      "message": "결측 33.5%"
+    },
+    {
+      "check": "시각 컬럼 0~23",
+      "value": 0,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "사전 기간 수(묶음(168기씩))",
+      "value": 133,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "사후 기간 수(묶음(168기씩))",
+      "value": 109,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "처치 단위 수",
+      "value": 2,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "통제 단위 수",
+      "value": 9,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "단위×시점 중복",
+      "value": 0,
+      "status": "ok",
+      "message": ""
+    }
+  ],
+  "results": [],
+  "guard": {},
+  "report_path": null
+}
