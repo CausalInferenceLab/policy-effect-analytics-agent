@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "status": "local_draft",
+  "descriptive_only": true,
+  "analysis_approved": false,
+  "publication_approved": false,
+  "inputs": [
+    {
+      "path": "cases/inshining-elderly-driver/data/taas-national.csv",
+      "sha256": "a2b63b48e0166da5ab17677303f7ca227d299cebdf9689a8dd5855c55496d641",
+      "collected_on": "2026-10-27"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/data/population.csv",
+      "sha256": "954efe0baa088c1fb687a57a67e77621fe4f64c99c12e71e2bb69be28b64fbf1",
+      "collected_on": "2026-10-27"
+    }
+  ],
+  "code": {
+    "path": "cases/inshining-elderly-driver/describe_population.py",
+    "sha256": "df182e5af47e59832aee2f877dc54569be3a066c2144bf123ed7f73618c29a22"
+  },
+  "dependencies": [
+    {
+      "path": "cases/inshining-elderly-driver/describe.py",
+      "sha256": "03086457d19994516acc6d94ab761dc4b5ab654a1f8abe76d9c5c53cbbcfc0ca"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/population-qc.json",
+      "sha256": "0b3ed7f1c673dc77010cf45a3a3b0dfd8f4aa7ff2e9bb5a17fdd76ce3b34c3f5"
+    }
+  ],
+  "command": ".venv/bin/python cases/inshining-elderly-driver/describe_population.py",
+  "command_working_directory": "project root",
+  "years": [
+    2014,
+    2015,
+    2016,
+    2017,
+    2018,
+    2019
+  ],
+  "population_reference_dates": [
+    "2013-12-31",
+    "2014-12-31",
+    "2015-12-31",
+    "2016-12-31",
+    "2017-12-31",
+    "2018-12-31"
+  ],
+  "frequency_scale": 10000,
+  "metric": "65세 이상 가해운전자(1당사자) 교통사고 연간 건수 및 주민인구 대비 빈도",
+  "geography": {
+    "accidents": "taas_province=부산 AND taas_district=합계",
+    "population": "region_code=2600000000 AND region_name=부산광역시 AND is_province_total=True",
+    "hierarchy": "부산 광역 합계 1행/연도만 사용; 하위 지역 재합산 없음"
+  },
+  "formulas": {
+    "per_10000_65plus": "busan_count / population_65plus * 10000",
+    "per_10000_total": "busan_count / population_total * 10000",
+    "total_population_rate_numerator": "65세 이상 가해운전자 사고; 전 연령 사고 아님"
+  },
+  "population_definition": "직전 12월 말 주민등록인구, 남녀계, 외국인 제외; 기존 수집 정의 사용",
+  "population_definition_break": {
+    "first_reference_date": "2015-12-31",
+    "first_outcome_year": 2016,
+    "definition": "재외국민 포함",
+    "size_separately_identified": false,
+    "rendering": "2015년과 2016년 사이 선을 연결하지 않고 경계를 표시"
+  },
+  "known_limits": [
+    "65세 이상 가해운전자(1당사자) 교통사고 건수이며 사망자 수가 아니다.",
+    "직전 12월 말 주민등록인구는 면허소지자·운전자·실제 운전량 분모가 아니다.",
+    "사고 발생지역과 운전자 거주지역이 같다고 보장할 수 없다.",
+    "전체인구 1만 명당 빈도의 분자도 65세 이상 가해운전자 사고이며 전 연령 사고가 아니다.",
+    "재외국민 포함 정의 변경은 2015년 12월 분모부터, 이 연결에서는 2016년 사고연도부터 반영된다.",
+    "정의 변경의 규모나 연령별 기여분은 분리하지 않았으며 경계 전후 증가분으로 해석하지 않는다.",
+    "2018년은 7월 정책 시작으로 시행 전·후가 혼재한 연간 집계다.",
+    "2019년 11월 안전속도 5030 등 동시 정책의 영향을 분리하지 않았다.",
+    "대조군과 정책이 없었을 반사실을 검증하거나 추정하지 않았다.",
+    "65세 미만 사고 분자가 없으며 전 연령에서 65세 이상을 빼도 미상연령 처리가 없으면 65세 미만이 아니다.",
+    "정책의 성공·실패·무의미함 또는 통계적 유의성을 판단하지 않는다.",
+    "TAAS·인구 자료 이용조건과 외부 공개 검토가 끝나지 않은 로컬 시안이다."
+  ],
+  "rendering": {
+    "matplotlib_version": "3.11.2",
+    "font_name": "AppleGothic",
+    "font_file": "AppleGothic.ttf",
+    "font_file_sha256": "def69dc2b5e12746049a5dcb189f95341ec460589f47587938567313af3020b1",
+    "font_glyph_check": "all chart characters present; missing glyph warnings are errors",
+    "image_size_pixels": [
+      2560,
+      1680
+    ],
+    "backend": "Agg",
+    "right_line_segments": [
+      [
+        2014,
+        2015
+      ],
+      [
+        2016,
+        2017,
+        2018,
+        2019
+      ]
+    ],
+    "zero_based_y_axes": true
+  },
+  "outputs": [
+    {
+      "path": "cases/inshining-elderly-driver/figures/03_busan_counts_and_population.png",
+      "sha256": "9cb9a4ee5728ab5b7307412acf4f55fda27e3ccea8a6e11a4b0f0c7973b988c9"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/data/population-descriptive-series.csv",
+      "sha256": "d5171b8c8bd0efc6751e1f07af93b0e8a2cd6a9a81def48d315f7d1d37c839da"
+    }
+  ],
+  "manifest_hash_note": "자기 참조 해시는 독립 실행 증거에 별도 기록한다."
+}

@@ -1,0 +1,58 @@
+{
+  "checked_on": "2026-10-27",
+  "description": "Initial attempt log only; later successful official snapshots supersede failure status. See policy-evidence.json for final successful retrieval URLs and hashes.",
+  "initial_attempts": [
+    {
+      "name": "busan",
+      "url": "https://www.busan.go.kr/nbtnews/1361473?curPage=11&srchBeginDt=2019-01-27&srchEndDt=2019-02-27&srchKey=&srchText=",
+      "error": "<urlopen error [Errno 54] Connection reset by peer>"
+    },
+    {
+      "name": "seoul",
+      "url": "https://mediahub.seoul.go.kr/archives/1240732",
+      "status": 200,
+      "final_url": "https://mediahub.seoul.go.kr/archives/1240732",
+      "bytes": 127398
+    },
+    {
+      "name": "gyeonggi",
+      "url": "https://gnews.gg.go.kr/briefing/brief_gongbo_view.do?BS_CODE=S017&number=42498",
+      "status": 200,
+      "final_url": "https://gnews.gg.go.kr/briefing/brief_gongbo_view.do?BS_CODE=S017&number=42498",
+      "bytes": 47290
+    },
+    {
+      "name": "jeonju",
+      "url": "https://www.jeonju.go.kr/deokjingu/planweb/board/view.9is?boardUid=ff8080818bad9295018bae4a96ac09b2&contentUid=ff8080818990c349018b041a9b223a47&dataUid=9be517a76efda4f9016ff3f23a241d7e",
+      "status": 200,
+      "final_url": "https://www.jeonju.go.kr/deokjingu/planweb/board/view.9is?boardUid=ff8080818bad9295018bae4a96ac09b2&contentUid=ff8080818990c349018b041a9b223a47&dataUid=9be517a76efda4f9016ff3f23a241d7e",
+      "bytes": 198686
+    },
+    {
+      "name": "jeonju-confirm",
+      "url": "https://www.jeonbuk.go.kr/vtm/board/view.jeonbuk?boardId=BBS_0000073&dataSid=305494&menuCd=DOM_000001005000000000&paging=ok&startPage=37",
+      "status": 200,
+      "final_url": "https://www.jeonbuk.go.kr/vtm/board/view.jeonbuk?boardId=BBS_0000073&dataSid=305494&menuCd=DOM_000001005000000000&paging=ok&startPage=37",
+      "bytes": 92
+    },
+    {
+      "name": "gunsan",
+      "url": "https://council.gunsan.go.kr/main/minutes/html/MinutesView.do?MINTS_SN=6055",
+      "status": 200,
+      "final_url": "https://council.gunsan.go.kr/main/minutes/html/MinutesView.do?MINTS_SN=6055",
+      "bytes": 421618
+    },
+    {
+      "name": "buan",
+      "url": "https://www.buan.go.kr/board/view.buan?boardId=BBS_0000059&dataSid=118442&menuCd=DOM_000000101003003000&paging=ok&startPage=419",
+      "status": 200,
+      "final_url": "https://www.buan.go.kr/board/view.buan?boardId=BBS_0000059&dataSid=118442&menuCd=DOM_000000101003003000&paging=ok&startPage=419",
+      "bytes": 85054
+    },
+    {
+      "name": "busan-5030",
+      "url": "https://www.busan.go.kr/depart/5030safe01",
+      "error": "<urlopen error [Errno 54] Connection reset by peer>"
+    }
+  ]
+}
