@@ -56,6 +56,13 @@ projects:
     track: B
     topic: traffic-safety
     issue: 58
+
+  - case: whatfontisthis-wonju-voucher-202409
+    owner: whatfontisthis
+    track: B
+    topic: local-currency
+    issue: 24
+
   - case: jm-git-163-climate-card
     owner: jm-git-163
     track: B

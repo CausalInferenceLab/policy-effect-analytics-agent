@@ -35,7 +35,7 @@
 ## 지금까지 만든 것
 
 <!-- highlights:start -->
-**주제 11개 · 지금 이슈 7개 · 공공데이터 55개 · 계보 4개 · 참여자 프로젝트 11개(결과 8개) · 함께 만든 사람 13명**
+**주제 11개 · 지금 이슈 7개 · 공공데이터 55개 · 계보 4개 · 참여자 프로젝트 12개(결과 9개) · 함께 만든 사람 14명**
 
 | 프로젝트 | 주제 | 누가 | 지금 | 보기 |
 |---|---|---|---|---|
@@ -44,8 +44,9 @@
 | 전남·광주 행정통합 영향분석(한국은행 2026.7)의 지표와 프레임으로 본 마산·창원·진해 통합(2010)의 성과 | 지방자치단체·공공기관 통폐합 | [@buildergarlic](https://github.com/buildergarlic) | 크기를 판별하지 못함 | [결과 보기](https://causalinferencelab.github.io/policy-effect-analytics-agent/answers/buildergarlic-changwon-jeonnam-frame.html) |
 | 토지거래허가구역 지정(2020.6.23, 잠실·삼성·대치·청담) 뒤 옆 동네 아파트 ㎡당 가격(풍선효과) | 부동산 거래 규제 | [@Hyun2](https://github.com/Hyun2) | 크기를 판별하지 못함 | [결과 보기](https://causalinferencelab.github.io/policy-effect-analytics-agent/answers/hyun2-land-permit-spillover-2020.html) |
 | 서울 25개 자치구 출산지원금 변경과 출생등록 변화 비교 | 출산·혼인 지원 | [@ingyeoking13](https://github.com/ingyeoking13) | 판단 불가 | [결과 보기](https://causalinferencelab.github.io/policy-effect-analytics-agent/answers/ingyeoking13-seoul-birth-support.html) |
-| 고령운전자 면허 자진반납 인센티브와 초기 교통안전 성과 | 교통안전 | [@inshining](https://github.com/inshining) | 판단 불가 | [결과 보기](https://causalinferencelab.github.io/policy-effect-analytics-agent/answers/inshining-elderly-driver.html) |
+| 고령운전자 면허 자진반납 인센티브와 초기 교통안전 성과 | 교통안전 | [@inshining](https://github.com/inshining) | 관측 통계 | [결과 보기](https://causalinferencelab.github.io/policy-effect-analytics-agent/answers/inshining-elderly-driver.html) |
 | 대구시 대형마트 의무휴업일 평일 전환과 지역 소매업 판매 | 대형마트 의무휴업 | [@jgkim1008](https://github.com/jgkim1008) | 판단 불가 | [결과 보기](https://causalinferencelab.github.io/policy-effect-analytics-agent/answers/jgkim1008-daegu-mart-holiday.html) |
+| 원주시 모바일 상품권 할인 상향 한 달(2024년 9월)의 결제 변화 | 지역화폐 (지역사랑상품권) | [@whatfontisthis](https://github.com/whatfontisthis) | 크기를 판별하지 못함 | [결과 보기](https://causalinferencelab.github.io/policy-effect-analytics-agent/answers/whatfontisthis-wonju-voucher-202409.html) |
 | 녹색교통지역 5등급 운행제한이 서울 도심 대기질에 미친 효과 | 대기질 | [@yesolee](https://github.com/yesolee) | 크기를 판별하지 못함 | [결과 보기](https://causalinferencelab.github.io/policy-effect-analytics-agent/answers/yesolee-green-traffic.html) |
 | 강남대로 광역버스 분산 전후 일반도로 속도 변화 | 도로교통 운영 | [@sgim49697-ops](https://github.com/sgim49697-ops) | 해석 단계 | [폴더](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/tree/main/cases/sgim49697-ops-gangnam-bus-2024) |
 | 서울 기후동행카드 시범사업 전후 지하철 승차 흐름 비교 | 대중교통 요금 지원 | [@jm-git-163](https://github.com/jm-git-163) | 수집 단계 | [폴더](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/tree/main/cases/jm-git-163-climate-card) |

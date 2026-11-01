@@ -204,6 +204,7 @@ ul.act li:first-child { border-top: 0 }
 .answer-box { border-width: 2px }
 .answer-box.go { border-color: var(--go) } .answer-box.warn { border-color: var(--warn) } .answer-box.stop { border-color: var(--stop) }
 .answer-box.go, .answer-box.warn, .answer-box.stop { background: var(--surface); color: var(--ink) }
+.badge.info { background: var(--accent-soft); color: var(--accent) }
 .badge.big { font-size: 16px; padding: 4px 14px }
 .h1-sm { font-size: clamp(24px, 3.6vw, 34px) }
 tr.dim td { color: var(--muted) }
@@ -270,6 +271,7 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 .answer.v-go { border-left-color: var(--go) } .answer.v-stop { border-left-color: var(--stop) }
 .answer:hover { border-color: var(--ink2) } .answer:hover.v-go { border-left-color: var(--go) }
 .answer:hover.v-warn { border-left-color: var(--warn) } .answer:hover.v-stop { border-left-color: var(--stop) }
+.answer.v-info, .answer:hover.v-info { border-left-color: var(--accent) }
 .answer h3 { margin: 6px 0 4px; font-size: 17.5px; line-height: 1.45; color: var(--ink) }
 .answer .tags { margin: 0 }
 .a-line { margin: 0; color: var(--ink2); font-size: 15px; line-height: 1.6 }
@@ -422,6 +424,7 @@ html.js:not(.calm) .flow li { transition: opacity .5s ease, transform .5s ease; 
 .lin-svg .k-case rect { stroke: var(--warn); fill: var(--warn-bg) }
 .lin-svg .k-case.v-identified rect { stroke: var(--go); fill: var(--go-bg) }
 .lin-svg .k-case.v-not_identified rect { stroke: var(--stop); fill: var(--stop-bg) }
+.lin-svg .k-case.v-descriptive rect { stroke: var(--accent); fill: var(--accent-soft) }
 .lin-svg .s-planned rect, .lin-svg .s-missing rect { fill: var(--surface); stroke-dasharray: 5 4 }
 .lin-svg .s-missing text { fill: var(--warn) }
 .lin-svg a .node:hover rect { stroke-width: 2.5 }

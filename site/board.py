@@ -302,16 +302,19 @@ def _ticks(lo: float, hi: float, n: int = 4) -> list[float]:
 
 
 def kpis(e, mine: list[dict], n_data: int, ready: int) -> str:
-    vc = {"identified": 0, "conditional": 0, "not_identified": 0}
+    vc = {"identified": 0, "conditional": 0, "not_identified": 0, "descriptive": 0}
     for a in mine:
-        vc[a["verdict"]] = vc.get(a["verdict"], 0) + 1
+        k = "descriptive" if a.get("execution_kind") == "descriptive_only" else a["verdict"]
+        vc[k] = vc.get(k, 0) + 1
     tiles = [
         (len(mine), "분석", ""),
         (vc["identified"], "효과 근거 있음", "k-go"),
         (vc["conditional"], "크기를 판별하지 못함", "k-warn"),
         (vc["not_identified"], "판단 불가", "k-stop"),
-        (f"{ready}/{n_data}", "오늘 받을 수 있는 데이터", ""),
     ]
+    if vc["descriptive"]:
+        tiles.append((vc["descriptive"], "관측 통계", ""))
+    tiles.append((f"{ready}/{n_data}", "오늘 받을 수 있는 데이터", ""))
     return (
         '<div class="kpis">'
         + "".join(
