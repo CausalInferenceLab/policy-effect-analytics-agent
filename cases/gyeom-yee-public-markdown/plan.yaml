@@ -22,6 +22,8 @@
 #  - 데이터 출처: 공공데이터포털 정책브리핑 보도자료 API 가 폐기되어 정책브리핑 누리집 목록·본문·첨부(HWPX·PDF)로 바꿨다
 #  - 표·문장 지표를 본문 HTML 대신 첨부 HWPX(XML)에서 센다. 본문이 문서 뷰어 이미지로만 나와 HTML 표가 없다
 #  - 형식 지표는 기관·월마다 고정 시드로 5건을 뽑아 계산한다(전수는 약 9만 건). 월별 건수(releases)는 전수
+#  - 첫 처치 월을 2026-03 → 2026-04 로 옮겼다: 시범운영 가이드라인이 2026.3.24 공개·배포되어(디지털데일리
+#    2026.3.24) 3월은 마지막 일주일만 처치된다. 3월은 rel -1(선반영 점검)로 두고 기준 시점을 2026-02(ref -2)로 바꿨다
 
 case_id: gyeom-yee-public-markdown
 title: "행정안전부 'AI 친화적 보고서' 도입(2026.3 시범)이 보도자료 형식과 기계 판독에 미친 효과"
@@ -37,10 +39,11 @@ time: {col: month_idx, freq: month, start: 0, end: 32}   # 0 = 2024-01, 26 = 202
 
 treatment:
   definition: >
-    행정안전부. 첫 처치 월 = 2026-03 (month_idx 26, 시범운영 시작. 시작 '일'은 보도자료에 없어 월 단위로 둔다).
-    2026-08-24 전면 실시(month_idx 31)는 처치 강도가 커진 시점으로 보고 이벤트 스터디의 사후 계수(+5, +6)로 따로 읽는다.
+    행정안전부. 시범운영 가이드라인 공개·부내 배포 2026-03-24, 첫 처치 월 = 2026-04 (month_idx 27, 첫 완전 처치 월).
+    2026-03(month_idx 26)은 일주일만 처치되어 rel -1 로 두고 선반영 점검에 쓴다.
+    2026-08-24 전면 실시(month_idx 31)는 처치 강도가 커진 시점으로 보고 이벤트 스터디의 사후 계수(+4, +5)로 따로 읽는다.
   group_col: treated
-  treat_time: 26
+  treat_time: 27
 control:
   definition: >
     정책브리핑(korea.kr)에 보도자료를 올리는 다른 중앙행정기관(부·처·청) 중 2024-01~2026-09 모든 달에
@@ -94,8 +97,8 @@ outcomes:
 estimator:
   method: event_study
   cluster_col: org_id
-  ref_period: -1          # 2026-02
-  window: [-12, 6]        # 2025-03 ~ 2026-09. -12 이전은 양끝 binning
+  ref_period: -2          # 2026-02 (2026-03 은 일부만 처치되어 기준에서 뺀다)
+  window: [-12, 5]        # 2025-04 ~ 2026-09. -12 이전은 양끝 binning
   alpha: 0.05
 
 assumptions:
@@ -103,7 +106,7 @@ assumptions:
     description: "지침이 없었다면 행안부와 다른 기관의 서술형 비율·표 사용 추세는 같았을 것"
     check: pretrend_test
   - name: 미리 반응하지 않음
-    description: "시범운영 전(2026.1~2월)에 행안부가 미리 형식을 바꾸지 않았을 것. 가짜 시작일 검정으로 확인"
+    description: "가이드라인 공개(2026.3.24) 전에 행안부가 미리 형식을 바꾸지 않았을 것. rel -1(2026-03) 계수와 가짜 시작일 검정으로 확인"
     check: placebo_time
   - name: 대조군 오염 없음
     description: >
@@ -122,7 +125,7 @@ assumptions:
 
 refutations:
   - kind: placebo_time
-    params: {shift: 6}          # 가짜 시작일 2025-09 — 효과가 없어야 통과
+    params: {shift: 6}          # 가짜 시작일 2025-10 — 효과가 없어야 통과
   - kind: placebo_outcome
     params: {col: releases}     # 월별 보도자료 건수 — 문서 형식 지침이 건수까지 바꿀 이유는 없다.
                                 # 공통 실행기(core/pipeline.py)가 아직 placebo_outcome 을 실행하지 않으므로
