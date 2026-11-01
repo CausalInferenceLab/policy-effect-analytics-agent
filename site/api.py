@@ -78,6 +78,8 @@ def _projects() -> list[dict]:
 
 def case_results(out: Path) -> list[dict]:
     """cases/*/flow_log.json 을 서비스가 쓰기 쉬운 모양으로. 그림은 _site/cases/<케이스>/ 로 복사."""
+    from answers import normalize_descriptive
+
     from core.discovery.lineage import load_lineages
     from core.report import interpret
     from core.schema.plan import load_plan
@@ -99,6 +101,11 @@ def case_results(out: Path) -> list[dict]:
             log = json.loads(log_path.read_text(encoding="utf-8"))
         except ValueError:  # 기록 하나가 깨져도 사이트 빌드는 계속한다
             print(f"건너뜀: {log_path} 를 읽을 수 없습니다")
+            continue
+        try:
+            descriptive = normalize_descriptive(log)
+        except ValueError as exc:
+            print(f"건너뜀: {case.name}: {exc}")
             continue
         try:
             plan = load_plan(case / "plan.yaml")
@@ -127,6 +134,7 @@ def case_results(out: Path) -> list[dict]:
             figs.append(f"cases/{case.name}/{f.name}")
         rows.append(
             {
+                **(descriptive or {}),
                 "case": case.name,
                 "topic": topic_of.get(case.name),
                 **meta,

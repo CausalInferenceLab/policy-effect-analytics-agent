@@ -71,6 +71,8 @@ def load_activity() -> dict:
 
 def load_projects() -> list[dict]:
     """케이스 폴더마다 한 행. README 나 plan 이 있는 폴더만 (빈 폴더·_ 로 시작하는 폴더 제외)."""
+    from answers import normalize_descriptive
+
     reg = load_registry()
     act = load_activity()
     prs_by_case: dict[str, list[dict]] = {}
@@ -84,18 +86,29 @@ def load_projects() -> list[dict]:
         meta = reg.get(case.name, {})
         plan = _plan(case)
         verdict = synthetic = None
+        descriptive, result_error = None, None
         if (case / "flow_log.json").exists():
             try:
-                verdict = json.loads((case / "flow_log.json").read_text(encoding="utf-8")).get(
-                    "verdict"
-                )
-            except ValueError:
+                log = json.loads((case / "flow_log.json").read_text(encoding="utf-8"))
+                descriptive = normalize_descriptive(log)
+                verdict = log.get("verdict")
+            except ValueError as exc:
                 verdict = None
+                result_error = str(exc)
+                print(f"건너뜀: {case.name}: {exc}")
         if plan.get("synthetic_data"):
             synthetic = True
         st = stage_of(case)
+        if result_error:
+            st[2] = False
         rows.append(
             {
+                **(
+                    {"execution_kind": "descriptive_only", "causal_estimation": "not_run"}
+                    if descriptive
+                    else {}
+                ),
+                **({"result_error": result_error} if result_error else {}),
                 "case": case.name,
                 "title": plan.get("title") or case.name,
                 "question": (plan.get("question") or "").strip(),
@@ -150,7 +163,9 @@ def project_card(e, p: dict, topics_by_id: dict, up: str = "") -> str:
         f'<a href="{up}topics/{e(topic.id)}.html">{e(topic.name)}</a>' if topic else "주제 미지정"
     )
     badges = []
-    if p["verdict"]:
+    if p.get("execution_kind") == "descriptive_only":
+        badges.append('<span class="badge info">관측 통계 · 정책 효과 미추정</span>')
+    elif p["verdict"]:
         lab, cls = VERDICT.get(p["verdict"], (p["verdict"], "warn"))
         badges.append(f'<span class="badge {cls}" title="파이프라인 자동 판정">{lab}</span>')
     if p["synthetic"]:
@@ -176,6 +191,8 @@ def project_card(e, p: dict, topics_by_id: dict, up: str = "") -> str:
             'loading="lazy">'
         )
     links = [f'<a href="{REPO}/tree/main/cases/{e(p["case"])}">폴더</a>']
+    if p.get("result_error"):
+        badges.append(f'<span class="badge stop">{e(p["result_error"])}</span>')
     if p["stages"][2]:
         links.insert(0, f'<a href="{up}answers/{e(p["case"])}.html"><b>결과 보기</b></a>')
     if p["has_report"]:
@@ -257,6 +274,11 @@ def projects_body(e, projects, lineages, topics) -> str:
     cards = "".join(project_card(e, p, tb) for p in mentee)
     mentor_cards = "".join(project_card(e, p, tb) for p in mentor)
     lin_cards = lineage_list(e, lineages, tb)
+    verdict_help = (
+        "관측 통계는 정책 효과 미추정으로 표시합니다. 효과 추정 사례의 판정은 파이프라인 자동 판정입니다."
+        if any(p.get("execution_kind") == "descriptive_only" for p in projects)
+        else "판정은 파이프라인의 자동 판정이고, 해석은 각 프로젝트의 discussion.md가 우선합니다."
+    )
     return f"""
 <div class="hero" style="padding-bottom:0"><h1>참여</h1>
 <p class="lede">참여자가 각자 고른 정책을 <b>계획 → 수집 → 분석 → 해석</b> 순서로 진행합니다.
@@ -271,7 +293,7 @@ def projects_body(e, projects, lineages, topics) -> str:
 {JOIN.format(REPO=REPO)}
 {pr_list(e, act)}
 <section id="cases"><h2>분석 프로젝트 (트랙 B)</h2>
-<p class="sub">막대는 진행 단계입니다. 판정은 파이프라인의 자동 판정이고, 해석은 각 프로젝트의 discussion.md가 우선합니다.
+<p class="sub">막대는 진행 단계입니다. {verdict_help}
 <b>다음 할 일</b>은 폴더·git 기록에서 자동으로 뽑습니다(한 문장 해석, 교차 재현, 계획 먼저 커밋 등).</p>
 <div class="chips" role="group" aria-label="단계 필터">
 <button class="chip pf" data-s="-9" aria-pressed="true">전체</button>

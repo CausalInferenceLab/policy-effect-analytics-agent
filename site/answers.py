@@ -18,6 +18,7 @@ import json
 import math
 import re
 from pathlib import Path
+from urllib.parse import urlsplit
 
 import yaml
 
@@ -148,6 +149,140 @@ def bounds_text(lo, hi, col: str, unit: str | None) -> tuple[str, str] | None:
     return interpret.bounds(lo, hi, col, unit)
 
 
+DESCRIPTIVE_LABEL = "관측 통계 · 정책 효과 미추정"
+
+
+def normalize_descriptive(log: dict) -> dict | None:
+    """One shared boundary: claimed descriptive records must never enter effect rendering."""
+    if not isinstance(log, dict):
+        raise ValueError("기술통계/결과 기록이 객체가 아닙니다")
+    if not (
+        log.get("execution_kind") == "descriptive_only"
+        or log.get("causal_estimation") == "not_run"
+        or "descriptive" in log
+    ):
+        return None
+
+    def reject(reason):
+        raise ValueError(f"기술통계 기록 거부: {reason}")
+
+    if (
+        log.get("execution_kind") != "descriptive_only"
+        or log.get("causal_estimation") != "not_run"
+        or log.get("verdict") != "not_identified"
+        or log.get("results") != []
+    ):
+        reject("실행 종류·미추정 판정·빈 효과 결과가 일치하지 않습니다")
+    steps = log.get("steps", [])
+    if not isinstance(steps, list) or any(
+        not isinstance(step, dict)
+        or (
+            step.get("step") == "estimate"
+            and step.get("status") not in ("not_run", "skipped", "pending")
+        )
+        for step in steps
+    ):
+        reject("미실행 추정 단계와 완료 기록이 모순됩니다")
+    data = log.get("descriptive")
+    if not isinstance(data, dict):
+        reject("descriptive 객체가 필요합니다")
+    columns, rows = data.get("columns"), data.get("rows")
+    if not isinstance(columns, list) or not columns or not isinstance(rows, list) or not rows:
+        reject("열과 관측 행이 필요합니다")
+    keys = []
+    forbidden = {
+        "estimate",
+        "effect",
+        "ci",
+        "ci_low",
+        "ci_high",
+        "p",
+        "p_value",
+        "confidence_interval",
+    }
+    if forbidden & data.keys() or forbidden & log.keys():
+        reject("기술통계 기록에 효과·신뢰구간·p값 필드를 넣을 수 없습니다")
+    for col in columns:
+        if (
+            not isinstance(col, dict)
+            or forbidden & col.keys()
+            or any(
+                not isinstance(col.get(k), str) or not col[k].strip()
+                for k in ("key", "label", "unit")
+            )
+        ):
+            reject("열의 key·label·unit은 비어 있지 않은 문자열이어야 합니다")
+        key = col["key"]
+        if (
+            not re.fullmatch(r"[A-Za-z][A-Za-z0-9_]*", key)
+            or key.lower() in forbidden
+            or key in keys
+        ):
+            reject("효과 열·중복 열·잘못된 열 이름은 허용하지 않습니다")
+        keys.append(key)
+    if "year" not in keys or next(c["unit"] for c in columns if c["key"] == "year") not in {
+        "년",
+        "year",
+    }:
+        reject("연도 열과 연도 단위가 필요합니다")
+    years = set()
+    for row in rows:
+        if not isinstance(row, dict) or set(row) != set(keys):
+            reject("관측 행과 선언한 열이 일치하지 않습니다")
+        for value in row.values():
+            if (
+                isinstance(value, bool)
+                or not isinstance(value, (int, float))
+                or (isinstance(value, float) and not math.isfinite(value))
+            ):
+                reject("관측값은 bool이 아닌 유한 숫자여야 합니다")
+        year = row["year"]
+        if not isinstance(year, int) or not 1 <= year <= 9999 or year in years:
+            reject("연도는 중복 없는 정수여야 합니다")
+        years.add(year)
+    definitions = data.get("definitions")
+    if (
+        not isinstance(definitions, dict)
+        or not definitions
+        or any(
+            not isinstance(k, str) or not isinstance(v, str) or not v.strip()
+            for k, v in definitions.items()
+        )
+        or not (set(keys) - {"year"}) <= definitions.keys()
+    ):
+        reject("각 관측 지표의 문자열 정의가 필요합니다")
+    sources = data.get("sources")
+    if (
+        not isinstance(sources, list)
+        or not sources
+        or any(
+            not isinstance(source, dict)
+            or not isinstance(source.get("name"), str)
+            or not source["name"].strip()
+            or any(not isinstance(v, str) for v in source.values())
+            for source in sources
+        )
+    ):
+        reject("공개 출처는 이름과 문자열 메타데이터가 필요합니다")
+    reproduction = data.get("reproduction")
+    if (
+        not isinstance(reproduction, dict)
+        or any(
+            not isinstance(reproduction.get(k), str) or not reproduction[k].strip()
+            for k in ("command", "mode")
+        )
+        or not isinstance(reproduction.get("prerequisites"), list)
+        or not reproduction["prerequisites"]
+        or any(not isinstance(v, str) or not v.strip() for v in reproduction["prerequisites"])
+    ):
+        reject("기록된 재생 명령·모드·선행 조건이 필요합니다")
+    return {
+        "execution_kind": "descriptive_only",
+        "causal_estimation": "not_run",
+        "descriptive": data,
+    }
+
+
 def load_answers() -> list[dict]:
     from projects import load_registry
     from quality import prereg
@@ -166,6 +301,11 @@ def load_answers() -> list[dict]:
             log = json.loads((case / "flow_log.json").read_text(encoding="utf-8"))
             plan = yaml.safe_load((case / "plan.yaml").read_text(encoding="utf-8")) or {}
         except (ValueError, OSError, yaml.YAMLError):
+            continue
+        try:
+            descriptive = normalize_descriptive(log)
+        except ValueError as exc:
+            print(f"건너뜀: {case.name}: {exc}")
             continue
         meta = reg.get(case.name, {})
         outs = {o.get("col"): o for o in plan.get("outcomes", [])}
@@ -215,6 +355,7 @@ def load_answers() -> list[dict]:
                 manifest = {}
         rows.append(
             {
+                **(descriptive or {}),
                 "case": case.name,
                 "title": plan.get("title", case.name),
                 "question": (plan.get("question") or log.get("question") or "").strip(),
@@ -309,6 +450,15 @@ def _write(path: Path, rows: list[dict]) -> None:
 
 def write_csv(out: Path, results_json: list[dict]) -> None:
     """api/results.csv (전체) + answers/<케이스>.csv (케이스별)."""
+    for result in results_json:
+        if result.get("execution_kind") == "descriptive_only":
+            data = result["descriptive"]
+            path = out / "answers" / f"{result['case']}-descriptive.csv"
+            path.parent.mkdir(parents=True, exist_ok=True)
+            with path.open("w", encoding="utf-8-sig", newline="") as f:
+                writer = csv.DictWriter(f, fieldnames=[c["key"] for c in data["columns"]])
+                writer.writeheader()
+                writer.writerows(data["rows"])
     rows = csv_rows(results_json)
     _write(out / "api" / "results.csv", rows)
     for case in {r["case"] for r in rows}:
@@ -317,7 +467,11 @@ def write_csv(out: Path, results_json: list[dict]) -> None:
 
 def share_text(a: dict) -> str:
     """공유 미리보기 설명: 판정 + 한 줄 답."""
-    lab = VERDICT.get(a["verdict"], (a["verdict"] or "-",))[0]
+    lab = (
+        DESCRIPTIVE_LABEL
+        if a.get("execution_kind") == "descriptive_only"
+        else VERDICT.get(a["verdict"], (a["verdict"] or "-",))[0]
+    )
     line = card_line(a)
     line = line if len(line) <= 150 else line[:148] + "…"
     sim = "시뮬레이션 데이터 · " if a["synthetic"] else ""
@@ -345,7 +499,12 @@ def auto_summary(a: dict) -> str:
 
 def card_line(a: dict) -> str:
     """목록에 쓰는 한 줄: 작성자의 한 문장 해석, 없으면 판정을 쉬운 말로 (자동 요약의 기술 용어는 쓰지 않음)."""
-    line = a.get("summary") if a.get("has_one_line") else VERDICT_PLAIN.get(a["verdict"], "")
+    fallback = (
+        "관측값을 정리했습니다. 인과효과 추정은 실행하지 않아 정책 효과를 판단할 수 없습니다."
+        if a.get("execution_kind") == "descriptive_only"
+        else VERDICT_PLAIN.get(a["verdict"], "")
+    )
+    line = a.get("summary") if a.get("has_one_line") else fallback
     line = line or ""
     return line if len(line) <= 150 else line[:148] + "…"
 
@@ -394,7 +553,11 @@ def range_glyph(e, a: dict) -> str:
 
 def card(e, a: dict, topics_by_id: dict, up: str = "") -> str:
     t = topics_by_id.get(a["topic"])
-    tags = [verdict_chip(e, a["verdict"])]
+    tags = (
+        [f'<span class="badge info">{DESCRIPTIVE_LABEL}</span>']
+        if a.get("execution_kind") == "descriptive_only"
+        else [verdict_chip(e, a["verdict"])]
+    )
     if a["synthetic"]:
         tags.append('<span class="badge stop">시뮬레이션 데이터 결과</span>')
     if a["mentor"]:
@@ -458,7 +621,14 @@ def _usage(e, a: dict) -> str:
     if p:
         rng = p["range"] if p["range"].startswith("범위") else f"95% 범위 {p['range']}"
         eff = f"{p['name']} {p['effect']}, {rng}"
-    if v == "identified":
+    descriptive = a.get("execution_kind") == "descriptive_only"
+    if descriptive:
+        do = [
+            "관측 통계의 지역·연도·지표·단위와 출처를 함께 인용",
+            "기술통계의 변화는 인용할 수 있으며, 정책 효과는 미추정임을 함께 밝히기",
+        ]
+        dont = ["관측 변화가 정책 때문에 발생했다고 해석", "정책 효과가 있다거나 없다고 단정"]
+    elif v == "identified":
         do = [
             f'"{a["title"]}" — 비교 대상 대비 {eff}. 이 자료와 설계 기준입니다.',
             "같은 지역·기간·지표에 한정해서 말하기",
@@ -483,7 +653,7 @@ def _usage(e, a: dict) -> str:
         do = [f'"이 설계로는 효과를 판단할 수 없다. 이유: {reasons}."']
         dont = ["표의 숫자·p값 인용 — 진단용입니다", "'효과가 있다' 또는 '없다'"]
     cite = (
-        f"{a['title']} — 판정: {VERDICT.get(v, (v,))[0]}. 출처: 정책 효과 분석 플랫폼"
+        f"{a['title']} — 판정: {DESCRIPTIVE_LABEL if descriptive else VERDICT.get(v, (v,))[0]}. 출처: 정책 효과 분석 플랫폼"
         f"(가짜연구소 인과추론팀 오픈소스), {a['finished'] or '날짜 미상'} 실행, {SITE}/{a['page']} · 공식 평가 아님"
     )
     lis = lambda xs: "".join(f"<li>{e(x)}</li>" for x in xs)  # noqa: E731
@@ -496,7 +666,78 @@ def _usage(e, a: dict) -> str:
 <p id="cite-text" class="small" style="margin:8px 0 0">{e(cite)}</p></div></section>"""
 
 
+def _descriptive_page(e, a: dict, topics_by_id: dict) -> str:
+    data = a["descriptive"]
+    topic = topics_by_id.get(a["topic"])
+    crumb = (
+        f'<a href="../topics/{e(topic.id)}.html">{e(topic.name)}</a>' if topic else "주제 미지정"
+    )
+    header = "".join(f"<th>{e(c['label'])} ({e(c['unit'])})</th>" for c in data["columns"])
+    rows = "".join(
+        "<tr>" + "".join(f"<td>{e(str(row[c['key']]))}</td>" for c in data["columns"]) + "</tr>"
+        for row in data["rows"]
+    )
+    definitions = "".join(
+        f"<dt>{e(key)}</dt><dd>{e(value)}</dd>" for key, value in data["definitions"].items()
+    )
+    figs = "".join(
+        f'<img src="../cases/{e(a["case"])}/{e(f)}" alt="{e(a["title"])} — {e(f)}" loading="lazy">'
+        for f in a["figures"][:4]
+    )
+    cautions = "".join(f"<li>{e(c)}</li>" for c in a.get("cautions", []))
+    source_rows = []
+    for source in data["sources"]:
+        url = source.get("url", "")
+        try:
+            parsed = urlsplit(url)
+            safe = (
+                parsed.scheme in {"http", "https"}
+                and bool(parsed.hostname)
+                and not parsed.username
+                and bool(re.fullmatch(r"https?://[^\s\"'<>]+", url))
+            )
+        except ValueError:
+            safe = False
+        name = (
+            f'<a href="{e(url)}">{e(source["name"])}</a>'
+            if safe
+            else e(source["name"]) + (f" · {e(url)}" if url else "")
+        )
+        source_rows.append(
+            f"<tr><td>{name}<div>{e(source.get('provider', ''))}</div></td><td>{e(LICENSE_KO.get(source.get('license'), source.get('license', '이용조건 원문 확인')))}<div>{e(source.get('notes', ''))}</div></td></tr>"
+        )
+    replay = data["reproduction"]
+    prerequisites = "".join(f"<li>{e(v)}</li>" for v in replay["prerequisites"])
+    author = f"<p><b>작성자 해석</b> {e(a.get('summary', '작성자 해석은 discussion.md를 확인하세요.'))}</p>"
+    changed = (
+        f"<p><b>계획에서 바뀐 것(작성자 기록)</b> {e(a['plan_changed'])}</p>"
+        if a.get("plan_changed")
+        else ""
+    )
+    return f"""
+<div class="hero"><nav class="crumb"><a href="../results.html">분석 결과</a> / {crumb}</nav>
+<h1>{e(a["title"])}</h1><p class="lede">{e(a["question"])}</p></div>
+<section><div class="card answer-box"><span class="badge info big">{DESCRIPTIVE_LABEL}</span>
+<p>연도별 관측값을 정리했습니다. 인과효과 추정은 실행하지 않아 정책 효과를 판단할 수 없습니다.</p>{author}</div></section>
+{_usage(e, a)}
+<section id="evidence"><h2>관측 통계</h2>{changed}<div class="tablewrap"><table><tr>{header}</tr>{rows}</table></div>
+<p>아래 수치는 관측값이며 정책 효과 추정치가 아닙니다. 같은 지역·연도·지표·단위에 한정하여 출처와 함께 인용할 수 있습니다.</p>
+<h3>지표 정의</h3><dl>{definitions}</dl>
+<p><a href="{e(a["case"])}-descriptive.csv" download data-track="csv-download">관측 통계 CSV</a> · <a href="../api/results.json">관측 통계 포함 API (JSON)</a></p>
+<div class="figs">{figs}</div><h3>작성자가 적은 한계</h3><ul>{cautions}</ul>
+<p>비교군·교란 요인 검토와 인과효과 식별은 별도 과제입니다. 한계 기재만으로 교란이 제거되지는 않습니다.</p></section>
+{trust_block(e, a)}
+<section id="data"><h2>쓴 공공데이터 · 출처와 이용 조건</h2><div class="tablewrap"><table><tr><th>자료</th><th>이용 조건</th></tr>{"".join(source_rows)}</table></div>
+<p>원자료 확보와 공개 이용 조건은 각 출처에서 확인하세요. 아래 명령은 확보한 로컬 스냅샷을 재생합니다.</p></section>
+<section id="run"><h2>직접 돌려 보기</h2><p>재현 모드: {e(replay["mode"])}</p><h3>선행 조건</h3><ul>{prerequisites}</ul>
+<pre class="code"><code>{e(replay["command"])}</code></pre><p>기록된 명령은 이 페이지에서 실행되지 않습니다. 실행일 {e(a["finished"] or "미상")}.</p>
+<p><a href="{REPO}/blob/main/cases/{e(a["case"])}/report.md">전체 리포트</a> · <a href="{REPO}/tree/main/cases/{e(a["case"])}">분석 폴더</a> · <a href="../results.html">다른 결과</a></p></section>
+<script>document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',()=>{{const t=document.getElementById(b.dataset.copy).textContent;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>{{b.textContent='복사됨'}}).catch(()=>{{b.textContent='직접 선택해 복사하세요'}})}}))</script>"""
+
+
 def page_body(e, a: dict, topics_by_id: dict, datasets_by_url: dict) -> str:
+    if a.get("execution_kind") == "descriptive_only":
+        return _descriptive_page(e, a, topics_by_id)
     t = topics_by_id.get(a["topic"])
     lab, cls = VERDICT.get(a["verdict"], ("-", "warn"))
     hide_numbers = a["verdict"] == "not_identified"
@@ -675,7 +916,9 @@ def catalog(answers: list[dict]) -> list[dict]:
             "topic": a["topic"],
             "title": a["title"],
             "page": a["page"],
-            "verdict": VERDICT.get(a["verdict"], (a["verdict"],))[0],
+            "verdict": DESCRIPTIVE_LABEL
+            if a.get("execution_kind") == "descriptive_only"
+            else VERDICT.get(a["verdict"], (a["verdict"],))[0],
             "line": card_line(a)[:160],
             "example": a["synthetic"] or a["mentor"],
         }
