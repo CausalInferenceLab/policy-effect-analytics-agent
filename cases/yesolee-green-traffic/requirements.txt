@@ -1,2 +1,4 @@
 # 프로젝트 공통 의존성을 설치한 뒤 추가로 설치합니다.
 openpyxl>=3.1,<4
+# 경계 거리 점검용 좌표 수집(fetch_station_coords.py)의 에어코리아 API 호출에 사용.
+requests>=2.31
