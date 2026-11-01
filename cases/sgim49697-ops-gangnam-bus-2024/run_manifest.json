@@ -31,7 +31,7 @@
   ],
   "sha256": {
     ".gitignore": "78bb54c0b0c387e03905dd29b303cd6bc7f7fdc54bc2b33995b0138fa7c90be9",
-    "README.md": "1d84db5cacd17b7a9e555a891e0e9b7f5ad298ee4b6bf19890a2f14297b1c182",
+    "README.md": "bd3eb971ae2a59a707d96e6efb087d2766a030e9d6945e2cfff0bbfc85694172",
     "_shared.py": "600bb14946583e0a49d760ebbb52aeb1df88c5259c2a9265bbbad1ef78ab9780",
     "analysis-plan.yaml": "45fa73f07f86a02fc5f709c5b8899e05ed2067b0eeb4ef8688d611d55d1ec8c7",
     "data/README.md": "670a7643b824b55ce1139a57fce95ed77e052dee46fadecfc5250f333723587d",
@@ -39,7 +39,7 @@
     "estimate.py": "20459e878d2f860c5156631a3bb57a9c411225863baeb9a02bd31c710556535d",
     "fetch.py": "eeb43b953c5f119dc34a1f1f7b6dae2c36ad28620b1992dabfd1f4664fc49b11",
     "forecast.py": "e8fa7f216e4eefa346bcadb400c5ac2db3b019f9cceac5b846b63bf788a42961",
-    "plan.md": "15522c93a43bab36a57058ead43663a85116efef9fa9793e473d82ac8a97a7ca",
+    "plan.md": "8695f0798526266bbd5d5cfb8ccf8556e716c284da897cab835acbc6bea73474",
     "plan.yaml": "da53fe437edaec13570ad4e92e5f9b2645bd77faebc27d534e35f335803fa17a",
     "project-overview.html": "a7fbcc7e3edeab8a6822cbe011d1bbcb3dc4ad1c278ff3154c142107d02e8698",
     "report.md": "0af8088b4ea7b0910f4f4f7dfe3cb010ff44709228c9f158e642e2007189af3e",
