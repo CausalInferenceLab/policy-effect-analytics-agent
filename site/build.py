@@ -442,8 +442,8 @@ def topic_rows(topics, issues, answers, trends: dict, datasets=(), lineages=()) 
 
 
 def index_page(topics, policies, issues, datasets, projects=(), answers=(), lineages=()) -> str:
-    import answers as ans
     import board
+    import projects as proj
 
     chips = "".join(
         f'<button class="chip" type="button" data-ask="{e(x)}">{e(x)}</button>'
@@ -507,11 +507,14 @@ def index_page(topics, policies, issues, datasets, projects=(), answers=(), line
 AI도 결과를 계산하지 않습니다. 주제·데이터·계획을 함께 정리할 뿐이고, 숫자는 레포의 분석 코드가 냅니다. 법률 자문이 아닙니다.</p></div>
 </div></div>
 
+{proj.personas(e, n_answers, len(datasets))}
+
+{proj.showcase(e, list(projects), list(answers), topics, proj.people(list(projects), lineages))}
+
 <section id="topics"><div class="sec-head"><h2>이슈 보드</h2></div>
 <p class="sub">주제마다 이슈 → 공공데이터 → 계보 → 분석 → 대시보드가 어디까지 채워졌는지 보입니다. 칸의 숫자는 개수, 빈칸은 채울 곳입니다. {basis}</p>
 {topic_html}</section>
 
-{ans.strip(e, list(answers), topics)}
 
 <div class="two">
 <section id="issues"><div class="sec-head"><h2>지금 이슈</h2><a class="more" href="issues.html">{len(issues)}개 분석 가이드</a></div>

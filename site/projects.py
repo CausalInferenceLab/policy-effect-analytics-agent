@@ -337,3 +337,94 @@ def strip(e, projects, topics, limit: int = 6) -> str:
 
 def by_topic(projects, topic_id: str) -> list[dict]:
     return [p for p in projects if p["topic"] == topic_id]
+
+
+# ─── 홈: 시민 데이터 과학자들이 만든 것 ───────────────────────────────────────
+STAGE_KO = ["계획", "수집", "분석", "해석"]
+THUMB_PREF = ("raw_trends.png", "event_study.png")
+
+
+def people(projects, lineages=(), activity: dict | None = None) -> list[str]:
+    """함께 만든 사람(GitHub ID). 케이스 담당자 + 계보 작성자 + 열린 PR 작성자. 멘토는 맨 뒤."""
+    act = activity if activity is not None else load_activity()
+    names = {p["owner"] for p in projects}
+    names |= {lin.owner for lin in lineages}
+    names |= {pr["user"] for pr in act.get("pulls", []) if not pr["user"].endswith("[bot]")}
+    return sorted(names - {MENTOR}, key=str.lower) + ([MENTOR] if MENTOR in names else [])
+
+
+def showcase(e, projects, answers, topics, crew: list[str], limit: int = 6) -> str:
+    """홈 하이라이트: 그림이 있는 참여자 프로젝트 카드 + 함께 만든 사람들."""
+    tb = {t.id: t for t in topics}
+    ans = {a["case"]: a for a in answers}
+    mentee = [p for p in projects if not p["mentor"]]
+    mentee.sort(key=lambda p: (p["case"] not in ans, not p["figures"], -p["stage"], p["title"]))
+    cards = []
+    for p in mentee[:limit]:
+        t = tb.get(p["topic"])
+        a = ans.get(p["case"])
+        fig = next(
+            (f for f in THUMB_PREF if f in p["figures"]), p["figures"][0] if p["figures"] else None
+        )
+        thumb = (
+            f'<img src="cases/{e(p["case"])}/{e(fig)}" alt="" loading="lazy">'
+            if fig
+            else f'<span class="ph" aria-hidden="true">{e((t.name if t else p["title"])[:2])}</span>'
+        )
+        if a:
+            from answers import VERDICT
+
+            lab, cls = VERDICT.get(a["verdict"], ("-", "warn"))
+            state = f'<span class="badge {cls}">{e(lab)}</span>'
+            href = f"answers/{p['case']}.html"
+        else:
+            st = STAGE_KO[p["stage"]] if p["stage"] >= 0 else "준비"
+            state = f'<span class="badge plain">{e(st)} 단계 진행 중</span>'
+            href = f"{REPO}/tree/main/cases/{p['case']}"
+        cards.append(
+            f'<a class="show" href="{e(href)}"><span class="thumb">{thumb}</span>'
+            f'<span class="show-body"><span class="who">{avatar(e, p["owner"])}@{e(p["owner"])}</span>'
+            f"<b>{e(p['title'])}</b>"
+            f'<span class="show-meta">{state}<span class="muted small">{e(t.name) if t else "주제 미지정"}</span></span></span></a>'
+        )
+    faces = "".join(
+        f'<a href="https://github.com/{e(n)}" title="@{e(n)}{" (멘토)" if n == MENTOR else ""}">'
+        f'<img src="https://github.com/{e(n)}.png?size=80" alt="@{e(n)}" loading="lazy" width="40" height="40"></a>'
+        for n in crew
+    )
+    return f"""<section id="showcase"><div class="sec-head"><h2>시민 데이터 과학자들이 만든 것</h2>
+<a class="more" href="projects.html">프로젝트 {len(mentee)}개 모두</a></div>
+<p class="sub">현업 개발자·분석가들이 각자 궁금했던 정책을 골라 공공데이터로 직접 비교했어요. 그림을 누르면 결과와 인용문, 따라 하는 법이 나와요.</p>
+<div class="shows">{"".join(cards)}</div>
+<div class="crew"><div class="faces">{faces}</div><p class="muted small">함께 만든 사람 {len(crew)}명. 여러분 자리도 비워 뒀어요 → <a href="projects.html#join">참여하기</a></p></div></section>"""
+
+
+def personas(e, n_answers: int, n_data: int) -> str:
+    """처음 온 사람을 위한 세 갈래 안내."""
+    items = [
+        (
+            "궁금한 시민",
+            "뉴스에서 본 그 정책, 효과 있었는지 쉬운 말로 알고 싶어요",
+            "#ask",
+            "대화창에 물어보기",
+        ),
+        (
+            "기자 · 공무원 · 연구자",
+            f"공공데이터로 확인된 답을 인용하고 싶어요. 판정과 인용문이 붙은 결과 {n_answers}개",
+            "results.html",
+            "분석 결과 보기",
+        ),
+        (
+            "분석가 · 개발자",
+            f"직접 돌려 보고 기여하고 싶어요. 정리된 공공데이터 {n_data}개와 재현 코드",
+            "projects.html#join",
+            "참여 방법 보기",
+        ),
+    ]
+    cards = "".join(
+        f'<a class="persona" href="{href}"><span class="tag">{e(who)}</span><b>{e(need)}</b><span class="go-link">{e(cta)}</span></a>'
+        for who, need, href, cta in items
+    )
+    return f"""<section id="start"><h2>처음 오셨나요? 이렇게 시작하세요</h2>
+<div class="personas">{cards}</div>
+<p class="promise"><b>이 사이트의 약속.</b> 결과는 공식 평가가 아니라 공개 데이터로 다시 확인할 수 있는 비교예요. 데이터가 모르면 '판단 불가'라고 말하고, 숫자가 어떻게 나왔는지 코드까지 전부 공개해요.</p></section>"""

@@ -1,4 +1,4 @@
-.PHONY: install check lint test format app activity flow demo site lineage
+.PHONY: install check lint test format app activity flow demo site lineage readme
 
 PY ?= python
 
@@ -37,6 +37,10 @@ lineage:
 # 사이트 미리보기: http://localhost:8000 (공개 API /api/, 서비스 /apps/)
 site:
 	$(PY) site/build.py && $(PY) -m http.server -d _site
+
+# README 의 '지금까지 만든 것' 표를 레포 파일에서 다시 만들기
+readme:
+	$(PY) scripts/readme_highlights.py
 
 # (선택) 개발용 Streamlit 화면: pip install -e ".[app]"
 app:
