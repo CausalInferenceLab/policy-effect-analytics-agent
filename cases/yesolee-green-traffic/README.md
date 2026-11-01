@@ -5,7 +5,7 @@
 
 - 본분석 대조군 9곳, 민감도 분석 대조군 4곳, 제외 측정소 4곳을 사전 계획으로 정했다. 측정소 명단은 유지한다.
 - 계획 PR [#18](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/18)은 `main`에 합쳐졌다. 현재는 최신 `main` 기반 `yesolee/analysis`에서 수집·분석을 진행한다.
-- PM2.5 결측률 33.46%로 최초 품질검사에서 중단된 뒤, NO₂ 공통 관측시간으로 주분석·자동 반증검사·계획한 네 가지 민감도 비교를 실행했다. 변화의 방향과 크기를 명확히 판별하지 못했으며, 수동 점검은 남아 있다.
+- PM2.5 결측률 33.46%로 최초 품질검사에서 중단된 뒤, NO₂ 공통 관측시간으로 주분석·자동 반증검사·계획한 네 가지 민감도 비교를 실행했다. 변화의 방향과 크기를 명확히 판별하지 못했다. 수동 점검 ①(측정소–정책 경계 거리)은 보고했고 나머지 수동 점검은 남아 있다.
 - **당초 1차 지표 NO₂를 우선 추정하고 PM2.5 보조 추정은 보류한다.** PM2.5의 관측 가능 기간과 설계를 별도로 검토한 뒤 새 계획을 정한다. 원래 2차 지표였다는 사실과 보류 이유는 `discussion.md`에 남긴다.
 - 이 케이스는 [B 트랙: 가설과 분석](../../docs/tracks/analysis.md)이다. 시간 단위 분석·시간대 분리·적용 외 시간대 반증은 [공통 지원 PR #15](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/15)로 `main`에 반영되어 있다.
 - **현재 계획은 11곳 모두 관측한 06~21시의 NO₂로 주 단위 이벤트 스터디를 수행한다.**
@@ -13,6 +13,55 @@
 - 제출 범위는 `cases/yesolee-green-traffic/`이며 [기여 가이드](../../CONTRIBUTING.md)를 따른다. 계획 변경은 효과 추정 전에 새 커밋으로 남긴다.
 - `discussion.md`에 최초 중단 기록과 자료 품질에 따른 계획 변경 이유를 기록했다.
 - 최초 실패 실행은 `quality_log.json`으로 보존했다. 현재 `flow_log.json`은 보완 계획을 커밋한 뒤 실행한 주분석 기록이다. 민감도 결과는 별도 `sensitivity.md`와 `results/sensitivity.json`에 기록한다.
+
+### 짝 리뷰 재현 가이드
+
+짝 리뷰어가 이 결과를 혼자 재현하는 순서다. 자세한 근거는 아래 각 절에 있고, 여기서는 **무엇을 신청해 어떤 순서로 돌리는지**만 모았다. 원자료·좌표는 공공누리 라이선스(변경금지)와 용량 때문에 저장소에 없으니 **직접 받는다.**
+
+**0) 받아야 할 공공데이터 2가지**
+
+| 자료 | 용도 | 받는 곳 | 방식 |
+|---|---|---|---|
+| 에어코리아 도로변대기 시간자료(2017–2021) | 주분석 패널 | [airkorea 최종확정자료](https://www.airkorea.or.kr/web/last_amb_hour_data?pMENU_NO=123) | 월별 엑셀 **수동** 다운로드 |
+| 한국환경공단_에어코리아_측정소정보 API | 경계 거리용 좌표 | [공공데이터포털 15073877](https://www.data.go.kr/data/15073877/openapi.do) | **활용신청 → 인증키** |
+
+**1) 환경 준비** (레포 루트에서)
+
+```bash
+make install    # 프로젝트 공통 의존성(pyproject.toml, pip install -e ".[dev]")
+python -m pip install -r cases/yesolee-green-traffic/requirements.txt   # 이 케이스 추가 의존성
+```
+
+**2) 주분석 재현**
+
+```bash
+# ① 월별 엑셀을 cases/yesolee-green-traffic/data/raw/<연도>/<연도>년 <월>월.xlsx 로 저장
+python cases/yesolee-green-traffic/fetch.py        # → data/panel.csv, data/panel.no2.csv
+make flow CASE=cases/yesolee-green-traffic          # → report.md, flow_log.json, figures/ (plan.yaml 커밋 상태로 실행)
+python cases/yesolee-green-traffic/sensitivity.py   # → sensitivity.md, results/sensitivity.json
+```
+
+**3) 경계 거리 점검 재현** (수동 점검 ①, 자세히는 아래 "경계 거리 점검용 측정소 좌표 수집" 절)
+
+```bash
+export AIRKOREA_KEY='본인_인증키'
+python cases/yesolee-green-traffic/fetch_station_coords.py   # → data/raw/station_info.csv
+python cases/yesolee-green-traffic/boundary_distance.py
+```
+
+**4) 맞춰 볼 결과** (같게 나오면 재현 성공)
+
+| 확인 | 기대값 |
+|---|---|
+| 주분석 NO₂ 추정치 | **-0.0013 ppm**, 95% CI [-0.0240, +0.0287], **p=0.892**, N=203,423, 11곳 |
+| 사전계수 / 가짜시행일 / 야간 반증 p | 0.784 / 0.919 / 1.000 (모두 기준 0.10 초과) |
+| 종합 판정 | ⚠️ **크기를 판별하지 못함** |
+| 민감도 4종 | 모두 "크기를 판별하지 못함" (`sensitivity.md` 표와 일치) |
+| 경계 거리 | 처치 2곳 **구역 내부**, 가장 가까운 대조군 신촌로 3.14·홍릉로 3.26km |
+
+**5) 재현 기록 남기기** — 확인되면 레포의 **`교차 재현 기록(reproduction.yml)` 이슈**에 환경·버전·결과를 적고, [`catalog/projects.yaml`](../../catalog/projects.yaml)의 이 케이스 `reproduced_by`에 본인 GitHub ID를 추가한다. (근거: [roadmap.md](../../docs/ops/roadmap.md) 짝 리뷰·교차 재현 규칙)
+
+---
 
 ### 자료 품질에 따른 계획 보완
 
@@ -198,43 +247,35 @@ https://www.airkorea.or.kr/web/last_amb_hour_data?pMENU_NO=123
 - 도시대기 측정소를 사용하는 보조 분석은 위치·관측기간을 별도로 확인해 추가 계획을 작성한다. 이번 본분석은 도로변대기 측정망으로 고정한다.
 - 핵심 4곳 민감도 분석과 별도 3곳의 변화 분석은 계획으로 기록한 것이며, 현재 `fetch.py` 실행은 본분석 11곳의 표만 만든다.
 
+### 경계 거리 점검용 측정소 좌표 수집 (수동 점검 ①)
+
+경계 최단거리 점검에는 측정소 좌표가 필요하지만 `station_list.xls`에는 주소만 있고 좌표가 없다. 에어코리아 측정소정보 오픈API로 위도·경도를 받아 거리를 계산한다. 이 공공데이터는 **공공누리 제3유형(출처표시·변경금지·제3자 권리 포함)** 이라 가공·변경한 형태로 재배포할 수 없다. 따라서 좌표 표(`data/raw/station_info.csv`)는 커밋하지 않고(`.gitignore`가 자동 제외), 다른 멘티는 **자기 인증키로 직접 받아 재현한다.** 월별 대기질 원자료와 같은 방식이다.
+
+1. [공공데이터포털](https://www.data.go.kr/data/15073877/openapi.do)의 **한국환경공단_에어코리아_측정소정보**(`B552584/MsrstnInfoInqireSvc`) 오픈API를 활용신청하고, 승인 후 **일반 인증키**를 발급받는다. 승인 직후에는 반영까지 수십 분 걸릴 수 있다.
+2. 인증키를 환경변수로 넣고 수집·계산을 실행한다. 인증키는 코드·저장소에 남기지 않는다(`.env`·`*.key`는 이미 `.gitignore`에 있다).
+
+```bash
+export AIRKOREA_KEY='본인_인증키'
+python cases/yesolee-green-traffic/fetch_station_coords.py   # → data/raw/station_info.csv (커밋 안 함)
+python cases/yesolee-green-traffic/boundary_distance.py      # 측정소별 경계 최단거리 출력
+```
+
+`fetch_station_coords.py`는 `getMsrstnList`를 `ver=1.1`로 호출해 WGS84 좌표(`dmX`·`dmY`)를 받고 `plan.yaml`의 15곳만 골라 저장한다. 인증키의 Encoding·Decoding 형식을 모두 처리한다. `boundary_distance.py`는 한양도성 사대문·사소문 8개 지점(좌표 출처는 코드에 명시)을 이은 근사 다각형까지의 최단거리를 계산한다. 결과와 해석은 `discussion.md`의 "수동 점검 ①"에 있다.
+
 ### 자료 정리 실행
 
-1. 위 시간대·주 단위 설정과 민감도 분석 기간이 담긴 `plan.yaml`을 검토한다. 대기질 추세와 정책 효과를 계산하기 전에 계획을 확정해 커밋하고 계획 PR을 제출한다.
-2. 에어코리아 최종확정 측정자료를 내려받아 `data/raw/<연도>/<연도>년 <월>월.xlsx`에 넣는다. `1월`, `01월` 표기 모두 가능하다. 현재 `fetch.py`는 내려받은 파일을 읽는 정리 프로그램이며, 원자료 다운로드는 사용자가 수행한다. 본분석 대조군 9곳과 `HOUR_LABEL = "end"`가 설정돼 있다.
-3. 프로젝트 공통 의존성과 이 케이스의 추가 의존성을 설치한 환경에서 실행한다.
+실행 명령은 위 "짝 리뷰 재현 가이드"에 있다. 여기서는 수집기 동작의 세부만 적는다.
 
-```bash
-python -m pip install -r cases/yesolee-green-traffic/requirements.txt
-python cases/yesolee-green-traffic/fetch.py
-```
+- **계획 먼저 커밋**: 대기질 추세·정책 효과를 계산하기 전에 `plan.yaml`을 확정해 커밋하고 계획 PR을 제출한다.
+- **원자료 위치**: 에어코리아 최종확정 측정자료를 `data/raw/<연도>/<연도>년 <월>월.xlsx`에 넣는다(`1월`·`01월` 모두 가능). 원자료 다운로드는 사용자가 수행하고, `fetch.py`는 내려받은 파일을 읽는 정리 프로그램이다(`HOUR_LABEL = "end"`).
+- **출력**: `data/panel.csv`에 측정소 코드·원래 측정일시·날짜시간·정수 시간·실제 시간대(`hour`)·처치군 표시·NO₂·PM2.5가 저장된다. 시범 운영기(2019년 7~11월)는 양쪽에서 제외하고 빈칸·-999는 결측으로 둔다. 이 전체 표에서 NO₂ 공통 관측시간만 골라 `data/panel.no2.csv`를 함께 만들며, 출처·설정은 같은 이름의 `.source.json`에 남긴다. 데이터 파일은 커밋하지 않는다.
 
-`data/panel.csv`에는 측정소 코드·원래 측정일시·읽기 쉬운 날짜시간·정수 시간·실제 시간대(`hour`)·처치군 표시·NO₂·PM2.5가 저장된다. 시범 운영기(2019년 7~11월)는 양쪽 집단에서 제외하고, 빈칸·-999는 결측으로 둔다. 이 전체 표에서 NO₂ 공통 관측시간만 골라 `data/panel.no2.csv`를 함께 만든다. 각 표의 출처와 설정은 같은 이름의 `.source.json`에 기록한다. 원자료와 전체 표를 보존하며 데이터 파일은 커밋하지 않는다.
-
-전체 정리표와 출처 JSON을 이미 만들었다면 엑셀을 다시 읽지 않고 추정용 표만 만들 수 있다.
-
-```bash
-python cases/yesolee-green-traffic/prepare.py
-```
-
-공통 파이프라인은 `plan.yaml`의 `data/panel.no2.csv`를 읽는다. 결측 처리나 측정소·시간 설정을 바꾸면 추정용 표도 다시 만든다.
+엑셀을 다시 읽지 않고 전체 정리표에서 추정용 표만 다시 만들려면 `python cases/yesolee-green-traffic/prepare.py`를 실행한다. 공통 파이프라인은 `plan.yaml`의 `data/panel.no2.csv`를 읽으며, 결측 처리나 측정소·시간 설정을 바꾸면 추정용 표도 다시 만든다.
 
 ### 계획한 민감도 비교 실행
 
-주분석 실행 기록과 같은 계획·자료를 사용해 대조군 4곳, 정책 후 2020-01-19·2020-01-31 종료, 2020년 제외를 비교한다.
+실행 명령(`sensitivity.py`)은 위 재현 가이드에 있다. 주분석 실행 기록과 같은 계획·자료로 대조군 4곳, 정책 후 2020-01-19·2020-01-31 종료, 2020년 제외를 비교한다.
 
-```bash
-python cases/yesolee-green-traffic/sensitivity.py
-```
+`sensitivity.md`와 `results/sensitivity.json`에 별도 결과를 저장하고 주분석의 표·실행 로그·그림은 보존한다. 대조군 비교는 같은 공통 관측시간을, 기간 비교는 원래 시간 번호와 사전 기간을 유지한다. 기간에 따라 사후 계수 집합이 달라지는 점과 대조군 4곳의 검정 해상도 한계를 결과에 함께 기록하며, 주분석 기준의 계획·자료 해시가 달라지면 실행을 중단한다. 현재 네 비교 모두 효과의 방향·크기를 명확히 판별하지 못했고, 상세 해석과 남은 수동 점검은 `discussion.md`에 있다. 원자료·가공 표는 [기여 가이드](../../CONTRIBUTING.md#6-올리면-안-되는-것)에 따라 공유하지 않고 구하는 방법과 준비 코드만 공유한다.
 
-`sensitivity.md`와 `results/sensitivity.json`에 별도 결과를 저장한다. 주분석의 표·실행 로그·그림은 보존한다. 대조군 비교는 같은 공통 관측시간을 유지하고, 기간 비교는 원래 시간 번호와 사전 기간을 유지한다. 기간에 따라 사후 계수 집합이 달라지는 점과 대조군 4곳의 검정 해상도 한계를 결과에 함께 기록한다. 주분석 기준의 계획·자료 해시가 달라지면 비교 실행을 중단한다.
-
-현재 네 비교 모두 효과의 방향·크기를 명확히 판별하지 못했다. 상세 해석과 수동 점검의 남은 항목은 `discussion.md`에 기록한다.
-
-계획 검토와 자료 품질 점검을 마친 분석 단계에서는 프로젝트 의존성이 설치된 환경에서 `make flow CASE=cases/yesolee-green-traffic`로 추정을 실행한다. 결과 해석과 실제 점검에서 발견한 한계는 그때 `discussion.md`를 작성해 기록한다. 원자료·가공 표는 [기여 가이드](../../CONTRIBUTING.md#6-올리면-안-되는-것)에 따라 공유하지 않고, 원자료를 구하는 방법과 준비 코드를 공유한다.
-
-실제 대기질 수치 대신 합성 자료로 수집기만 검사하려면 다음을 실행한다.
-
-```bash
-python cases/yesolee-green-traffic/test_fetch.py
-```
+실제 대기질 수치 대신 합성 자료로 수집기만 검사하려면 `python cases/yesolee-green-traffic/test_fetch.py`를 실행한다.
