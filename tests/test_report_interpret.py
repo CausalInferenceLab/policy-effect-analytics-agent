@@ -34,3 +34,11 @@ def test_report_has_said_section_only_when_conditional():
     assert lines[0] == "### 그래도 말할 수 있는 것" and "+19.8%" in "\n".join(lines)
     stop = NS(verdict="not_identified", outcome="log_population", ci_low=-0.3, ci_high=0.18)
     assert said_lines(plan, [stop]) == []
+
+
+def test_korean_log_unit_is_log():
+    assert interpret.is_log("super_idx", "지수(2020=100, 로그)")
+    assert interpret.bounds(-0.195, 0.052, "super_idx", "지수(2020=100, 로그)") == (
+        "-17.7%",
+        "+5.3%",
+    )

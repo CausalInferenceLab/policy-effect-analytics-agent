@@ -1,0 +1,420 @@
+{
+  "schema_version": "1",
+  "case_dir": "cases/yesolee-green-traffic",
+  "question": "녹색교통지역 5등급 차량 운행제한 과태료 부과(2019-12-01) 이후, 11곳 모두 NO₂를 관측한 운행제한 시간(06~21시)에 종로·청계천로의 NO₂ 농도는 구역 밖 서울 도로변 측정소와 비교해 시행 전후 주별로 어떻게 달라졌는가?\n",
+  "status": "warn",
+  "verdict": "conditional",
+  "started_at": "2026-11-01T10:48:41+00:00",
+  "ended_at": "2026-11-01T10:48:53+00:00",
+  "steps": [
+    {
+      "index": 1,
+      "step": "define_problem",
+      "title": "① 문제 정의",
+      "status": "ok",
+      "started_at": "2026-11-01T10:48:41+00:00",
+      "ended_at": "2026-11-01T10:48:41+00:00",
+      "duration_s": 0.019,
+      "message": "분석계획 검증 완료, 사전 등록(git 커밋) 확인: yesolee-green-traffic",
+      "artifacts": {
+        "plan": "plan.yaml",
+        "plan_sha256": "b004ad43bbf49441902442c89296bd6ec6f342fcb6595d52856ab4e16a46e878",
+        "committed": true
+      }
+    },
+    {
+      "index": 2,
+      "step": "collect",
+      "title": "② 데이터 수집",
+      "status": "warn",
+      "started_at": "2026-11-01T10:48:41+00:00",
+      "ended_at": "2026-11-01T10:48:41+00:00",
+      "duration_s": 0.018,
+      "message": "기존 스냅샷 재사용 (새로 받으려면 파일 삭제 후 재실행) / 공공누리 3·4유형(변경금지) 포함 — 가공 데이터 재배포 불가",
+      "artifacts": {
+        "data": "data/panel.no2.csv",
+        "data_sha256": "5b253ef219ebd00bc369a5faf5544a3dadefbe21d80754f5628e188b95d7ff00",
+        "licenses": [
+          "KOGL-3"
+        ],
+        "method": "기존 스냅샷 재사용 (새로 받으려면 파일 삭제 후 재실행)",
+        "source_meta": "data/panel.no2.source.json"
+      }
+    },
+    {
+      "index": 3,
+      "step": "structure_metrics",
+      "title": "③ 지표 구조화·품질 점검",
+      "status": "ok",
+      "started_at": "2026-11-01T10:48:41+00:00",
+      "ended_at": "2026-11-01T10:48:41+00:00",
+      "duration_s": 0.144,
+      "message": "13개 점검 모두 통과",
+      "artifacts": {
+        "rows": 335874,
+        "units": 11
+      }
+    },
+    {
+      "index": 4,
+      "step": "estimate",
+      "title": "④ 효과 추정",
+      "status": "warn",
+      "started_at": "2026-11-01T10:48:41+00:00",
+      "ended_at": "2026-11-01T10:48:52+00:00",
+      "duration_s": 11.076,
+      "message": "event_study: -0.001 [-0.024, 0.029] → conditional",
+      "artifacts": {
+        "no2": {
+          "estimate": -0.0013,
+          "ci": [
+            -0.024,
+            0.0287
+          ],
+          "verdict": "conditional"
+        }
+      }
+    },
+    {
+      "index": 5,
+      "step": "guard",
+      "title": "⑤ 과잉해석 가드",
+      "status": "warn",
+      "started_at": "2026-11-01T10:48:52+00:00",
+      "ended_at": "2026-11-01T10:48:52+00:00",
+      "duration_s": 0.001,
+      "message": "1차 지표 판정 크기를 판별하지 못함, 서술=template",
+      "artifacts": {
+        "triggers": [
+          "few_treated_clusters",
+          "few_clusters",
+          "ci_crosses_zero"
+        ]
+      }
+    },
+    {
+      "index": 6,
+      "step": "report",
+      "title": "⑥ 리포트·재현 기록",
+      "status": "ok",
+      "started_at": "2026-11-01T10:48:52+00:00",
+      "ended_at": "2026-11-01T10:48:53+00:00",
+      "duration_s": 0.358,
+      "message": "리포트 2개 그림 포함 작성",
+      "artifacts": {
+        "report": "report.md",
+        "manifest": "run_manifest.json",
+        "figures": [
+          "figures/raw_trends.png",
+          "figures/event_study.png"
+        ]
+      }
+    }
+  ],
+  "quality": [
+    {
+      "check": "필수 컬럼",
+      "value": 4,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "시간 컬럼 정수형",
+      "value": "int64",
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "결측률 station_id",
+      "value": 0.0,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "결측률 hour_idx",
+      "value": 0.0,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "결측률 treated",
+      "value": 0.0,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "결측률 no2",
+      "value": 0.0,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "시각 컬럼 결측",
+      "value": 0,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "시각 컬럼 0~23",
+      "value": 0,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "사전 기간 수(묶음(168기씩))",
+      "value": 124,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "사후 기간 수(묶음(168기씩))",
+      "value": 95,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "처치 단위 수",
+      "value": 2,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "통제 단위 수",
+      "value": 9,
+      "status": "ok",
+      "message": ""
+    },
+    {
+      "check": "단위×시점 중복",
+      "value": 0,
+      "status": "ok",
+      "message": ""
+    }
+  ],
+  "results": [
+    {
+      "method": "event_study",
+      "outcome": "no2",
+      "estimate": -0.001345801346012328,
+      "se": 0.004715115741451261,
+      "ci_low": -0.023966203074700487,
+      "ci_high": 0.02873187567711953,
+      "p_value": 0.8918918918918919,
+      "n_obs": 203423,
+      "n_clusters": 11,
+      "assumptions_checked": {
+        "inference": "randomization inference (처치 단위 2개를 재배정, 가능한 배정 36가지 전부)",
+        "ri_assignments": 36,
+        "parallel_pretrends": {
+          "test": "randomization inference (사전 계수 제곱합)",
+          "p_value": 0.7837837837837838,
+          "passed": true
+        },
+        "pre_periods": 124,
+        "n_adoption_cohorts": 1,
+        "active_hours": "06:00~21:00 자료만으로 추정",
+        "placebo_time": {
+          "fake_treat_time": 16806,
+          "estimate": -0.00021130357077725487,
+          "p_value": 0.918918918918919,
+          "passed": true
+        },
+        "placebo_window": {
+          "hours": "정책이 적용되지 않는 시간대",
+          "estimate": -0.00011809888497564463,
+          "ci": [
+            -0.014543539596831325,
+            0.022432015330482093
+          ],
+          "p_value": 1.0,
+          "passed": true
+        }
+      },
+      "warnings": [
+        "처치 단위가 2개뿐이라 군집-강건 표준오차를 믿을 수 없습니다. 무작위화 추론(처치 단위를 무작위로 바꿔 반복)으로 p값과 신뢰구간을 계산했습니다.",
+        "클러스터 수 11개 < 20: 군집-강건 표준오차가 과소추정될 수 있습니다. wild cluster bootstrap(pyfixest `wildboottest`) 또는 randomization inference 를 병행하세요.",
+        "신뢰구간이 0을 포함합니다. '효과 없음'이 아니라 '효과 크기를 판별할 수 없음'으로 해석하세요."
+      ],
+      "triggers": [
+        "few_treated_clusters",
+        "few_clusters",
+        "ci_crosses_zero"
+      ],
+      "verdict": "conditional",
+      "extra": {
+        "coefs": [
+          {
+            "rel_time": -30,
+            "coef": 0.001442410331155363,
+            "se": 0.002928105216669495,
+            "ci_low": -0.005081814664809628,
+            "ci_high": 0.007966635327120355
+          },
+          {
+            "rel_time": -29,
+            "coef": -0.00036090872261715433,
+            "se": 0.0019899243359862446,
+            "ci_low": -0.004794736448141095,
+            "ci_high": 0.004072919002906786
+          },
+          {
+            "rel_time": -28,
+            "coef": 0.00034998777687081557,
+            "se": 0.002318240017147049,
+            "ci_low": -0.004815372873563852,
+            "ci_high": 0.005515348427305483
+          },
+          {
+            "rel_time": -27,
+            "coef": -0.0012944444441195173,
+            "se": 0.0025720892460140646,
+            "ci_low": -0.007025416423939538,
+            "ci_high": 0.004436527535700504
+          },
+          {
+            "rel_time": -26,
+            "coef": -0.0004583004987719617,
+            "se": 0.001566634768291953,
+            "ci_low": -0.003948980292875777,
+            "ci_high": 0.003032379295331854
+          },
+          {
+            "rel_time": -25,
+            "coef": -0.004638044184214125,
+            "se": 0.0015575076853424953,
+            "ci_low": -0.008108387570192954,
+            "ci_high": -0.0011677007982352971
+          },
+          {
+            "rel_time": -24,
+            "coef": -0.004830441845032153,
+            "se": 0.0012226034003062808,
+            "ci_low": -0.007554571981825105,
+            "ci_high": -0.002106311708239201
+          },
+          {
+            "rel_time": -23,
+            "coef": 0.0,
+            "se": 0.0,
+            "ci_low": 0.0,
+            "ci_high": 0.0
+          },
+          {
+            "rel_time": -22,
+            "coef": 0.0028104938274789346,
+            "se": 0.003237087628187745,
+            "ci_low": -0.004402186884170281,
+            "ci_high": 0.01002317453912815
+          },
+          {
+            "rel_time": 1,
+            "coef": 0.00044558154676984876,
+            "se": 0.004776441684021746,
+            "ci_low": -0.010196993743645752,
+            "ci_high": 0.01108815683718545
+          },
+          {
+            "rel_time": 2,
+            "coef": 0.0007975906016715631,
+            "se": 0.0043870100142878845,
+            "ci_low": -0.008977276855216135,
+            "ci_high": 0.01057245805855926
+          },
+          {
+            "rel_time": 3,
+            "coef": -0.0012450617280856924,
+            "se": 0.00487273296963901,
+            "ci_low": -0.012102187373092828,
+            "ci_high": 0.009612063916921442
+          },
+          {
+            "rel_time": 4,
+            "coef": -0.0013442343049276518,
+            "se": 0.0049371950399383835,
+            "ci_low": -0.012344990393248292,
+            "ci_high": 0.009656521783392987
+          },
+          {
+            "rel_time": 5,
+            "coef": -0.00023395061697814958,
+            "se": 0.004863489602994107,
+            "ci_low": -0.011070480757640623,
+            "ci_high": 0.010602579523684324
+          },
+          {
+            "rel_time": 6,
+            "coef": -0.0050675281505591545,
+            "se": 0.00499459565432424,
+            "ci_low": -0.016196180777920805,
+            "ci_high": 0.006061124476802495
+          },
+          {
+            "rel_time": 7,
+            "coef": -0.002319506172543012,
+            "se": 0.005331472990595655,
+            "ci_low": -0.014198768281204647,
+            "ci_high": 0.009559755936118623
+          },
+          {
+            "rel_time": 8,
+            "coef": -0.0009433709068379811,
+            "se": 0.004416324941896053,
+            "ci_low": -0.010783556092872603,
+            "ci_high": 0.008896814279196643
+          },
+          {
+            "rel_time": 9,
+            "coef": -0.004243185826177052,
+            "se": 0.00483435733894808,
+            "ci_low": -0.01501480523747225,
+            "ci_high": 0.006528433585118145
+          },
+          {
+            "rel_time": 10,
+            "coef": -0.0007201208297438946,
+            "se": 0.005417390289112362,
+            "ci_low": -0.012790818609288306,
+            "ci_high": 0.011350576949800517
+          },
+          {
+            "rel_time": 11,
+            "coef": -0.0024627895682996642,
+            "se": 0.004692630366170448,
+            "ci_low": -0.012918621605174619,
+            "ci_high": 0.00799304246857529
+          },
+          {
+            "rel_time": 12,
+            "coef": 0.0011869598035629057,
+            "se": 0.004455368900560597,
+            "ci_low": -0.008740220743707535,
+            "ci_high": 0.011114140350833345
+          }
+        ],
+        "crv1": {
+          "ci": [
+            -0.010587258382194674,
+            0.007895655690170016
+          ],
+          "p_value": 0.7753202728979282,
+          "pretrend": {
+            "test": "joint Wald (chi2, CRV1)",
+            "stat": 213.45239039153142,
+            "df": 8,
+            "p_value": 9.296682837972264e-42
+          }
+        }
+      },
+      "identified": false
+    }
+  ],
+  "guard": {
+    "verdict": "conditional",
+    "narrative_source": "template",
+    "passed": true,
+    "violations": [],
+    "rejected_llm_violations": [],
+    "narrative": "**요약(크기를 판별하지 못함)**: 추정치는 -0.00 ppm (95% CI -0.02 ~ 0.03) 이지만 다음 위험 신호가 있어 단정하지 않고 범위로만 보고합니다: 처치 단위 수 부족(무작위화 추론 사용), 클러스터 수 부족(표준오차 과소추정 위험), 신뢰구간이 0을 포함. 신뢰구간이 0을 포함하므로 효과의 방향과 크기는 판별 불가입니다. 결론 전에 보완 분석이 필요합니다."
+  },
+  "report_path": "report.md"
+}

@@ -19,7 +19,7 @@
 | `estimator` | 방법 | `did` · `event_study` · `its` 중 하나. 시차 도입은 4주차, 합성통제는 5주차에 모듈이 추가됩니다 |
 | `assumptions` | 식별 가정 | 가정마다 확인 방법(`check`: `pretrend_test` · `placebo_time` · `manual`) |
 | `refutations` | 반증 테스트 | `placebo_time`(가짜 시작일), `placebo_outcome`, `drop_unit`, `placebo_window`(정책이 적용되지 않는 시간대) 중 하나 이상 |
-| `abstention` | 판정을 낮출 조건 | 기계가 판정할 수 있는 조건만(아래 표). 걸리면 효과 수치 대신 "조건부" 또는 "판단 불가" |
+| `abstention` | 판정을 낮출 조건 | 기계가 판정할 수 있는 조건만(아래 표). 걸리면 효과 수치 대신 "크기를 판별하지 못함" 또는 "판단 불가" |
 | `thresholds` | 기준값 | 사전추세 유의수준, 최소 클러스터 수, 최소 사전 기간 |
 | `data_sources` | 데이터 출처 | 기관, URL, **라이선스**(공공누리 유형), 어댑터 |
 

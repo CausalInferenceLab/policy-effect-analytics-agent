@@ -11,6 +11,90 @@
 # 스키마: core/discovery/ontology.py · 설명: catalog/README.md
 version: 1
 datasets:
+- id: '15159000'
+  name: 전북특별자치도 전주시_환승정보 서비스_GW
+  provider: 전북특별자치도 전주시
+  portal: data.go.kr
+  url: https://www.data.go.kr/data/15159000/openapi.do
+  access: open_api
+  approval: 개발단계 자동승인 / 운영단계 자동승인
+  license: KOGL-1
+  license_note: '포털 표기: 공공저작물 출처표시(제1유형) / 무료'
+  space: 전주시 (출발지·도착지 및 버스 노선·환승 지점)
+  time: 실시간
+  period: 시간범위 미기재; 과거 환승 경로·운행 이력 제공 여부 확인필요
+  measures: [환승 지점, 환승 소요 시간, 연계 가능한 환승 노선]
+  roles: [covariate]
+  topics: [public-transit]
+  notes: >-
+    출발지·도착지에 따른 환승 경로를 제공하는 REST/XML 서비스.
+    환승 접근성·교통 공급 여건의 후보 자료이며 실제 환승 인원이나 승하차 실적은 아니다.
+    과거 이력을 제공하는지 확인하기 전에는 정책 전후 패널로 사용할 수 있다고 가정하지 않는다.
+    인증 API 호출·응답 필드 및 정류장·노선 식별자 연계는 미검증.
+  verified: '2026-11-01 공식 포털 상세 페이지에서 서비스 설명·형식·갱신 주기·승인 방식·이용 조건 확인; 인증 API 호출 없음'
+- id: '15159001'
+  name: 전북특별자치도 전주시_노선정보 서비스_GW
+  provider: 전북특별자치도 전주시
+  portal: data.go.kr
+  url: https://www.data.go.kr/data/15159001/openapi.do
+  access: open_api
+  approval: 개발단계 자동승인 / 운영단계 심의승인
+  license: KOGL-1
+  license_note: '포털 표기: 공공저작물 출처표시(제1유형) / 무료'
+  space: 전주시 (버스 노선·경유 정류장)
+  time: 실시간
+  period: 시간범위 미기재; 과거 노선·시간표 변경 이력 제공 여부 확인필요
+  measures: [노선번호, 기점·종점, 경유 정류장, 첫차·막차 시각, 배차 간격, 운행 버스 대수, 총 운행 횟수, 노선 길이, 저상버스 운행 여부]
+  roles: [covariate]
+  topics: [public-transit]
+  notes: >-
+    노선 기본정보·시간표·운영 현황을 제공하는 REST/XML 서비스.
+    교통 공급 여건의 후보 자료이며 운행 횟수·버스 대수는 이용객 수가 아니다.
+    포털의 갱신 주기는 실시간이지만 과거 변경 이력의 제공을 뜻하지 않는다.
+    인증 API 호출·응답 필드 및 정류장·노선 식별자 연계는 미검증.
+  verified: '2026-11-01 공식 포털 상세 페이지에서 서비스 설명·형식·갱신 주기·승인 방식·이용 조건 확인; 인증 API 호출 없음'
+- id: '15159002'
+  name: 전북특별자치도 전주시_실시간 운행정보 서비스_GW
+  provider: 전북특별자치도 전주시
+  portal: data.go.kr
+  url: https://www.data.go.kr/data/15159002/openapi.do
+  access: open_api
+  approval: 개발단계 자동승인 / 운영단계 자동승인
+  license: KOGL-1
+  license_note: '포털 표기: 공공저작물 출처표시(제1유형) / 무료'
+  space: 전주시 (버스 노선·정류장·운행 차량)
+  time: 실시간
+  period: 시간범위 미기재; 과거 차량 위치·도착정보 이력 제공 여부 확인필요
+  measures: [버스 실시간 위치, 정류장별 도착 예정 버스, 예상 도착 시간]
+  roles: [covariate]
+  topics: [public-transit]
+  notes: >-
+    노선·정류장 기준 실시간 버스 위치와 도착 예정을 제공하는 REST/XML 서비스.
+    교통 공급 여건의 후보 자료이며 예상 도착 시간은 실제 도착 시각이나 승객 대기 시간의 관측값이 아니다.
+    시계열 분석에는 과거 이력 제공 여부 또는 별도 수집 가능성을 먼저 확인해야 한다.
+    인증 API 호출·응답 필드 및 정류장·노선 식별자 연계는 미검증.
+  verified: '2026-11-01 공식 포털 상세 페이지에서 서비스 설명·형식·갱신 주기·승인 방식·이용 조건 확인; 인증 API 호출 없음'
+- id: '15080859'
+  name: 전북특별자치도 전주시_버스정류장
+  provider: 전북특별자치도 전주시
+  portal: data.go.kr
+  url: https://www.data.go.kr/data/15080859/fileData.do
+  access: file
+  approval: 없음
+  license: other
+  license_note: '포털 표기: 이용허락범위 제한 없음 / 무료'
+  space: 전주시 (버스정류장 지점)
+  time: 연
+  period: 2026-02-12 기준 파일; 과거 연도별 파일 제공 여부 확인필요
+  measures: [정류장명, 정류장번호, 위도, 경도]
+  roles: [covariate]
+  topics: [public-transit]
+  notes: >-
+    포털에서 로그인 없이 내려받는 CSV이며 갱신 주기는 연간이다.
+    정류장 위치·식별 정보를 이용한 접근성 분석의 기초 자료로, 승하차 실적은 포함하지 않는다.
+    정류장번호로 노선·운행정보와의 연결을 검토할 수 있으나 API 식별자와의 대응은 미검증.
+    현황 파일의 기준일을 정류장 신설·이전 시점으로 해석하지 않는다. 파일 내용은 내려받아 검증하지 않았다.
+  verified: '2026-11-01 공식 포털 상세 페이지에서 파일 기준일·CSV 형식·컬럼·갱신 주기·다운로드 방식·이용 조건 확인'
 - id: kosis-digital-divide
   name: KOSIS 디지털정보격차실태조사 — 일반국민 대비 취약계층 디지털정보화 수준
   provider: 한국지능정보사회진흥원 (KOSIS 제공)

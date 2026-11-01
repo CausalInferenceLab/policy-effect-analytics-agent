@@ -1,0 +1,63 @@
+# 데이터 계보 — 민생회복 소비쿠폰(2025.7) → 지역사랑상품권 결제
+# 지급 강도(수도권 / 비수도권 / 인구감소지역 가산) 차이로 지역 소비 변화를 보려는 길입니다.
+id: jnh2256-sys-consumption-coupon
+owner: jnh2256-sys
+topic: consumer-support
+title: "민생회복 소비쿠폰 지급 강도 → 시군구별 지역사랑상품권 결제"
+question: "1인당 지급액이 더 큰 비수도권·인구감소지역에서 쿠폰 지급 뒤 지역사랑상품권 결제가 수도권보다 더 늘었나?"
+steps:
+  - id: issue
+    kind: issue
+    ref: consumption-coupon-2025
+
+  - id: coupon_start
+    kind: policy
+    label: "민생회복 소비쿠폰 1차 지급 시작"
+    date: "2025-07-21"
+    source: "https://www.korea.kr/news/policyNewsView.do?newsId=148945532"
+    note: "1인당 기본 15만 원에 비수도권 3만 원, 인구감소지역 5만 원 가산. 2차 지급(9.22 예정)이 사후 기간과 겹침"
+
+  - id: sales_policy
+    kind: dataset
+    ref: "15125217"
+    note: "지자체별 상품권 할인율과 적용 기간. 같은 시기 할인율 변경을 가려내는 데 씀"
+
+  - id: payments
+    kind: dataset
+    ref: "15108292"
+    note: "시군구별 지역사랑상품권 결제금액과 건수. 시간 단위는 확인필요"
+
+  - id: population
+    kind: dataset
+    ref: DT_1B040A3
+    note: "시군구 월별 주민등록 인구. 1인당 지표의 분모"
+
+  - id: coupon_usage
+    kind: dataset
+    status: missing
+    label: "시군구별 소비쿠폰 지급·사용 금액"
+    note: "공개 자료를 찾지 못함. 있으면 강도를 지역 구분 대신 지급액으로 직접 잴 수 있음. 지금은 상품권 결제가 쿠폰 소비의 일부만 보여 줌"
+
+  - id: dose_table
+    kind: transform
+    status: planned
+    label: "처치 강도표 (시군구 × 1인당 가산액)"
+    inputs: [coupon_start]
+    how: "수도권 0원, 비수도권 3만 원, 인구감소지역 5만 원 가산으로 시군구마다 강도 부여. 수급자 추가 지원은 지역 평균을 알 수 없어 제외"
+    keys: [sigungu_code]
+
+  - id: region_month
+    kind: transform
+    status: planned
+    label: "시군구 × 월 집계"
+    inputs: [payments, sales_policy, population]
+    how: "결제금액과 건수를 시군구·월로 합산한 뒤 월 인구로 나눠 1인당 값으로 만듦. 할인율이 바뀐 달은 표시"
+    keys: [sigungu_code, month]
+
+  - id: pay_per_capita
+    kind: metric
+    status: planned
+    label: "1인당 지역사랑상품권 결제금액(로그)"
+    inputs: [region_month, dose_table]
+    how: "log(1 + 시군구·월별 결제금액 ÷ 주민등록 인구)"
+    used_by: []

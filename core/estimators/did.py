@@ -85,9 +85,24 @@ def did(
             "무작위화 추론으로 p값과 신뢰구간을 계산했습니다.",
             "few_treated_clusters",
         )
+        _ri_floor_warning(res, ri, alpha)
     check_clusters(res, n_cl, min_clusters)
     check_staggered(res, d.groupby(unit)["_ft"].first())
     return res
+
+
+def _ri_floor_warning(res, ri: dict, alpha: float, pretrend_alpha: float | None = None) -> None:
+    """가능한 가짜 배정이 적어 검정이 원리적으로 불가능한 경우를 기록한다."""
+    res.assumptions_checked["ri_assignments"] = ri["n_assignments"]
+    if ri["p_min"] > alpha:
+        res.warn(
+            f"가능한 가짜 배정이 {ri['n_assignments']}가지뿐이라 가장 작은 p값이 {ri['p_min']:.3f}입니다. "
+            f"유의수준 {alpha} 에서 어떤 효과 크기도 배제할 수 없어 범위를 정하지 않았습니다.",
+        )
+    if pretrend_alpha is not None and ri["p_min"] > pretrend_alpha:
+        res.warn(
+            f"같은 이유로 사전추세 검정도 유의수준 {pretrend_alpha} 에서 기각될 수 없습니다(통과가 아니라 검정 불가).",
+        )
 
 
 def event_study(
@@ -206,6 +221,7 @@ def event_study(
             "무작위화 추론(처치 단위를 무작위로 바꿔 반복)으로 p값과 신뢰구간을 계산했습니다.",
             "few_treated_clusters",
         )
+        _ri_floor_warning(res, ri, alpha, pretrend_alpha)
     res.assumptions_checked["parallel_pretrends"] = {**pretrend, "passed": p_pre >= pretrend_alpha}
     if p_pre < pretrend_alpha:
         res.warn(

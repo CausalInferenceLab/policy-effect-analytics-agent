@@ -15,7 +15,7 @@ make site                                        # http://localhost:8000/apps/<�
 | 주소 | 내용 |
 |---|---|
 | `api/index.json` | 목록 · 생성 시각 · 이용 조건 |
-| `api/topics.json` | 주제 8개 (세 가지 확인 상태, 사건, 근거 법률과 최근 개정) |
+| `api/topics.json` | 주제 (세 가지 확인 상태, 사건, 근거 법률과 최근 개정) |
 | `api/issues.json` | 지금 이슈인 정책 (시작일, 비교 대상, 설계, 쓰는 데이터) |
 | `api/datasets.json` | 데이터 지도 (역할 · 단위 · 받는 법 · 이용 조건) |
 | `api/legal/<주제>.json` | 법제처에서 모은 법령·행정규칙·조례 목록 |

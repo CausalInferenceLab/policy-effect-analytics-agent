@@ -1,59 +1,74 @@
-# 정책 효과 분석 플랫폼
+# 그 정책, 진짜 먹혔을까?
 
-**그 정책, 정말 효과가 있었을까?**
+**뉴스 속 그 정책, 공공데이터로 직접 확인해 보는 시민 데이터 과학자 놀이터.**
 
-뉴스와 SNS에서 사람들이 묻는 정책을 공공데이터로 확인하는 오픈소스입니다.
-정책을 받은 곳과 안 받은 곳을 비교하고, 데이터로 판단할 수 없으면 판단할 수 없다고 말합니다.
+정책을 받은 동네와 안 받은 동네를 공공데이터로 비교하고, 데이터가 모르면 "판단 불가"라고 정직하게 말합니다. 질문부터 데이터·계보·분석·대시보드까지 전부 오픈소스입니다.
 
-**[사이트 열기](https://causalinferencelab.github.io/policy-effect-analytics-agent/)** · [지금 이슈](https://causalinferencelab.github.io/policy-effect-analytics-agent/issues.html) · [데이터 지도](https://causalinferencelab.github.io/policy-effect-analytics-agent/data.html) · [구조](https://causalinferencelab.github.io/policy-effect-analytics-agent/architecture.html) · [멘티 참여 가이드](docs/ops/mentee-guide.md)
+[![사이트 열기](https://img.shields.io/badge/사이트-열기-1d4e89)](https://causalinferencelab.github.io/policy-effect-analytics-agent/)
+[![분석 결과](https://img.shields.io/badge/분석_결과-보기-1e6a4d)](https://causalinferencelab.github.io/policy-effect-analytics-agent/results.html)
+[![참여](https://img.shields.io/badge/참여-하기-8a5900)](docs/ops/mentee-guide.md)
+[![License: MIT](https://img.shields.io/badge/license-MIT-lightgrey)](LICENSE)
 
-> 가짜연구소 인과추론팀 × 오픈업 오픈소스 AI 특화형 트랙3 「에이전틱 AI × 데이터」 (2026.9 ~ 11)
->
-> **공식 평가가 아닙니다.** 학습·연구용 오픈소스 분석이며, 정부·공공기관의 공식 평가나 통계가 아니고 데이터 제공 기관의 후원·보증을 뜻하지 않습니다.
+![사이트 첫 화면 — 이슈에서 대시보드까지 흐름 띠와 질문창](docs/img/home.png)
+
+> 가짜연구소 인과추론팀 × 오픈업 오픈소스 AI 특화형 트랙3 「에이전틱 AI × 데이터」(2026.9~11)에서 현업 개발자·분석가들이 함께 만들었습니다.
+> **공식 평가가 아닙니다.** 학습·연구용 오픈소스 분석이며 정부·공공기관의 평가나 통계가 아닙니다.
 
 ---
 
-## 사이트에서 할 수 있는 것
+## 30초 설명
 
-| 화면 | 하는 일 |
+| | |
 |---|---|
-| **대화창** | "궁금한 정책 이야기를 적어 보세요"에 적으면 주제를 찾고, 받을 수 있는 데이터·조심할 점·분석 계획 초안을 대화로 정리합니다. 키 없이 쓰는 **가이드 모드**가 기본이고, 내 AI 키(Claude 또는 Ollama 같은 OpenAI 호환)를 넣으면 **AI 모드**로 자유롭게 묻습니다. 키는 저장하지 않습니다. |
-| **요즘 궁금해하는 주제** | 대화창 아래 순위입니다. 최근 30일 사이트 질문 수 → 네이버 검색 관심도(키가 있을 때) → 최근 시행·발표일 순이고, 어떤 기준을 썼는지 화면에 적습니다. |
-| **지금 이슈** | 토지거래허가구역, 6·27 대출 한도, 민생회복 소비쿠폰, 고유가 피해지원금, K-패스 '모두의 카드', 기후동행카드 경기 편입 등 7개 정책의 분석 가이드입니다. 기후동행카드 처치 타임라인·가설은 [docs/strategy/climate-card.md](docs/strategy/climate-card.md) |
-| **데이터 지도** | 공공데이터 40개를 역할(누가 언제 받았나 / 무엇이 변했나 / 다른 요인), 단위, 받는 법, 이용 조건으로 정리했습니다. |
-| **주제 8개** | 주제마다 정책 타임라인, 세 가지 확인 상태, **관련 법령·행정규칙**(법제처 자동 수집), 데이터, 분석 예시가 있습니다. |
+| **무엇을** | "토허제 확대하고 집값 잡혔나?", "소비쿠폰 받고 동네 가게 매출 늘었나?" 같은 질문에 공공데이터로 답합니다 |
+| **어떻게** | 이슈 → 공공데이터 → 계보 → 분석 → 대시보드. 정책을 받은 곳과 안 받은 '쌍둥이 동네'의 변화를 비교합니다 |
+| **약속** | 데이터를 보기 전에 계획을 먼저 커밋하고(사전 등록), 판정은 세 가지(효과 근거 있음 · 크기를 판별하지 못함 · 판단 불가)로만 말합니다. 숫자가 어떻게 나왔는지 코드까지 공개합니다 |
 
-## 데이터는 어디서 오나
+## 이런 분께
 
-| 무엇 | 어디서 | 어떻게 |
-|---|---|---|
-| **정책이 언제, 누구에게** (법령·행정규칙·조례) | 법제처 국가법령정보 공동활용 API | 주제마다 근거 법률만 적으면 연혁·하위 규정·조례·지정/해제 공고를 모두 모읍니다. 매주 바뀐 것은 `law-change` 이슈로 알립니다. [자세히](catalog/README.md#법령정책-온톨로지-법제처-자동-수집) |
-| **정책 발표** (지자체 공고, 대출 규제 같은 행정지도) | 정부 보도자료(korea.kr) 등 | 법령 DB에 없어 `topics.yaml`의 `events`에 출처와 함께 사람이 적습니다 |
-| **무엇이 달라졌나** (결과) · **다른 요인** (통제) | 공공데이터포털, KOSIS, 서울 열린데이터광장 등 40개 | [데이터 지도](catalog/datasets.yaml)에 역할·단위·받는 법·이용 조건을 적고, 각 케이스의 `fetch.py`가 받습니다 |
-| **사람들이 궁금해하는 것** | 사이트 질문(GitHub 이슈), 네이버 검색어트렌드(선택) | 주제를 고르는 데만 씁니다 |
+| 나는 | 이렇게 시작하세요 |
+|---|---|
+| **궁금한 시민** | [사이트](https://causalinferencelab.github.io/policy-effect-analytics-agent/) 대화창에 정책 하나 물어보기. 주제·데이터·조심할 점을 같이 정리해 줍니다 |
+| **기자 · 공무원 · 연구자** | [분석 결과](https://causalinferencelab.github.io/policy-effect-analytics-agent/results.html)에서 판정과 그대로 가져다 써도 되는 인용문, 쓴 데이터, CSV를 받기 |
+| **분석가 · 개발자** | 아래 [5분 만에 돌려 보기](#5분-만에-돌려-보기) → [참여 가이드](docs/ops/mentee-guide.md). 공개 API(`api/*.json`)로 서비스를 만들어도 좋습니다 |
 
-## 대화가 오픈소스가 되는 길
+## 지금까지 만든 것
+
+<!-- highlights:start -->
+**주제 11개 · 지금 이슈 7개 · 공공데이터 55개 · 계보 3개 · 참여자 프로젝트 10개(결과 6개) · 함께 만든 사람 11명**
+
+| 프로젝트 | 주제 | 누가 | 지금 | 보기 |
+|---|---|---|---|---|
+| 대형마트 의무휴업 평일 전환 전후 관측 매출의 탐색 비교 | 대형마트 의무휴업 | [@YoungjaeKang](https://github.com/YoungjaeKang) | 크기를 판별하지 못함 | [결과 보기](https://causalinferencelab.github.io/policy-effect-analytics-agent/answers/YoungjaeKang-retail-hours.html) |
+| 마산·창원·진해 행정구역 통합(2010.7.1)이 통합 창원시의 인구·인구이동·재정자립도에 미친 효과 | 지방자치단체·공공기관 통폐합 | [@buildergarlic](https://github.com/buildergarlic) | 크기를 판별하지 못함 | [결과 보기](https://causalinferencelab.github.io/policy-effect-analytics-agent/answers/buildergarlic-changwon-integration.html) |
+| 전남·광주 행정통합 영향분석(한국은행 2026.7)의 지표와 프레임으로 본 마산·창원·진해 통합(2010)의 성과 | 지방자치단체·공공기관 통폐합 | [@buildergarlic](https://github.com/buildergarlic) | 크기를 판별하지 못함 | [결과 보기](https://causalinferencelab.github.io/policy-effect-analytics-agent/answers/buildergarlic-changwon-jeonnam-frame.html) |
+| 토지거래허가구역 지정(2020.6.23, 잠실·삼성·대치·청담) 뒤 옆 동네 아파트 ㎡당 가격(풍선효과) | 부동산 거래 규제 | [@Hyun2](https://github.com/Hyun2) | 크기를 판별하지 못함 | [결과 보기](https://causalinferencelab.github.io/policy-effect-analytics-agent/answers/hyun2-land-permit-spillover-2020.html) |
+| 서울 25개 자치구 출산지원금 변경과 출생등록 변화 비교 | 출산·혼인 지원 | [@ingyeoking13](https://github.com/ingyeoking13) | 판단 불가 | [결과 보기](https://causalinferencelab.github.io/policy-effect-analytics-agent/answers/ingyeoking13-seoul-birth-support.html) |
+| 대구시 대형마트 의무휴업일 평일 전환과 지역 소매업 판매 | 대형마트 의무휴업 | [@jgkim1008](https://github.com/jgkim1008) | 판단 불가 | [결과 보기](https://causalinferencelab.github.io/policy-effect-analytics-agent/answers/jgkim1008-daegu-mart-holiday.html) |
+| 강남대로 광역버스 분산 전후 일반도로 속도 변화 | 도로교통 운영 | [@sgim49697-ops](https://github.com/sgim49697-ops) | 해석 단계 | [폴더](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/tree/main/cases/sgim49697-ops-gangnam-bus-2024) |
+| 서울 기후동행카드 시범사업 전후 지하철 승차 흐름 비교 | 대중교통 요금 지원 | [@jm-git-163](https://github.com/jm-git-163) | 수집 단계 | [폴더](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/tree/main/cases/jm-git-163-climate-card) |
+| 행정안전부 'AI 친화적 보고서' 도입(2026.3 시범)이 보도자료 형식·기계 판독·언론 확산에 미친 효과 | 디지털포용·무인정보단말기 접근성 | [@gyeom-yee](https://github.com/gyeom-yee) | 계획 단계 | [폴더](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/tree/main/cases/gyeom-yee-public-markdown) |
+| 녹색교통지역 5등급 운행제한이 서울 도심 대기질에 미친 효과 | 대기질 | [@yesolee](https://github.com/yesolee) | 계획 단계 | [폴더](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/tree/main/cases/yesolee-green-traffic) |
+| 기후동행카드 성남 편입(2025.5.3)이 성남 분당선·경강선 역 평일 승차에 미친 효과 | 대중교통 요금 지원 | 멘토 예시 | 판단 불가 | [결과 보기](https://causalinferencelab.github.io/policy-effect-analytics-agent/answers/t3-climate-card-seongnam.html) |
+| 토지거래허가구역 확대 지정(2025.3.24)이 강남·서초·송파·용산 아파트 거래에 미친 효과 | 부동산 거래 규제 | 멘토 예시 | 크기를 판별하지 못함 | [결과 보기](https://causalinferencelab.github.io/policy-effect-analytics-agent/answers/t3-land-permit-2025.html) |
+<!-- highlights:end -->
+
+표는 `python scripts/readme_highlights.py`가 레포 파일에서 다시 만듭니다. 사이트에서는 [참여](https://causalinferencelab.github.io/policy-effect-analytics-agent/projects.html) 화면이 같은 목록을 그림과 함께 보여 줍니다.
+
+## 어떻게 동작하나
+
+![이슈 보드 — 계보 그래프와 시점별 효과 대시보드](docs/img/board.png)
 
 ```
- 질문 ──▶ 정리 ──▶ 제안 ──▶ 반영
- 대화창    주제·데이터·    "제안으로 올리기" →   멘토·멘티가 검토해 catalog/(새 주제·데이터),
-          계획 초안       GitHub 이슈(from-site)  cases/(분석)에 PR → 사이트·순위 갱신
+🤔 이슈        📦 공공데이터        🧵 계보              ⚖️ 분석                 📊 대시보드
+지금 논쟁 중인  오늘 바로 받을 수    데이터가 지표가       받은 동네 vs 안 받은    시점별 효과 그림과
+정책과 시행일   있는 재료 (catalog/) 되는 길 (lineage/)   동네 (cases/, make flow) 판정 (사이트·API)
 ```
 
-대화는 브라우저 안에서만 쓰이고, **사용자가 버튼을 누를 때만** GitHub 이슈 작성 화면으로 넘어갑니다. 올라온 질문 목록: [label:from-site](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/issues?q=label%3Afrom-site)
-
-## 어떻게 확인하나 (6단계)
-
-| 단계 | 하는 일 |
-|---|---|
-| 1. 찾기 | 사람들이 궁금해하는 **주제**를 고릅니다 |
-| 2. 모으기 | 그 주제의 정책을 **전부** 모읍니다. 어느 지역이 언제 시작했는지 |
-| 3. 거르기 | 세 가지를 확인합니다. 언제 시작했나 · 누가 받았나 · 무엇으로 재나 |
-| 4. 계획하기 | 데이터를 보기 전에 분석 계획(`plan.yaml`)을 먼저 커밋합니다 |
-| 5. 비교하기 | 정책을 받은 곳과 안 받은 곳의 변화를 비교합니다 |
-| 6. 말하기 | **효과 근거 있음 · 조건부 · 판단 불가** 중 하나로 씁니다 |
-
-**왜 정책 하나가 아니라 주제로 보나?** 화제가 된 정책만 골라 분석하면 결과를 보고 사례를 고르는 것과 같아져 효과가 부풀려집니다. 그래서 화제(와 순위)는 "어느 주제를 볼지"까지만 정하고, 그 주제의 정책을 모두 모아 비교합니다.
+- **주제마다 이슈 보드**가 있고, 다섯 단계 중 어디까지 채워졌는지 [홈](https://causalinferencelab.github.io/policy-effect-analytics-agent/#topics)에서 한눈에 보입니다. 빈칸이 곧 기여할 곳입니다.
+- **판정은 규칙이 정합니다.** 사전추세가 깨지면, 비교 단위가 너무 적으면, 범위가 0을 포함하면 판정을 낮춥니다. LLM은 질문을 정리하고 계획 초안을 돕지만 숫자를 만들지 않습니다.
+- **'모르겠다'도 쓸모 있게.** 효과를 판별하지 못해도 "이보다 큰 효과는 데이터와 맞지 않는다"(배제 범위)는 말할 수 있어, 결과마다 붙여 둡니다.
+- 사이트는 매일 레포에서 다시 만들어지고, 쓰임은 [성과](https://causalinferencelab.github.io/policy-effect-analytics-agent/impact.html) 화면이 셉니다(북극성: 주간 가져간 답).
 
 ## 5분 만에 돌려 보기
 
@@ -63,75 +78,67 @@ cd policy-effect-analytics-agent
 python -m venv .venv && source .venv/bin/activate   # Windows: .venv\Scripts\activate
 pip install -e ".[dev]"                               # Python 3.11 이상
 
-make demo      # 토지거래허가구역 예시를 연습용 폴더(_demo/)에서 6단계로 실행. 레포 파일은 바뀌지 않음
-make site      # 사이트를 http://localhost:8000 에서 보기 (공개 API는 /api/, 서비스는 /apps/)
-make lineage   # 데이터 계보 검사
+make demo      # 예시 분석을 연습용 폴더(_demo/)에서 6단계로 실행 (레포 파일은 그대로)
+make site      # 사이트를 http://localhost:8000 에서 보기
 ```
 
-API 키 없이 돌아갑니다. 실제 데이터를 받으려면 `.env.example`을 `.env`로 복사해 키를 넣으세요. `.env`는 커밋되지 않습니다.
+API 키 없이 돌아갑니다. 실제 데이터를 받을 때만 `.env.example`을 `.env`로 복사해 키를 넣으세요(커밋되지 않음).
 
-> 토지거래허가구역 예시는 지금 **시뮬레이션 데이터**입니다. 분석 과정을 보여주기 위한 것이고, 실제 정책 효과가 아닙니다.
+## 참여하기
 
-## 참여하기 — 세 가지 방식
+| 트랙 | 이런 분께 | 내 작업 공간 |
+|---|---|---|
+| **A. 데이터 계보** | 공공데이터를 찾아 이슈와 지표를 잇고 싶다 | `catalog/lineage/<내ID>-<주제>.yaml` |
+| **B. 가설과 분석** | 실제 정책으로 효과 추정을 해 보고 싶다 | `cases/<내ID>-<주제>/` |
+| **C. 서비스 개발** | 공개 API로 서비스를 만들고 싶다 | `apps/<내ID>-<서비스>/` |
 
-커리어 방향과 해 보고 싶은 시도에 따라 하나를 고릅니다. 세 트랙은 이어져 있습니다.
+시작은 [작업 제안 이슈](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/issues/new?template=case-proposal.yml) 하나입니다. 규칙은 세 가지: 브랜치는 `<내ID>/<작업>`, 수정은 내 폴더만, 합치기는 리뷰 1명과 자동 검사 통과 뒤.
+자세히: [참여 가이드](docs/ops/mentee-guide.md) · [GitHub가 처음이라면](docs/ops/github-onboarding.md) · [CONTRIBUTING](CONTRIBUTING.md) · [점검과 계획](docs/ops/roadmap.md) · [지표 정의](docs/ops/metrics.md)
 
-| 트랙 | 이런 분께 | 하는 일 | 내 작업 공간 |
-|---|---|---|---|
-| **A. 데이터 온톨로지** | 데이터 온톨로지를 만들고 싶다 | 공공 이슈와 연결되는 데이터를 찾고 계보(Lineage) 구축 → [데이터 계보](https://causalinferencelab.github.io/policy-effect-analytics-agent/lineage.html) | `catalog/lineage/<내ID>-<주제>.yaml` |
-| **B. 가설과 분석** | 가설 설정과 분석을 익히고 싶다 | 실제 사례로 효과를 추정하는 Cycle 연습 → 주제 페이지·`api/results.json` | `cases/<내ID>-<주제>/` |
-| **C. 서비스 개발** | 서비스를 개발하고 싶다 | 분석 Cycle에서 나온 데이터(공개 API)로 웹·앱 개발 → [서비스](https://causalinferencelab.github.io/policy-effect-analytics-agent/apps.html) | `apps/<내ID>-<서비스>/` |
-
-```
-A. 이슈 → 정책 → 데이터 → 지표  ─▶  B. 가설 → 계획 → 추정 → 판정  ─▶  C. 공개 API로 서비스
-   catalog/lineage/                    cases/                              apps/
-```
-
-시작은 [작업 제안 이슈](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/issues/new?template=case-proposal.yml)에서 트랙과 주제를 적는 것입니다. 트랙별 가이드: [A](docs/tracks/ontology.md) · [B](docs/tracks/analysis.md) · [C](docs/tracks/service.md) · [전체](docs/tracks/README.md)
-
-`make flow`는 plan.yaml이 커밋되어 있지 않으면 계산하지 않습니다(사전 등록). 사이트 질문과 법령 변경 이슈는 담당자 없이 구성원 모두가 봅니다.
-
-규칙은 세 가지입니다. 브랜치는 `<내ID>/<작업>`, 수정은 내 폴더만, 합치기는 리뷰 1명과 자동 검사 통과 뒤. 자세한 내용: [멘티 참여 가이드](docs/ops/mentee-guide.md) · [CONTRIBUTING](CONTRIBUTING.md) · [GitHub가 처음이라면](docs/ops/github-onboarding.md)
-
-## 폴더 안내
+<details>
+<summary><b>폴더 안내</b></summary>
 
 | 폴더 | 하는 일 | 누가 고치나 |
 |---|---|---|
-| [`catalog/lineage/`](catalog/lineage/) | 트랙 A: 데이터 계보 (`<내ID>-<주제>.yaml`, `_template.yaml`에서 시작) | 파일 주인 |
-| [`cases/`](cases/) | 트랙 B: 멘티별 분석 폴더 (`<내ID>-<주제>`, `_template`에서 시작) | 폴더 주인 |
-| [`apps/`](apps/) | 트랙 C: 서비스 (`<내ID>-<서비스>`, `_template`에서 시작). 합쳐지면 `/apps/<이름>/`에서 열림 | 폴더 주인 |
-| [`catalog/`](catalog/) | 주제 · 이슈 · 데이터셋 목록 (데이터 지도) | 누구나 (PR) |
-| [`site/`](site/) | 공개 사이트, 대화창(`ask.js`), 공개 API(`api.py` → `api/*.json`) | 메인테이너 |
-| [`scripts/`](scripts/) | 법령 · 조례 · 순위 갱신, 법령 변경 감지, 라이선스 · 활동 확인 | 메인테이너 |
-| [`core/`](core/) | 주제 찾기(`discovery`) · 수집기(`adapters`, 법령 온톨로지 포함) · 계산(`estimators`) · 6단계 실행(`agent`) | 메인테이너 |
-| `app/` | (선택) 개발용 Streamlit 화면. `pip install -e ".[app]"` 후 `make app` | 메인테이너 |
-| [`docs/`](docs/) | 국내 사례, 주제 고르기, 계획 작성법, 운영 가이드 | 운영진 |
+| [`cases/`](cases/) | 분석 폴더 (`<내ID>-<주제>`, `_template`에서 시작) | 폴더 주인 |
+| [`catalog/`](catalog/) | 주제 · 이슈 · 데이터셋 · 계보(`lineage/`) · 참여자 명단 | 누구나 (PR) |
+| [`apps/`](apps/) | 서비스. 합쳐지면 사이트 `/apps/<이름>/`에서 열림 | 폴더 주인 |
+| [`site/`](site/) | 공개 사이트 · 대화창 · 공개 API | 메인테이너 |
+| [`core/`](core/) | 주제 찾기 · 수집기 · 추정(이중차분, 무작위화 추론) · 6단계 실행 · 리포트 | 메인테이너 |
+| [`scripts/`](scripts/) | 법령·순위·지표 갱신, README 표 갱신 | 메인테이너 |
+| [`docs/`](docs/) | 참여 가이드, 계획 작성법, 운영 문서 | 운영진 |
 
-## 지금 상태와 필요한 것
+</details>
 
-- **완성**: 대화창(가이드 · 내 AI 키) · 대화 → 이슈 · 주제 순위 · 데이터 지도 · 법령 온톨로지(7개 주제 3,500여 건, 매주 변경 알림) · 6단계 실행 · 계획 커밋 확인 · 이중차분/단절 시계열 · 정책 지역이 적을 때의 무작위화 추론 · 과장 표현 차단 · 사이트 자동 공개(매일)
-- **키 대기**: 국토부 실거래가(실제 데이터 전환) · 법제처 매일 갱신(`LAW_OC`) · 순위의 검색 관심도(`NAVER_CLIENT_ID/SECRET`, 선택). 모두 레포 Settings → Secrets에만 넣습니다.
-- **결정 필요**: 키 없는 사람의 AI 대화 (권장: 구성원은 이슈에서 `@claude`로 답 받기, 공개 방문자용 중계 서버는 필요할 때만)
-- **다음**: 시차 도입 이중차분(4주차) · 합성통제(5주차) · 공공데이터포털 검색을 공식 API로 전환 · 검색량으로 "미리 반응했나" 점검
+<details>
+<summary><b>데이터는 어디서 오나</b></summary>
 
-## 관련 프로젝트
+| 무엇 | 어디서 |
+|---|---|
+| 정책이 언제, 누구에게 (법령·행정규칙·조례) | 법제처 국가법령정보 공동활용 API (메타데이터만 스냅샷) |
+| 정책 발표 (지자체 공고, 행정지도) | 정부 보도자료 등, 출처와 함께 `catalog/topics.yaml`에 기록 |
+| 무엇이 달라졌나 · 다른 요인 | 공공데이터포털, KOSIS, 서울 열린데이터광장 등 — [데이터 지도](https://causalinferencelab.github.io/policy-effect-analytics-agent/data.html) |
 
-겹치거나 부딪히는 부분이 있는지 확인했습니다. 라이선스 충돌은 없고, 서로 보완하는 관계입니다.
+원자료는 레포에 올리지 않고 케이스마다 `fetch.py`로 각자 받습니다. 데이터마다 이용 조건이 다르며 데이터 지도와 각 케이스의 `plan.yaml`에 적습니다.
 
-| 프로젝트 | 무엇을 | 우리와의 관계 |
-|---|---|---|
-| [CAIS (causal-agent)](https://github.com/causalNLP/causal-agent), [Causal-Copilot](https://github.com/Lancelot39/Causal-Copilot) | LLM 인과 분석 에이전트 (MIT) | 범용 도구. 우리는 한국 공공데이터 · 정책 시작일 · 사전 등록에 집중 |
-| [korean-law-mcp](https://github.com/chrisryugj/korean-law-mcp) | 법제처 API를 AI 도구(MCP)로 묶은 서버 (MIT) | 법령 조회가 겹침. Claude로 법령을 탐색할 때 함께 쓰면 좋음. 우리는 재현용 스냅샷·변경 감지·효과 추정 연결에 집중 |
-| [PublicDataReader](https://github.com/WooilJeong/PublicDataReader), [kpubdata](https://github.com/yeongseon/kpubdata), [data-go-mcp-servers](https://github.com/Koomook/data-go-mcp-servers) | 공공데이터 수집 라이브러리 · MCP 서버 (MIT · Apache-2.0) | 수집 층을 보완. 필요하면 가져다 씀 |
-| [PolicyEngine](https://github.com/PolicyEngine/policyengine-core), [OpenFisca](https://github.com/openfisca/openfisca-core) | 세금·복지 제도 사전 시뮬레이션 (AGPL-3.0) | 목적이 다름. AGPL이라 코드를 가져오지 않음 |
-| 국회예산정책처 · 기획재정부 재정사업 평가 | 공식 평가 | 우리 결과는 공식 평가가 아니며 그렇게 보이지 않게 표시 |
+</details>
 
-## 라이선스와 데이터
+<details>
+<summary><b>관련 프로젝트</b></summary>
 
-코드는 [MIT](LICENSE)입니다. GPL·AGPL 패키지는 필수 의존성으로 넣지 않고 CI가 확인합니다(`scripts/check_licenses.py`).
-데이터는 출처마다 이용 조건이 다르며 데이터 지도와 각 케이스의 `plan.yaml`에 적습니다. 원자료와 가공 데이터 파일은 레포에 올리지 않고 `fetch.py`로 각자 받습니다.
-법령 목록(`catalog/snapshots/legal_*.csv`)은 이름·날짜 같은 메타데이터만 담으며, 출처는 법제처 국가법령정보센터입니다. 법률 자문이 아닙니다.
+| 프로젝트 | 관계 |
+|---|---|
+| [CAIS](https://github.com/causalNLP/causal-agent), [Causal-Copilot](https://github.com/Lancelot39/Causal-Copilot) | 범용 LLM 인과 분석 에이전트. 우리는 한국 공공데이터·정책 시작일·사전 등록에 집중 |
+| [korean-law-mcp](https://github.com/chrisryugj/korean-law-mcp) | 법제처 API를 MCP로. 우리는 재현용 스냅샷·변경 감지에 집중 |
+| [PublicDataReader](https://github.com/WooilJeong/PublicDataReader), [kpubdata](https://github.com/yeongseon/kpubdata) | 공공데이터 수집 라이브러리. 수집 층을 보완 |
+| [PolicyEngine](https://github.com/PolicyEngine/policyengine-core), [OpenFisca](https://github.com/openfisca/openfisca-core) | 제도 사전 시뮬레이션(AGPL). 목적이 달라 코드를 가져오지 않음 |
+
+</details>
+
+## 라이선스
+
+코드는 [MIT](LICENSE). GPL·AGPL 패키지는 필수 의존성으로 넣지 않고 CI가 확인합니다. 사이트 글꼴은 에스코어 드림(무료 글꼴)입니다. 법률 자문이 아닙니다.
 
 ---
 
-**English.** An open-source platform that checks whether Korean public policies people talk about actually worked. A chat box on the site (rule-based by default, or your own AI key in the browser) turns a question into a topic, candidate datasets, pitfalls and a draft pre-analysis plan; with one click the conversation becomes a GitHub issue that maintainers fold into the catalog and cases, and site questions drive the "topics people are curious about" ranking. Public conversation only picks the *topic*; every policy in that topic is collected and checked on three gates (when / who / what). A pre-analysis plan must be committed before estimation, designs are chosen by rules rather than by an LLM, and results are published as a static site. Not an official government evaluation.
+**English.** *Did that policy actually work?* An open-source playground for citizen data scientists that checks Korean public policies in the news against public data. Each topic has an issue board — issue → public data → lineage → analysis → dashboard — and every result comes with a plain-language verdict (evidence of effect / size undetermined / cannot be judged), a quotable sentence, the data used, and code to reproduce it. Analysis plans are committed before estimation, verdicts are set by rules rather than by an LLM, and "cannot be judged" is a legitimate answer. Built by working developers and analysts in the Pseudo Lab causal inference team. Not an official government evaluation.

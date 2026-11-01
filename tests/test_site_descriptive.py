@@ -208,3 +208,11 @@ def test_causal_fixture_keeps_effect_page_and_api(case, tmp_path):
     row = api.case_results(tmp_path / "out")[0]
     assert len(row["outcomes"]) == len(log["results"])
     assert row["outcomes"][0]["estimate"] == log["results"][0]["estimate"]
+
+
+def test_upstream_home_showcase_preserves_descriptive_identity(case):
+    loaded = answers.load_answers()
+    page = projects.showcase(html.escape, projects.load_projects(), loaded, [], [])
+    assert "관측 통계 · 정책 효과 미추정" in page
+    assert '<span class="badge stop">판단 불가</span>' not in page
+    assert 'href="answers/fixture-descriptive.html"' in page

@@ -1,6 +1,6 @@
 # 활동 확인 (멘토용)
 
-원칙: **커밋과 PR이 곧 출석**입니다. 멘티마다 주 1회 이상 의미 있는 커밋과 PR 흐름이 보이면 건강한 상태입니다.
+원칙: **커밋과 PR이 곧 출석**입니다. 참여자마다 주 1회 이상 의미 있는 커밋과 PR 흐름이 보이면 건강한 상태입니다.
 
 ## 로컬에서 한 번에 보기
 
@@ -21,11 +21,11 @@ SINCE=$(date -d '7 days ago' +%F)
 # 열린 PR 전체
 gh pr list -R $R --state open
 
-# 한 멘티의 브랜치 PR (브랜치 이름 = <ID>/<작업>)
+# 한 참여자의 브랜치 PR (브랜치 이름 = <ID>/<작업>)
 gh pr list -R $R --state all --json headRefName,author,title,state \
   --jq '.[] | select(.headRefName|startswith("gildong/")) | [.state,.author.login,.title] | @tsv'
 
-# 한 멘티 폴더의 최근 커밋
+# 한 참여자 폴더의 최근 커밋
 gh api "repos/$R/commits?path=cases/gildong-local-currency&since=${SINCE}T00:00:00Z" \
   --jq '.[] | [.commit.author.date,.commit.author.name,.commit.message] | @tsv'
 

@@ -1,6 +1,6 @@
 # 국내 정책효과 분석 사례 + 재현용 해외 교과서 사례
 
-> 목적: 멘티가 "누가 이미 이 질문을 어떤 방법·데이터로 풀었나"를 5분 안에 파악하고, **오픈데이터만으로 4주 안에 재현·확장 가능한지** 판단하도록 돕는다.
+> 목적: 참여자가 "누가 이미 이 질문을 어떤 방법·데이터로 풀었나"를 5분 안에 파악하고, **오픈데이터만으로 4주 안에 재현·확장 가능한지** 판단하도록 돕는다.
 > 작성: 운영진, 2026-09-24. 링크는 모두 직접 확인한 것. "초록 미확인"은 제목/서지만 확인하고 본문을 열지 못한 경우(KCI·DBpia는 자동 접근 차단).
 
 ## 0. 한눈에 보기
@@ -112,6 +112,6 @@
 | Card & Krueger (1994) NJ/PA 최저임금 | 2×2 DiD | [David Card data sets](https://davidcard.berkeley.edu/data_sets.html) | 가장 단순한 DiD 정답 케이스. estimator 단위 테스트용 |
 | Abadie·Diamond·Hainmueller (2010) 캘리포니아 Prop 99 | SCM + placebo-in-space | [Hainmueller Synth](https://web.stanford.edu/~jhain/synthpage.html) | 처치 단위 1개(K9·K12와 같은 구조). 순열추론 기준값 |
 | Callaway & Sant'Anna (2021) `mpdta` 카운티 최저임금 | staggered DiD | [`did` 패키지](https://bcallaway11.github.io/did/) | **시차 도입 시 TWFE 편향** 시연. T2·T4·T7이 모두 시차 도입이다 |
-| Cheng & Hoekstra (2013) Castle doctrine | staggered DiD, 이벤트스터디 | [Mixtape 9장](https://mixtape.scunning.com/09-difference_in_differences) | 주(state) 패널 + 사전추세 그림. 한국어 멘티용 교재로도 적합 |
+| Cheng & Hoekstra (2013) Castle doctrine | staggered DiD, 이벤트스터디 | [Mixtape 9장](https://mixtape.scunning.com/09-difference_in_differences) | 주(state) 패널 + 사전추세 그림. 한국어 참여자용 교재로도 적합 |
 
 권장: `tests/golden/`에 Card-Krueger와 Prop 99를 넣고, 에이전트가 알려진 추정치를 허용 오차 안에서 재현하는지 CI로 확인한다(Develop 팀과 협의).

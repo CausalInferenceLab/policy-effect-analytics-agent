@@ -35,7 +35,7 @@
 - [x] KOSIS 통계표 ID·제공 주기 확인 후 `plan.yaml > data_sources` 보완 (DT_1K41018, 분기). 공공누리 유형은 통계표 화면에서 확인 필요
 - [x] `fetch.py` 작성 (2023Q1 제외 규칙 포함) → `data/panel.csv` (커밋하지 않음), 울산 제외본 `data/panel_no_ulsan.csv`
 - [x] `make flow` → `report.md`, `figures/` (울산 제외 점검은 `data/panel_no_ulsan.csv`로 따로 실행)
-- [ ] `discussion.md` 해석 (6단계)
+- [x] `discussion.md` 해석 (6단계)
 
 ## 대조 광역시 휴무일 이력 (판매액지수를 열기 전 확인, 2026-10-25)
 
