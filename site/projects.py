@@ -52,11 +52,13 @@ def _plan(case: Path) -> dict:
 def stage_of(case: Path) -> list[bool]:
     tmpl = _template_discussion()
     disc = case / "discussion.md"
+    # 단계는 앞에서부터 이어진다: 분석(공통 make flow 또는 자체 report.md)이 없으면 해석도 아직이다
+    analysed = (case / "flow_log.json").exists() or (case / "report.md").exists()
     return [
         (case / "plan.yaml").exists() or (case / "analysis-plan.yaml").exists(),
         (case / "fetch.py").exists(),
-        (case / "flow_log.json").exists(),
-        disc.exists() and disc.read_text(encoding="utf-8").strip() != tmpl,
+        analysed,
+        analysed and disc.exists() and disc.read_text(encoding="utf-8").strip() != tmpl,
     ]
 
 
@@ -112,6 +114,7 @@ def load_projects() -> list[dict]:
                 if (case / "figures").is_dir()
                 else [],
                 "has_report": (case / "report.md").exists(),
+                "has_flow": (case / "flow_log.json").exists(),
                 "open_prs": prs_by_case.get(case.name, []),
                 "registered": case.name in reg,
             }
@@ -162,21 +165,23 @@ def project_card(e, p: dict, topics_by_id: dict, up: str = "") -> str:
         )
     todo = ""
     if p.get("next"):
+        # 아직 결과가 없는 프로젝트는 할 일을 펼쳐 둔다 (참여자가 바로 보도록)
+        opened = " open" if not p.get("has_flow") else ""
         todo = (
-            '<details class="todo"><summary>다음 할 일 '
+            f'<details class="todo"{opened}><summary>다음 할 일 '
             f"{len(p['next'])}</summary><ul>"
             + "".join(f"<li>{e(x)}</li>" for x in p["next"])
             + "</ul></details>"
         )
     fig = ""
     if p["figures"]:
-        f = "event_study.png" if "event_study.png" in p["figures"] else p["figures"][0]
+        f = next((x for x in THUMB_PREF if x in p["figures"]), p["figures"][0])
         fig = (
             f'<img class="proj-fig" src="{up}cases/{e(p["case"])}/{e(f)}" alt="{e(p["title"])} 그림" '
             'loading="lazy">'
         )
     links = [f'<a href="{REPO}/tree/main/cases/{e(p["case"])}">폴더</a>']
-    if p["stages"][2]:
+    if p.get("has_flow"):
         links.insert(0, f'<a href="{up}answers/{e(p["case"])}.html"><b>결과 보기</b></a>')
     if p["has_report"]:
         links.append(f'<a href="{REPO}/blob/main/cases/{e(p["case"])}/report.md">리포트</a>')
@@ -253,7 +258,7 @@ def projects_body(e, projects, lineages, topics) -> str:
         it["user"] for it in act.get("proposals", [])
     }
     people.discard(MENTOR)
-    n_res = sum(p["stages"][2] for p in mentee)
+    n_res = sum(bool(p.get("has_flow")) for p in mentee)
     cards = "".join(project_card(e, p, tb) for p in mentee)
     mentor_cards = "".join(project_card(e, p, tb) for p in mentor)
     lin_cards = lineage_list(e, lineages, tb)
@@ -269,14 +274,16 @@ def projects_body(e, projects, lineages, topics) -> str:
 <a class="stat" href="#lineages"><div class="v">{len(lineages)}</div><div class="l">데이터 계보</div></a>
 </div></div>
 {JOIN.format(REPO=REPO)}
+{PATH.format(REPO=REPO)}
 {pr_list(e, act)}
 <section id="cases"><h2>분석 프로젝트 (트랙 B)</h2>
 <p class="sub">막대는 진행 단계입니다. 판정은 파이프라인의 자동 판정이고, 해석은 각 프로젝트의 discussion.md가 우선합니다.
 <b>다음 할 일</b>은 폴더·git 기록에서 자동으로 뽑습니다(한 문장 해석, 교차 재현, 계획 먼저 커밋 등).</p>
+<div class="toolbar"><input id="proj-q" type="search" class="search" placeholder="내 GitHub ID나 정책 이름으로 찾기" aria-label="프로젝트 찾기">
 <div class="chips" role="group" aria-label="단계 필터">
-<button class="chip pf" data-s="-9" aria-pressed="true">전체</button>
-<button class="chip pf" data-s="2" aria-pressed="false">분석 결과 있음</button>
-<button class="chip pf" data-s="0" aria-pressed="false">계획·수집 중</button></div>
+<button class="chip pf" data-s="-9" aria-pressed="true">전체 {len(mentee)}</button>
+<button class="chip pf" data-s="2" aria-pressed="false">분석까지 감</button>
+<button class="chip pf" data-s="0" aria-pressed="false">계획·수집 중</button></div></div>
 <div class="grid proj-grid" id="proj-cards">{cards or "<p class='card'>아직 없습니다.</p>"}</div></section>
 <section id="lineages"><h2>데이터 계보 (트랙 A)</h2>
 <p class="sub">이슈 → 정책 → 데이터 → 가공 → 지표의 길입니다. 빈칸은 아직 없는 데이터, 채울 곳입니다.</p>
@@ -287,6 +294,19 @@ def projects_body(e, projects, lineages, topics) -> str:
 <a class="btn ghost" href="{REPO}/blob/main/docs/ops/mentee-guide.md">참여 가이드</a></div></section>
 <script>{FILTER_JS}</script>"""
 
+
+PATH = """<section id="path"><h2>내 분석이 사이트에 올라가기까지</h2>
+<p class="sub">PR 하나에 한 단계씩. 각 단계가 합쳐질 때마다 아래 내 카드의 막대가 한 칸씩 채워지고, 마지막에는 분석 결과·이슈 보드·README에 자동으로 나와요.</p>
+<ol class="path">
+<li><b>작업 제안</b><span><a href="{REPO}/issues/new?template=case-proposal.yml">작업 제안 이슈</a>에 트랙·주제를 적어요</span></li>
+<li><b>계획</b><span><code>cp -r cases/_template cases/&lt;내ID&gt;-&lt;주제&gt;</code> 후 <code>plan.yaml</code>만 담아 먼저 PR, <code>catalog/projects.yaml</code>에 한 줄</span></li>
+<li><b>수집</b><span><code>fetch.py</code>로 <code>data/panel.csv</code> 만들기 (원자료는 커밋하지 않아요)</span></li>
+<li><b>분석</b><span><code>make flow CASE=cases/&lt;내ID&gt;-&lt;주제&gt;</code> → 판정·그림·리포트가 생겨요</span></li>
+<li><b>해석</b><span><code>discussion.md</code>에 '결과를 한 문장으로'와 한계, <code>make readme</code></span></li>
+<li><b>재현받기</b><span>다른 참여자가 돌려 보고 <a href="{REPO}/issues/new?template=reproduction.yml">재현 기록</a>을 남기면 '교차 재현됨' 배지</span></li>
+</ol>
+<p class="small muted">막히면 <a href="{REPO}/blob/main/docs/ops/mentee-guide.md">참여 가이드</a> · <a href="{REPO}/blob/main/docs/ops/github-onboarding.md">GitHub가 처음이라면</a>. 내 카드만 보려면 주소 끝에 <code>?me=내GitHubID</code>를 붙이세요.</p></section>
+"""
 
 JOIN = """<section id="join"><h2>세 가지 참여 방식</h2><p class="sub">커리어 방향과 해 보고 싶은 시도에 따라 하나를 고릅니다. 세 트랙은 이어져 있습니다:
 A가 이슈와 데이터를 이으면, B가 그 데이터로 효과를 추정하고, C가 그 결과로 서비스를 만듭니다.</p>
@@ -303,20 +323,21 @@ A가 이슈와 데이터를 이으면, B가 그 데이터로 효과를 추정하
 <p class="muted">분석 Cycle에서 나온 데이터(공개 API)로 웹·앱 서비스를 만듭니다. 합쳐지면 이 사이트에서 바로 열립니다.</p>
 <p class="small">내 작업: <code>apps/&lt;내ID&gt;-&lt;서비스&gt;/</code></p>
 <p class="small"><a href="apps.html">서비스와 API 보기</a> · <a href="{REPO}/blob/main/docs/tracks/service.md">트랙 C 가이드</a></p></div>
-</div><div class="cta"><a class="btn primary" href="{REPO}/blob/main/docs/ops/mentee-guide.md">멘티 참여 가이드</a>
+</div><div class="cta"><a class="btn primary" href="{REPO}/blob/main/docs/ops/mentee-guide.md">참여 가이드</a>
 <a class="btn ghost" href="{REPO}/issues/new?template=case-proposal.yml">작업 제안 올리기</a>
 <a class="btn ghost" href="{REPO}/blob/main/docs/ops/github-onboarding.md">GitHub가 처음이라면</a>
 <a class="btn ghost" href="{REPO}/issues?q=label%3Afrom-site">올라온 질문 보기</a></div></section>"""
 
 FILTER_JS = """
+(()=>{let s=-9;const q=document.getElementById('proj-q');
+const apply=()=>{const t=(q.value||'').trim().toLowerCase();
+  document.querySelectorAll('#proj-cards .proj').forEach(c=>{const st=+c.dataset.stage;
+    const okS = s===-9 ? true : (s===2 ? st>=2 : st<2);
+    c.hidden = !okS || (!!t && !c.textContent.toLowerCase().includes(t));});};
 document.querySelectorAll('.pf').forEach(b=>b.addEventListener('click',()=>{
-  document.querySelectorAll('.pf').forEach(x=>x.setAttribute('aria-pressed',x===b));
-  const s=+b.dataset.s;
-  document.querySelectorAll('#proj-cards .proj').forEach(c=>{
-    const st=+c.dataset.stage;
-    c.hidden = s===-9 ? false : (s===2 ? st<2 : st>=2);
-  });
-}));
+  document.querySelectorAll('.pf').forEach(x=>x.setAttribute('aria-pressed',x===b));s=+b.dataset.s;apply();}));
+q.addEventListener('input',apply);
+const me=new URLSearchParams(location.search).get('me');if(me){q.value=me;apply();}})();
 """
 
 

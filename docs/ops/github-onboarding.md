@@ -62,7 +62,7 @@ gh pr create --draft --fill              # 아직 작업 중이면 Draft
 
 1. PR 본문 체크리스트를 채웁니다.
 2. CI(초록 체크)를 기다립니다. 빨간 X면 `Details`를 눌러 로그를 확인하고, 고쳐서 다시 push 하면 PR이 자동 갱신됩니다.
-3. 멘토 또는 다른 멘티 1명 **Approve** 후 **Squash and merge**.
+3. 메인테이너 또는 다른 참여자 1명 **Approve** 후 **Squash and merge**.
 
 ## 6. 병합 후 정리
 

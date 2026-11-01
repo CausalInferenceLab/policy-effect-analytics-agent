@@ -26,7 +26,7 @@
 | 모임 | A. 데이터 온톨로지 | B. 가설과 분석 | C. 서비스 개발 |
 |---|---|---|---|
 | 10.25(일) | 이슈 하나의 계보 YAML PR (`make lineage` 통과) | `plan.yaml` PR + `fetch.py`로 `data/panel.csv` | `apps/<내ID>-<서비스>/` 첫 화면 PR (API 하나 이상 사용) |
-| 11.1(일) 공개 | 새 데이터셋 1개 이상 `datasets.yaml`에 추가, 계보가 사이트에 표시 | `make flow` 결과 + `discussion.md`, 다른 멘티가 재현 | 기능 1개 완성 + README, 사이트에서 열림 |
+| 11.1(일) 공개 | 새 데이터셋 1개 이상 `datasets.yaml`에 추가, 계보가 사이트에 표시 | `make flow` 결과 + `discussion.md`, 다른 참여자가 재현 | 기능 1개 완성 + README, 사이트에서 열림 |
 
 어느 트랙이든 **작업 제안 이슈**를 먼저 열고(트랙 선택), 같은 주제를 고른 사람끼리는 이슈에서 서로를 연결합니다.
 

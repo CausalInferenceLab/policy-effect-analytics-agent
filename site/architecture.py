@@ -164,7 +164,7 @@ NEEDS = [
     (
         "공공데이터포털 인증키",
         "실거래가 등 실제 데이터로 분석 (지금 예시는 시뮬레이션)",
-        "멘티 각자 · .env",
+        "참여자 각자 · .env",
         "warn",
         "각자 신청",
     ),
@@ -263,7 +263,7 @@ RELATED = [
     (
         "korean-law-mcp",
         "법제처 API를 AI 도구(MCP)로 묶은 서버. 인용 검증 · 시점별 법령",
-        "법령 조회가 겹침. 멘티가 Claude로 법령을 탐색할 때 쓰면 좋음. 우리 수집기는 재현용 스냅샷·변경 감지·효과 추정 연결에 집중",
+        "법령 조회가 겹침. 참여자가 Claude로 법령을 탐색할 때 쓰면 좋음. 우리 수집기는 재현용 스냅샷·변경 감지·효과 추정 연결에 집중",
         "MIT",
     ),
     (
@@ -349,7 +349,7 @@ def body(e) -> str:
 <div class="hero" style="padding-bottom:0">
 <h1>한 장으로 보는 구조</h1>
 <p class="lede">두 개의 고리로 움직입니다. 사람들의 질문이 <b>대화 고리</b>로 들어와 주제와 데이터가 쌓이고,
-멘티는 <b>기여 고리</b>의 세 트랙(A 데이터 온톨로지 · B 가설과 분석 · C 서비스 개발) 중 하나로 그 위에 쌓습니다.</p></div>
+참여자는 <b>기여 고리</b>의 세 트랙(A 데이터 온톨로지 · B 가설과 분석 · C 서비스 개발) 중 하나로 그 위에 쌓습니다.</p></div>
 
 <section style="padding-top:28px">
 {_loop("대화 고리 · 질문이 쌓이는 길", LOOP_TALK, e)}
@@ -368,7 +368,7 @@ def body(e) -> str:
 <div class="grid3" style="margin:0 0 14px">{goals}</div>
 <div class="grid">{decisions}</div></section>
 
-<section><h2>폴더 안내</h2><p class="sub">멘티는 <code>cases/</code>의 내 폴더와 <code>catalog/</code>만 고치면 됩니다.</p>
+<section><h2>폴더 안내</h2><p class="sub">참여자는 <code>cases/</code>의 내 폴더와 <code>catalog/</code>만 고치면 됩니다.</p>
 <div class="tablewrap"><table><tr><th>폴더</th><th>하는 일</th><th>누가 고치나</th></tr>{code}</table></div></section>
 
 <section><h2>지금 상태</h2><div class="grid3" style="margin-top:14px">{status}</div></section>

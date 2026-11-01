@@ -279,7 +279,7 @@ REFLECT_STEPS = [
     ("제안", "'제안으로 올리기'를 누르면 대화가 GitHub 이슈로 올라갑니다. 로그인만 있으면 됩니다."),
     (
         "검토",
-        "멘토·멘티가 이슈를 보고 새 주제·데이터셋은 카탈로그에, 분석은 케이스 폴더에 PR로 넣습니다.",
+        "메인테이너·참여자가 이슈를 보고 새 주제·데이터셋은 카탈로그에, 분석은 케이스 폴더에 PR로 넣습니다.",
     ),
     (
         "반영",
@@ -638,7 +638,7 @@ def issues_page(issues, datasets, topics) -> str:
 <p class="lede">2025~2026년에 논쟁이 된 정책 {len(issues)}개를 골라, 누구와 누구를 비교할지, 어떤 방법을 쓸지,
 어떤 데이터를 받을 수 있는지 정리했습니다. 시작일은 모두 정부 공식 자료에서 확인했습니다.</p></div>
 <div class="banner info" style="margin-top:20px">분석은 이슈 하나가 아니라 그 이슈가 속한 <b>주제 전체</b>로 합니다.
-이 목록은 멘티가 어디서부터 볼지 정하는 출발점입니다.</div>
+이 목록은 참여자가 어디서부터 볼지 정하는 출발점입니다.</div>
 <section style="padding-top:28px"><h2>효과 추정 5단계</h2><div class="grid3" style="margin-top:12px">{guide}</div></section>
 <section><h2>분석 방법 고르기</h2><p class="sub">방법은 데이터 모양을 보고 규칙이 정합니다. 결과를 본 뒤 사람이나 AI가 고르지 않습니다.</p>
 <div class="grid">{designs}</div></section>
@@ -963,7 +963,7 @@ def topic_page(t, policies, issues, datasets, projects=(), answers=(), lineages=
             f"<p class='empty'>아직 아무도 비교해 보지 않았어요. 첫 번째 시민 데이터 과학자가 되어 볼래요? <a class='btn primary' href='../index.html#ask'>이 주제로 질문하기</a> "
             f"<a class='btn ghost' href='{REPO}/issues/new?template=case-proposal.yml' data-track='propose-case'>분석 제안하기</a></p>"
         )
-    pmine = [p for p in proj.by_topic(list(projects), t.id) if not p["stages"][2]]
+    pmine = [p for p in proj.by_topic(list(projects), t.id) if not p.get("has_flow")]
     if pmine:
         body.append(
             "<h3>진행 중인 분석</h3><div class='grid proj-grid'>"
