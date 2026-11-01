@@ -1,0 +1,24 @@
+{
+  "case_id": "yesolee-green-traffic",
+  "started_at": "2026-11-01T10:48:41+00:00",
+  "finished_at": "2026-11-01T10:48:53+00:00",
+  "git_sha": "564c866ecd2590171142212a73d217376be5ad80",
+  "git_dirty": true,
+  "plan_sha256": "b004ad43bbf49441902442c89296bd6ec6f342fcb6595d52856ab4e16a46e878",
+  "data_sha256": "5b253ef219ebd00bc369a5faf5544a3dadefbe21d80754f5628e188b95d7ff00",
+  "data_path": "data/panel.no2.csv",
+  "versions": {
+    "python": "3.11.9",
+    "pandas": "2.3.3",
+    "numpy": "2.4.6",
+    "scipy": "1.17.1",
+    "pyfixest": "0.60.0",
+    "statsmodels": "0.15.0",
+    "pydantic": "2.14.1",
+    "matplotlib": "3.11.2"
+  },
+  "platform": "macOS-15.7.7-arm64-arm-64bit",
+  "verdicts": {
+    "no2": "conditional"
+  }
+}
