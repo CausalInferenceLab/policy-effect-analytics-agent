@@ -1,0 +1,85 @@
+{
+  "output": "data/outcome-panel.csv",
+  "rows": 1368,
+  "years": [
+    2014,
+    2015,
+    2016,
+    2017,
+    2018,
+    2019
+  ],
+  "rows_by_year": {
+    "2014": 227,
+    "2015": 228,
+    "2016": 228,
+    "2017": 228,
+    "2018": 228,
+    "2019": 229
+  },
+  "regions": 229,
+  "complete_six_year_regions": 227,
+  "temporal_completeness_is_not_boundary_validation": true,
+  "coverage": [
+    {
+      "year": 2014,
+      "joined_rows": 227,
+      "unjoined_rows": 3,
+      "national_crashes65": 20275,
+      "joined_crashes65": 19840,
+      "unjoined_crashes65": 435
+    },
+    {
+      "year": 2015,
+      "joined_rows": 228,
+      "unjoined_rows": 2,
+      "national_crashes65": 23063,
+      "joined_crashes65": 22950,
+      "unjoined_crashes65": 113
+    },
+    {
+      "year": 2016,
+      "joined_rows": 228,
+      "unjoined_rows": 2,
+      "national_crashes65": 24429,
+      "joined_crashes65": 24316,
+      "unjoined_crashes65": 113
+    },
+    {
+      "year": 2017,
+      "joined_rows": 228,
+      "unjoined_rows": 2,
+      "national_crashes65": 26713,
+      "joined_crashes65": 26601,
+      "unjoined_crashes65": 112
+    },
+    {
+      "year": 2018,
+      "joined_rows": 228,
+      "unjoined_rows": 2,
+      "national_crashes65": 30012,
+      "joined_crashes65": 29885,
+      "unjoined_crashes65": 127
+    },
+    {
+      "year": 2019,
+      "joined_rows": 229,
+      "unjoined_rows": 0,
+      "national_crashes65": 33239,
+      "joined_crashes65": 33239,
+      "unjoined_crashes65": 0
+    }
+  ],
+  "unjoined_rows": 11,
+  "input_sha256": {
+    "accidents": "186a03475f3dd2cb07778e5e457f70cea9aacd7c18c9ea30d63cc8bd4c0ceca8",
+    "population": "954efe0baa088c1fb687a57a67e77621fe4f64c99c12e71e2bb69be28b64fbf1"
+  },
+  "output_sha256": "f4b9b01e64439486e063c4472f667916e618fbe3903bd1002b77a7f1af823a53",
+  "coverage_sha256": "29c47861581ba3f387e5e28b735df8bed023c36936e435b8381ce3d0e69392dd",
+  "analysis_ready": false,
+  "spatial_harmonization_complete": false,
+  "treatment_joined": false,
+  "effect_estimated": false,
+  "limitation": "원시 지역명 대응만 검사. 경계 동일성·비교군 적격성은 별도 확인."
+}

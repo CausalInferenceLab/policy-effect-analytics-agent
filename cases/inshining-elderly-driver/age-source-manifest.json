@@ -1,0 +1,232 @@
+{
+  "schema_version": 1,
+  "status": "reviewed_source_for_local_descriptive_comparison",
+  "analysis_approved": false,
+  "publication_approved": false,
+  "source_review_status": "pass",
+  "source_review_scope": "national and Busan aggregate age crash-count source readiness; not causal or publication approval",
+  "metadata": {
+    "driver_age_dimension": {
+      "id": 2736,
+      "name": "가해운전자(1당) 연령",
+      "members": [
+        "19세 이하",
+        "20-29세",
+        "30-39세",
+        "40-49세",
+        "50-59세",
+        "60-64세",
+        "65세 이상",
+        "불명"
+      ]
+    },
+    "year_dimension_id": 888,
+    "measure": {
+      "id": 334,
+      "name": "사고[건]",
+      "physical_name": "ACC_CNT"
+    },
+    "geography_dimension": {
+      "id": 906,
+      "busan_member": "부산"
+    }
+  },
+  "snapshot_scope": "Serialized public PAGE/TITLE/GRID/GRIDCOMMENT/ERROR subtrees only; MESSAGE and runtime/other containers removed. Not full original HTTP response bytes.",
+  "binding": "TITLE is empty and XML has no intrinsic region/measure selection. Exact retained SHA256 binds each snapshot to reviewed public request parameters and hashed static metadata/execution/remediation evidence; filename is not geographic proof.",
+  "evidence": [
+    {
+      "path": ".local/age-comparison-2026-11-01/source-query-execution.json",
+      "sha256": "fddaaeca750e8dec812b0e091f383d571e13e2f07ccc1ecc5aa431d047056a75"
+    },
+    {
+      "path": ".local/age-comparison-2026-11-01/source-cleanup.json",
+      "sha256": "266fd10f4fecfa27af20fe23d1bc0b33e40825ef934d32348753f6e9b4fb9db0"
+    },
+    {
+      "path": ".local/age-comparison-2026-11-01/source-members-execution.json",
+      "sha256": "86af6721044f72ad07c92919c9af5da4e1a8d577676ce4f54253bea71ab7934f"
+    },
+    {
+      "path": ".local/age-comparison-2026-11-01/source-members-age2736.json",
+      "sha256": "dbe7cdfaa62ae4b370299d2550ee82f1ef512437a4010c8c788d83553ba94ec6"
+    },
+    {
+      "path": ".local/age-comparison-2026-11-01/source-members-measures131.json",
+      "sha256": "76441f9c72a72d5375996b19d39511ace45e225002ea0b9e9e3d1836df0b2e1a"
+    },
+    {
+      "path": ".local/age-comparison-2026-11-01/source-initial-dimensions131.json",
+      "sha256": "15bb87ca64aeb7f57ddeb641d0dc23066bb67bb0cc7dfe54a4532008dd63a927"
+    },
+    {
+      "path": ".local/age-comparison-2026-11-01/source-reconciliation.json",
+      "sha256": "c75699bdae2085cea5ebec3b62cc6f64d6e7a3b58200478e4850dc87d480a156"
+    },
+    {
+      "path": ".local/age-comparison-2026-11-01/review-verdict.json",
+      "sha256": "552c0d3d133308132a482a8f45484280bb11bcc16de0f8c4edafa93970af9ae8"
+    },
+    {
+      "path": ".local/age-comparison-2026-11-01/review-report.md",
+      "sha256": "927e7d715006ce394bdd62ce299f52979796e387a234fe2d706791a081c121c2"
+    }
+  ],
+  "source_execution": {
+    "command_argv": [
+      ".local/age-comparison-2026-11-01/source-probe.py",
+      "query",
+      "--label",
+      "query"
+    ],
+    "recorded_at_utc": "2026-11-01T12:47:53.254774+00:00",
+    "offline_replay_is_new_download": false,
+    "network_rerun_performed": false
+  },
+  "sources": [
+    {
+      "file": "source-query-national-2014-2018.xml",
+      "area": "national",
+      "years": [
+        2014,
+        2015,
+        2016,
+        2017,
+        2018
+      ],
+      "sha256": "124f0e2402e5a9c4915ea86f52f2c167304827c9e02d13596413e2ea8a4a4a41",
+      "collected_on": "2026-11-01",
+      "endpoint": "https://taas.koroad.or.kr/OBIP25/servlet/OctagonProxyServlet",
+      "public_parameters": ":row_list=\"2736\",:col_list=\"888\",:mea_list=\"334\",:condition=\"\",:pcondition=\"\",:incondition=\"\",:filter=\"\",:agg_function=\"SUM\",:orgdata=\"\",:decimalpoint=\"\",:aggDecimalpoint=\"\",:enumerate=\"\",:mode=\"A\",:chartdatatype=\"ALL_NOAGG\",:pattern_id=\"7125\",:agg_info=\"D2736;@T;@합계;|D888;@T;@합계;|\",:meapos=\"R\",:meaonlyagg=\"F\",:agg_form=\"S\",:agg_position=\"\",:pagenum=\"1\",:pattern_name=\"시도 시군구별 가해운전자 연령대별 교통사고\",:subject_name=\"251_분석통계 기본계획(경찰청 사고일반) \",:SetSchedule=\"NONE\",:subject_id=\"131\",:layout=\"0\",:vcondition=\"D1443@|@P08 S01 T111 #OTE![201401]!# #OTE![201812]!#;|;\"",
+      "request": {
+        "row_dimension_id": 2736,
+        "column_dimension_id": 888,
+        "measure_id": 334,
+        "measure_name": "사고[건]",
+        "measure_physical_name": "ACC_CNT",
+        "subject_id": 131,
+        "pattern_id": 7125,
+        "geography_dimension_id": 906,
+        "area_condition": "",
+        "start_month": "201401",
+        "end_month": "201812"
+      },
+      "original_response_sha256": "bb48be73d9b7c3b02add7ddb085cf1516b0277291ec58a904cbd30025b5441a9",
+      "original_response_saved": false,
+      "initial_projection_sha256": "d863fa527da5c834a9d3adab0c4b90f436188e633de93d023c1e0218e26fb7b3",
+      "retention_remediation": {
+        "removed_tags": [
+          "MESSAGE"
+        ],
+        "previous_sha256": "d863fa527da5c834a9d3adab0c4b90f436188e633de93d023c1e0218e26fb7b3"
+      }
+    },
+    {
+      "file": "source-query-busan-2014-2018.xml",
+      "area": "busan",
+      "years": [
+        2014,
+        2015,
+        2016,
+        2017,
+        2018
+      ],
+      "sha256": "ed6e835ce41ab9e410269bfd8ee4dde8d81e74f6726efadc0a7374891a194299",
+      "collected_on": "2026-11-01",
+      "endpoint": "https://taas.koroad.or.kr/OBIP25/servlet/OctagonProxyServlet",
+      "public_parameters": ":row_list=\"2736\",:col_list=\"888\",:mea_list=\"334\",:condition=\"D906@|@P01 S01 #OTE![부산]!#;|;\",:pcondition=\"\",:incondition=\"\",:filter=\"\",:agg_function=\"SUM\",:orgdata=\"\",:decimalpoint=\"\",:aggDecimalpoint=\"\",:enumerate=\"\",:mode=\"A\",:chartdatatype=\"ALL_NOAGG\",:pattern_id=\"7125\",:agg_info=\"D2736;@T;@합계;|D888;@T;@합계;|\",:meapos=\"R\",:meaonlyagg=\"F\",:agg_form=\"S\",:agg_position=\"\",:pagenum=\"1\",:pattern_name=\"시도 시군구별 가해운전자 연령대별 교통사고\",:subject_name=\"251_분석통계 기본계획(경찰청 사고일반) \",:SetSchedule=\"NONE\",:subject_id=\"131\",:layout=\"0\",:vcondition=\"D1443@|@P08 S01 T111 #OTE![201401]!# #OTE![201812]!#;|;\"",
+      "request": {
+        "row_dimension_id": 2736,
+        "column_dimension_id": 888,
+        "measure_id": 334,
+        "measure_name": "사고[건]",
+        "measure_physical_name": "ACC_CNT",
+        "subject_id": 131,
+        "pattern_id": 7125,
+        "geography_dimension_id": 906,
+        "area_condition": "D906@|@P01 S01 #OTE![부산]!#;|;",
+        "start_month": "201401",
+        "end_month": "201812"
+      },
+      "original_response_sha256": "1a3897e69220b873425c3c527f4061b1e2953e6b1e3c662fac8f6cd563de84fe",
+      "original_response_saved": false,
+      "initial_projection_sha256": "1f7df923b0b4355701b4b2bda7b5ae454379992b687710c65c532c4dc73a819b",
+      "retention_remediation": {
+        "removed_tags": [
+          "MESSAGE"
+        ],
+        "previous_sha256": "1f7df923b0b4355701b4b2bda7b5ae454379992b687710c65c532c4dc73a819b"
+      }
+    },
+    {
+      "file": "source-query-national-2019-2019.xml",
+      "area": "national",
+      "years": [
+        2019
+      ],
+      "sha256": "6a6ad3b65ff7be91312893f523dec4c133f2ac34e8f18f03ce53403182bf9e68",
+      "collected_on": "2026-11-01",
+      "endpoint": "https://taas.koroad.or.kr/OBIP25/servlet/OctagonProxyServlet",
+      "public_parameters": ":row_list=\"2736\",:col_list=\"888\",:mea_list=\"334\",:condition=\"\",:pcondition=\"\",:incondition=\"\",:filter=\"\",:agg_function=\"SUM\",:orgdata=\"\",:decimalpoint=\"\",:aggDecimalpoint=\"\",:enumerate=\"\",:mode=\"A\",:chartdatatype=\"ALL_NOAGG\",:pattern_id=\"7125\",:agg_info=\"D2736;@T;@합계;|D888;@T;@합계;|\",:meapos=\"R\",:meaonlyagg=\"F\",:agg_form=\"S\",:agg_position=\"\",:pagenum=\"1\",:pattern_name=\"시도 시군구별 가해운전자 연령대별 교통사고\",:subject_name=\"251_분석통계 기본계획(경찰청 사고일반) \",:SetSchedule=\"NONE\",:subject_id=\"131\",:layout=\"0\",:vcondition=\"D1443@|@P08 S01 T111 #OTE![201901]!# #OTE![201912]!#;|;\"",
+      "request": {
+        "row_dimension_id": 2736,
+        "column_dimension_id": 888,
+        "measure_id": 334,
+        "measure_name": "사고[건]",
+        "measure_physical_name": "ACC_CNT",
+        "subject_id": 131,
+        "pattern_id": 7125,
+        "geography_dimension_id": 906,
+        "area_condition": "",
+        "start_month": "201901",
+        "end_month": "201912"
+      },
+      "original_response_sha256": "aacd31de585ffe0d66ad68246ec56d5f464222565d1d589a01963b7bcbfe856d",
+      "original_response_saved": false,
+      "initial_projection_sha256": "e1dee37bb7111dc40fa686d9543c3cb1e366f2367ea0ed7826e715fe12188524",
+      "retention_remediation": {
+        "removed_tags": [
+          "MESSAGE"
+        ],
+        "previous_sha256": "e1dee37bb7111dc40fa686d9543c3cb1e366f2367ea0ed7826e715fe12188524"
+      }
+    },
+    {
+      "file": "source-query-busan-2019-2019.xml",
+      "area": "busan",
+      "years": [
+        2019
+      ],
+      "sha256": "1bec3b42c873b98792182bb0b68a3ac25fefa0e10a7d3bb757c84912470667af",
+      "collected_on": "2026-11-01",
+      "endpoint": "https://taas.koroad.or.kr/OBIP25/servlet/OctagonProxyServlet",
+      "public_parameters": ":row_list=\"2736\",:col_list=\"888\",:mea_list=\"334\",:condition=\"D906@|@P01 S01 #OTE![부산]!#;|;\",:pcondition=\"\",:incondition=\"\",:filter=\"\",:agg_function=\"SUM\",:orgdata=\"\",:decimalpoint=\"\",:aggDecimalpoint=\"\",:enumerate=\"\",:mode=\"A\",:chartdatatype=\"ALL_NOAGG\",:pattern_id=\"7125\",:agg_info=\"D2736;@T;@합계;|D888;@T;@합계;|\",:meapos=\"R\",:meaonlyagg=\"F\",:agg_form=\"S\",:agg_position=\"\",:pagenum=\"1\",:pattern_name=\"시도 시군구별 가해운전자 연령대별 교통사고\",:subject_name=\"251_분석통계 기본계획(경찰청 사고일반) \",:SetSchedule=\"NONE\",:subject_id=\"131\",:layout=\"0\",:vcondition=\"D1443@|@P08 S01 T111 #OTE![201901]!# #OTE![201912]!#;|;\"",
+      "request": {
+        "row_dimension_id": 2736,
+        "column_dimension_id": 888,
+        "measure_id": 334,
+        "measure_name": "사고[건]",
+        "measure_physical_name": "ACC_CNT",
+        "subject_id": 131,
+        "pattern_id": 7125,
+        "geography_dimension_id": 906,
+        "area_condition": "D906@|@P01 S01 #OTE![부산]!#;|;",
+        "start_month": "201901",
+        "end_month": "201912"
+      },
+      "original_response_sha256": "ed97b668a17cb62e88d12a3431ce2f18be6e190cfea45f70986ad481b400fb6f",
+      "original_response_saved": false,
+      "initial_projection_sha256": "da3f28369fd46b171ab7f02dfe71b4a44b18b4ac4f77b45eb02c812493821d71",
+      "retention_remediation": {
+        "removed_tags": [
+          "MESSAGE"
+        ],
+        "previous_sha256": "da3f28369fd46b171ab7f02dfe71b4a44b18b4ac4f77b45eb02c812493821d71"
+      }
+    }
+  ],
+  "known_limits": [
+    "Public metadata and numerical reconciliation do not establish truth of police records or policy causality.",
+    "No license, external publication, untreated control, or analysis approval.",
+    "Raw data is locally ignored by existing **/data/ rule; restoring the exact reviewed snapshots is required for offline replay from a fresh checkout."
+  ]
+}

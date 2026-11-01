@@ -1,0 +1,900 @@
+{
+  "schema_version": 1,
+  "reviewed_at": "2026-10-27T06:17:49.340776+00:00",
+  "reviewer_agent": "/root/policy_independent_review",
+  "writer_agents": [
+    "/root/policy_evidence_exec",
+    "/root/policy_checks_exec",
+    "/root (aggregation only)"
+  ],
+  "final_scope_reviewed": {
+    "description": "14 policy timing claims, six provisional 2019 classifications, validator/tests, execution-review rules and current aggregation/document consistency",
+    "evidence_count": 14,
+    "unique_source_count": 9,
+    "classifications_count": 6,
+    "case_files": [
+      "policy-evidence.json",
+      "policy-register.yaml",
+      "policy-review.md",
+      "audit_policy.py",
+      "test_audit_policy.py",
+      "execution-review-protocol.md",
+      "verification.json",
+      "README.md",
+      "plan.yaml",
+      "data-audit.md",
+      "collection-report.md",
+      "cleaning-step-01.md",
+      "evidence/policy-sources/README.md"
+    ],
+    "project_files": [
+      "AGENTS.md",
+      "README.md"
+    ],
+    "non_timing_legacy_fields_exhaustively_reviewed": false,
+    "production_data_or_test_files_edited_by_reviewer": false
+  },
+  "findings": [
+    {
+      "id": "R1",
+      "status": "resolved",
+      "finding": "명시 SEARCH INDEX EXCERPT 자료의 retrieval_mode를 direct로 바꿔도 구조검사를 통과하던 문제",
+      "resolution": "작성 담당이 회귀 검사와 retrieval_marker_mismatch 오류를 추가했다. 독립 합성 CLI challenge에서 exit 1로 재확인했다. 표지를 제거한 거짓 출처까지 판별한다는 주장은 하지 않는다."
+    },
+    {
+      "id": "R2",
+      "status": "resolved",
+      "finding": "알려진 2020년 개시와 예고 불확실성이 함께 있는 부안의 hold를 candidate로 강제하던 문제",
+      "resolution": "작성 담당이 날짜 근거·명시 reason·비어 있지 않은 unresolved_checks를 요구하는 hold 경로를 추가했다. 실제 부안 입력은 날짜를 유지한 hold이며, 정상/근거누락/확인사항누락 합성 사례를 독립 확인했다."
+    },
+    {
+      "id": "R3",
+      "status": "resolved",
+      "finding": "전북 초기 vtm URL 오류응답과 비어 있던 보강 스냅샷은 직접 원문 근거로 쓸 수 없었음",
+      "resolution": "동일 dataSid의 governor 공식 정상 답변으로 교체했고 저장 헤더·JSON·레지스터 URL이 일치한다. 독립 HTTP 재조회와 정확 인용 확인에 성공했다."
+    },
+    {
+      "id": "R4",
+      "status": "resolved",
+      "finding": "주변 문서에서 전주와 군산을 함께 최초 시행 확정처럼 읽을 수 있던 표현",
+      "resolution": "작성 담당이 README·plan.yaml·수집보고서·cleaning-step-01의 문구를 전주 2020년부터 시행 설명/군산 최초 시행 근거로 좁혔다. 최종 문구와 집계 해시를 대조했다."
+    },
+    {
+      "id": "R5",
+      "status": "resolved",
+      "finding": "서울 반납 기간 3월 15일을 지원 신청 개시일과 동일시해 일 정밀도로 확정했던 문제",
+      "resolution": "작성 담당이 직접 시행 설명 인용으로 교체하고 2019-03/month로 좁혔다. 최종 인용을 공식 원문에서 독립 재조회했으며 JSON·레지스터·README·집계와 CLI를 재확인했다. 2019 미처치 제외 분류는 유지한다."
+    }
+  ],
+  "unresolved_blocking_findings": [],
+  "automated_checks": {
+    "commands": [
+      {
+        "command": [
+          ".venv/bin/python",
+          "cases/inshining-elderly-driver/audit_policy.py",
+          "--output",
+          "/tmp/policy-independent-checks.json"
+        ],
+        "returncode": 0,
+        "output": "structural_checks_passed: errors=0, warnings=1, unknowns=2; analysis_approved=false\n"
+      },
+      {
+        "command": [
+          ".venv/bin/python",
+          "-m",
+          "unittest",
+          "discover",
+          "-s",
+          "cases/inshining-elderly-driver",
+          "-p",
+          "test_*.py",
+          "-v"
+        ],
+        "returncode": 0,
+        "output": "erified_definition_and_over_five_years (test_taas.TaasTests.test_rejects_unverified_definition_and_over_five_years) ... ok\ntest_rejects_wrong_year_missing_cells_and_wrong_definition (test_taas.TaasTests.test_rejects_wrong_year_missing_cells_and_wrong_definition) ... ok\ntest_sejong_single_leaf_is_also_its_province_total (test_taas.TaasTests.test_sejong_single_leaf_is_also_its_province_total) ... ok\n\n----------------------------------------------------------------------\nRan 53 tests in 2.404s\n\nOK\n"
+      }
+    ],
+    "unit_tests": {
+      "run": 53,
+      "passed": 53,
+      "exit_code": 0
+    },
+    "actual_input": {
+      "sha256": "1f8c0f98f37ec8b393461ae1610d61734e9cd1773e11df941dfe6c469ca33af4",
+      "status": "structural_checks_passed",
+      "errors": [],
+      "warnings": [
+        {
+          "code": "known_date_classification_hold",
+          "location": "$.classifications[5]",
+          "message": "개시일은 알려져 있으나 분류는 보류되어 있다. 알려진 날짜와 비교군 적격성의 미확인을 구별하며 candidate로 자동 변경하지 않는다.",
+          "jurisdiction": "부안군",
+          "first_offer_start": "2020"
+        }
+      ],
+      "unknowns": [
+        {
+          "code": "evidence_unknown",
+          "location": "$.evidence[2]",
+          "message": "시행 시점 또는 자료가 미확인이다. 미처치나 0으로 해석할 수 없다.",
+          "evidence_id": "busan-2018-announcement"
+        },
+        {
+          "code": "classification_eligibility_unknown",
+          "location": "$.classifications[5]",
+          "message": "날짜 미확인이 아니라 분류 적격성의 미확인이다. 보류 사유와 미해결 확인 사항을 독립 검토해야 한다.",
+          "jurisdiction": "부안군",
+          "first_offer_start": "2020",
+          "unresolved_checks": [
+            "최초 공고·예고일",
+            "지원 신청을 실제 이용할 수 있었던 개시일",
+            "2019-12-10 자격 기준의 법적·행정적 배경"
+          ]
+        }
+      ],
+      "analysis_approved": false
+    },
+    "synthetic_challenges": [
+      {
+        "challenge": "missing_evidence",
+        "expected_reject": true,
+        "expected_error_code": "missing_evidence",
+        "returncode": 1,
+        "status": "blocked",
+        "errors": [
+          "missing_evidence",
+          "unsupported_first_offer"
+        ],
+        "warnings": [
+          "original_unverified"
+        ],
+        "unknowns": [],
+        "expectation_met": true
+      },
+      {
+        "challenge": "hash_tamper",
+        "expected_reject": true,
+        "expected_error_code": "snapshot_hash",
+        "returncode": 1,
+        "status": "blocked",
+        "errors": [
+          "snapshot_hash",
+          "unsupported_first_offer"
+        ],
+        "warnings": [
+          "original_unverified"
+        ],
+        "unknowns": [],
+        "expectation_met": true
+      },
+      {
+        "challenge": "invalid_date",
+        "expected_reject": true,
+        "expected_error_code": "date_precision",
+        "returncode": 1,
+        "status": "blocked",
+        "errors": [
+          "date_precision",
+          "unsupported_first_offer"
+        ],
+        "warnings": [
+          "original_unverified"
+        ],
+        "unknowns": [],
+        "expectation_met": true
+      },
+      {
+        "challenge": "ordinance_only",
+        "expected_reject": true,
+        "expected_error_code": "unsupported_first_offer",
+        "returncode": 1,
+        "status": "blocked",
+        "errors": [
+          "unsupported_first_offer"
+        ],
+        "warnings": [
+          "original_unverified"
+        ],
+        "unknowns": [],
+        "expectation_met": true
+      },
+      {
+        "challenge": "retroactive_eligibility_only",
+        "expected_reject": true,
+        "expected_error_code": "unsupported_first_offer",
+        "returncode": 1,
+        "status": "blocked",
+        "errors": [
+          "unsupported_first_offer"
+        ],
+        "warnings": [
+          "original_unverified"
+        ],
+        "unknowns": [],
+        "expectation_met": true
+      },
+      {
+        "challenge": "2019_as_candidate",
+        "expected_reject": true,
+        "expected_error_code": "year_role",
+        "returncode": 1,
+        "status": "blocked",
+        "errors": [
+          "year_role"
+        ],
+        "warnings": [
+          "original_unverified"
+        ],
+        "unknowns": [],
+        "expectation_met": true
+      },
+      {
+        "challenge": "unknown_as_candidate",
+        "expected_reject": true,
+        "expected_error_code": "unknown_role",
+        "returncode": 1,
+        "status": "blocked",
+        "errors": [
+          "unknown_role"
+        ],
+        "warnings": [
+          "original_unverified"
+        ],
+        "unknowns": [
+          "classification_unknown"
+        ],
+        "expectation_met": true
+      },
+      {
+        "challenge": "unknown_as_zero",
+        "expected_reject": true,
+        "expected_error_code": "date_precision",
+        "returncode": 1,
+        "status": "blocked",
+        "errors": [
+          "date_precision"
+        ],
+        "warnings": [
+          "original_unverified"
+        ],
+        "unknowns": [],
+        "expectation_met": true
+      },
+      {
+        "challenge": "candidate_analysis_approved",
+        "expected_reject": true,
+        "expected_error_code": "analysis_approval",
+        "returncode": 1,
+        "status": "blocked",
+        "errors": [
+          "analysis_approval"
+        ],
+        "warnings": [
+          "original_unverified"
+        ],
+        "unknowns": [],
+        "expectation_met": true
+      },
+      {
+        "challenge": "search_index_disguised_as_direct",
+        "expected_reject": true,
+        "expected_error_code": "retrieval_marker_mismatch",
+        "returncode": 1,
+        "status": "blocked",
+        "errors": [
+          "retrieval_marker_mismatch",
+          "unsupported_first_offer"
+        ],
+        "warnings": [],
+        "unknowns": [],
+        "expectation_met": true
+      },
+      {
+        "challenge": "known_date_hold_with_reasons",
+        "expected_reject": false,
+        "expected_error_code": null,
+        "returncode": 0,
+        "status": "structural_checks_passed",
+        "errors": [],
+        "warnings": [
+          "original_unverified",
+          "known_date_classification_hold"
+        ],
+        "unknowns": [
+          "classification_eligibility_unknown"
+        ],
+        "expectation_met": true
+      },
+      {
+        "challenge": "known_date_hold_without_unresolved_checks",
+        "expected_reject": true,
+        "expected_error_code": "hold_without_unresolved_checks",
+        "returncode": 1,
+        "status": "blocked",
+        "errors": [
+          "hold_without_unresolved_checks"
+        ],
+        "warnings": [
+          "original_unverified",
+          "known_date_classification_hold"
+        ],
+        "unknowns": [
+          "classification_eligibility_unknown"
+        ],
+        "expectation_met": true
+      },
+      {
+        "challenge": "known_date_hold_without_offer_evidence",
+        "expected_reject": true,
+        "expected_error_code": "unsupported_first_offer",
+        "returncode": 1,
+        "status": "blocked",
+        "errors": [
+          "unsupported_first_offer"
+        ],
+        "warnings": [
+          "original_unverified",
+          "known_date_classification_hold"
+        ],
+        "unknowns": [
+          "classification_eligibility_unknown"
+        ],
+        "expectation_met": true
+      }
+    ],
+    "source_refetch": [
+      {
+        "source": "https://www.busan.go.kr/nbtnews/1361473",
+        "status": 200,
+        "bytes": 64337,
+        "quotations": [
+          {
+            "id": "busan-offer-start",
+            "direct_normalized_contains": true
+          },
+          {
+            "id": "busan-eligibility",
+            "direct_normalized_contains": true
+          }
+        ],
+        "blocked": false
+      },
+      {
+        "source": "https://www.busan.go.kr/nbtnews/1326806",
+        "status": 200,
+        "bytes": 63112,
+        "quotations": [
+          {
+            "id": "busan-2018-announcement",
+            "direct_normalized_contains": true
+          }
+        ],
+        "blocked": false
+      },
+      {
+        "source": "https://mediahub.seoul.go.kr/archives/1240732",
+        "status": 200,
+        "bytes": 127398,
+        "quotations": [
+          {
+            "id": "seoul-offer-start",
+            "direct_normalized_contains": true
+          },
+          {
+            "id": "seoul-eligibility",
+            "direct_normalized_contains": true
+          },
+          {
+            "id": "seoul-ordinance",
+            "direct_normalized_contains": true
+          }
+        ],
+        "blocked": false
+      },
+      {
+        "source": "https://gnews.gg.go.kr/briefing/brief_gongbo_view.do?BS_CODE=S017&number=42498",
+        "status": 200,
+        "bytes": 47290,
+        "quotations": [
+          {
+            "id": "gyeonggi-offer-start",
+            "direct_normalized_contains": true
+          }
+        ],
+        "blocked": false
+      },
+      {
+        "source": "https://www.jeonju.go.kr/deokjingu/planweb/board/view.9is?boardUid=ff8080818bad9295018bae4a96ac09b2&contentUid=ff8080818990c349018b041a9b223a47&dataUid=9be517a76efda4f9016ff3f23a241d7e",
+        "status": 200,
+        "bytes": 198686,
+        "quotations": [
+          {
+            "id": "jeonju-offer-period",
+            "direct_normalized_contains": true
+          }
+        ],
+        "blocked": false
+      },
+      {
+        "source": "https://www.jeonbuk.go.kr/governor/board/view.jeonbuk?boardId=BBS_0000073&dataSid=305494&menuCd=DOM_000000203001003000&paging=ok&startPage=36",
+        "status": 200,
+        "bytes": 29256,
+        "quotations": [
+          {
+            "id": "jeonju-first-implementation",
+            "direct_normalized_contains": true
+          }
+        ],
+        "blocked": false
+      },
+      {
+        "source": "https://council.gunsan.go.kr/main/minutes/html/MinutesView.do?MINTS_SN=6055",
+        "status": 200,
+        "bytes": 421618,
+        "quotations": [
+          {
+            "id": "gunsan-first-implementation",
+            "direct_normalized_contains": true
+          }
+        ],
+        "blocked": false
+      },
+      {
+        "source": "https://www.buan.go.kr/board/view.buan?boardId=BBS_0000059&dataSid=118442&menuCd=DOM_000000101003003000&paging=ok&startPage=419",
+        "status": 200,
+        "bytes": 85054,
+        "quotations": [
+          {
+            "id": "buan-offer-year",
+            "direct_normalized_contains": true
+          },
+          {
+            "id": "buan-eligibility",
+            "direct_normalized_contains": true
+          }
+        ],
+        "blocked": false
+      },
+      {
+        "source": "https://www.busan.go.kr/depart/5030safe01",
+        "status": 200,
+        "bytes": 399054,
+        "quotations": [
+          {
+            "id": "busan-5030-start",
+            "direct_normalized_contains": true
+          },
+          {
+            "id": "busan-5030-enforcement",
+            "direct_normalized_contains": true
+          }
+        ],
+        "blocked": false
+      }
+    ],
+    "integrity": {
+      "raw_hash_checks": [
+        {
+          "file": "data/raw/population-2013-12.csv",
+          "actual_sha256": "f8618e748dfb09089c6ba8c19f833454a41f27bf5219469112a13033ea79c297",
+          "expected_sha256": "f8618e748dfb09089c6ba8c19f833454a41f27bf5219469112a13033ea79c297",
+          "matches": true
+        },
+        {
+          "file": "data/raw/population-2014-12.csv",
+          "actual_sha256": "69ea0e01d81ff29c08565c5b713fdccf05eb87709ad45faecc6e00420c423fe2",
+          "expected_sha256": "69ea0e01d81ff29c08565c5b713fdccf05eb87709ad45faecc6e00420c423fe2",
+          "matches": true
+        },
+        {
+          "file": "data/raw/population-2015-12.csv",
+          "actual_sha256": "874c47fa8245964ba2571420005c93b49747ede5ce54234f9b090f63476c9b90",
+          "expected_sha256": "874c47fa8245964ba2571420005c93b49747ede5ce54234f9b090f63476c9b90",
+          "matches": true
+        },
+        {
+          "file": "data/raw/population-2016-12.csv",
+          "actual_sha256": "dd900fdf4540779737210a7a8f7d4cc0b2a61d3045ad2e6d760ba86d32430bff",
+          "expected_sha256": "dd900fdf4540779737210a7a8f7d4cc0b2a61d3045ad2e6d760ba86d32430bff",
+          "matches": true
+        },
+        {
+          "file": "data/raw/population-2017-12.csv",
+          "actual_sha256": "6069a70fb332c0afc2ca51b89e3bd0b0e1a688cf42394b3634ef7a1acacb277a",
+          "expected_sha256": "6069a70fb332c0afc2ca51b89e3bd0b0e1a688cf42394b3634ef7a1acacb277a",
+          "matches": true
+        },
+        {
+          "file": "data/raw/population-2018-12.csv",
+          "actual_sha256": "a203d43bc534382faa492e90548e5d4dbd994afe92a4fc37f08be6ef254304e8",
+          "expected_sha256": "a203d43bc534382faa492e90548e5d4dbd994afe92a4fc37f08be6ef254304e8",
+          "matches": true
+        },
+        {
+          "file": "data/raw/taas-2014-2018-page-1.xml",
+          "actual_sha256": "afc507f06539b612934192bd12caec23c7eda4481679567f9653e1d90e7c803a",
+          "expected_sha256": "afc507f06539b612934192bd12caec23c7eda4481679567f9653e1d90e7c803a",
+          "matches": true
+        },
+        {
+          "file": "data/raw/taas-2014-2018-page-2.xml",
+          "actual_sha256": "4f7a631e152bfc75dc4f5a73591bd05b1d5dbefee6b0b30e231ed40540316ba4",
+          "expected_sha256": "4f7a631e152bfc75dc4f5a73591bd05b1d5dbefee6b0b30e231ed40540316ba4",
+          "matches": true
+        },
+        {
+          "file": "data/raw/taas-2019-2019-page-1.xml",
+          "actual_sha256": "c36733c27200a602e01d67ebce0021e3779a0250cd16758e74318de8f21a1bf6",
+          "expected_sha256": "c36733c27200a602e01d67ebce0021e3779a0250cd16758e74318de8f21a1bf6",
+          "matches": true
+        },
+        {
+          "file": "data/raw/taas-2019-2019-page-2.xml",
+          "actual_sha256": "f2bb484a897d67759052576819a74b6104722aae5067ecedbeccd70656b832db",
+          "expected_sha256": "f2bb484a897d67759052576819a74b6104722aae5067ecedbeccd70656b832db",
+          "matches": true
+        }
+      ],
+      "normalized_hash_checks": [
+        {
+          "file": "data/population.csv",
+          "matches": true,
+          "sha256": "954efe0baa088c1fb687a57a67e77621fe4f64c99c12e71e2bb69be28b64fbf1"
+        },
+        {
+          "file": "data/accidents.csv",
+          "matches": true,
+          "sha256": "186a03475f3dd2cb07778e5e457f70cea9aacd7c18c9ea30d63cc8bd4c0ceca8"
+        },
+        {
+          "file": "data/outcome-panel.csv",
+          "matches": true,
+          "sha256": "f4b9b01e64439486e063c4472f667916e618fbe3903bd1002b77a7f1af823a53"
+        },
+        {
+          "file": "data/panel-coverage.csv",
+          "matches": true,
+          "sha256": "29c47861581ba3f387e5e28b735df8bed023c36936e435b8381ce3d0e69392dd"
+        }
+      ],
+      "panel_observations": {
+        "전라북도 전주시": {
+          "rows": 6,
+          "years": [
+            2014,
+            2015,
+            2016,
+            2017,
+            2018,
+            2019
+          ]
+        },
+        "전라북도 군산시": {
+          "rows": 6,
+          "years": [
+            2014,
+            2015,
+            2016,
+            2017,
+            2018,
+            2019
+          ]
+        },
+        "부산광역시": {
+          "rows": 96,
+          "region_codes": 16
+        }
+      },
+      "snapshot_labels": [
+        {
+          "evidence_id": "busan-offer-start",
+          "header_source_url_matches": true,
+          "direct_label": true,
+          "search_index_marker": false,
+          "error_markers": false
+        },
+        {
+          "evidence_id": "busan-eligibility",
+          "header_source_url_matches": true,
+          "direct_label": true,
+          "search_index_marker": false,
+          "error_markers": false
+        },
+        {
+          "evidence_id": "busan-2018-announcement",
+          "header_source_url_matches": true,
+          "direct_label": true,
+          "search_index_marker": false,
+          "error_markers": false
+        },
+        {
+          "evidence_id": "seoul-offer-start",
+          "header_source_url_matches": true,
+          "direct_label": true,
+          "search_index_marker": false,
+          "error_markers": false
+        },
+        {
+          "evidence_id": "seoul-eligibility",
+          "header_source_url_matches": true,
+          "direct_label": true,
+          "search_index_marker": false,
+          "error_markers": false
+        },
+        {
+          "evidence_id": "seoul-ordinance",
+          "header_source_url_matches": true,
+          "direct_label": true,
+          "search_index_marker": false,
+          "error_markers": false
+        },
+        {
+          "evidence_id": "gyeonggi-offer-start",
+          "header_source_url_matches": true,
+          "direct_label": true,
+          "search_index_marker": false,
+          "error_markers": false
+        },
+        {
+          "evidence_id": "jeonju-offer-period",
+          "header_source_url_matches": true,
+          "direct_label": true,
+          "search_index_marker": false,
+          "error_markers": false
+        },
+        {
+          "evidence_id": "jeonju-first-implementation",
+          "header_source_url_matches": true,
+          "direct_label": true,
+          "search_index_marker": false,
+          "error_markers": false
+        },
+        {
+          "evidence_id": "gunsan-first-implementation",
+          "header_source_url_matches": true,
+          "direct_label": true,
+          "search_index_marker": false,
+          "error_markers": false
+        },
+        {
+          "evidence_id": "buan-offer-year",
+          "header_source_url_matches": true,
+          "direct_label": true,
+          "search_index_marker": false,
+          "error_markers": false
+        },
+        {
+          "evidence_id": "buan-eligibility",
+          "header_source_url_matches": true,
+          "direct_label": true,
+          "search_index_marker": false,
+          "error_markers": false
+        },
+        {
+          "evidence_id": "busan-5030-start",
+          "header_source_url_matches": true,
+          "direct_label": true,
+          "search_index_marker": false,
+          "error_markers": false
+        },
+        {
+          "evidence_id": "busan-5030-enforcement",
+          "header_source_url_matches": true,
+          "direct_label": true,
+          "search_index_marker": false,
+          "error_markers": false
+        }
+      ]
+    },
+    "aggregation": {
+      "manifest_hash_checks": {
+        "plan.yaml": true,
+        "policy-register.yaml": true,
+        "population.py": true,
+        "taas.py": true,
+        "panel.py": true,
+        "collection-report.md": true,
+        "region-name-crosswalk.json": true,
+        "cleaning-step-01.md": true,
+        "test_taas.py": true,
+        "audit_policy.py": true,
+        "test_audit_policy.py": true,
+        "policy-evidence.json": true,
+        "policy-checks.json": true,
+        "policy-review.md": true,
+        "execution-review-protocol.md": true,
+        "README.md": true,
+        "data-audit.md": true,
+        "root_AGENTS": true,
+        "root_README": true
+      },
+      "verification_policy_summary_matches": true,
+      "register_temporal_role_evidence_links_match": true,
+      "local_links_checked": [
+        {
+          "file": "README.md",
+          "target": "cases/inshining-elderly-driver/policy-review.md",
+          "exists": true
+        },
+        {
+          "file": "README.md",
+          "target": "cases/inshining-elderly-driver/execution-review-protocol.md",
+          "exists": true
+        },
+        {
+          "file": "README.md",
+          "target": "cases/inshining-elderly-driver/collection-report.md",
+          "exists": true
+        },
+        {
+          "file": "README.md",
+          "target": "cases/inshining-elderly-driver/README.md",
+          "exists": true
+        },
+        {
+          "file": "README.md",
+          "target": "cases/inshining-elderly-driver/plan.yaml",
+          "exists": true
+        },
+        {
+          "file": "README.md",
+          "target": "cases/inshining-elderly-driver/data-audit.md",
+          "exists": true
+        },
+        {
+          "file": "README.md",
+          "target": "cases/inshining-elderly-driver/policy-register.yaml",
+          "exists": true
+        },
+        {
+          "file": "README.md",
+          "target": "cases/inshining-elderly-driver/proposal.md",
+          "exists": true
+        },
+        {
+          "file": "cases/inshining-elderly-driver/README.md",
+          "target": "collection-report.md",
+          "exists": true
+        },
+        {
+          "file": "cases/inshining-elderly-driver/README.md",
+          "target": "policy-review.md",
+          "exists": true
+        },
+        {
+          "file": "cases/inshining-elderly-driver/README.md",
+          "target": "execution-review-protocol.md",
+          "exists": true
+        },
+        {
+          "file": "cases/inshining-elderly-driver/README.md",
+          "target": "policy-register.yaml",
+          "exists": true
+        },
+        {
+          "file": "cases/inshining-elderly-driver/README.md",
+          "target": "policy-register.yaml",
+          "exists": true
+        },
+        {
+          "file": "cases/inshining-elderly-driver/policy-review.md",
+          "target": "policy-evidence.json",
+          "exists": true
+        },
+        {
+          "file": "cases/inshining-elderly-driver/policy-review.md",
+          "target": "policy-register.yaml",
+          "exists": true
+        },
+        {
+          "file": "cases/inshining-elderly-driver/policy-review.md",
+          "target": "evidence/policy-sources/README.md",
+          "exists": true
+        }
+      ]
+    },
+    "final_seoul_precision_recheck": {
+      "source_url": "https://mediahub.seoul.go.kr/archives/1240732",
+      "http_status": 200,
+      "bytes": 127405,
+      "exact_quotation_contains": true,
+      "quotation": "지난 3월부터 70세 이상 고령 운전자를 대상으로 운전면허 자진반납 시 10만 원 교통카드를 지급하는 사업을 시행해 왔는데요.",
+      "claimed_start": "2019-03",
+      "date_precision": "month",
+      "scope": "Changed quotation/classification, README and verification hashes only; validator code unchanged, previous 53 tests and 13 synthetic challenges reused."
+    }
+  },
+  "semantic_evidence_review": [
+    {
+      "source_url": "https://www.busan.go.kr/nbtnews/1361473",
+      "decision": "2019-02-18 회고 설명은 2018년 7월 지원 개시를 지지한다. 2018-02-01은 반납 자격 소급 기준으로 개시일이 아니다. 정확한 일자·최초 지급은 확인하지 않았다."
+    },
+    {
+      "source_url": "https://www.busan.go.kr/nbtnews/1326806",
+      "decision": "2018-07-11 당시 안내는 교통비 신청 기회의 존재를 보강한다. 7월 1일은 별도 제휴할인 카드 개시로 교통비 개시일에 전용하지 않은 처리가 적절하다."
+    },
+    {
+      "source_url": "https://mediahub.seoul.go.kr/archives/1240732",
+      "decision": "공식 본문의 지난 3월부터 사업 시행 설명은 2019-03/month를 지지한다. 요약표의 반납 기간 3/15는 신청 개시의 직접 명시가 아니므로 채택 인용만으로 일 단위 확정하지 않는다. 1/1 소급 자격·3/28 조례·10월 예정 지급은 별도다. 서울은 2019 미처치 후보에서 제외하되 자치구 최초 시점을 확정하지 않는다."
+    },
+    {
+      "source_url": "https://gnews.gg.go.kr/briefing/brief_gongbo_view.do?BS_CODE=S017&number=42498",
+      "decision": "2019-11-25 보도는 광역 협력사업의 9월 개시와 반납·신청 접수를 설명한다. 일 정밀도로 올리거나 모든 시군의 최초 시점을 자동 배정하지 않았다."
+    },
+    {
+      "source_url": "https://www.jeonju.go.kr/deokjingu/planweb/board/view.9is?boardUid=ff8080818bad9295018bae4a96ac09b2&contentUid=ff8080818990c349018b041a9b223a47&dataUid=9be517a76efda4f9016ff3f23a241d7e",
+      "decision": "2020-01-30 안내의 사업기간 시작은 2020-02-01이다. 이는 공고된 사업기간이며 단독으로 최초 시행 또는 실제 첫 접수·지급을 입증하지 않는다."
+    },
+    {
+      "source_url": "https://www.jeonbuk.go.kr/governor/board/view.jeonbuk?boardId=BBS_0000073&dataSid=305494&menuCd=DOM_000000203001003000&paging=ok&startPage=36",
+      "decision": "governor 대체 경로의 답변은 전주가 2020년부터 시행했다고 설명한다. 답변일 2022-01-24를 민원 작성일 2022-01-21과 구별했다. 최초라는 명시어는 없으므로 사업기간과 결합한 후보 근거로만 인정한다. 실패한 vtm URL을 성공 출처로 위장하지 않았다."
+    },
+    {
+      "source_url": "https://council.gunsan.go.kr/main/minutes/html/MinutesView.do?MINTS_SN=6055",
+      "decision": "2026-03-10 회의의 교통행정과장은 2020년도 처음 시행을 명시한다. 회고적 연도 근거로 인정하되 실제 개시 월일과 게시일은 미확인이다. 이번에 재확인하지 못한 조례일은 null로 남겼다."
+    },
+    {
+      "source_url": "https://www.buan.go.kr/board/view.buan?boardId=BBS_0000059&dataSid=118442&menuCd=DOM_000000101003003000&paging=ok&startPage=419",
+      "decision": "2020년부터 사업 시행과 2019-12-10 이후 반납 자격을 동시에 설명한다. 자격일로 2019년 실제 제공을 코딩하지 않고 예고 불확실성을 hold로 유지했다."
+    },
+    {
+      "source_url": "https://www.busan.go.kr/depart/5030safe01",
+      "decision": "5030은 2019-11-11 도심 전역 시행, 2020-05-12 본격 단속이다. 2019년 일부 기간의 차등 동시정책 한계이며 사용자 지시에 따라 이번 근거 정리의 자동 중단 사유로 삼지 않았다. 면허반납 고유 효과가 분리됐다고 승인하지 않는다."
+    }
+  ],
+  "residual_limitations": [
+    "정상 테스트·구조검사 통과는 인과 식별 완료가 아니다. 최초 분석 추정 승인, 비교군 적격성 승인, 평행추세 검정, 효과 추정은 수행하지 않았다.",
+    "전주·군산의 2019년 발표·예고·예산·조례 및 다른 주체의 선행 인센티브 부재는 미확인이다. 후보를 확정 미처치로 변환할 수 없다. 부안 hold를 유지한다.",
+    "부산 2018~2019년 구군별 적용, 지원 기회 지속성, 정확한 첫 제공 일자와 실제 첫 지급일은 미확인이다. 광역 정책을 하위 지역에 자동 결합하지 않았다.",
+    "부산 5030의 2019년 11~12월 영향과 면허반납 정책의 고유 효과가 분리됐다고 판단하지 않는다. 이를 문서에 썼다는 사실이 혼입을 제거하지 않는다.",
+    "2019년 전국 교육제도의 차등 지역 노출, 연령 불일치, 경계 이력, 적은 독립 정책 군집, 주변 지역 파급, 사전 추세·비교 가능성은 남은 분석 과제다.",
+    "인용문 포함과 SHA256은 저장 텍스트의 일치를 확인한다. 공식 도메인 형태·표지 일치·해시가 문서 진위 또는 사라진 선행사업의 부재를 증명하지 않는다. 이번에는 9개 공식 URL의 실제 본문을 별도로 재조회했다.",
+    "승인 범위는 14개 시점 근거와 6개 잠정 분류 및 검사·검토 규칙이다. 기존 레지스터의 금액·연령·예산·전후 사망자 등 모든 비시점 필드의 독립 검증을 승인하는 것이 아니다.",
+    "기존 verification의 과거 offline replay나 상위 전체 테스트를 이번에 새로 수행했다는 뜻이 아니다. 이번에는 현재 원본·가공 해시와 전체 로컬 53개 테스트를 직접 확인했다."
+  ],
+  "approval_scope": {
+    "policy_timing_evidence_and_provisional_classification_step_approved": true,
+    "validator_and_execution_review_protocol_approved_for_this_step": true,
+    "control_group_eligibility_approved": false,
+    "analysis_approved": false,
+    "initial_causal_estimation_approved": false,
+    "national_policy_panel_complete": false,
+    "effect_estimated": false,
+    "statement": "이번 정책 근거 정리·잠정 후보 분류 및 검증 절차 단계에 한정해 승인한다. 인과 분석·비교군 적격성은 승인하지 않는다."
+  },
+  "reviewed_sha256": {
+    "policy-evidence.json": "1f8c0f98f37ec8b393461ae1610d61734e9cd1773e11df941dfe6c469ca33af4",
+    "policy-register.yaml": "ab0aa745405f73130b6dd82caa07bbe7c61e189f5eee61fa3166800de8fce872",
+    "policy-review.md": "119adb0047dc26786fbff8d02dc6f89cb49133b6570ba65bfe4152b542f7f6b7",
+    "audit_policy.py": "cfc59a738de7030fb2a3dd10cd550d449885ac58e51232f5f041023c71d45b2b",
+    "test_audit_policy.py": "c92e7b69b199f0b14280d620fcfa73a16c4e5f6af32b3330c8e12173c602f0ae",
+    "execution-review-protocol.md": "90384d6de80f7eb30a365b7524f09c8e3a57d125f1d1e1d14e66f036daff8369",
+    "verification.json": "a323b5c84f65ca47a2cac51ff76f17593375c00575d40f70e41e410c812e680d",
+    "README.md": "572395d13a72ad254182d23a6b81fd330002719a0e873b2567921c0ba146941f",
+    "plan.yaml": "8ccdc50e2d421adc72f8a69f094314b64692384da06bdd25d1332c1be52533ea",
+    "data-audit.md": "a8d085efcb58a519c3de2cbc3b97b0cac14d54944c1ad3a3e2d0659d1844b97b",
+    "collection-report.md": "e3d45b7051e74065c6cd20695f8e8827c905edcb0b3de0696d0bd8fb061ba77b",
+    "cleaning-step-01.md": "c9505c355f1911a89f36289a5c9fe4dac0b6e53cd0e9f2584b545cf83f1efcce",
+    "evidence/policy-sources/README.md": "550ac829916b24695306f1267422b457370fafb82a28f9dc82c6d2b7b9b0d5d6"
+  },
+  "reviewed_project_sha256": {
+    "AGENTS.md": "345d063a8eaf23642002af576d2baea1778de5da52f3e84c829690464b703d5a",
+    "README.md": "b7b24a272a9047000a1e9cfe74b37fc9281d7304dfa2a0e4186ffa2b37a4bae5"
+  },
+  "reproduction": {
+    "actual_cli": ".venv/bin/python cases/inshining-elderly-driver/audit_policy.py --output /tmp/policy-independent-checks.json",
+    "unit_tests": ".venv/bin/python -m unittest discover -s cases/inshining-elderly-driver -p 'test_*.py' -v",
+    "synthetic_challenge_command": ".venv/bin/python /tmp/policy-independent-challenge.py",
+    "synthetic_challenge_script": "import copy, hashlib, json, subprocess, sys, tempfile\nfrom pathlib import Path\nscript = Path('cases/inshining-elderly-driver/audit_policy.py')\nresults = []\nwith tempfile.TemporaryDirectory(prefix='policy-independent-challenge-') as temp:\n    root = Path(temp)\n    snapshot = root / 'source.txt'\n    snapshot.write_text('SEARCH INDEX EXCERPT: 공식 기록: 2018년 7월 지원 개시.\\n', encoding='utf8')\n    base = {'schema_version':1, 'checked_on':'2026-10-27', 'limitations':['independent synthetic challenge'], 'evidence':[{'id':'e', 'jurisdiction':'테스트시', 'source_url':'https://www.busan.go.kr/example', 'source_published_on':'2019-01-01', 'retrieval_mode':'search_index', 'snapshot_path':'source.txt', 'snapshot_sha256':hashlib.sha256(snapshot.read_bytes()).hexdigest(), 'quotation':'2018년 7월 지원 개시.', 'claim_type':'offer_start', 'claimed_start':'2018-07', 'date_precision':'month'}], 'classifications':[{'jurisdiction':'테스트시', 'first_offer_start':'2018-07', 'date_precision':'month', 'role_2019':'treated', 'evidence_ids':['e'], 'analysis_approved':False, 'reason':'synthetic', 'unresolved_checks':[]}]}\n    mutations = {\n      'missing_evidence': (lambda d:d['classifications'][0].update(evidence_ids=['missing']), True, 'missing_evidence'),\n      'hash_tamper': (lambda d:d['evidence'][0].update(snapshot_sha256='0'*64), True, 'snapshot_hash'),\n      'invalid_date': (lambda d:d['evidence'][0].update(claimed_start='2019-02-29',date_precision='day'), True, 'date_precision'),\n      'ordinance_only': (lambda d:d['evidence'][0].update(claim_type='ordinance_effective'), True, 'unsupported_first_offer'),\n      'retroactive_eligibility_only': (lambda d:d['evidence'][0].update(claim_type='eligibility_start'), True, 'unsupported_first_offer'),\n      '2019_as_candidate': (lambda d:(d['evidence'][0].update(claimed_start='2019-07'), d['classifications'][0].update(first_offer_start='2019-07',role_2019='candidate')), True, 'year_role'),\n      'unknown_as_candidate': (lambda d:d['classifications'][0].update(first_offer_start=None,date_precision='unknown',role_2019='candidate'), True, 'unknown_role'),\n      'unknown_as_zero': (lambda d:d['classifications'][0].update(first_offer_start=0,date_precision='unknown',role_2019='hold'), True, 'date_precision'),\n      'candidate_analysis_approved': (lambda d:d['classifications'][0].update(analysis_approved=True), True, 'analysis_approval'),\n      'search_index_disguised_as_direct': (lambda d:d['evidence'][0].update(retrieval_mode='direct'), True, 'retrieval_marker_mismatch'),\n      'known_date_hold_with_reasons': (lambda d:(d['evidence'][0].update(claimed_start='2020',date_precision='year'),d['classifications'][0].update(first_offer_start='2020',date_precision='year',role_2019='hold',reason='2019년 예고 미확인',unresolved_checks=['예고일'])), False, None),\n      'known_date_hold_without_unresolved_checks': (lambda d:d['classifications'][0].update(role_2019='hold'), True, 'hold_without_unresolved_checks'),\n      'known_date_hold_without_offer_evidence': (lambda d:(d['evidence'][0].update(claim_type='ordinance_effective'),d['classifications'][0].update(role_2019='hold',unresolved_checks=['예고일'])), True, 'unsupported_first_offer'),\n    }\n    for name,(mutate,reject,expected) in mutations.items():\n        document=copy.deepcopy(base);mutate(document)\n        inp=root/'input.json';out=root/'output.json';inp.write_text(json.dumps(document,ensure_ascii=False),encoding='utf8')\n        p=subprocess.run([sys.executable,str(script),'--input',str(inp),'--output',str(out)],capture_output=True,text=True)\n        report=json.loads(out.read_text());codes=[e['code'] for e in report['errors']]\n        ok=((p.returncode!=0)==reject and (expected is None or expected in codes) and report['analysis_approved'] is False)\n        results.append({'challenge':name,'expected_reject':reject,'expected_error_code':expected,'returncode':p.returncode,'status':report['status'],'errors':codes,'warnings':[e['code'] for e in report['warnings']],'unknowns':[e['code'] for e in report['unknowns']],'expectation_met':ok})\nPath('/tmp/policy-independent-challenges.json').write_text(json.dumps(results,ensure_ascii=False,indent=2)+'\\n')\nprint(json.dumps(results,ensure_ascii=False,indent=2))\nassert all(r['expectation_met'] for r in results)\n",
+    "temporary_artifacts_are_not_permanent": true
+  },
+  "supplementary_source_not_adopted_in_register": {
+    "source_url": "https://mediahub.seoul.go.kr/archives/1216597",
+    "published_on": "2019-03-18",
+    "independent_direct_http_status": 200,
+    "quotation": "신청방법은 가까운 서울시내 31개 경찰서내의 면허반납 창구나 서울시내에 위치한 4개 면허시험장의 면허반납 창구에 방문하여 3월 15일부터 올해 9월 30일까지 신청하면 된다.",
+    "decision": "추가 공식 자료는 접수 개시 3/15를 직접 명시한다. 이번 최종 레지스터는 기존 채택 자료의 2019-03/month를 유지한다. 추가 발견은 14개 채택 근거나 9개 채택 출처 수에 포함하지 않으며 현재 분류·승인 범위를 변경하지 않는다."
+  },
+  "public_copy_note": "역사적 검토 기록의 개인 절대 경로만 저장소 상대 경로로 정리했다. 기존 수집·검토 시점과 SHA256은 당시 근거이며 현재 코드 검증으로 갱신한 값이 아니다."
+}

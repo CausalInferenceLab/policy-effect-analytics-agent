@@ -1,0 +1,197 @@
+# 정책·공고 기록용 자료. plan.yaml 스키마와 별개이다.
+# null은 확인하지 못한 값이며 정책 없음·지원금 0·미지급을 뜻하지 않는다.
+# 날짜·역할 근거와 스냅샷 해시는 policy-evidence.json이 정본이다.
+checked_on: '2026-10-27'
+coverage: 부산·서울·경기·전주·군산·부안의 시작 근거 점검. 전국 정책 도입 패널 아님.
+records:
+- record_id: busan-policy-launch-2018
+  jurisdiction: 부산광역시
+  policy_level: 시도
+  source_url: https://www.busan.go.kr/nbtnews/1361473
+  source_published_on: '2019-02-18'
+  source_type: 부산시 보도자료
+  verified_via: 직접 HTTP 공식 본문; evidence/policy-sources의 텍스트 스냅샷과 policy-evidence.json의 SHA-256 참조
+  offer_start_month: 2018-07
+  offer_start_date: null
+  date_precision: month
+  original_announcement_date: null
+  ordinance_effective_date: null
+  eligible_age_min_for_2018: 65
+  amount_krw_for_2018: 100000
+  first_actual_payment_date: null
+  notes: 2019년 공식 보도의 작년 7월부터 시행 설명과 2018-07-11 당시 사업 안내를 대조했다. 2018-07은 제공 개시 월이며 정확한 일자와 첫 실제 지급일은 미확인이다. 2018년
+    7월 1일은 별도 제휴할인 카드 개시 설명이므로 교통비 지원 개시일로 대체하지 않는다. 2018년 자격·금액은 2018년 원문으로 별도 확인했다.
+  evidence_ids:
+  - busan-offer-start
+  - busan-2018-announcement
+  launch_announcement_url: https://www.busan.go.kr/nbtnews/1326806
+  role_2019: treated
+- record_id: busan-application-conditions-2019
+  jurisdiction: 부산광역시
+  policy_level: 시도
+  source_url: https://www.busan.go.kr/nbtnews/1361473?curPage=11&srchBeginDt=2019-01-27&srchEndDt=2019-02-27&srchKey=&srchText=
+  source_published_on: '2019-02-18'
+  applies_to_year: 2019
+  eligible_age_min: 65
+  residency_condition: 부산 주민등록
+  eligible_license_cancellation_since: '2018-02-01'
+  one_time_amount_krw: 100000
+  payment_form: 교통카드
+  allocation_when_budget_exceeded: 추첨
+  unpaid_applicant_handling: 다음 해 이월
+  budget_2018_krw: 40000000
+  budget_2019_krw: 400000000
+  prior_unpaid_priority_payment_planned_month: 2019-05
+  prior_unpaid_priority_payment_actual_date: null
+  notes: '2018년 미지급 신청자를 2019년 5월 말 우선 지급할 계획이라고 적고 있다. 계획된 지급과 실제 지급을 구분한다. 소급 자격 기준일은 처치 제공 개시일이 아니다.
+
+    '
+  evidence_ids:
+  - busan-eligibility
+  verified_via: 직접 HTTP 공식 본문; evidence/policy-sources의 텍스트 스냅샷과 policy-evidence.json의 SHA-256 참조
+  role_2019: treated
+- record_id: busan-headline-before-after
+  jurisdiction: 부산광역시
+  source_url: https://www.busan.go.kr/nbtnews/1361473?curPage=11&srchBeginDt=2019-01-27&srchEndDt=2019-02-27&srchKey=&srchText=
+  source_published_on: '2019-02-18'
+  reported_returns:
+    '2017': 466
+    '2018': 5280
+  reported_deaths:
+    '2017': 35
+    '2018': 18
+  mortality_age_scope_verified: false
+  mortality_person_scope_verified: false
+  interpretation: '원문 보도의 비교군 없는 전후 수치. 인과 추정값이 아니다. 사망자의 연령 범위와 고령 가해운전자 본인 사망/해당 사고의 전체 사망 구분은 추가 확인 전 확정하지 않는다.
+    주 분석 사고율과 직접 크기를 비교하지 않는다.
+
+    '
+  evidence_ids:
+  - busan-offer-start
+  verified_via: 직접 HTTP 공식 본문; evidence/policy-sources의 텍스트 스냅샷과 policy-evidence.json의 SHA-256 참조
+  role_2019: treated
+- record_id: seoul-offer-2019
+  jurisdiction: 서울특별시
+  policy_level: 시도
+  source_url: https://mediahub.seoul.go.kr/archives/1240732
+  offer_start_month: '2019-03'
+  offer_start_date: null
+  date_precision: month
+  eligible_age_min: 70
+  eligible_license_cancellation_since: '2019-01-01'
+  one_time_amount_krw: 100000
+  payment_form: 교통카드
+  control_candidate_for_2019: false
+  notes: 공식 안내의 지난 3월부터 사업 시행 설명에 맞춰 제공 개시는 2019-03 월 단위로 기록한다. 요약표의 반납 기간 3월 15일을 지원 신청 개시일로 동일시하지 않는다. 일 단위 개시일·지급·소급 자격은 구분하며 2019년 미처치 비교군에서 제외한다.
+  evidence_ids:
+  - seoul-offer-start
+  - seoul-eligibility
+  - seoul-ordinance
+  verified_via: 직접 HTTP 공식 본문; evidence/policy-sources의 텍스트 스냅샷과 policy-evidence.json의 SHA-256 참조
+  source_published_on: '2019-07-01'
+  ordinance_effective_date: '2019-03-28'
+  role_2019: excluded_treated
+- record_id: gyeonggi-offer-2019
+  jurisdiction: 경기도
+  policy_level: 시도
+  source_url: https://gnews.gg.go.kr/briefing/brief_gongbo_view.do?BS_CODE=S017&number=42498
+  source_published_on: '2019-11-25'
+  offer_start_month: 2019-09
+  date_precision: month
+  eligible_age_min: 65
+  one_time_amount_krw: 100000
+  payment_form: 지역화폐
+  control_candidate_for_2019: false
+  notes: 도와 시군의 협력 사업. 도 지원 전에 시작한 시군 독자사업은 별도 조사 필요.
+  evidence_ids:
+  - gyeonggi-offer-start
+  verified_via: 직접 HTTP 공식 본문; evidence/policy-sources의 텍스트 스냅샷과 policy-evidence.json의 SHA-256 참조
+  role_2019: excluded_treated
+- record_id: jeonju-offer-2020
+  jurisdiction: 전주시
+  policy_level: 시군구
+  source_url: https://www.jeonju.go.kr/deokjingu/planweb/board/view.9is?boardUid=ff8080818bad9295018bae4a96ac09b2&contentUid=ff8080818990c349018b041a9b223a47&dataUid=9be517a76efda4f9016ff3f23a241d7e
+  source_published_on: '2020-01-30'
+  corroborating_url: https://www.jeonbuk.go.kr/governor/board/view.jeonbuk?boardId=BBS_0000073&dataSid=305494&menuCd=DOM_000000203001003000&paging=ok&startPage=36
+  offer_start_date: '2020-02-01'
+  date_precision: day
+  eligible_age_min: 70
+  one_time_amount_krw: 100000
+  actual_driving_evidence_required: true
+  control_candidate_for_2019: true
+  control_approved_for_analysis: false
+  notes: 2020년 사업기간(2.1~12.31)과 후속 행정답변의 2020년부터 시행 설명을 대조했다. 답변에 최초라는 단어는 없으며 모든 선행지원 부재를 증명하지 않는다. 2019년 비교군 후보일
+    뿐 사전 예고·추세·경계·선행사업 검증과 분석 승인은 남았다.
+  evidence_ids:
+  - jeonju-offer-period
+  - jeonju-first-implementation
+  verified_via: 직접 HTTP 공식 본문; evidence/policy-sources의 텍스트 스냅샷과 policy-evidence.json의 SHA-256 참조
+  corroborating_published_on: '2022-01-24'
+  role_2019: candidate
+- record_id: gunsan-offer-2020
+  jurisdiction: 군산시
+  policy_level: 시군구
+  source_url: https://council.gunsan.go.kr/main/minutes/html/MinutesView.do?MINTS_SN=6055
+  corroborating_url: https://www2.gunsan.go.kr/_cms/board/eFileDownload/91/1431805/b0c2d0909b95a951cf8ac31e3153a1a2
+  corroborating_url_checked: false
+  offer_start_year: 2020
+  date_precision: year
+  ordinance_enacted_date: null
+  ordinance_effective_date: null
+  control_candidate_for_2019: true
+  control_approved_for_analysis: false
+  notes: 시의회 교통행정과장의 2020년도에 처음 시행 발언을 확인했다. 실제 신청 개시 월일은 미확인이다. 기존 기록의 조례 제정·시행일은 이번 원문 점검에서 재확인하지 못해 null로 두었다.
+    2019년 조례·예산·사업 예고와 사전 반응 점검 전에는 후보를 대조군으로 승인하지 않는다.
+  evidence_ids:
+  - gunsan-first-implementation
+  verified_via: 직접 HTTP 공식 본문; evidence/policy-sources의 텍스트 스냅샷과 policy-evidence.json의 SHA-256 참조
+  source_published_on: null
+  source_meeting_on: '2026-03-10'
+  role_2019: candidate
+- record_id: buan-retroactive-eligibility
+  jurisdiction: 부안군
+  policy_level: 시군구
+  source_url: https://www.buan.go.kr/board/view.buan?boardId=BBS_0000059&dataSid=118442&menuCd=DOM_000000101003003000&paging=ok&startPage=419
+  offer_start_year: 2020
+  date_precision: year
+  eligible_license_cancellation_since: '2019-12-10'
+  control_candidate_for_2019: null
+  control_approved_for_analysis: false
+  notes: 2020년부터 시행 설명과 2019-12-10 이후 반납 인정 조항을 직접 확인했다. 소급 자격일은 제공 개시일이 아니다. 최초 발표·예고와 실제 신청 개시일 확인 전 2019년 분류를
+    hold로 둔다.
+  evidence_ids:
+  - buan-offer-year
+  - buan-eligibility
+  verified_via: 직접 HTTP 공식 본문; evidence/policy-sources의 텍스트 스냅샷과 policy-evidence.json의 SHA-256 참조
+  source_published_on: '2020-12-31'
+  role_2019: hold
+concurrent_policies:
+- record_id: busan-safe-speed-5030
+  jurisdiction: 부산광역시
+  source_url: https://www.busan.go.kr/depart/5030safe01
+  implementation_date: '2019-11-11'
+  full_enforcement_date: '2020-05-12'
+  scope: 도심 전역
+  notes: '2019년 11~12월 사고 변화에 혼입 가능. 2019년 전체 시행으로 처리하지 않는다. 군집 표준오차나 연도 고정효과가 부산 고유의 동시 정책을 제거하지 않는다.
+
+    '
+  evidence_ids:
+  - busan-5030-start
+  - busan-5030-enforcement
+  source_published_on: null
+  source_updated_on: '2025-09-30'
+  verified_via: 직접 HTTP 공식 본문 스냅샷
+evidence_file: policy-evidence.json
+review_file: policy-review.md
+analysis_approved: false
+limitations:
+- 대상은 부산·서울·경기·전주·군산·부안과 부산 안전속도 5030이다. 전국 정책 도입 패널을 완성한 자료가 아니다.
+- candidate는 공식 개시 근거에 따른 조사 후보이다. 확정 미처치 또는 분석 대조군 승인·평행추세 충족을 뜻하지 않는다. 모든 analysis_approved는 false이다.
+- 부산 2018-07과 경기 2019-09의 일자 및 군산·부안 2020년의 월일은 확인하지 못했다. 발행일·조례일·자격 소급일·실제 지급일로 대체하지 않았다.
+- 전주의 행정답변은 2020년부터 시행이라고 설명하지만 “최초”라는 단어를 쓰지 않는다. 사업 안내와 결합한 후보 근거이며 모든 선행지원 부재를 증명하지 않는다. 군산은 회의록에서 담당자가 처음 시행이라고
+  명시한다.
+- 부산 5030은 2019-11-11 도심 전역 시행, 2020-05-12 본격 단속으로 구분했다. 2019년 전체 노출로 처리하지 않으며 면허 반납 정책의 고유 효과가 통계적으로 분리되었다고 주장하지
+  않는다. 연도 고정효과나 군집 표준오차가 부산 고유 동시정책을 제거하는 것은 아니다.
+- 2019년 고령운전자 교육제도의 공통 성분을 연도 효과로 조정해도 지역별 연령 구성·갱신 대상 비중 등에 따른 차등 영향까지 전부 제거됐다고 볼 수 없다. 이번 조사에서는 교육정책 출처·노출을 새로
+  검증하지 않았다.
+- 효과 추정, 사전 추세 검정, 분석표본 승인, 전국정책 완성은 수행하지 않았다. 사고·인구 원본 자료를 수정하지 않았다.

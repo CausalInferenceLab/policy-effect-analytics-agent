@@ -194,11 +194,24 @@ def test_answer_pages_for_users(tmp_path, monkeypatch):
     for r in results:
         page = (out / r["page"]).read_text(encoding="utf-8")
         assert "이 결과를 쓰려면" in page and "인용문" in page and "직접 돌려 보기" in page
-        assert f"make flow CASE=cases/{r['case']}" in page
         assert "이 결과를 얼마나 믿을 수 있나" in page
-        assert 'property="og:url"' in page and (out / "answers" / f"{r['case']}.csv").exists()
-        if r["verdict"] == "not_identified":
-            assert "진단용" in page
+        assert 'property="og:url"' in page
+        if r.get("execution_kind") == "descriptive_only":
+            from html import escape
+
+            assert r["causal_estimation"] == "not_run"
+            assert r["verdict"] == "not_identified" and r["outcomes"] == []
+            assert "관측 통계 · 정책 효과 미추정" in page
+            assert (out / "answers" / f"{r['case']}-descriptive.csv").exists()
+            replay = r["descriptive"]["reproduction"]
+            assert escape(replay["command"]) in page
+            assert all(escape(p) in page for p in replay["prerequisites"])
+            assert "make flow" not in page and "진단용" not in page and "<th>95% 범위</th>" not in page
+        else:
+            assert f"make flow CASE=cases/{r['case']}" in page
+            assert (out / "answers" / f"{r['case']}.csv").exists()
+            if r["verdict"] == "not_identified":
+                assert "진단용" in page
     for case in (root / "cases").glob("*/flow_log.json"):
         if not case.parent.name.startswith("_"):
             assert (out / "answers" / f"{case.parent.name}.html").exists(), case.parent.name
