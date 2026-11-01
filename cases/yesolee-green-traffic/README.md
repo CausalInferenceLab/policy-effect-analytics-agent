@@ -4,15 +4,15 @@
 ### 진행 상태
 
 - 본분석 대조군 9곳, 민감도 분석 대조군 4곳, 제외 측정소 4곳을 사전 계획으로 정했다. 측정소 명단은 유지한다.
-- 계획 PR [#18](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/18)은 `main`에 합쳐졌다. 현재는 최신 `main` 기반 `yesolee/analysis`에서 수집·분석을 준비한다.
-- 전체 정리표는 생성했지만 PM2.5 결측률 33.46%로 최초 품질검사에서 중단됐다. 정책 효과·사전추세 검정·반증검사는 아직 계산하지 않았다.
+- 계획 PR [#18](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/18)은 `main`에 합쳐졌다. 현재는 최신 `main` 기반 `yesolee/analysis`에서 수집·분석을 진행한다.
+- PM2.5 결측률 33.46%로 최초 품질검사에서 중단된 뒤, NO₂ 공통 관측시간으로 주분석·자동 반증검사·계획한 네 가지 민감도 비교를 실행했다. 변화의 방향과 크기를 명확히 판별하지 못했으며, 수동 점검은 남아 있다.
 - **당초 1차 지표 NO₂를 우선 추정하고 PM2.5 보조 추정은 보류한다.** PM2.5의 관측 가능 기간과 설계를 별도로 검토한 뒤 새 계획을 정한다. 원래 2차 지표였다는 사실과 보류 이유는 `discussion.md`에 남긴다.
 - 이 케이스는 [B 트랙: 가설과 분석](../../docs/tracks/analysis.md)이다. 시간 단위 분석·시간대 분리·적용 외 시간대 반증은 [공통 지원 PR #15](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/pull/15)로 `main`에 반영되어 있다.
 - **현재 계획은 11곳 모두 관측한 06~21시의 NO₂로 주 단위 이벤트 스터디를 수행한다.**
 - `data/panel.csv`는 두 지표와 결측을 보존하는 전체 정리표이고, `data/panel.no2.csv`는 11곳 모두 NO₂를 관측한 동일 시간만 남긴 추정용 표다. 주간·야간 자료에 같은 완전 관측 기준을 쓴다.
 - 제출 범위는 `cases/yesolee-green-traffic/`이며 [기여 가이드](../../CONTRIBUTING.md)를 따른다. 계획 변경은 효과 추정 전에 새 커밋으로 남긴다.
 - `discussion.md`에 최초 중단 기록과 자료 품질에 따른 계획 변경 이유를 기록했다.
-- 최초 실패 실행은 `quality_log.json`으로 보존했다. 새 `flow_log.json`은 보완 계획을 커밋한 뒤 실제 추정을 실행해 생성한다.
+- 최초 실패 실행은 `quality_log.json`으로 보존했다. 현재 `flow_log.json`은 보완 계획을 커밋한 뒤 실행한 주분석 기록이다. 민감도 결과는 별도 `sensitivity.md`와 `results/sensitivity.json`에 기록한다.
 
 ### 자료 품질에 따른 계획 보완
 
@@ -218,6 +218,18 @@ python cases/yesolee-green-traffic/prepare.py
 ```
 
 공통 파이프라인은 `plan.yaml`의 `data/panel.no2.csv`를 읽는다. 결측 처리나 측정소·시간 설정을 바꾸면 추정용 표도 다시 만든다.
+
+### 계획한 민감도 비교 실행
+
+주분석 실행 기록과 같은 계획·자료를 사용해 대조군 4곳, 정책 후 2020-01-19·2020-01-31 종료, 2020년 제외를 비교한다.
+
+```bash
+python cases/yesolee-green-traffic/sensitivity.py
+```
+
+`sensitivity.md`와 `results/sensitivity.json`에 별도 결과를 저장한다. 주분석의 표·실행 로그·그림은 보존한다. 대조군 비교는 같은 공통 관측시간을 유지하고, 기간 비교는 원래 시간 번호와 사전 기간을 유지한다. 기간에 따라 사후 계수 집합이 달라지는 점과 대조군 4곳의 검정 해상도 한계를 결과에 함께 기록한다. 주분석 기준의 계획·자료 해시가 달라지면 비교 실행을 중단한다.
+
+현재 네 비교 모두 효과의 방향·크기를 명확히 판별하지 못했다. 상세 해석과 수동 점검의 남은 항목은 `discussion.md`에 기록한다.
 
 계획 검토와 자료 품질 점검을 마친 분석 단계에서는 프로젝트 의존성이 설치된 환경에서 `make flow CASE=cases/yesolee-green-traffic`로 추정을 실행한다. 결과 해석과 실제 점검에서 발견한 한계는 그때 `discussion.md`를 작성해 기록한다. 원자료·가공 표는 [기여 가이드](../../CONTRIBUTING.md#6-올리면-안-되는-것)에 따라 공유하지 않고, 원자료를 구하는 방법과 준비 코드를 공유한다.
 

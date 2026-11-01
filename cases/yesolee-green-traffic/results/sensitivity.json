@@ -1,0 +1,1332 @@
+{
+  "manifest": {
+    "plan_sha256": "b004ad43bbf49441902442c89296bd6ec6f342fcb6595d52856ab4e16a46e878",
+    "data_sha256": "5b253ef219ebd00bc369a5faf5544a3dadefbe21d80754f5628e188b95d7ff00",
+    "script_sha256": "4e196c85cacb2ca2787e22d9c89ab4d826f0cd458511e793c4e4830cca4b9947",
+    "baseline_flow_sha256": "3e7fa0b070c793059cc11c5c2f9a6c2b474be7a516c5190168a21e79654400ac",
+    "baseline_manifest_sha256": "4d475ee8d0bda51939527114bbf570b2c85a2f03bcf26564af634943560d2f32",
+    "started_at": "2026-11-01T11:14:11+00:00",
+    "git_sha": "cb7ff83cf63d60385705da3ee12a992b10377391",
+    "git_dirty": true,
+    "baseline_git_sha": "564c866ecd2590171142212a73d217376be5ad80",
+    "versions": {
+      "pandas": "2.3.3",
+      "numpy": "2.4.6",
+      "scipy": "1.17.1",
+      "pyfixest": "0.60.0"
+    },
+    "finished_at": "2026-11-01T11:14:28+00:00"
+  },
+  "analyses": [
+    {
+      "summary": {
+        "id": "main",
+        "label": "주분석: 대조군 9곳",
+        "estimate": -0.001345801346012328,
+        "ci_low": -0.023966203074700487,
+        "ci_high": 0.02873187567711953,
+        "ci_kind": "finite",
+        "p_value": 0.8918918918918919,
+        "n_obs": 203423,
+        "n_clusters": 11,
+        "verdict": "conditional",
+        "ri_assignments": 36,
+        "p_min": 0.02702702702702703,
+        "effect_test_resolvable": true,
+        "diagnostic_tests_resolvable": true,
+        "pretrend_p": 0.7837837837837838,
+        "placebo_time_p": 0.918918918918919,
+        "placebo_window_p": 1.0,
+        "post_bins": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "post_bin_count": 12
+      },
+      "source": "flow_log.json"
+    },
+    {
+      "summary": {
+        "id": "core_controls",
+        "label": "핵심 대조군 4곳",
+        "estimate": -0.007069719180219116,
+        "ci_low": null,
+        "ci_high": null,
+        "ci_kind": "unbounded",
+        "p_value": 0.42857142857142855,
+        "n_obs": 110958,
+        "n_clusters": 6,
+        "verdict": "conditional",
+        "ri_assignments": 6,
+        "p_min": 0.14285714285714285,
+        "effect_test_resolvable": false,
+        "diagnostic_tests_resolvable": false,
+        "pretrend_p": 0.42857142857142855,
+        "placebo_time_p": 1.0,
+        "placebo_window_p": 0.42857142857142855,
+        "post_bins": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8,
+          9,
+          10,
+          11,
+          12
+        ],
+        "post_bin_count": 12
+      },
+      "selection": {
+        "stations": [
+          "111124",
+          "111125",
+          "111154",
+          "111202",
+          "111232",
+          "111263"
+        ],
+        "rows_24h": 183204,
+        "first_hour_idx": 19,
+        "last_hour_idx": 43823,
+        "uses_main_complete_hour_sample": true,
+        "time_reindexed": false
+      },
+      "quality": [
+        {
+          "check": "필수 컬럼",
+          "value": 4,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "시간 컬럼 정수형",
+          "value": "int64",
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "결측률 station_id",
+          "value": 0.0,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "결측률 hour_idx",
+          "value": 0.0,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "결측률 treated",
+          "value": 0.0,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "결측률 no2",
+          "value": 0.0,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "시각 컬럼 결측",
+          "value": 0,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "시각 컬럼 0~23",
+          "value": 0,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "사전 기간 수(묶음(168기씩))",
+          "value": 124,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "사후 기간 수(묶음(168기씩))",
+          "value": 95,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "처치 단위 수",
+          "value": 2,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "통제 단위 수",
+          "value": 4,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "단위×시점 중복",
+          "value": 0,
+          "status": "ok",
+          "message": ""
+        }
+      ],
+      "result": {
+        "method": "event_study",
+        "outcome": "no2",
+        "estimate": -0.007069719180219116,
+        "se": 0.008215770740707565,
+        "ci_low": null,
+        "ci_high": null,
+        "p_value": 0.42857142857142855,
+        "n_obs": 110958,
+        "n_clusters": 6,
+        "assumptions_checked": {
+          "inference": "randomization inference (처치 단위 2개를 재배정, 가능한 배정 6가지 전부)",
+          "ri_assignments": 6,
+          "parallel_pretrends": {
+            "test": "randomization inference (사전 계수 제곱합)",
+            "p_value": 0.42857142857142855,
+            "passed": true
+          },
+          "pre_periods": 124,
+          "n_adoption_cohorts": 1,
+          "active_hours": "06:00~21:00 자료만으로 추정",
+          "placebo_time": {
+            "fake_treat_time": 16806,
+            "estimate": -0.0002349106393843242,
+            "p_value": 1.0,
+            "passed": true
+          },
+          "placebo_window": {
+            "hours": "정책이 적용되지 않는 시간대",
+            "estimate": -0.0054927912416281345,
+            "ci": [
+              null,
+              null
+            ],
+            "p_value": 0.42857142857142855,
+            "passed": true
+          }
+        },
+        "warnings": [
+          "처치 단위가 2개뿐이라 군집-강건 표준오차를 믿을 수 없습니다. 무작위화 추론(처치 단위를 무작위로 바꿔 반복)으로 p값과 신뢰구간을 계산했습니다.",
+          "가능한 가짜 배정이 6가지뿐이라 가장 작은 p값이 0.143입니다. 유의수준 0.05 에서 어떤 효과 크기도 배제할 수 없어 범위를 정하지 않았습니다.",
+          "같은 이유로 사전추세 검정도 유의수준 0.1 에서 기각될 수 없습니다(통과가 아니라 검정 불가).",
+          "클러스터 수 6개 < 20: 군집-강건 표준오차가 과소추정될 수 있습니다. wild cluster bootstrap(pyfixest `wildboottest`) 또는 randomization inference 를 병행하세요.",
+          "신뢰구간이 0을 포함합니다. '효과 없음'이 아니라 '효과 크기를 판별할 수 없음'으로 해석하세요."
+        ],
+        "triggers": [
+          "few_treated_clusters",
+          "few_clusters",
+          "ci_crosses_zero"
+        ],
+        "verdict": "conditional",
+        "extra": {
+          "coefs": [
+            {
+              "rel_time": -30,
+              "coef": -0.0035871891600100644,
+              "se": 0.004440231668193353,
+              "ci_low": -0.015001168032285035,
+              "ci_high": 0.007826789712264904
+            },
+            {
+              "rel_time": -29,
+              "coef": -0.004570218580253707,
+              "se": 0.0027024615422716817,
+              "ci_low": -0.011517117132322995,
+              "ci_high": 0.0023766799718155807
+            },
+            {
+              "rel_time": -28,
+              "coef": -0.005595214522466734,
+              "se": 0.002214878071961811,
+              "ci_low": -0.01128873986240095,
+              "ci_high": 9.831081746748162e-05
+            },
+            {
+              "rel_time": -27,
+              "coef": -0.007880555556546837,
+              "se": 0.002664076151167664,
+              "ci_low": -0.01472878131949034,
+              "ci_high": -0.0010323297936033335
+            },
+            {
+              "rel_time": -26,
+              "coef": -0.0021051418449999034,
+              "se": 0.0031655082430536528,
+              "ci_low": -0.01024233983515065,
+              "ci_high": 0.006032056145150844
+            },
+            {
+              "rel_time": -25,
+              "coef": -0.005225438597520279,
+              "se": 0.003535882369270897,
+              "ci_low": -0.014314713588914745,
+              "ci_high": 0.0038638363938741874
+            },
+            {
+              "rel_time": -24,
+              "coef": -0.007335964913311773,
+              "se": 0.0019867252963265683,
+              "ci_low": -0.012443004872448026,
+              "ci_high": -0.00222892495417552
+            },
+            {
+              "rel_time": -23,
+              "coef": 0.0,
+              "se": 0.0,
+              "ci_low": 0.0,
+              "ci_high": 0.0
+            },
+            {
+              "rel_time": -22,
+              "coef": -0.0038666666676881686,
+              "se": 0.0021606277173227876,
+              "ci_low": -0.009420737031410482,
+              "ci_high": 0.0016874036960341445
+            },
+            {
+              "rel_time": 1,
+              "coef": -0.005164912281745664,
+              "se": 0.0089123615656031,
+              "ci_low": -0.028074867034908225,
+              "ci_high": 0.0177450424714169
+            },
+            {
+              "rel_time": 2,
+              "coef": -0.004315591398898627,
+              "se": 0.00818215313292878,
+              "ci_low": -0.02534848561880012,
+              "ci_high": 0.016717302821002866
+            },
+            {
+              "rel_time": 3,
+              "coef": -0.007028070176469434,
+              "se": 0.00813021324415735,
+              "ci_low": -0.027927448661750117,
+              "ci_high": 0.01387130830881125
+            },
+            {
+              "rel_time": 4,
+              "coef": -0.007309929079058998,
+              "se": 0.00833671233132811,
+              "ci_low": -0.028740130366896318,
+              "ci_high": 0.01412027220877832
+            },
+            {
+              "rel_time": 5,
+              "coef": -0.006351754386995097,
+              "se": 0.008347810076717381,
+              "ci_low": -0.027810483337546595,
+              "ci_high": 0.015106974563556402
+            },
+            {
+              "rel_time": 6,
+              "coef": -0.010330036631041522,
+              "se": 0.008187276579980137,
+              "ci_low": -0.03137610109086908,
+              "ci_high": 0.010716027828786032
+            },
+            {
+              "rel_time": 7,
+              "coef": -0.007958333334347506,
+              "se": 0.008989244739557492,
+              "ci_low": -0.031065922577943297,
+              "ci_high": 0.015149255909248285
+            },
+            {
+              "rel_time": 8,
+              "coef": -0.005864855073498453,
+              "se": 0.00821489824249916,
+              "ci_low": -0.026981923277267485,
+              "ci_high": 0.01525221313027058
+            },
+            {
+              "rel_time": 9,
+              "coef": -0.00970216450322908,
+              "se": 0.00813009892079568,
+              "ci_low": -0.030601249110952865,
+              "ci_high": 0.011196920104494707
+            },
+            {
+              "rel_time": 10,
+              "coef": -0.007198226951399041,
+              "se": 0.009218198232591856,
+              "ci_low": -0.030894359885394452,
+              "ci_high": 0.01649790598259637
+            },
+            {
+              "rel_time": 11,
+              "coef": -0.009109176030985397,
+              "se": 0.007657632663125495,
+              "ci_low": -0.02879374745879114,
+              "ci_high": 0.010575395396820344
+            },
+            {
+              "rel_time": 12,
+              "coef": -0.004503580314960585,
+              "se": 0.007174560416377893,
+              "ci_low": -0.02294637499997692,
+              "ci_high": 0.013939214370055748
+            }
+          ],
+          "crv1": {
+            "ci": [
+              -0.023172333937243907,
+              0.009032895576805675
+            ],
+            "p_value": 0.3895102336487789,
+            "pretrend": {
+              "test": "joint Wald (chi2, CRV1)",
+              "stat": 19613926538110.453,
+              "df": 8,
+              "p_value": 0.0
+            }
+          }
+        },
+        "identified": false
+      }
+    },
+    {
+      "summary": {
+        "id": "post_to_20200119",
+        "label": "정책 후 2020-01-19까지",
+        "estimate": -0.0009846663403359369,
+        "ci_low": -0.022964918253931883,
+        "ci_high": 0.029145566619875184,
+        "ci_kind": "finite",
+        "p_value": 0.918918918918919,
+        "n_obs": 117557,
+        "n_clusters": 11,
+        "verdict": "conditional",
+        "ri_assignments": 36,
+        "p_min": 0.02702702702702703,
+        "effect_test_resolvable": true,
+        "diagnostic_tests_resolvable": true,
+        "pretrend_p": 0.7837837837837838,
+        "placebo_time_p": 0.918918918918919,
+        "placebo_window_p": 1.0,
+        "post_bins": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7
+        ],
+        "post_bin_count": 7
+      },
+      "selection": {
+        "stations": [
+          "111124",
+          "111125",
+          "111154",
+          "111202",
+          "111213",
+          "111232",
+          "111242",
+          "111263",
+          "111264",
+          "111275",
+          "111312"
+        ],
+        "rows_24h": 194293,
+        "first_hour_idx": 19,
+        "last_hour_idx": 26735,
+        "uses_main_complete_hour_sample": true,
+        "time_reindexed": false
+      },
+      "quality": [
+        {
+          "check": "필수 컬럼",
+          "value": 4,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "시간 컬럼 정수형",
+          "value": "int64",
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "결측률 station_id",
+          "value": 0.0,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "결측률 hour_idx",
+          "value": 0.0,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "결측률 treated",
+          "value": 0.0,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "결측률 no2",
+          "value": 0.0,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "시각 컬럼 결측",
+          "value": 0,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "시각 컬럼 0~23",
+          "value": 0,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "사전 기간 수(묶음(168기씩))",
+          "value": 124,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "사후 기간 수(묶음(168기씩))",
+          "value": 7,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "처치 단위 수",
+          "value": 2,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "통제 단위 수",
+          "value": 9,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "단위×시점 중복",
+          "value": 0,
+          "status": "ok",
+          "message": ""
+        }
+      ],
+      "result": {
+        "method": "event_study",
+        "outcome": "no2",
+        "estimate": -0.0009846663403359369,
+        "se": 0.0046834064233897445,
+        "ci_low": -0.022964918253931883,
+        "ci_high": 0.029145566619875184,
+        "p_value": 0.918918918918919,
+        "n_obs": 117557,
+        "n_clusters": 11,
+        "assumptions_checked": {
+          "inference": "randomization inference (처치 단위 2개를 재배정, 가능한 배정 36가지 전부)",
+          "ri_assignments": 36,
+          "parallel_pretrends": {
+            "test": "randomization inference (사전 계수 제곱합)",
+            "p_value": 0.7837837837837838,
+            "passed": true
+          },
+          "pre_periods": 124,
+          "n_adoption_cohorts": 1,
+          "active_hours": "06:00~21:00 자료만으로 추정",
+          "placebo_time": {
+            "fake_treat_time": 16806,
+            "estimate": -0.00021130357077725479,
+            "p_value": 0.918918918918919,
+            "passed": true
+          },
+          "placebo_window": {
+            "hours": "정책이 적용되지 않는 시간대",
+            "estimate": -0.0005981678705032023,
+            "ci": [
+              -0.014917068506908448,
+              0.02187917615183657
+            ],
+            "p_value": 1.0,
+            "passed": true
+          }
+        },
+        "warnings": [
+          "처치 단위가 2개뿐이라 군집-강건 표준오차를 믿을 수 없습니다. 무작위화 추론(처치 단위를 무작위로 바꿔 반복)으로 p값과 신뢰구간을 계산했습니다.",
+          "클러스터 수 11개 < 20: 군집-강건 표준오차가 과소추정될 수 있습니다. wild cluster bootstrap(pyfixest `wildboottest`) 또는 randomization inference 를 병행하세요.",
+          "신뢰구간이 0을 포함합니다. '효과 없음'이 아니라 '효과 크기를 판별할 수 없음'으로 해석하세요."
+        ],
+        "triggers": [
+          "few_treated_clusters",
+          "few_clusters",
+          "ci_crosses_zero"
+        ],
+        "verdict": "conditional",
+        "extra": {
+          "coefs": [
+            {
+              "rel_time": -30,
+              "coef": 0.0014424103308370332,
+              "se": 0.0029281471200621216,
+              "ci_low": -0.005081908031705099,
+              "ci_high": 0.007966728693379166
+            },
+            {
+              "rel_time": -29,
+              "coef": -0.0003609087229366473,
+              "se": 0.0019899528131338347,
+              "ci_low": -0.004794799899499528,
+              "ci_high": 0.004072982453626233
+            },
+            {
+              "rel_time": -28,
+              "coef": 0.0003499877765547158,
+              "se": 0.0023182731931206835,
+              "ci_low": -0.00481544679455576,
+              "ci_high": 0.005515422347665192
+            },
+            {
+              "rel_time": -27,
+              "coef": -0.001294444444458177,
+              "se": 0.0025721260547794853,
+              "ci_low": -0.007025498439318526,
+              "ci_high": 0.004436609550402171
+            },
+            {
+              "rel_time": -26,
+              "coef": -0.0004583004990826211,
+              "se": 0.0015666571879763593,
+              "ci_low": -0.003949030247356312,
+              "ci_high": 0.0030324292491910694
+            },
+            {
+              "rel_time": -25,
+              "coef": -0.004638044184560098,
+              "se": 0.0015575299744635032,
+              "ci_low": -0.00810843723379542,
+              "ci_high": -0.0011676511353247761
+            },
+            {
+              "rel_time": -24,
+              "coef": -0.004830441845379749,
+              "se": 0.0012226208965520956,
+              "ci_low": -0.007554610966237765,
+              "ci_high": -0.002106272724521733
+            },
+            {
+              "rel_time": -23,
+              "coef": 0.0,
+              "se": 0.0,
+              "ci_low": 0.0,
+              "ci_high": 0.0
+            },
+            {
+              "rel_time": -22,
+              "coef": 0.002810493827177866,
+              "se": 0.003237133953555925,
+              "ci_low": -0.004402290103824024,
+              "ci_high": 0.010023277758179756
+            },
+            {
+              "rel_time": 1,
+              "coef": 0.0004455815464594734,
+              "se": 0.004776510038904033,
+              "ci_low": -0.010197146048125076,
+              "ci_high": 0.011088309141044023
+            },
+            {
+              "rel_time": 2,
+              "coef": 0.0007975906013414729,
+              "se": 0.004387072795984345,
+              "ci_low": -0.008977416741883303,
+              "ci_high": 0.010572597944566248
+            },
+            {
+              "rel_time": 3,
+              "coef": -0.0012450617284024154,
+              "se": 0.004872802702619159,
+              "ci_low": -0.012102342748171886,
+              "ci_high": 0.009612219291367055
+            },
+            {
+              "rel_time": 4,
+              "coef": -0.0013442343052305925,
+              "se": 0.004937265695318254,
+              "ci_low": -0.012345147823548223,
+              "ci_high": 0.009656679213087039
+            },
+            {
+              "rel_time": 5,
+              "coef": -0.00023395061728621454,
+              "se": 0.004863559203696966,
+              "ci_low": -0.011070635837978855,
+              "ci_high": 0.010602734603406425
+            },
+            {
+              "rel_time": 6,
+              "coef": -0.005067528150841423,
+              "se": 0.004994667131227635,
+              "ci_low": -0.016196340038668544,
+              "ci_high": 0.0060612837369857005
+            },
+            {
+              "rel_time": 7,
+              "coef": -0.0002450617283918601,
+              "se": 0.004851163562100444,
+              "ci_low": -0.01105412773844799,
+              "ci_high": 0.01056400428166427
+            }
+          ],
+          "crv1": {
+            "ci": [
+              -0.010163974255143383,
+              0.00819464157447151
+            ],
+            "p_value": 0.8334758667219796,
+            "pretrend": {
+              "test": "joint Wald (chi2, CRV1)",
+              "stat": 213.44628110760664,
+              "df": 8,
+              "p_value": 9.324331194267463e-42
+            }
+          }
+        },
+        "identified": false
+      }
+    },
+    {
+      "summary": {
+        "id": "post_to_20200131",
+        "label": "정책 후 2020-01-31까지",
+        "estimate": -0.0011701360380279042,
+        "ci_low": -0.023687939035476217,
+        "ci_high": 0.02877111849707542,
+        "ci_kind": "finite",
+        "p_value": 0.9459459459459459,
+        "n_obs": 119339,
+        "n_clusters": 11,
+        "verdict": "conditional",
+        "ri_assignments": 36,
+        "p_min": 0.02702702702702703,
+        "effect_test_resolvable": true,
+        "diagnostic_tests_resolvable": true,
+        "pretrend_p": 0.7837837837837838,
+        "placebo_time_p": 0.918918918918919,
+        "placebo_window_p": 1.0,
+        "post_bins": [
+          1,
+          2,
+          3,
+          4,
+          5,
+          6,
+          7,
+          8
+        ],
+        "post_bin_count": 8
+      },
+      "selection": {
+        "stations": [
+          "111124",
+          "111125",
+          "111154",
+          "111202",
+          "111213",
+          "111232",
+          "111242",
+          "111263",
+          "111264",
+          "111275",
+          "111312"
+        ],
+        "rows_24h": 197208,
+        "first_hour_idx": 19,
+        "last_hour_idx": 27023,
+        "uses_main_complete_hour_sample": true,
+        "time_reindexed": false
+      },
+      "quality": [
+        {
+          "check": "필수 컬럼",
+          "value": 4,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "시간 컬럼 정수형",
+          "value": "int64",
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "결측률 station_id",
+          "value": 0.0,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "결측률 hour_idx",
+          "value": 0.0,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "결측률 treated",
+          "value": 0.0,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "결측률 no2",
+          "value": 0.0,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "시각 컬럼 결측",
+          "value": 0,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "시각 컬럼 0~23",
+          "value": 0,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "사전 기간 수(묶음(168기씩))",
+          "value": 124,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "사후 기간 수(묶음(168기씩))",
+          "value": 8,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "처치 단위 수",
+          "value": 2,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "통제 단위 수",
+          "value": 9,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "단위×시점 중복",
+          "value": 0,
+          "status": "ok",
+          "message": ""
+        }
+      ],
+      "result": {
+        "method": "event_study",
+        "outcome": "no2",
+        "estimate": -0.0011701360380279042,
+        "se": 0.004670395881455184,
+        "ci_low": -0.023687939035476217,
+        "ci_high": 0.02877111849707542,
+        "p_value": 0.9459459459459459,
+        "n_obs": 119339,
+        "n_clusters": 11,
+        "assumptions_checked": {
+          "inference": "randomization inference (처치 단위 2개를 재배정, 가능한 배정 36가지 전부)",
+          "ri_assignments": 36,
+          "parallel_pretrends": {
+            "test": "randomization inference (사전 계수 제곱합)",
+            "p_value": 0.7837837837837838,
+            "passed": true
+          },
+          "pre_periods": 124,
+          "n_adoption_cohorts": 1,
+          "active_hours": "06:00~21:00 자료만으로 추정",
+          "placebo_time": {
+            "fake_treat_time": 16806,
+            "estimate": -0.00021130357077725479,
+            "p_value": 0.918918918918919,
+            "passed": true
+          },
+          "placebo_window": {
+            "hours": "정책이 적용되지 않는 시간대",
+            "estimate": -0.00012928827999782102,
+            "ci": [
+              -0.014426419990380981,
+              0.02248012930823213
+            ],
+            "p_value": 1.0,
+            "passed": true
+          }
+        },
+        "warnings": [
+          "처치 단위가 2개뿐이라 군집-강건 표준오차를 믿을 수 없습니다. 무작위화 추론(처치 단위를 무작위로 바꿔 반복)으로 p값과 신뢰구간을 계산했습니다.",
+          "클러스터 수 11개 < 20: 군집-강건 표준오차가 과소추정될 수 있습니다. wild cluster bootstrap(pyfixest `wildboottest`) 또는 randomization inference 를 병행하세요.",
+          "신뢰구간이 0을 포함합니다. '효과 없음'이 아니라 '효과 크기를 판별할 수 없음'으로 해석하세요."
+        ],
+        "triggers": [
+          "few_treated_clusters",
+          "few_clusters",
+          "ci_crosses_zero"
+        ],
+        "verdict": "conditional",
+        "extra": {
+          "coefs": [
+            {
+              "rel_time": -30,
+              "coef": 0.001442410330819955,
+              "se": 0.00292815773411005,
+              "ci_low": -0.0050819316812947424,
+              "ci_high": 0.007966752342934653
+            },
+            {
+              "rel_time": -29,
+              "coef": -0.0003609087229508758,
+              "se": 0.0019899600263957764,
+              "ci_low": -0.004794815971662938,
+              "ci_high": 0.004072998525761187
+            },
+            {
+              "rel_time": -28,
+              "coef": 0.00034998777653714563,
+              "se": 0.002318281596423708,
+              "ci_low": -0.004815465518299283,
+              "ci_high": 0.005515441071373575
+            },
+            {
+              "rel_time": -27,
+              "coef": -0.0012944444444692772,
+              "se": 0.0025721353782755686,
+              "ci_low": -0.007025519213373485,
+              "ci_high": 0.004436630324434931
+            },
+            {
+              "rel_time": -26,
+              "coef": -0.0004583004990936822,
+              "se": 0.0015666628668333665,
+              "ci_low": -0.003949042900649305,
+              "ci_high": 0.003032441902461941
+            },
+            {
+              "rel_time": -25,
+              "coef": -0.0046380441845826625,
+              "se": 0.0015575356202593331,
+              "ci_low": -0.008108449813435024,
+              "ci_high": -0.0011676385557303015
+            },
+            {
+              "rel_time": -24,
+              "coef": -0.0048304418454027005,
+              "se": 0.001222625328353438,
+              "ci_low": -0.007554620840929472,
+              "ci_high": -0.002106262849875929
+            },
+            {
+              "rel_time": -23,
+              "coef": 0.0,
+              "se": 0.0,
+              "ci_low": 0.0,
+              "ci_high": 0.0
+            },
+            {
+              "rel_time": -22,
+              "coef": 0.0028104938271630146,
+              "se": 0.003237145687609136,
+              "ci_low": -0.004402316248938727,
+              "ci_high": 0.010023303903264755
+            },
+            {
+              "rel_time": 1,
+              "coef": 0.0004455815464437743,
+              "se": 0.00477652735297384,
+              "ci_low": -0.010197184626292398,
+              "ci_high": 0.011088347719179947
+            },
+            {
+              "rel_time": 2,
+              "coef": 0.0007975906013310679,
+              "se": 0.004387088698417566,
+              "ci_low": -0.008977452174723009,
+              "ci_high": 0.010572633377385144
+            },
+            {
+              "rel_time": 3,
+              "coef": -0.0012450617284188328,
+              "se": 0.004872820365716539,
+              "ci_low": -0.01210238210402182,
+              "ci_high": 0.009612258647184155
+            },
+            {
+              "rel_time": 4,
+              "coef": -0.0013442343052363819,
+              "se": 0.0049372835920456,
+              "ci_low": -0.012345187699947534,
+              "ci_high": 0.009656719089474772
+            },
+            {
+              "rel_time": 5,
+              "coef": -0.00023395061730079302,
+              "se": 0.004863576833287856,
+              "ci_low": -0.011070675119169837,
+              "ci_high": 0.010602773884568253
+            },
+            {
+              "rel_time": 6,
+              "coef": -0.0050675281508509515,
+              "se": 0.004994685236057163,
+              "ci_low": -0.016196380378752154,
+              "ci_high": 0.0060613240770502515
+            },
+            {
+              "rel_time": 7,
+              "coef": -0.0023195061728577223,
+              "se": 0.005331568614502078,
+              "ci_low": -0.014198981344860435,
+              "ci_high": 0.009559968999144991
+            },
+            {
+              "rel_time": 8,
+              "coef": -0.0003939794773333949,
+              "se": 0.0043731163804970235,
+              "ci_low": -0.010137889988976405,
+              "ci_high": 0.009349931034309616
+            }
+          ],
+          "crv1": {
+            "ci": [
+              -0.010323943759224264,
+              0.007983671683168455
+            ],
+            "p_value": 0.8021672829512487,
+            "pretrend": {
+              "test": "joint Wald (chi2, CRV1)",
+              "stat": 213.44473370394417,
+              "df": 8,
+              "p_value": 9.331347207922305e-42
+            }
+          }
+        },
+        "identified": false
+      }
+    },
+    {
+      "summary": {
+        "id": "exclude_2020",
+        "label": "2020년 관측 제외",
+        "estimate": 0.0003709979272165777,
+        "ci_low": -0.0225732211867158,
+        "ci_high": 0.029976441944879244,
+        "ci_kind": "finite",
+        "p_value": 1.0,
+        "n_obs": 159588,
+        "n_clusters": 11,
+        "verdict": "conditional",
+        "ri_assignments": 36,
+        "p_min": 0.02702702702702703,
+        "effect_test_resolvable": true,
+        "diagnostic_tests_resolvable": true,
+        "pretrend_p": 0.7837837837837838,
+        "placebo_time_p": 0.918918918918919,
+        "placebo_window_p": 0.918918918918919,
+        "post_bins": [
+          1,
+          2,
+          3,
+          4,
+          12
+        ],
+        "post_bin_count": 5
+      },
+      "selection": {
+        "stations": [
+          "111124",
+          "111125",
+          "111154",
+          "111202",
+          "111213",
+          "111232",
+          "111242",
+          "111263",
+          "111264",
+          "111275",
+          "111312"
+        ],
+        "rows_24h": 263857,
+        "first_hour_idx": 19,
+        "last_hour_idx": 43823,
+        "uses_main_complete_hour_sample": true,
+        "time_reindexed": false
+      },
+      "quality": [
+        {
+          "check": "필수 컬럼",
+          "value": 4,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "시간 컬럼 정수형",
+          "value": "int64",
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "결측률 station_id",
+          "value": 0.0,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "결측률 hour_idx",
+          "value": 0.0,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "결측률 treated",
+          "value": 0.0,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "결측률 no2",
+          "value": 0.0,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "시각 컬럼 결측",
+          "value": 0,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "시각 컬럼 0~23",
+          "value": 0,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "사전 기간 수(묶음(168기씩))",
+          "value": 124,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "사후 기간 수(묶음(168기씩))",
+          "value": 51,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "처치 단위 수",
+          "value": 2,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "통제 단위 수",
+          "value": 9,
+          "status": "ok",
+          "message": ""
+        },
+        {
+          "check": "단위×시점 중복",
+          "value": 0,
+          "status": "ok",
+          "message": ""
+        }
+      ],
+      "result": {
+        "method": "event_study",
+        "outcome": "no2",
+        "estimate": 0.0003709979272165777,
+        "se": 0.004535048703692119,
+        "ci_low": -0.0225732211867158,
+        "ci_high": 0.029976441944879244,
+        "p_value": 1.0,
+        "n_obs": 159588,
+        "n_clusters": 11,
+        "assumptions_checked": {
+          "inference": "randomization inference (처치 단위 2개를 재배정, 가능한 배정 36가지 전부)",
+          "ri_assignments": 36,
+          "parallel_pretrends": {
+            "test": "randomization inference (사전 계수 제곱합)",
+            "p_value": 0.7837837837837838,
+            "passed": true
+          },
+          "pre_periods": 124,
+          "n_adoption_cohorts": 1,
+          "active_hours": "06:00~21:00 자료만으로 추정",
+          "placebo_time": {
+            "fake_treat_time": 16806,
+            "estimate": -0.00021130357077725479,
+            "p_value": 0.918918918918919,
+            "passed": true
+          },
+          "placebo_window": {
+            "hours": "정책이 적용되지 않는 시간대",
+            "estimate": 0.002338670319322717,
+            "ci": [
+              -0.011975240638702988,
+              0.024878966887856617
+            ],
+            "p_value": 0.918918918918919,
+            "passed": true
+          }
+        },
+        "warnings": [
+          "처치 단위가 2개뿐이라 군집-강건 표준오차를 믿을 수 없습니다. 무작위화 추론(처치 단위를 무작위로 바꿔 반복)으로 p값과 신뢰구간을 계산했습니다.",
+          "클러스터 수 11개 < 20: 군집-강건 표준오차가 과소추정될 수 있습니다. wild cluster bootstrap(pyfixest `wildboottest`) 또는 randomization inference 를 병행하세요.",
+          "신뢰구간이 0을 포함합니다. '효과 없음'이 아니라 '효과 크기를 판별할 수 없음'으로 해석하세요."
+        ],
+        "triggers": [
+          "few_treated_clusters",
+          "few_clusters",
+          "ci_crosses_zero"
+        ],
+        "verdict": "conditional",
+        "extra": {
+          "coefs": [
+            {
+              "rel_time": -30,
+              "coef": 0.0014424103309727055,
+              "se": 0.0029280760881451734,
+              "ci_low": -0.005081749762595543,
+              "ci_high": 0.007966570424540954
+            },
+            {
+              "rel_time": -29,
+              "coef": -0.0003609087227971314,
+              "se": 0.0019899045403091458,
+              "ci_low": -0.004794692340803828,
+              "ci_high": 0.004072874895209565
+            },
+            {
+              "rel_time": -28,
+              "coef": 0.00034998777670009623,
+              "se": 0.0023182169556072167,
+              "ci_low": -0.004815321489421685,
+              "ci_high": 0.005515297042821877
+            },
+            {
+              "rel_time": -27,
+              "coef": -0.0012944444443033656,
+              "se": 0.0025720636593163293,
+              "ci_low": -0.007025359413408068,
+              "ci_high": 0.0044364705248013375
+            },
+            {
+              "rel_time": -26,
+              "coef": -0.00045830049894659983,
+              "se": 0.0015666191835109107,
+              "ci_low": -0.0039489455679942755,
+              "ci_high": 0.003032344570101076
+            },
+            {
+              "rel_time": -25,
+              "coef": -0.00463804418441678,
+              "se": 0.0015574921914361908,
+              "ci_low": -0.008108353047821001,
+              "ci_high": -0.0011677353210125582
+            },
+            {
+              "rel_time": -24,
+              "coef": -0.004830441845236434,
+              "se": 0.001222591237776933,
+              "ci_low": -0.0075545448822252085,
+              "ci_high": -0.00210633880824766
+            },
+            {
+              "rel_time": -23,
+              "coef": 0.0,
+              "se": 0.0,
+              "ci_low": 0.0,
+              "ci_high": 0.0
+            },
+            {
+              "rel_time": -22,
+              "coef": 0.00281049382727146,
+              "se": 0.0032370554261990847,
+              "ci_low": -0.004402115133875711,
+              "ci_high": 0.01002310278841863
+            },
+            {
+              "rel_time": 1,
+              "coef": 0.00044558154658779853,
+              "se": 0.004776394169046573,
+              "ci_low": -0.010196887873865572,
+              "ci_high": 0.011088050967041168
+            },
+            {
+              "rel_time": 2,
+              "coef": 0.0007975906014909576,
+              "se": 0.004386966373139756,
+              "ci_low": -0.008977179616859052,
+              "ci_high": 0.010572360819840965
+            },
+            {
+              "rel_time": 3,
+              "coef": -0.0012450617282605434,
+              "se": 0.004872684496887616,
+              "ci_low": -0.012102079369247034,
+              "ci_high": 0.009611955912725949
+            },
+            {
+              "rel_time": 4,
+              "coef": -0.0010789241621305843,
+              "se": 0.00479758819461806,
+              "ci_low": -0.011768616814389773,
+              "ci_high": 0.009610768490128603
+            },
+            {
+              "rel_time": 12,
+              "coef": 0.00293580337839526,
+              "se": 0.004496385131268011,
+              "ci_low": -0.0070827670260764,
+              "ci_high": 0.01295437378286692
+            }
+          ],
+          "crv1": {
+            "ci": [
+              -0.008517534200155035,
+              0.00925953005458819
+            ],
+            "p_value": 0.9348003301856165,
+            "pretrend": {
+              "test": "joint Wald (chi2, CRV1)",
+              "stat": 213.45663715606912,
+              "df": 8,
+              "p_value": 9.277511857695294e-42
+            }
+          }
+        },
+        "identified": false
+      }
+    }
+  ]
+}
