@@ -77,7 +77,9 @@ def test_changed_figure_data_is_rejected(tmp_path, figure):
         del data["figures"]["weekly"]
     else:
         data["figures"][figure]["points"][0]["value"] += 0.01
-    page.write_text(content[:start] + json.dumps(data, ensure_ascii=False) + content[end:], encoding="utf-8")
+    page.write_text(
+        content[:start] + json.dumps(data, ensure_ascii=False) + content[end:], encoding="utf-8"
+    )
     with pytest.raises(ValueError, match="그림"):
         check_overview(page=page, base=base)
 
@@ -112,7 +114,9 @@ def test_initial_plan_remains_a_valid_common_engine_record():
 
 
 def test_discussion_exports_meaningful_site_fields(monkeypatch):
-    pytest.importorskip("pyfixest", reason="사이트 연동 검사는 공통 엔진 의존성이 있는 환경에서 실행")
+    pytest.importorskip(
+        "pyfixest", reason="사이트 연동 검사는 공통 엔진 의존성이 있는 환경에서 실행"
+    )
     monkeypatch.syspath_prepend(str(Path(__file__).resolve().parents[1] / "site"))
     from answers import read_discussion
 

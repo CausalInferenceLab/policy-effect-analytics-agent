@@ -206,7 +206,9 @@ def test_answer_pages_for_users(tmp_path, monkeypatch):
             replay = r["descriptive"]["reproduction"]
             assert escape(replay["command"]) in page
             assert all(escape(p) in page for p in replay["prerequisites"])
-            assert "make flow" not in page and "진단용" not in page and "<th>95% 범위</th>" not in page
+            assert (
+                "make flow" not in page and "진단용" not in page and "<th>95% 범위</th>" not in page
+            )
         else:
             assert f"make flow CASE=cases/{r['case']}" in page
             assert (out / "answers" / f"{r['case']}.csv").exists()

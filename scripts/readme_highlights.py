@@ -36,7 +36,11 @@ def table() -> str:
         t = topics.get(p["topic"])
         a = results.get(p["case"])
         if a:
-            state = ans.VERDICT.get(a["verdict"], (a["verdict"],))[0]
+            state = (
+                "관측 통계"
+                if a.get("execution_kind") == "descriptive_only"
+                else ans.VERDICT.get(a["verdict"], (a["verdict"],))[0]
+            )
             link = f"[결과 보기]({SITE}/{a['page']})"
         else:
             state = f"{STAGE[p['stage']]} 단계" if p["stage"] >= 0 else "준비"

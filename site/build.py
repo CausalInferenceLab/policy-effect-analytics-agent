@@ -930,7 +930,12 @@ def topic_page(t, policies, issues, datasets, projects=(), answers=(), lineages=
         names = {}
         ds_name = {d.id: d.name for d in datasets}
         iss_name = {i.id: i.name for i in issues}
-        verdicts = {a["case"]: a["verdict"] for a in answers}
+        verdicts = {
+            a["case"]: "descriptive"
+            if a.get("execution_kind") == "descriptive_only"
+            else a["verdict"]
+            for a in answers
+        }
         for lin in my_lin:
             for s in lin.steps:
                 if s.kind == "issue":
