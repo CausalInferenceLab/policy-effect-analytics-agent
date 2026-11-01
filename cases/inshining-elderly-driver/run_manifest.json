@@ -1,0 +1,275 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-11-01T13:09:44.990923+00:00",
+  "execution_kind": "descriptive_only",
+  "status": "completed",
+  "causal_estimation": "not_run",
+  "verdict": "not_identified",
+  "analysis_approved": false,
+  "publication_approved": false,
+  "command": "python3 cases/inshining-elderly-driver/run_descriptive.py",
+  "canonical_reproduction_command": "python3 cases/inshining-elderly-driver/run_descriptive.py",
+  "invocation": {
+    "arguments": [],
+    "external_output_paths_redacted": false,
+    "working_directory": "project root after output path normalization",
+    "path_note": "외부 절대 출력 경로는 <external-output>/파일명으로 가림; 정확 argv는 로컬 실행 증거에 보관"
+  },
+  "python_version": "3.11.10",
+  "scope": "부산2014~2019 관측 비교; 효과 추정·반증검정 미실행",
+  "inputs": [
+    {
+      "path": "cases/inshining-elderly-driver/README.md",
+      "sha256": "ef758af82496565e60a2fff1b22855dc4694fffc949c11971f1392b4a0964204"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/age-descriptive-manifest.json",
+      "sha256": "0b18a779ba02e1422ee283dc05208870c3e22f1cd3b1b445027a51b409642c93"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/age-source-manifest.json",
+      "sha256": "9f2bd0c993338f70afc8706a95eaa6bd709286d317e3a5c0093471854231ffcd"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/comparison-feasibility.md",
+      "sha256": "5f795297d9f210710fd1c36b6c76e2f0354b77f0e520dcfc42f18fae1fa159a5"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/data/README.md",
+      "sha256": "9633a3068d87220a972dc6742d8be313eaaf7c740750d67a57708ac2cb6b910b"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/data/accidents.csv",
+      "sha256": "186a03475f3dd2cb07778e5e457f70cea9aacd7c18c9ea30d63cc8bd4c0ceca8"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/data/age-descriptive-series.csv",
+      "sha256": "d0ac86883672b3944d4984e5ca7f0e3d82905fb21ae075519bbdf9967e425bb7"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/data/descriptive-series.csv",
+      "sha256": "fd188601245b8d2bd1b06daedcda5e0f1cbf91994138edc74b9c0d7a80ceff73"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/data/population-descriptive-series.csv",
+      "sha256": "d5171b8c8bd0efc6751e1f07af93b0e8a2cd6a9a81def48d315f7d1d37c839da"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/data/population.csv",
+      "sha256": "954efe0baa088c1fb687a57a67e77621fe4f64c99c12e71e2bb69be28b64fbf1"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/data/raw/population-2013-12.csv",
+      "sha256": "f8618e748dfb09089c6ba8c19f833454a41f27bf5219469112a13033ea79c297"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/data/raw/population-2014-12.csv",
+      "sha256": "69ea0e01d81ff29c08565c5b713fdccf05eb87709ad45faecc6e00420c423fe2"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/data/raw/population-2015-12.csv",
+      "sha256": "874c47fa8245964ba2571420005c93b49747ede5ce54234f9b090f63476c9b90"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/data/raw/population-2016-12.csv",
+      "sha256": "dd900fdf4540779737210a7a8f7d4cc0b2a61d3045ad2e6d760ba86d32430bff"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/data/raw/population-2017-12.csv",
+      "sha256": "6069a70fb332c0afc2ca51b89e3bd0b0e1a688cf42394b3634ef7a1acacb277a"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/data/raw/population-2018-12.csv",
+      "sha256": "a203d43bc534382faa492e90548e5d4dbd994afe92a4fc37f08be6ef254304e8"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/data/raw/taas-2014-2018-page-1.xml",
+      "sha256": "afc507f06539b612934192bd12caec23c7eda4481679567f9653e1d90e7c803a"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/data/raw/taas-2014-2018-page-2.xml",
+      "sha256": "4f7a631e152bfc75dc4f5a73591bd05b1d5dbefee6b0b30e231ed40540316ba4"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/data/raw/taas-2019-2019-page-1.xml",
+      "sha256": "c36733c27200a602e01d67ebce0021e3779a0250cd16758e74318de8f21a1bf6"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/data/raw/taas-2019-2019-page-2.xml",
+      "sha256": "f2bb484a897d67759052576819a74b6104722aae5067ecedbeccd70656b832db"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/data/raw-age/source-query-busan-2014-2018.xml",
+      "sha256": "ed6e835ce41ab9e410269bfd8ee4dde8d81e74f6726efadc0a7374891a194299"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/data/raw-age/source-query-busan-2019-2019.xml",
+      "sha256": "1bec3b42c873b98792182bb0b68a3ac25fefa0e10a7d3bb757c84912470667af"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/data/raw-age/source-query-national-2014-2018.xml",
+      "sha256": "124f0e2402e5a9c4915ea86f52f2c167304827c9e02d13596413e2ea8a4a4a41"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/data/raw-age/source-query-national-2019-2019.xml",
+      "sha256": "6a6ad3b65ff7be91312893f523dec4c133f2ac34e8f18f03ce53403182bf9e68"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/data/taas-national.csv",
+      "sha256": "a2b63b48e0166da5ab17677303f7ca227d299cebdf9689a8dd5855c55496d641"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/data/taas-unmatched.csv",
+      "sha256": "7b44d5288955161814a81b0503fc4f425dfe2854ff51f0d7a6142279737e9a42"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/describe.py",
+      "sha256": "03086457d19994516acc6d94ab761dc4b5ab654a1f8abe76d9c5c53cbbcfc0ca"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/describe_age.py",
+      "sha256": "e4d0bd5b4892c0271afd629d25d7a25130232ee00e66b4bef9edba1810494ae2"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/describe_population.py",
+      "sha256": "df182e5af47e59832aee2f877dc54569be3a066c2144bf123ed7f73618c29a22"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/descriptive-manifest.json",
+      "sha256": "8620d085a3286dc3742c7f9300a2b93ec3311c8274484a787740ca83e3d81741"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/discussion.md",
+      "sha256": "ab06342dd90f8ef4a0404a07a18e312d4bd3654fe21ab13b33b1ed64afdb757d"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/evidence/policy-sources/2026-11-01-gunsan-2019-ordinance.txt",
+      "sha256": "17c0291d160811606427b16b4dc6fe7d982911e1c5f1dbc8b8811ec0696d9c73"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/evidence/policy-sources/2026-11-01-gunsan-confirm.txt",
+      "sha256": "122099a3e98cb34abd065f3b592b4b2f33038fabc6f0a7fd97a04431a2df783d"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/evidence/policy-sources/2026-11-01-jeonju-2019-council.txt",
+      "sha256": "9b3442e16a7109f552e6a2e01e843920e7c35fdf55927be96dc158706bf4ddbe"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/evidence/policy-sources/2026-11-01-jeonju-confirm.txt",
+      "sha256": "55fd78746c3b6830c9c6d5b2b8ff9f8f7c2b421e8ade913be6c63922ad46fdbd"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/evidence/policy-sources/buan-direct.txt",
+      "sha256": "404b1ebf21760b3acbcf5fa2122b6e7367d9adb9b7f09e1e495323bacf620d86"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/evidence/policy-sources/busan-5030-direct.txt",
+      "sha256": "8df8f779a45e684d1fb6f3c2733ec7a5e18bff960733ff2f6c4887e6ce642a00"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/evidence/policy-sources/busan-direct.txt",
+      "sha256": "70d99a418e6de6d7d6b8bf28bb6cc1aeb9c0bfc1ffe50e2719378afd95a0cbe5"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/evidence/policy-sources/busan-launch-direct.txt",
+      "sha256": "4c90157603fd9c53d696b77484ccf68b02327df782c49c0f57ffd6e453956cad"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/evidence/policy-sources/gunsan-direct.txt",
+      "sha256": "f15af23c6fc5d9ebc38a9caaf0f8e422864a7458940ec4911415250c81403c8b"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/evidence/policy-sources/gyeonggi-direct.txt",
+      "sha256": "48e74ffc121fb15e3dc08c207c5b10abf6d6b1fa0e7e19b356aae9e79cddae6d"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/evidence/policy-sources/jeonju-confirm-direct.txt",
+      "sha256": "47511470d94703bc2468d5656dcbf7c00b3e8984ffc62fd1ebd0ae13659e3b5c"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/evidence/policy-sources/jeonju-direct.txt",
+      "sha256": "08a6de956ee3fd1ffb1d24ac8e15d2a1af4415522bceb9a6891f2a0a9ce62274"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/evidence/policy-sources/seoul-direct.txt",
+      "sha256": "b4103ecfaf9e103a1f5ce1454536edfe2bc622570b7bed119a3725256bde7d1d"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/figures/01_busan_counts.png",
+      "sha256": "f9e1871005ede0b3ebe53acbb2ae763485018ed92cabbdcf33ee36aeee5a1cd5"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/figures/02_busan_vs_rest_counts.png",
+      "sha256": "4eabbd90427b712225128805e8d8a8e294efbcdd24ccde4480b5f43fcaf9b79e"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/figures/03_busan_counts_and_population.png",
+      "sha256": "9cb9a4ee5728ab5b7307412acf4f55fda27e3ccea8a6e11a4b0f0c7973b988c9"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/figures/04_busan_age_comparison.png",
+      "sha256": "ec3175ff50a6866c282ca5664722435e3180d24c8c6f7a8ef3d87cfb2a48dcee"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/plan.yaml",
+      "sha256": "f0d20b69655bf6ab4ff99423987dbe0798081226af8b52ce3f4686e146ba56d7"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/population-descriptive-manifest.json",
+      "sha256": "a84f5e3c34694319fd061b3cabcc5bd9ecea96cf0f16b01629c26a7e3a1a17dc"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/population-qc.json",
+      "sha256": "0b3ed7f1c673dc77010cf45a3a3b0dfd8f4aa7ff2e9bb5a17fdd76ce3b34c3f5"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/run_descriptive.py",
+      "sha256": "bfd4af2b26cba29c9465ca8b03129fa387dbea739fb86b8c47e74b110f469619"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/source-use-notes.md",
+      "sha256": "1af8a73f7d4d8762c1d92b80506e3e3c5b13f9421bc99bc95450d1d53ed5581c"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/taas-qc.json",
+      "sha256": "cdb5011f249479851d4466e3bb3511b0216d39ac92f07b58458f3f65b372509b"
+    }
+  ],
+  "verification": [
+    "source/raw/code/figure/CSV SHA256 match",
+    "three pure aggregation functions recalculated",
+    "three series CSVs match recalculation",
+    "six numeric years; unknown age preserved separately"
+  ],
+  "network_requests": 0,
+  "outputs": [
+    {
+      "path": "cases/inshining-elderly-driver/report.md",
+      "sha256": "a6c270e1a31a8cbe1c406a6254169f45cc5884721391244d3beeb73736957c3b"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/flow_log.json",
+      "sha256": "9ad3a3009c9460ef2461a80ef587bce7fd1705cd6e0d85423f79e7e6d842e975"
+    }
+  ],
+  "sources": [
+    {
+      "name": "TAAS 가해운전자(1당사자) 연령별 교통사고",
+      "url": "https://taas.koroad.or.kr/OBIP25/analysis/TypicalAnalysis.jsp",
+      "provider": "한국도로교통공단 교통사고분석시스템",
+      "license": "other",
+      "notes": "2014~2019 연간 사고[건], 부산·전국 합계. 65+ 취득 2026-10-27, 연령표 취득 2026-11-01. 자체 집계; 이용 범위는 source-use-notes.md 참조."
+    },
+    {
+      "name": "행정안전부 주민등록 인구통계 연령별 인구현황",
+      "url": "https://jumin.mois.go.kr/ageStatMonth.do",
+      "provider": "행정안전부",
+      "license": "other",
+      "notes": "2013~2018년 12월 말, 부산 광역 합계, 남녀계·외국인 제외. 취득 2026-10-27. 보유 CSV와 현재 이용허락 메타데이터의 파일·버전 연결 미확인."
+    }
+  ],
+  "stability": "generated_at는 실행마다 변경; 수치·그림 바이트는 별도 manifest로 대사",
+  "manifest_hash_note": "자기 참조 해시 제외; 독립 실행 증거에서 별도 해시 기록",
+  "git_revision": null,
+  "git_revision_note": "현재 작업 루트의 Git commit을 확인·기록하지 않음"
+}

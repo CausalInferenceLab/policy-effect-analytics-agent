@@ -1,0 +1,303 @@
+{
+  "schema_version": 1,
+  "checked_on": "2026-10-27",
+  "evidence": [
+    {
+      "id": "busan-offer-start",
+      "jurisdiction": "부산광역시",
+      "source_url": "https://www.busan.go.kr/nbtnews/1361473",
+      "retrieval_mode": "direct",
+      "snapshot_path": "evidence/policy-sources/busan-direct.txt",
+      "snapshot_sha256": "70d99a418e6de6d7d6b8bf28bb6cc1aeb9c0bfc1ffe50e2719378afd95a0cbe5",
+      "source_published_on": "2019-02-18",
+      "quotation": "이 시책은 작년 7월부터 시행되어",
+      "claim_type": "offer_start",
+      "claimed_start": "2018-07",
+      "date_precision": "month"
+    },
+    {
+      "id": "busan-eligibility",
+      "jurisdiction": "부산광역시",
+      "source_url": "https://www.busan.go.kr/nbtnews/1361473",
+      "retrieval_mode": "direct",
+      "snapshot_path": "evidence/policy-sources/busan-direct.txt",
+      "snapshot_sha256": "70d99a418e6de6d7d6b8bf28bb6cc1aeb9c0bfc1ffe50e2719378afd95a0cbe5",
+      "source_published_on": "2019-02-18",
+      "quotation": "2018년 2월 1일 이후에 실효 처리된 고령자에 한하며",
+      "claim_type": "eligibility_start",
+      "claimed_start": "2018-02-01",
+      "date_precision": "day"
+    },
+    {
+      "id": "busan-2018-announcement",
+      "jurisdiction": "부산광역시",
+      "source_url": "https://www.busan.go.kr/nbtnews/1326806",
+      "retrieval_mode": "direct",
+      "snapshot_path": "evidence/policy-sources/busan-launch-direct.txt",
+      "snapshot_sha256": "4c90157603fd9c53d696b77484ccf68b02327df782c49c0f57ffd6e453956cad",
+      "source_published_on": "2018-07-11",
+      "quotation": "올해 11월말까지 거주지 읍면동 주민센터에 지원신청서 접수",
+      "claim_type": "other",
+      "claimed_start": null,
+      "date_precision": "unknown"
+    },
+    {
+      "id": "seoul-offer-start",
+      "jurisdiction": "서울특별시",
+      "source_url": "https://mediahub.seoul.go.kr/archives/1240732",
+      "retrieval_mode": "direct",
+      "snapshot_path": "evidence/policy-sources/seoul-direct.txt",
+      "snapshot_sha256": "b4103ecfaf9e103a1f5ce1454536edfe2bc622570b7bed119a3725256bde7d1d",
+      "source_published_on": "2019-07-01",
+      "quotation": "지난 3월부터 70세 이상 고령 운전자를 대상으로 운전면허 자진반납 시 10만 원 교통카드를 지급하는 사업을 시행해 왔는데요.",
+      "claim_type": "offer_start",
+      "claimed_start": "2019-03",
+      "date_precision": "month"
+    },
+    {
+      "id": "seoul-eligibility",
+      "jurisdiction": "서울특별시",
+      "source_url": "https://mediahub.seoul.go.kr/archives/1240732",
+      "retrieval_mode": "direct",
+      "snapshot_path": "evidence/policy-sources/seoul-direct.txt",
+      "snapshot_sha256": "b4103ecfaf9e103a1f5ce1454536edfe2bc622570b7bed119a3725256bde7d1d",
+      "source_published_on": "2019-07-01",
+      "quotation": "2019년 1월 1일 이후 운전면허를 자진 반납하여 면허가 실효된 서울 거주",
+      "claim_type": "eligibility_start",
+      "claimed_start": "2019-01-01",
+      "date_precision": "day"
+    },
+    {
+      "id": "seoul-ordinance",
+      "jurisdiction": "서울특별시",
+      "source_url": "https://mediahub.seoul.go.kr/archives/1240732",
+      "retrieval_mode": "direct",
+      "snapshot_path": "evidence/policy-sources/seoul-direct.txt",
+      "snapshot_sha256": "b4103ecfaf9e103a1f5ce1454536edfe2bc622570b7bed119a3725256bde7d1d",
+      "source_published_on": "2019-07-01",
+      "quotation": "2019년 3월 28일 공포·시행됐다.",
+      "claim_type": "ordinance_effective",
+      "claimed_start": "2019-03-28",
+      "date_precision": "day"
+    },
+    {
+      "id": "gyeonggi-offer-start",
+      "jurisdiction": "경기도",
+      "source_url": "https://gnews.gg.go.kr/briefing/brief_gongbo_view.do?BS_CODE=S017&number=42498",
+      "retrieval_mode": "direct",
+      "snapshot_path": "evidence/policy-sources/gyeonggi-direct.txt",
+      "snapshot_sha256": "48e74ffc121fb15e3dc08c207c5b10abf6d6b1fa0e7e19b356aae9e79cddae6d",
+      "source_published_on": "2019-11-25",
+      "quotation": "민선7기에서 처음 도입해, 올해 9월부터 추진해왔다.",
+      "claim_type": "offer_start",
+      "claimed_start": "2019-09",
+      "date_precision": "month"
+    },
+    {
+      "id": "jeonju-offer-period",
+      "jurisdiction": "전주시",
+      "source_url": "https://www.jeonju.go.kr/deokjingu/planweb/board/view.9is?boardUid=ff8080818bad9295018bae4a96ac09b2&contentUid=ff8080818990c349018b041a9b223a47&dataUid=9be517a76efda4f9016ff3f23a241d7e",
+      "retrieval_mode": "direct",
+      "snapshot_path": "evidence/policy-sources/jeonju-direct.txt",
+      "snapshot_sha256": "08a6de956ee3fd1ffb1d24ac8e15d2a1af4415522bceb9a6891f2a0a9ce62274",
+      "source_published_on": "2020-01-30",
+      "quotation": "1. 사업기간 : 2020. 2. 1. ~ 12. 31.",
+      "claim_type": "offer_start",
+      "claimed_start": "2020-02-01",
+      "date_precision": "day"
+    },
+    {
+      "id": "jeonju-first-implementation",
+      "jurisdiction": "전주시",
+      "source_url": "https://www.jeonbuk.go.kr/governor/board/view.jeonbuk?boardId=BBS_0000073&dataSid=305494&menuCd=DOM_000000203001003000&paging=ok&startPage=36",
+      "retrieval_mode": "direct",
+      "snapshot_path": "evidence/policy-sources/jeonju-confirm-direct.txt",
+      "snapshot_sha256": "47511470d94703bc2468d5656dcbf7c00b3e8984ffc62fd1ebd0ae13659e3b5c",
+      "source_published_on": "2022-01-24",
+      "quotation": "전주시는 2020년부터 고령운전자 운전면허증 자진반납 지원사업을 시행하고 있으며",
+      "claim_type": "first_implementation",
+      "claimed_start": "2020",
+      "date_precision": "year"
+    },
+    {
+      "id": "gunsan-first-implementation",
+      "jurisdiction": "군산시",
+      "source_url": "https://council.gunsan.go.kr/main/minutes/html/MinutesView.do?MINTS_SN=6055",
+      "retrieval_mode": "direct",
+      "snapshot_path": "evidence/policy-sources/gunsan-direct.txt",
+      "snapshot_sha256": "f15af23c6fc5d9ebc38a9caaf0f8e422864a7458940ec4911415250c81403c8b",
+      "source_published_on": null,
+      "quotation": "2020년도에 처음 시행했을 때 743명이 접수가 됐었습니다.",
+      "claim_type": "first_implementation",
+      "claimed_start": "2020",
+      "date_precision": "year"
+    },
+    {
+      "id": "buan-offer-year",
+      "jurisdiction": "부안군",
+      "source_url": "https://www.buan.go.kr/board/view.buan?boardId=BBS_0000059&dataSid=118442&menuCd=DOM_000000101003003000&paging=ok&startPage=419",
+      "retrieval_mode": "direct",
+      "snapshot_path": "evidence/policy-sources/buan-direct.txt",
+      "snapshot_sha256": "404b1ebf21760b3acbcf5fa2122b6e7367d9adb9b7f09e1e495323bacf620d86",
+      "source_published_on": "2020-12-31",
+      "quotation": "부안군에서 2020년부터 시행하는 고령자 운전면허 자진반납 지원사업",
+      "claim_type": "offer_start",
+      "claimed_start": "2020",
+      "date_precision": "year"
+    },
+    {
+      "id": "buan-eligibility",
+      "jurisdiction": "부안군",
+      "source_url": "https://www.buan.go.kr/board/view.buan?boardId=BBS_0000059&dataSid=118442&menuCd=DOM_000000101003003000&paging=ok&startPage=419",
+      "retrieval_mode": "direct",
+      "snapshot_path": "evidence/policy-sources/buan-direct.txt",
+      "snapshot_sha256": "404b1ebf21760b3acbcf5fa2122b6e7367d9adb9b7f09e1e495323bacf620d86",
+      "source_published_on": "2020-12-31",
+      "quotation": "2019년 12월 10일 이후 운전면허증을 반납하는 고령운전자이고",
+      "claim_type": "eligibility_start",
+      "claimed_start": "2019-12-10",
+      "date_precision": "day"
+    },
+    {
+      "id": "busan-5030-start",
+      "jurisdiction": "부산광역시",
+      "source_url": "https://www.busan.go.kr/depart/5030safe01",
+      "retrieval_mode": "direct",
+      "snapshot_path": "evidence/policy-sources/busan-5030-direct.txt",
+      "snapshot_sha256": "8df8f779a45e684d1fb6f3c2733ec7a5e18bff960733ff2f6c4887e6ce642a00",
+      "source_published_on": null,
+      "quotation": "2019년 11월 11일부터 부산 도심 전역에 ‘안전속도 5030’을 시행하였으며",
+      "claim_type": "concurrent_policy_start",
+      "claimed_start": "2019-11-11",
+      "date_precision": "day"
+    },
+    {
+      "id": "busan-5030-enforcement",
+      "jurisdiction": "부산광역시",
+      "source_url": "https://www.busan.go.kr/depart/5030safe01",
+      "retrieval_mode": "direct",
+      "snapshot_path": "evidence/policy-sources/busan-5030-direct.txt",
+      "snapshot_sha256": "8df8f779a45e684d1fb6f3c2733ec7a5e18bff960733ff2f6c4887e6ce642a00",
+      "source_published_on": null,
+      "quotation": "2020년 5월 12일부터는 본격 단속 시행됩니다.",
+      "claim_type": "other",
+      "claimed_start": "2020-05-12",
+      "date_precision": "day"
+    }
+  ],
+  "classifications": [
+    {
+      "jurisdiction": "부산광역시",
+      "first_offer_start": "2018-07",
+      "date_precision": "month",
+      "role_2019": "treated",
+      "evidence_ids": [
+        "busan-offer-start",
+        "busan-2018-announcement"
+      ],
+      "analysis_approved": false,
+      "reason": "2019년 공식 보도는 해당 교통비 지원 시책이 작년 7월부터 시행됐다고 명시한다. 2018-07-11 당시 사업 안내도 확인했다. 2018-02-01은 소급 자격 기준이며 개시일이 아니다.",
+      "unresolved_checks": [
+        "일 단위 제공 개시일",
+        "2018~2019년 구군별 적용 및 실제 지원 기회의 지속성",
+        "예산·추첨·미지급 이월 조건",
+        "2019-11-11 부산 5030 동시정책 영향은 분리 검증 전 한계"
+      ]
+    },
+    {
+      "jurisdiction": "서울특별시",
+      "first_offer_start": "2019-03",
+      "date_precision": "month",
+      "role_2019": "excluded_treated",
+      "evidence_ids": [
+        "seoul-offer-start"
+      ],
+      "analysis_approved": false,
+      "reason": "공식 안내가 지난 3월부터 교통카드 지급 사업을 시행해 왔다고 직접 설명하므로 제공 개시를 2019-03 월 단위로 기록한다. 요약표의 반납 기간 3월 15일~9월 30일을 지원 신청 개시일로 동일시하지 않는다. 2019년 연중 도입이므로 그해 미처치 비교군에서 제외한다.",
+      "unresolved_checks": [
+        "지원 신청을 실제 이용할 수 있었던 일 단위 개시일",
+        "서울 자치구 자체 선행사업 및 광역 적용 범위",
+        "신청·대상자 선정·10월 지급 예정의 구분"
+      ]
+    },
+    {
+      "jurisdiction": "경기도",
+      "first_offer_start": "2019-09",
+      "date_precision": "month",
+      "role_2019": "excluded_treated",
+      "evidence_ids": [
+        "gyeonggi-offer-start"
+      ],
+      "analysis_approved": false,
+      "reason": "경기도 공식 보도는 광역 협력 지원사업을 2019년 9월부터 추진했다고 명시한다. 2019년 미처치 비교군에서 제외한다.",
+      "unresolved_checks": [
+        "시군별 조기 자체사업과 도 협력사업의 실제 적용 범위",
+        "월 중 정확한 신청 개시일"
+      ]
+    },
+    {
+      "jurisdiction": "전주시",
+      "first_offer_start": "2020-02-01",
+      "date_precision": "day",
+      "role_2019": "candidate",
+      "evidence_ids": [
+        "jeonju-offer-period",
+        "jeonju-first-implementation"
+      ],
+      "analysis_approved": false,
+      "reason": "2020년 사업 안내만으로 최초 시행을 단정하지 않았다. 후속 공식 행정답변이 2020년부터 시행했다고 명시하여 2020-02-01 사업기간과 연결한다. 이 수준에서 2019년 비교군 후보로만 남긴다.",
+      "unresolved_checks": [
+        "2019년 최초 발표·예고 및 사전 반응",
+        "2019년 도·시 또는 다른 주체의 선행 인센티브 부재",
+        "지역 경계·자료 완전성·사전 추세·비교 가능성"
+      ]
+    },
+    {
+      "jurisdiction": "군산시",
+      "first_offer_start": "2020",
+      "date_precision": "year",
+      "role_2019": "candidate",
+      "evidence_ids": [
+        "gunsan-first-implementation"
+      ],
+      "analysis_approved": false,
+      "reason": "2026-03-10 시의회 회의에서 교통행정과장이 2020년도에 처음 시행했다고 명시했다. 단순한 2020년도 사업 자료와 구분되는 회고 근거이나 실제 신청 개시일은 미확인이다. 2019년 비교군 후보로만 남긴다.",
+      "unresolved_checks": [
+        "2019년 조례·예산·사업 예고 및 사전 반응",
+        "2020년 실제 신청 개시 월일",
+        "2019년 다른 주체의 선행 지원 부재",
+        "지역 경계·자료 완전성·사전 추세·비교 가능성"
+      ]
+    },
+    {
+      "jurisdiction": "부안군",
+      "first_offer_start": "2020",
+      "date_precision": "year",
+      "role_2019": "hold",
+      "evidence_ids": [
+        "buan-offer-year",
+        "buan-eligibility"
+      ],
+      "analysis_approved": false,
+      "reason": "공식 안내는 2020년부터 시행하되 2019-12-10 이후 면허 반납자를 인정한다. 소급 자격만으로 2019년 제공을 코딩하지 않지만 최초 공고·예고가 2019년에 있었는지 불명이라 분류를 보류한다.",
+      "unresolved_checks": [
+        "최초 공고·예고일",
+        "지원 신청을 실제 이용할 수 있었던 개시일",
+        "2019-12-10 자격 기준의 법적·행정적 배경"
+      ]
+    }
+  ],
+  "limitations": [
+    "대상은 부산·서울·경기·전주·군산·부안과 부산 안전속도 5030이다. 전국 정책 도입 패널을 완성한 자료가 아니다.",
+    "candidate는 공식 개시 근거에 따른 조사 후보이다. 확정 미처치 또는 분석 대조군 승인·평행추세 충족을 뜻하지 않는다. 모든 analysis_approved는 false이다.",
+    "부산 2018-07과 경기 2019-09의 일자 및 군산·부안 2020년의 월일은 확인하지 못했다. 발행일·조례일·자격 소급일·실제 지급일로 대체하지 않았다.",
+    "전주의 행정답변은 2020년부터 시행이라고 설명하지만 “최초”라는 단어를 쓰지 않는다. 사업 안내와 결합한 후보 근거이며 모든 선행지원 부재를 증명하지 않는다. 군산은 회의록에서 담당자가 처음 시행이라고 명시한다.",
+    "부산 5030은 2019-11-11 도심 전역 시행, 2020-05-12 본격 단속으로 구분했다. 2019년 전체 노출로 처리하지 않으며 면허 반납 정책의 고유 효과가 통계적으로 분리되었다고 주장하지 않는다. 연도 고정효과나 군집 표준오차가 부산 고유 동시정책을 제거하는 것은 아니다.",
+    "2019년 고령운전자 교육제도의 공통 성분을 연도 효과로 조정해도 지역별 연령 구성·갱신 대상 비중 등에 따른 차등 영향까지 전부 제거됐다고 볼 수 없다. 이번 조사에서는 교육정책 출처·노출을 새로 검증하지 않았다.",
+    "효과 추정, 사전 추세 검정, 분석표본 승인, 전국정책 완성은 수행하지 않았다. 사고·인구 원본 자료를 수정하지 않았다.",
+    "직접 HTTP 요청으로 공식 본문을 저장했다. 일부 URL의 첫 요청은 실패했으나 부산은 단축 URL, 전북 답변은 동일 dataSid의 governor 경로에서 본문 확보에 성공했다. 스냅샷은 HTML 텍스트 추출 및 공백 정규화 결과이며 원 HTML과 동일한 바이트열은 아니다.",
+    "군산 회의록은 회의일 2026-03-10을 확인했으나 게시일은 확인하지 못해 source_published_on을 null로 두었다. 부산 5030 안내도 최초 게시일이 없어 null이며 페이지 최근 업데이트 2025-09-30을 최초 발행일로 바꾸지 않았다.",
+    "이 산출물은 실행 담당 작성본이다. 해시·인용문 일치 및 분류의 타당성에 대한 최종 승인은 별도 점검 담당에게 남긴다.",
+    "서울은 2019-07-01 공식 안내의 지난 3월부터 사업 시행 설명에 맞춰 2019-03 월 단위로 기록했다. 요약표의 반납 기간 3월 15일은 지원 신청 개시일을 직접 입증하지 않아 일 단위 확정에 사용하지 않았다."
+  ]
+}

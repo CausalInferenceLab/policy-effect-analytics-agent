@@ -140,7 +140,8 @@ def case_results(out: Path) -> list[dict]:
                 **meta,
                 "status": log.get("status"),
                 "verdict": log.get("verdict"),
-                "finished_at": log.get("ended_at"),
+                "finished_at": log.get("ended_at")
+                or (log.get("generated_at") if descriptive else None),
                 "outcomes": [
                     {
                         "col": r.get("outcome"),

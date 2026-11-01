@@ -1,0 +1,143 @@
+{
+  "schema_version": 1,
+  "status": "local_draft",
+  "descriptive_only": true,
+  "analysis_approved": false,
+  "publication_approved": false,
+  "command": ".venv/bin/python cases/inshining-elderly-driver/describe_age.py",
+  "command_working_directory": "project root",
+  "mode": "offline replay of reviewed retained XML; no new network request",
+  "python_version": "3.11.10",
+  "inputs": [
+    {
+      "path": "cases/inshining-elderly-driver/data/taas-national.csv",
+      "sha256": "a2b63b48e0166da5ab17677303f7ca227d299cebdf9689a8dd5855c55496d641"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/data/population.csv",
+      "sha256": "954efe0baa088c1fb687a57a67e77621fe4f64c99c12e71e2bb69be28b64fbf1"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/age-source-manifest.json",
+      "sha256": "9f2bd0c993338f70afc8706a95eaa6bd709286d317e3a5c0093471854231ffcd"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/data/raw-age/source-query-busan-2014-2018.xml",
+      "sha256": "ed6e835ce41ab9e410269bfd8ee4dde8d81e74f6726efadc0a7374891a194299"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/data/raw-age/source-query-busan-2019-2019.xml",
+      "sha256": "1bec3b42c873b98792182bb0b68a3ac25fefa0e10a7d3bb757c84912470667af"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/data/raw-age/source-query-national-2014-2018.xml",
+      "sha256": "124f0e2402e5a9c4915ea86f52f2c167304827c9e02d13596413e2ea8a4a4a41"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/data/raw-age/source-query-national-2019-2019.xml",
+      "sha256": "6a6ad3b65ff7be91312893f523dec4c133f2ac34e8f18f03ce53403182bf9e68"
+    }
+  ],
+  "code": {
+    "path": "cases/inshining-elderly-driver/describe_age.py",
+    "sha256": "e4d0bd5b4892c0271afd629d25d7a25130232ee00e66b4bef9edba1810494ae2"
+  },
+  "dependencies": [
+    {
+      "path": "cases/inshining-elderly-driver/describe.py",
+      "sha256": "03086457d19994516acc6d94ab761dc4b5ab654a1f8abe76d9c5c53cbbcfc0ca"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/describe_population.py",
+      "sha256": "df182e5af47e59832aee2f877dc54569be3a066c2144bf123ed7f73618c29a22"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/population-qc.json",
+      "sha256": "0b3ed7f1c673dc77010cf45a3a3b0dfd8f4aa7ff2e9bb5a17fdd76ce3b34c3f5"
+    }
+  ],
+  "years": [
+    2014,
+    2015,
+    2016,
+    2017,
+    2018,
+    2019
+  ],
+  "geography": "부산 광역 합계; 인구 코드 2600000000; 하위지역 재합산 없음",
+  "reconciliation": "전국·부산 12개 지역연도 65+가 기존 CSV와 정확 일치",
+  "formulas": {
+    "under65_count": "sum(19세 이하,20-29세,30-39세,40-49세,50-59세,60-64세)",
+    "partition": "all_age_count = under65_count + age65plus_count + unknown_count",
+    "under65_population": "population_total - population_65plus > 0",
+    "under65_per_10000": "under65_count / under65_population * 10000",
+    "age65plus_per_10000": "age65plus_count / age65plus_population * 10000"
+  },
+  "population_reference_dates": [
+    "2013-12-31",
+    "2014-12-31",
+    "2015-12-31",
+    "2016-12-31",
+    "2017-12-31",
+    "2018-12-31"
+  ],
+  "population_definition": "직전 12월 말 주민등록인구, 남녀계, 외국인 제외; 기존 수집 정의 사용",
+  "population_definition_break": {
+    "first_reference_date": "2015-12-31",
+    "first_outcome_year": 2016,
+    "definition": "재외국민 포함",
+    "size_separately_identified": false
+  },
+  "known_limits": [
+    "연령 불명 사고는 두 집단 모두에서 제외하며 65세 미만은 알려진 앞 6구간의 직접 합이다.",
+    "사고건수는 사망자 수가 아니며 뉴스의 사망자 35→18을 검증하거나 반증하지 않는다.",
+    "각 집단 주민인구는 면허소지자·실제 운전자·주행거리·운전시간 분모가 아니다.",
+    "65세 미만 인구는 아동·비운전자도 포함하므로 개인 운전 위험률이 아니다.",
+    "사고 발생지와 운전자 거주지가 같다고 보장할 수 없다.",
+    "직전 12월 말 주민등록인구를 연결하며 2016년부터 재외국민 포함 정의 경계가 있다.",
+    "두 선을 2015→2016에서 끊으며 정의 변경의 규모나 연령별 기여분은 분리하지 않았다.",
+    "2018년은 7월 정책 시작 전후가 혼재한 연간 값이며 월별 효과를 구분할 수 없다.",
+    "2019년 11월 안전속도 5030 등 동시 정책의 영향을 분리하지 않았다.",
+    "65세 미만은 관측 비교 계열이며 확정 미처치 대조군·위약 효과가 아니다.",
+    "연령 구성·면허 보유·실제 운전 노출·교란을 조정하지 않았고 반사실을 추정하지 않았다.",
+    "한계 기재가 교란 제거·인과 식별을 뜻하지 않으며 성공·실패·유의성을 판단하지 않는다.",
+    "자료 이용조건·라이선스·외부 공개 검토는 미완료이고 분석·공개 승인은 false다."
+  ],
+  "rendering": {
+    "matplotlib_version": "3.11.2",
+    "font_name": "AppleGothic",
+    "font_file": "AppleGothic.ttf",
+    "font_file_sha256": "def69dc2b5e12746049a5dcb189f95341ec460589f47587938567313af3020b1",
+    "font_glyph_check": "all chart characters present; missing glyph warnings are errors",
+    "backend": "Agg",
+    "image_size_pixels": [
+      2720,
+      1760
+    ],
+    "zero_based_y_axis": true,
+    "both_line_segments": [
+      [
+        2014,
+        2015
+      ],
+      [
+        2016,
+        2017,
+        2018,
+        2019
+      ]
+    ],
+    "labeled_points_per_group": 6
+  },
+  "outputs": [
+    {
+      "path": "cases/inshining-elderly-driver/figures/04_busan_age_comparison.png",
+      "sha256": "ec3175ff50a6866c282ca5664722435e3180d24c8c6f7a8ef3d87cfb2a48dcee"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/data/age-descriptive-series.csv",
+      "sha256": "d0ac86883672b3944d4984e5ca7f0e3d82905fb21ae075519bbdf9967e425bb7"
+    }
+  ],
+  "manifest_hash_note": "자기 참조 해시는 독립 실행 증거에 별도 기록한다."
+}

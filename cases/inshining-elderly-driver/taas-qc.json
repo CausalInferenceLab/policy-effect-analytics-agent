@@ -1,0 +1,178 @@
+{
+  "generated_at": "2026-10-27T06:03:42.058203+00:00",
+  "definition": "가해운전자(1당사자)의 연령이 65세 이상인 교통사고",
+  "public_report": "https://taas.koroad.or.kr/OBIP25/analysis/TypicalAnalysis.jsp",
+  "query_translation_sources": [
+    "https://taas.koroad.or.kr/OBIP25/analysis/octagon/js/Dropper.js",
+    "https://taas.koroad.or.kr/OBIP25/analysis/octagon/js/Viewer.js"
+  ],
+  "filters": {
+    "senior": "D903=예",
+    "date": "D1443 year-month interval",
+    "rows": "906:907",
+    "columns": "888",
+    "measure": "334"
+  },
+  "sources": [
+    {
+      "file": "data/raw/taas-2014-2018-page-1.xml",
+      "sha256": "afc507f06539b612934192bd12caec23c7eda4481679567f9653e1d90e7c803a",
+      "bytes": 103977,
+      "retrieved_at": "2026-10-27T00:18:01.857544+00:00",
+      "query": ":row_list=\"906:907\",:col_list=\"888\",:mea_list=\"334\",:condition=\"D903@|@P01 S01 #OTE![예]!#;|;\",:pcondition=\"\",:incondition=\"\",:filter=\"\",:agg_function=\"SUM\",:orgdata=\"\",:decimalpoint=\"\",:aggDecimalpoint=\"\",:enumerate=\"\",:mode=\"A\",:chartdatatype=\"ALL_NOAGG\",:pattern_id=\"7265\",:agg_info=\"D906;@T;@합계;|D907;@T;@합계;|D888;@T;@합계;|\",:meapos=\"R\",:meaonlyagg=\"F\",:agg_form=\"S\",:agg_position=\"\",:pagenum=\"1\",:pattern_name=\"(노인운전자) 시도 시군구별 월별 교통사고\",:subject_name=\"251_분석통계 기본계획(경찰청 사고일반) \",:SetSchedule=\"NONE\",:subject_id=\"131\",:layout=\"0\",:vcondition=\"D1443@|@P08 S01 T111 #OTE![201401]!# #OTE![201812]!#;|;\"",
+      "endpoint": "https://taas.koroad.or.kr/OBIP25/servlet/OctagonProxyServlet",
+      "pattern_id": 7265,
+      "subject_id": 131
+    },
+    {
+      "file": "data/raw/taas-2014-2018-page-2.xml",
+      "sha256": "4f7a631e152bfc75dc4f5a73591bd05b1d5dbefee6b0b30e231ed40540316ba4",
+      "bytes": 71105,
+      "retrieved_at": "2026-10-27T00:18:02.403703+00:00",
+      "query": ":row_list=\"906:907\",:col_list=\"888\",:mea_list=\"334\",:condition=\"D903@|@P01 S01 #OTE![예]!#;|;\",:pcondition=\"\",:incondition=\"\",:filter=\"\",:agg_function=\"SUM\",:orgdata=\"\",:decimalpoint=\"\",:aggDecimalpoint=\"\",:enumerate=\"\",:mode=\"A\",:chartdatatype=\"ALL_NOAGG\",:pattern_id=\"7265\",:agg_info=\"D906;@T;@합계;|D907;@T;@합계;|D888;@T;@합계;|\",:meapos=\"R\",:meaonlyagg=\"F\",:agg_form=\"S\",:agg_position=\"\",:pagenum=\"2\",:pattern_name=\"(노인운전자) 시도 시군구별 월별 교통사고\",:subject_name=\"251_분석통계 기본계획(경찰청 사고일반) \",:SetSchedule=\"NONE\",:subject_id=\"131\",:layout=\"0\",:vcondition=\"D1443@|@P08 S01 T111 #OTE![201401]!# #OTE![201812]!#;|;\"",
+      "endpoint": "https://taas.koroad.or.kr/OBIP25/servlet/OctagonProxyServlet",
+      "pattern_id": 7265,
+      "subject_id": 131
+    },
+    {
+      "file": "data/raw/taas-2019-2019-page-1.xml",
+      "sha256": "c36733c27200a602e01d67ebce0021e3779a0250cd16758e74318de8f21a1bf6",
+      "bytes": 57582,
+      "retrieved_at": "2026-10-27T00:18:04.632946+00:00",
+      "query": ":row_list=\"906:907\",:col_list=\"888\",:mea_list=\"334\",:condition=\"D903@|@P01 S01 #OTE![예]!#;|;\",:pcondition=\"\",:incondition=\"\",:filter=\"\",:agg_function=\"SUM\",:orgdata=\"\",:decimalpoint=\"\",:aggDecimalpoint=\"\",:enumerate=\"\",:mode=\"A\",:chartdatatype=\"ALL_NOAGG\",:pattern_id=\"7265\",:agg_info=\"D906;@T;@합계;|D907;@T;@합계;|D888;@T;@합계;|\",:meapos=\"R\",:meaonlyagg=\"F\",:agg_form=\"S\",:agg_position=\"\",:pagenum=\"1\",:pattern_name=\"(노인운전자) 시도 시군구별 월별 교통사고\",:subject_name=\"251_분석통계 기본계획(경찰청 사고일반) \",:SetSchedule=\"NONE\",:subject_id=\"131\",:layout=\"0\",:vcondition=\"D1443@|@P08 S01 T111 #OTE![201901]!# #OTE![201912]!#;|;\"",
+      "endpoint": "https://taas.koroad.or.kr/OBIP25/servlet/OctagonProxyServlet",
+      "pattern_id": 7265,
+      "subject_id": 131
+    },
+    {
+      "file": "data/raw/taas-2019-2019-page-2.xml",
+      "sha256": "f2bb484a897d67759052576819a74b6104722aae5067ecedbeccd70656b832db",
+      "bytes": 40161,
+      "retrieved_at": "2026-10-27T00:18:05.209213+00:00",
+      "query": ":row_list=\"906:907\",:col_list=\"888\",:mea_list=\"334\",:condition=\"D903@|@P01 S01 #OTE![예]!#;|;\",:pcondition=\"\",:incondition=\"\",:filter=\"\",:agg_function=\"SUM\",:orgdata=\"\",:decimalpoint=\"\",:aggDecimalpoint=\"\",:enumerate=\"\",:mode=\"A\",:chartdatatype=\"ALL_NOAGG\",:pattern_id=\"7265\",:agg_info=\"D906;@T;@합계;|D907;@T;@합계;|D888;@T;@합계;|\",:meapos=\"R\",:meaonlyagg=\"F\",:agg_form=\"S\",:agg_position=\"\",:pagenum=\"2\",:pattern_name=\"(노인운전자) 시도 시군구별 월별 교통사고\",:subject_name=\"251_분석통계 기본계획(경찰청 사고일반) \",:SetSchedule=\"NONE\",:subject_id=\"131\",:layout=\"0\",:vcondition=\"D1443@|@P08 S01 T111 #OTE![201901]!# #OTE![201912]!#;|;\"",
+      "endpoint": "https://taas.koroad.or.kr/OBIP25/servlet/OctagonProxyServlet",
+      "pattern_id": 7265,
+      "subject_id": 131
+    }
+  ],
+  "batch_checks": [
+    {
+      "national_totals": {
+        "2014": 20275,
+        "2015": 23063,
+        "2016": 24429,
+        "2017": 26713,
+        "2018": 30012
+      },
+      "province_count": 17,
+      "district_count": 230
+    },
+    {
+      "national_totals": {
+        "2019": 33239
+      },
+      "province_count": 17,
+      "district_count": 229
+    }
+  ],
+  "matched_rows": 1368,
+  "unmatched_rows": 11,
+  "name_mappings": [
+    {
+      "taas_province": "부산",
+      "taas_district": "진구",
+      "year": 2014,
+      "older_accidents": 118,
+      "region_name": "부산광역시 부산진구",
+      "reason": "부산 16개 구군 중 15개 정확 일치, 유일한 잔여 이름 대응"
+    },
+    {
+      "taas_province": "부산",
+      "taas_district": "진구",
+      "year": 2015,
+      "older_accidents": 147,
+      "region_name": "부산광역시 부산진구",
+      "reason": "부산 16개 구군 중 15개 정확 일치, 유일한 잔여 이름 대응"
+    },
+    {
+      "taas_province": "부산",
+      "taas_district": "진구",
+      "year": 2016,
+      "older_accidents": 184,
+      "region_name": "부산광역시 부산진구",
+      "reason": "부산 16개 구군 중 15개 정확 일치, 유일한 잔여 이름 대응"
+    },
+    {
+      "taas_province": "부산",
+      "taas_district": "진구",
+      "year": 2017,
+      "older_accidents": 175,
+      "region_name": "부산광역시 부산진구",
+      "reason": "부산 16개 구군 중 15개 정확 일치, 유일한 잔여 이름 대응"
+    },
+    {
+      "taas_province": "부산",
+      "taas_district": "진구",
+      "year": 2018,
+      "older_accidents": 228,
+      "region_name": "부산광역시 부산진구",
+      "reason": "부산 16개 구군 중 15개 정확 일치, 유일한 잔여 이름 대응"
+    },
+    {
+      "taas_province": "부산",
+      "taas_district": "진구",
+      "year": 2019,
+      "older_accidents": 238,
+      "region_name": "부산광역시 부산진구",
+      "reason": "부산 16개 구군 중 15개 정확 일치, 유일한 잔여 이름 대응"
+    }
+  ],
+  "name_mapping_reference": "region-name-crosswalk.json",
+  "name_mapping_reference_sha256": "6a4ccb42c7d0c921e54cb859d8c28d366d9c485fe66b42203ffde7e14d3ac3b5",
+  "outputs_sha256": {
+    "data/accidents.csv": "186a03475f3dd2cb07778e5e457f70cea9aacd7c18c9ea30d63cc8bd4c0ceca8",
+    "data/taas-national.csv": "a2b63b48e0166da5ab17677303f7ca227d299cebdf9689a8dd5855c55496d641",
+    "data/taas-unmatched.csv": "7b44d5288955161814a81b0503fc4f425dfe2854ff51f0d7a6142279737e9a42"
+  },
+  "independent_reference": {
+    "expected_totals": {
+      "2014": 20275,
+      "2015": 23063,
+      "2016": 24429,
+      "2017": 26713,
+      "2018": 30012,
+      "2019": 33239
+    },
+    "passed": true,
+    "sources": [
+      {
+        "years": [
+          2014,
+          2015,
+          2016,
+          2017,
+          2018
+        ],
+        "url": "https://m.acrc.go.kr/boardDownload.es?bid=1013&list_no=30601&seq=1",
+        "publisher": "국민권익위원회 붙임1"
+      },
+      {
+        "years": [
+          2019
+        ],
+        "url": "https://www.safetv.go.kr/base/video/view?idx=1314",
+        "publisher": "행정안전부 안전한TV, TAAS 2020 자료 인용"
+      }
+    ]
+  },
+  "checks": [
+    "응답 정의 65+ 가해운전자",
+    "연도 열 정확 일치",
+    "전체 페이지 수 일치",
+    "지역 행 중복 없음",
+    "시군구 합=시도 합",
+    "시도 합=전국 합",
+    "독립 공표 전국 6개년 총계 일치"
+  ],
+  "spatial_note": "TAAS 시군구는 사고 발생지 통계. 행안부는 주민등록지. 행정기관 코드나 경계가 동일하다는 검증을 대신하지 않음."
+}

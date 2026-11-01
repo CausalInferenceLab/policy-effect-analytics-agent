@@ -204,6 +204,7 @@ def test_causal_fixture_keeps_effect_page_and_api(case, tmp_path):
     a = answers.load_answers()[0]
     page = answers.page_body(html.escape, a, {}, {})
     assert "추정 효과" in page and "95% 범위" in page
+    assert "원본 크기로 보기" not in page
     assert "make flow CASE=cases/fixture-descriptive" in page
     row = api.case_results(tmp_path / "out")[0]
     assert len(row["outcomes"]) == len(log["results"])
@@ -216,3 +217,33 @@ def test_upstream_home_showcase_preserves_descriptive_identity(case):
     assert "관측 통계 · 정책 효과 미추정" in page
     assert '<span class="badge stop">판단 불가</span>' not in page
     assert 'href="answers/fixture-descriptive.html"' in page
+
+
+def test_descriptive_generated_at_is_the_run_date(case, tmp_path):
+    folder, log = case
+    log.pop("ended_at")
+    log["generated_at"] = "2026-11-01T13:00:00+00:00"
+    (folder / "flow_log.json").write_text(json.dumps(log))
+    a = answers.load_answers()[0]
+    assert a["finished"] == "2026-11-01"
+    page = answers.page_body(html.escape, a, {}, {})
+    assert "2026-11-01 실행" in page and "실행일 2026-11-01" in page
+    assert api.case_results(tmp_path / "out")[0]["finished_at"] == log["generated_at"]
+
+
+def test_descriptive_figures_precede_full_observation_table(case):
+    a = answers.load_answers()[0]
+    page = answers.page_body(html.escape, a, {}, {})
+    assert page.index('<div class="figs"') < page.index('<div class="tablewrap">')
+    assert page.index('<div class="figs"') < page.index("지표 정의")
+    assert page.count("<img src=") == 4
+
+
+def test_descriptive_charts_use_one_column_and_link_originals(case):
+    a = answers.load_answers()[0]
+    page = answers.page_body(html.escape, a, {}, {})
+    assert '<div class="figs" style="grid-template-columns: minmax(0, 1fr)">' in page
+    assert page.count("원본 크기로 보기") == 4
+    for name in a["figures"]:
+        url = f'../cases/{a["case"]}/{name}'
+        assert f'<a href="{url}"><img src="{url}"' in page

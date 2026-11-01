@@ -1,0 +1,615 @@
+{
+  "schema_version": 2,
+  "record_kind": "packaging_writer_validation_not_self_approval",
+  "checked_on": "2026-11-01",
+  "upstream_commit": "1655a45117574e366bf9ca726d1a896aa0c0f4fb",
+  "case_unit_tests": {
+    "passed": 131,
+    "exit_code": 0
+  },
+  "repository_check": {
+    "exit_code": 0,
+    "ruff": "passed",
+    "pytest": {
+      "passed": 239,
+      "skipped": 2,
+      "result_marks": 241
+    }
+  },
+  "commands": [
+    {
+      "name": "case-tests",
+      "command": [
+        ".venv/bin/python",
+        "-B",
+        "-m",
+        "unittest",
+        "discover",
+        "-s",
+        "cases/inshining-elderly-driver",
+        "-p",
+        "test_*.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "execution_record_sha256": "968aab76a4624a235e826adf1c7e950e72452f23e3143e3f4bc238eb8ad9ab16"
+    },
+    {
+      "name": "case-ruff-green",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "ruff",
+        "check",
+        "cases/inshining-elderly-driver"
+      ],
+      "exit_code": 0,
+      "execution_record_sha256": "dcd7052a08eb77b5633584af0f7d431c29d6818d9d9dd8b51374d87978b91144"
+    },
+    {
+      "name": "describe",
+      "command": [
+        ".venv/bin/python",
+        "cases/inshining-elderly-driver/describe.py"
+      ],
+      "exit_code": 0,
+      "execution_record_sha256": "a196fec1b1adc47720e6a8098d5d78d16970168c70e83b03a613cade72597e85"
+    },
+    {
+      "name": "describe-population",
+      "command": [
+        ".venv/bin/python",
+        "cases/inshining-elderly-driver/describe_population.py"
+      ],
+      "exit_code": 0,
+      "execution_record_sha256": "057f52d3f57e24ac18fd3cf312777347f7a7976e5b7cee119c85269828377b94"
+    },
+    {
+      "name": "describe-age",
+      "command": [
+        ".venv/bin/python",
+        "cases/inshining-elderly-driver/describe_age.py"
+      ],
+      "exit_code": 0,
+      "execution_record_sha256": "8f678bb6c3b2e7df7863b31c6f8b6182e59ef6167c41bf2a4f2866d10a735c91"
+    },
+    {
+      "name": "actual-runner",
+      "command": [
+        ".venv/bin/python",
+        "cases/inshining-elderly-driver/run_descriptive.py"
+      ],
+      "exit_code": 0,
+      "execution_record_sha256": "6c40ddc6aceb2e8339ee8c9cb48fd17d30dcd9a9e05711c48b6cf9f653e64980"
+    },
+    {
+      "name": "make-readme",
+      "command": [
+        "make",
+        "readme",
+        "PY=.venv/bin/python"
+      ],
+      "exit_code": 0,
+      "execution_record_sha256": "550677c501afa56db23648b233cceef46bee851c1d54cc3cd592541f88d06c79"
+    },
+    {
+      "name": "make-check-final",
+      "command": [
+        "env",
+        "PYTEST_ADDOPTS=-v",
+        "make",
+        "check",
+        "PY=.venv/bin/python"
+      ],
+      "exit_code": 0,
+      "execution_record_sha256": "cef8a53739072508860e7c887f7b79f6fb1aed3b7edefbcd2d8a00bb074fbefa"
+    },
+    {
+      "name": "actual-site-build-final",
+      "command": [
+        ".venv/bin/python",
+        "site/build.py"
+      ],
+      "exit_code": 0,
+      "execution_record_sha256": "f46e679d01b0613a2e790be5a890a1418ab50824c5e2a351184710ec429c23c4"
+    },
+    {
+      "name": "visual-fixes-green",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "tests/test_site_descriptive.py",
+        "-k",
+        "generated_at or precede_full",
+        "-q"
+      ],
+      "exit_code": 0,
+      "execution_record_sha256": "211c70464918958179449f2f42f8fe5805576f69a598a9927265fdd2b52132d4"
+    },
+    {
+      "name": "visual3-scope-green",
+      "command": [
+        ".venv/bin/python",
+        "-m",
+        "pytest",
+        "tests/test_site_descriptive.py",
+        "tests/test_site_build.py",
+        "-q"
+      ],
+      "exit_code": 0,
+      "execution_record_sha256": "d01e7a3970df83fca375b7a0af97e93944f039a8d23985fb975bbdff05dcaed6"
+    }
+  ],
+  "actual_artifact_checks": {
+    "status": "pass",
+    "six_years": true,
+    "exact_columns": 11,
+    "api_descriptive_equal_flow": true,
+    "effect_rows_for_case": 0,
+    "figure_byte_equality": {
+      "01_busan_counts.png": {
+        "sha256": "f9e1871005ede0b3ebe53acbb2ae763485018ed92cabbdcf33ee36aeee5a1cd5",
+        "width": 2240,
+        "height": 1400
+      },
+      "02_busan_vs_rest_counts.png": {
+        "sha256": "4eabbd90427b712225128805e8d8a8e294efbcdd24ccde4480b5f43fcaf9b79e",
+        "width": 2240,
+        "height": 1400
+      },
+      "03_busan_counts_and_population.png": {
+        "sha256": "9cb9a4ee5728ab5b7307412acf4f55fda27e3ccea8a6e11a4b0f0c7973b988c9",
+        "width": 2560,
+        "height": 1680
+      },
+      "04_busan_age_comparison.png": {
+        "sha256": "ec3175ff50a6866c282ca5664722435e3180d24c8c6f7a8ef3d87cfb2a48dcee",
+        "width": 2720,
+        "height": 1760
+      }
+    },
+    "current_manifest_entries_valid": {
+      "descriptive-manifest.json": [
+        "cases/inshining-elderly-driver/figures/01_busan_counts.png",
+        "cases/inshining-elderly-driver/figures/02_busan_vs_rest_counts.png",
+        "cases/inshining-elderly-driver/data/descriptive-series.csv",
+        "cases/inshining-elderly-driver/data/taas-national.csv",
+        "cases/inshining-elderly-driver/describe.py"
+      ],
+      "population-descriptive-manifest.json": [
+        "cases/inshining-elderly-driver/data/taas-national.csv",
+        "cases/inshining-elderly-driver/data/population.csv",
+        "cases/inshining-elderly-driver/describe.py",
+        "cases/inshining-elderly-driver/population-qc.json",
+        "cases/inshining-elderly-driver/figures/03_busan_counts_and_population.png",
+        "cases/inshining-elderly-driver/data/population-descriptive-series.csv",
+        "cases/inshining-elderly-driver/describe_population.py"
+      ],
+      "age-descriptive-manifest.json": [
+        "cases/inshining-elderly-driver/data/taas-national.csv",
+        "cases/inshining-elderly-driver/data/population.csv",
+        "cases/inshining-elderly-driver/age-source-manifest.json",
+        "cases/inshining-elderly-driver/data/raw-age/source-query-busan-2014-2018.xml",
+        "cases/inshining-elderly-driver/data/raw-age/source-query-busan-2019-2019.xml",
+        "cases/inshining-elderly-driver/data/raw-age/source-query-national-2014-2018.xml",
+        "cases/inshining-elderly-driver/data/raw-age/source-query-national-2019-2019.xml",
+        "cases/inshining-elderly-driver/describe.py",
+        "cases/inshining-elderly-driver/describe_population.py",
+        "cases/inshining-elderly-driver/population-qc.json",
+        "cases/inshining-elderly-driver/figures/04_busan_age_comparison.png",
+        "cases/inshining-elderly-driver/data/age-descriptive-series.csv",
+        "cases/inshining-elderly-driver/describe_age.py"
+      ],
+      "run_manifest.json": [
+        "cases/inshining-elderly-driver/README.md",
+        "cases/inshining-elderly-driver/age-descriptive-manifest.json",
+        "cases/inshining-elderly-driver/age-source-manifest.json",
+        "cases/inshining-elderly-driver/comparison-feasibility.md",
+        "cases/inshining-elderly-driver/data/README.md",
+        "cases/inshining-elderly-driver/data/accidents.csv",
+        "cases/inshining-elderly-driver/data/age-descriptive-series.csv",
+        "cases/inshining-elderly-driver/data/descriptive-series.csv",
+        "cases/inshining-elderly-driver/data/population-descriptive-series.csv",
+        "cases/inshining-elderly-driver/data/population.csv",
+        "cases/inshining-elderly-driver/data/raw/population-2013-12.csv",
+        "cases/inshining-elderly-driver/data/raw/population-2014-12.csv",
+        "cases/inshining-elderly-driver/data/raw/population-2015-12.csv",
+        "cases/inshining-elderly-driver/data/raw/population-2016-12.csv",
+        "cases/inshining-elderly-driver/data/raw/population-2017-12.csv",
+        "cases/inshining-elderly-driver/data/raw/population-2018-12.csv",
+        "cases/inshining-elderly-driver/data/raw/taas-2014-2018-page-1.xml",
+        "cases/inshining-elderly-driver/data/raw/taas-2014-2018-page-2.xml",
+        "cases/inshining-elderly-driver/data/raw/taas-2019-2019-page-1.xml",
+        "cases/inshining-elderly-driver/data/raw/taas-2019-2019-page-2.xml",
+        "cases/inshining-elderly-driver/data/raw-age/source-query-busan-2014-2018.xml",
+        "cases/inshining-elderly-driver/data/raw-age/source-query-busan-2019-2019.xml",
+        "cases/inshining-elderly-driver/data/raw-age/source-query-national-2014-2018.xml",
+        "cases/inshining-elderly-driver/data/raw-age/source-query-national-2019-2019.xml",
+        "cases/inshining-elderly-driver/data/taas-national.csv",
+        "cases/inshining-elderly-driver/data/taas-unmatched.csv",
+        "cases/inshining-elderly-driver/describe.py",
+        "cases/inshining-elderly-driver/describe_age.py",
+        "cases/inshining-elderly-driver/describe_population.py",
+        "cases/inshining-elderly-driver/descriptive-manifest.json",
+        "cases/inshining-elderly-driver/discussion.md",
+        "cases/inshining-elderly-driver/evidence/policy-sources/2026-11-01-gunsan-2019-ordinance.txt",
+        "cases/inshining-elderly-driver/evidence/policy-sources/2026-11-01-gunsan-confirm.txt",
+        "cases/inshining-elderly-driver/evidence/policy-sources/2026-11-01-jeonju-2019-council.txt",
+        "cases/inshining-elderly-driver/evidence/policy-sources/2026-11-01-jeonju-confirm.txt",
+        "cases/inshining-elderly-driver/evidence/policy-sources/buan-direct.txt",
+        "cases/inshining-elderly-driver/evidence/policy-sources/busan-5030-direct.txt",
+        "cases/inshining-elderly-driver/evidence/policy-sources/busan-direct.txt",
+        "cases/inshining-elderly-driver/evidence/policy-sources/busan-launch-direct.txt",
+        "cases/inshining-elderly-driver/evidence/policy-sources/gunsan-direct.txt",
+        "cases/inshining-elderly-driver/evidence/policy-sources/gyeonggi-direct.txt",
+        "cases/inshining-elderly-driver/evidence/policy-sources/jeonju-confirm-direct.txt",
+        "cases/inshining-elderly-driver/evidence/policy-sources/jeonju-direct.txt",
+        "cases/inshining-elderly-driver/evidence/policy-sources/seoul-direct.txt",
+        "cases/inshining-elderly-driver/figures/01_busan_counts.png",
+        "cases/inshining-elderly-driver/figures/02_busan_vs_rest_counts.png",
+        "cases/inshining-elderly-driver/figures/03_busan_counts_and_population.png",
+        "cases/inshining-elderly-driver/figures/04_busan_age_comparison.png",
+        "cases/inshining-elderly-driver/plan.yaml",
+        "cases/inshining-elderly-driver/population-descriptive-manifest.json",
+        "cases/inshining-elderly-driver/population-qc.json",
+        "cases/inshining-elderly-driver/run_descriptive.py",
+        "cases/inshining-elderly-driver/source-use-notes.md",
+        "cases/inshining-elderly-driver/taas-qc.json",
+        "cases/inshining-elderly-driver/report.md",
+        "cases/inshining-elderly-driver/flow_log.json"
+      ]
+    },
+    "historical_age_source_preserved": true,
+    "markdown_local_links_checked": 50,
+    "site_case_links_valid": true,
+    "public_personal_path_session_scan": "pass",
+    "report_byte_identical_research_root": true
+  },
+  "selected_current_artifact_sha256": {
+    "_site/answers/inshining-elderly-driver.html": "35d108953ce39dd592578fbfcc0d1535da7033f7530a7d613469dd6b926770ba",
+    "_site/answers/inshining-elderly-driver-descriptive.csv": "ff39c12049e6463b5822a9444b7c5278378c8d396d212f594eade24ae67430ef",
+    "_site/api/results.json": "398b60c66c0da94e184ed99938000abfd742aab3d4a30308ccee4c3ee78782f3",
+    "_site/api/results.csv": "31033c4fdb7c1b60c40bcc1b6a2f31d94c8948dff03dac1ad261d4ce8babfd30",
+    "cases/inshining-elderly-driver/report.md": "a6c270e1a31a8cbe1c406a6254169f45cc5884721391244d3beeb73736957c3b",
+    "cases/inshining-elderly-driver/flow_log.json": "9ad3a3009c9460ef2461a80ef587bce7fd1705cd6e0d85423f79e7e6d842e975",
+    "cases/inshining-elderly-driver/run_manifest.json": "52755a3bd0b72352f25b8c6ffeb07b109649a9984929b7bdb8419dd8dad879f3"
+  },
+  "current_manifest_sha256": {
+    "descriptive-manifest.json": "8620d085a3286dc3742c7f9300a2b93ec3311c8274484a787740ca83e3d81741",
+    "population-descriptive-manifest.json": "a84f5e3c34694319fd061b3cabcc5bd9ecea96cf0f16b01629c26a7e3a1a17dc",
+    "age-descriptive-manifest.json": "0b18a779ba02e1422ee283dc05208870c3e22f1cd3b1b445027a51b409642c93",
+    "run_manifest.json": "52755a3bd0b72352f25b8c6ffeb07b109649a9984929b7bdb8419dd8dad879f3"
+  },
+  "current_case_python_sha256": {
+    "audit_policy.py": "e8c2ab6b3d08f19bc760ad5483d42a0aec9fbbc5e724f64cd113fd6ae59038e5",
+    "describe.py": "03086457d19994516acc6d94ab761dc4b5ab654a1f8abe76d9c5c53cbbcfc0ca",
+    "describe_age.py": "e4d0bd5b4892c0271afd629d25d7a25130232ee00e66b4bef9edba1810494ae2",
+    "describe_population.py": "df182e5af47e59832aee2f877dc54569be3a066c2144bf123ed7f73618c29a22",
+    "fetch.py": "ad14e7554c6d3fc3c2bdc1232ffbafd6828da855891ae59da5c4363a3c2429d4",
+    "panel.py": "9cb1b6aeec24ddc4c1d9e706740d38e616cad3de40548d195c5187ca613abe1d",
+    "population.py": "8522ea5d8e00c01d1323a4d0ecdb2371c872e4c079897c543d7174222f778db4",
+    "run_descriptive.py": "bfd4af2b26cba29c9465ca8b03129fa387dbea739fb86b8c47e74b110f469619",
+    "taas.py": "99ccb93a3cb64c732fde77da047cd975637ddf9c17180a65717272f108520e67",
+    "test_audit_policy.py": "3dd8719516978b696814624843ad2a8387e57e5fe81d9c80f1fd4f722d152527",
+    "test_describe.py": "79022e4b3b7820db2d74a37ae5cbd8e0d4bd7b715f099fc4636ace53f50fd23f",
+    "test_describe_age.py": "16cd33d55de7df881bac0772d6cdd4162045fd2a67c5753a1e5484518114ccf6",
+    "test_describe_population.py": "5c9740116cd0621b316e55c709c5f0454eaad791619965ef643d21d332d96790",
+    "test_fetch.py": "2adedfbc8a2da5079b0b4cd06fc5446f3fe8e902c9d937e9df096120d8716f5b",
+    "test_panel.py": "b477738f879774d6e37c51c9d86289a098d4c4bece8eea5d04eb39beaf4f2e2f",
+    "test_population.py": "fca652a300991774136cd52dcf531aa29290bf45a95909047c792796f4570b83",
+    "test_run_descriptive.py": "6d490cd6fe90af5114c973992721465cd75e815a82f75af206faff17160a36ae",
+    "test_taas.py": "7180113e4c828d9d7aaabd1449ec526ff120f8c20197a9450110d60a2123a6c9"
+  },
+  "retained_input_and_figure_sha256": {
+    "cases/inshining-elderly-driver/figures/02_busan_vs_rest_counts.png": {
+      "research_sha256": "4eabbd90427b712225128805e8d8a8e294efbcdd24ccde4480b5f43fcaf9b79e",
+      "clone_sha256": "4eabbd90427b712225128805e8d8a8e294efbcdd24ccde4480b5f43fcaf9b79e",
+      "byte_identical": true
+    },
+    "cases/inshining-elderly-driver/figures/01_busan_counts.png": {
+      "research_sha256": "f9e1871005ede0b3ebe53acbb2ae763485018ed92cabbdcf33ee36aeee5a1cd5",
+      "clone_sha256": "f9e1871005ede0b3ebe53acbb2ae763485018ed92cabbdcf33ee36aeee5a1cd5",
+      "byte_identical": true
+    },
+    "cases/inshining-elderly-driver/figures/03_busan_counts_and_population.png": {
+      "research_sha256": "9cb9a4ee5728ab5b7307412acf4f55fda27e3ccea8a6e11a4b0f0c7973b988c9",
+      "clone_sha256": "9cb9a4ee5728ab5b7307412acf4f55fda27e3ccea8a6e11a4b0f0c7973b988c9",
+      "byte_identical": true
+    },
+    "cases/inshining-elderly-driver/figures/04_busan_age_comparison.png": {
+      "research_sha256": "ec3175ff50a6866c282ca5664722435e3180d24c8c6f7a8ef3d87cfb2a48dcee",
+      "clone_sha256": "ec3175ff50a6866c282ca5664722435e3180d24c8c6f7a8ef3d87cfb2a48dcee",
+      "byte_identical": true
+    },
+    "cases/inshining-elderly-driver/data/age-descriptive-series.csv": {
+      "research_sha256": "d0ac86883672b3944d4984e5ca7f0e3d82905fb21ae075519bbdf9967e425bb7",
+      "clone_sha256": "d0ac86883672b3944d4984e5ca7f0e3d82905fb21ae075519bbdf9967e425bb7",
+      "byte_identical": true
+    },
+    "cases/inshining-elderly-driver/data/outcome-panel.csv": {
+      "research_sha256": "f4b9b01e64439486e063c4472f667916e618fbe3903bd1002b77a7f1af823a53",
+      "clone_sha256": "f4b9b01e64439486e063c4472f667916e618fbe3903bd1002b77a7f1af823a53",
+      "byte_identical": true
+    },
+    "cases/inshining-elderly-driver/data/descriptive-series.csv": {
+      "research_sha256": "fd188601245b8d2bd1b06daedcda5e0f1cbf91994138edc74b9c0d7a80ceff73",
+      "clone_sha256": "fd188601245b8d2bd1b06daedcda5e0f1cbf91994138edc74b9c0d7a80ceff73",
+      "byte_identical": true
+    },
+    "cases/inshining-elderly-driver/data/population-descriptive-series.csv": {
+      "research_sha256": "d5171b8c8bd0efc6751e1f07af93b0e8a2cd6a9a81def48d315f7d1d37c839da",
+      "clone_sha256": "d5171b8c8bd0efc6751e1f07af93b0e8a2cd6a9a81def48d315f7d1d37c839da",
+      "byte_identical": true
+    },
+    "cases/inshining-elderly-driver/data/accidents.csv": {
+      "research_sha256": "186a03475f3dd2cb07778e5e457f70cea9aacd7c18c9ea30d63cc8bd4c0ceca8",
+      "clone_sha256": "186a03475f3dd2cb07778e5e457f70cea9aacd7c18c9ea30d63cc8bd4c0ceca8",
+      "byte_identical": true
+    },
+    "cases/inshining-elderly-driver/data/taas-national.csv": {
+      "research_sha256": "a2b63b48e0166da5ab17677303f7ca227d299cebdf9689a8dd5855c55496d641",
+      "clone_sha256": "a2b63b48e0166da5ab17677303f7ca227d299cebdf9689a8dd5855c55496d641",
+      "byte_identical": true
+    },
+    "cases/inshining-elderly-driver/data/taas-unmatched.csv": {
+      "research_sha256": "7b44d5288955161814a81b0503fc4f425dfe2854ff51f0d7a6142279737e9a42",
+      "clone_sha256": "7b44d5288955161814a81b0503fc4f425dfe2854ff51f0d7a6142279737e9a42",
+      "byte_identical": true
+    },
+    "cases/inshining-elderly-driver/data/population.csv": {
+      "research_sha256": "954efe0baa088c1fb687a57a67e77621fe4f64c99c12e71e2bb69be28b64fbf1",
+      "clone_sha256": "954efe0baa088c1fb687a57a67e77621fe4f64c99c12e71e2bb69be28b64fbf1",
+      "byte_identical": true
+    },
+    "cases/inshining-elderly-driver/data/panel-coverage.csv": {
+      "research_sha256": "29c47861581ba3f387e5e28b735df8bed023c36936e435b8381ce3d0e69392dd",
+      "clone_sha256": "29c47861581ba3f387e5e28b735df8bed023c36936e435b8381ce3d0e69392dd",
+      "byte_identical": true
+    },
+    "cases/inshining-elderly-driver/data/raw-age/source-query-national-2019-2019.xml": {
+      "research_sha256": "6a6ad3b65ff7be91312893f523dec4c133f2ac34e8f18f03ce53403182bf9e68",
+      "clone_sha256": "6a6ad3b65ff7be91312893f523dec4c133f2ac34e8f18f03ce53403182bf9e68",
+      "byte_identical": true
+    },
+    "cases/inshining-elderly-driver/data/raw-age/source-query-national-2014-2018.xml": {
+      "research_sha256": "124f0e2402e5a9c4915ea86f52f2c167304827c9e02d13596413e2ea8a4a4a41",
+      "clone_sha256": "124f0e2402e5a9c4915ea86f52f2c167304827c9e02d13596413e2ea8a4a4a41",
+      "byte_identical": true
+    },
+    "cases/inshining-elderly-driver/data/raw-age/source-query-busan-2019-2019.xml": {
+      "research_sha256": "1bec3b42c873b98792182bb0b68a3ac25fefa0e10a7d3bb757c84912470667af",
+      "clone_sha256": "1bec3b42c873b98792182bb0b68a3ac25fefa0e10a7d3bb757c84912470667af",
+      "byte_identical": true
+    },
+    "cases/inshining-elderly-driver/data/raw-age/source-query-busan-2014-2018.xml": {
+      "research_sha256": "ed6e835ce41ab9e410269bfd8ee4dde8d81e74f6726efadc0a7374891a194299",
+      "clone_sha256": "ed6e835ce41ab9e410269bfd8ee4dde8d81e74f6726efadc0a7374891a194299",
+      "byte_identical": true
+    },
+    "cases/inshining-elderly-driver/data/raw/population-2014-12.csv": {
+      "research_sha256": "69ea0e01d81ff29c08565c5b713fdccf05eb87709ad45faecc6e00420c423fe2",
+      "clone_sha256": "69ea0e01d81ff29c08565c5b713fdccf05eb87709ad45faecc6e00420c423fe2",
+      "byte_identical": true
+    },
+    "cases/inshining-elderly-driver/data/raw/population-2018-12.csv": {
+      "research_sha256": "a203d43bc534382faa492e90548e5d4dbd994afe92a4fc37f08be6ef254304e8",
+      "clone_sha256": "a203d43bc534382faa492e90548e5d4dbd994afe92a4fc37f08be6ef254304e8",
+      "byte_identical": true
+    },
+    "cases/inshining-elderly-driver/data/raw/population-2016-12.csv": {
+      "research_sha256": "dd900fdf4540779737210a7a8f7d4cc0b2a61d3045ad2e6d760ba86d32430bff",
+      "clone_sha256": "dd900fdf4540779737210a7a8f7d4cc0b2a61d3045ad2e6d760ba86d32430bff",
+      "byte_identical": true
+    },
+    "cases/inshining-elderly-driver/data/raw/taas-2019-2019-page-2.xml": {
+      "research_sha256": "f2bb484a897d67759052576819a74b6104722aae5067ecedbeccd70656b832db",
+      "clone_sha256": "f2bb484a897d67759052576819a74b6104722aae5067ecedbeccd70656b832db",
+      "byte_identical": true
+    },
+    "cases/inshining-elderly-driver/data/raw/population-2015-12.csv": {
+      "research_sha256": "874c47fa8245964ba2571420005c93b49747ede5ce54234f9b090f63476c9b90",
+      "clone_sha256": "874c47fa8245964ba2571420005c93b49747ede5ce54234f9b090f63476c9b90",
+      "byte_identical": true
+    },
+    "cases/inshining-elderly-driver/data/raw/taas-2019-2019-page-1.xml": {
+      "research_sha256": "c36733c27200a602e01d67ebce0021e3779a0250cd16758e74318de8f21a1bf6",
+      "clone_sha256": "c36733c27200a602e01d67ebce0021e3779a0250cd16758e74318de8f21a1bf6",
+      "byte_identical": true
+    },
+    "cases/inshining-elderly-driver/data/raw/population-2017-12.csv": {
+      "research_sha256": "6069a70fb332c0afc2ca51b89e3bd0b0e1a688cf42394b3634ef7a1acacb277a",
+      "clone_sha256": "6069a70fb332c0afc2ca51b89e3bd0b0e1a688cf42394b3634ef7a1acacb277a",
+      "byte_identical": true
+    },
+    "cases/inshining-elderly-driver/data/raw/population-2013-12.csv": {
+      "research_sha256": "f8618e748dfb09089c6ba8c19f833454a41f27bf5219469112a13033ea79c297",
+      "clone_sha256": "f8618e748dfb09089c6ba8c19f833454a41f27bf5219469112a13033ea79c297",
+      "byte_identical": true
+    },
+    "cases/inshining-elderly-driver/data/raw/taas-2014-2018-page-1.xml": {
+      "research_sha256": "afc507f06539b612934192bd12caec23c7eda4481679567f9653e1d90e7c803a",
+      "clone_sha256": "afc507f06539b612934192bd12caec23c7eda4481679567f9653e1d90e7c803a",
+      "byte_identical": true
+    },
+    "cases/inshining-elderly-driver/data/raw/taas-2014-2018-page-2.xml": {
+      "research_sha256": "4f7a631e152bfc75dc4f5a73591bd05b1d5dbefee6b0b30e231ed40540316ba4",
+      "clone_sha256": "4f7a631e152bfc75dc4f5a73591bd05b1d5dbefee6b0b30e231ed40540316ba4",
+      "byte_identical": true
+    }
+  },
+  "historical_collection_record_sha256": "a323b5c84f65ca47a2cac51ff76f17593375c00575d40f70e41e410c812e680d",
+  "historical_collection_record": {
+    "checked_at": "2026-10-27T06:18:31.813419+00:00",
+    "upstream_commit": "46a824e535865f228c78d25b92ddcfa2773de68b",
+    "plan_schema": "passed",
+    "policy_register_yaml": "passed",
+    "policy_records": 9,
+    "concurrent_policy_records": 1,
+    "unit_tests": {
+      "run": 53,
+      "passed": 53,
+      "command": "python3 -m unittest discover -s cases/inshining-elderly-driver -p 'test_*.py'"
+    },
+    "compileall": "passed",
+    "local_markdown_links_checked": 31,
+    "offline_replay": {
+      "passed": true,
+      "normalized_sha256_unchanged": {
+        "data/population.csv": "954efe0baa088c1fb687a57a67e77621fe4f64c99c12e71e2bb69be28b64fbf1",
+        "data/accidents.csv": "186a03475f3dd2cb07778e5e457f70cea9aacd7c18c9ea30d63cc8bd4c0ceca8",
+        "data/outcome-panel.csv": "f4b9b01e64439486e063c4472f667916e618fbe3903bd1002b77a7f1af823a53",
+        "data/panel-coverage.csv": "29c47861581ba3f387e5e28b735df8bed023c36936e435b8381ce3d0e69392dd"
+      }
+    },
+    "raw_sources": {
+      "taas_xml": 4,
+      "population_csv": 6,
+      "all_source_and_output_hashes_verified": true
+    },
+    "panel": {
+      "rows": 1368,
+      "regions": 229,
+      "complete_six_year_regions": 227,
+      "unjoined_rows": 11,
+      "temporal_completeness_is_not_boundary_validation": true
+    },
+    "sha256": {
+      "plan.yaml": "8ccdc50e2d421adc72f8a69f094314b64692384da06bdd25d1332c1be52533ea",
+      "policy-register.yaml": "ab0aa745405f73130b6dd82caa07bbe7c61e189f5eee61fa3166800de8fce872",
+      "population.py": "c73d6723bdf0993e4f1c41fd129617a8e15c8a703cfae139e5be68c8a43e63d0",
+      "taas.py": "a78487ef0fc4bff0c08c5e2f36416d13b15b5afa311c6f9f97e039d784a4bffa",
+      "panel.py": "d4f495e3b180ccb28f4dd9c99eca8290b2062f2abb6603c900827b22434384aa",
+      "collection-report.md": "e3d45b7051e74065c6cd20695f8e8827c905edcb0b3de0696d0bd8fb061ba77b",
+      "region-name-crosswalk.json": "6a4ccb42c7d0c921e54cb859d8c28d366d9c485fe66b42203ffde7e14d3ac3b5",
+      "cleaning-step-01.md": "c9505c355f1911a89f36289a5c9fe4dac0b6e53cd0e9f2584b545cf83f1efcce",
+      "test_taas.py": "aa52711eb45d26e1229296bcc343139f51677d5043bc788775c2e917bc218949",
+      "audit_policy.py": "cfc59a738de7030fb2a3dd10cd550d449885ac58e51232f5f041023c71d45b2b",
+      "test_audit_policy.py": "c92e7b69b199f0b14280d620fcfa73a16c4e5f6af32b3330c8e12173c602f0ae",
+      "policy-evidence.json": "1f8c0f98f37ec8b393461ae1610d61734e9cd1773e11df941dfe6c469ca33af4",
+      "policy-checks.json": "880600662cfaaa72cecf2846148d5ccefb5c515380f9d29eb6f64f16fa3f365f",
+      "policy-review.md": "119adb0047dc26786fbff8d02dc6f89cb49133b6570ba65bfe4152b542f7f6b7",
+      "execution-review-protocol.md": "90384d6de80f7eb30a365b7524f09c8e3a57d125f1d1e1d14e66f036daff8369",
+      "README.md": "572395d13a72ad254182d23a6b81fd330002719a0e873b2567921c0ba146941f",
+      "data-audit.md": "a8d085efcb58a519c3de2cbc3b97b0cac14d54944c1ad3a3e2d0659d1844b97b"
+    },
+    "raw_panel_downloaded": true,
+    "provisional_panel_built": true,
+    "spatial_harmonization_complete": false,
+    "treatment_joined": false,
+    "analysis_ready": false,
+    "effect_estimated": false,
+    "preregistered": false,
+    "upstream_full_test_suite_run": false,
+    "scope": "Official source acquisition, cleaning, QC and provisional outcome panel; no causal estimation.",
+    "cleaning_step_01": {
+      "scope": "Busan 진구→부산진구, 2014–2019 only",
+      "mapped_rows": 6,
+      "raw_files_unchanged": true,
+      "existing_1362_rows_byte_equivalent": true,
+      "busan_16_districts_all_six_years": true,
+      "busan_accident_and_population_province_sums_match": true,
+      "official_source_code_crosswalk_obtained": false,
+      "full_boundary_history_verified": false
+    },
+    "project_rules_sha256": "345d063a8eaf23642002af576d2baea1778de5da52f3e84c829690464b703d5a",
+    "policy_step": {
+      "scope": "14 policy timing claims and six provisional 2019 classifications; not an approved causal comparison design",
+      "evidence_records": 14,
+      "unique_source_snapshots": 9,
+      "classifications": [
+        {
+          "jurisdiction": "부산광역시",
+          "first_offer_start": "2018-07",
+          "date_precision": "month",
+          "role_2019": "treated",
+          "analysis_approved": false
+        },
+        {
+          "jurisdiction": "서울특별시",
+          "first_offer_start": "2019-03",
+          "date_precision": "month",
+          "role_2019": "excluded_treated",
+          "analysis_approved": false
+        },
+        {
+          "jurisdiction": "경기도",
+          "first_offer_start": "2019-09",
+          "date_precision": "month",
+          "role_2019": "excluded_treated",
+          "analysis_approved": false
+        },
+        {
+          "jurisdiction": "전주시",
+          "first_offer_start": "2020-02-01",
+          "date_precision": "day",
+          "role_2019": "candidate",
+          "analysis_approved": false
+        },
+        {
+          "jurisdiction": "군산시",
+          "first_offer_start": "2020",
+          "date_precision": "year",
+          "role_2019": "candidate",
+          "analysis_approved": false
+        },
+        {
+          "jurisdiction": "부안군",
+          "first_offer_start": "2020",
+          "date_precision": "year",
+          "role_2019": "hold",
+          "analysis_approved": false
+        }
+      ],
+      "automated_status": "structural_checks_passed",
+      "errors": 0,
+      "warnings": 1,
+      "unknowns": 2,
+      "code_checks_are_not_historical_truth_or_causal_validation": true,
+      "code_tests": 24,
+      "data_tests": 29,
+      "execution_agents": [
+        "/root/policy_evidence_exec",
+        "/root/policy_checks_exec",
+        "/root (verification aggregation only)"
+      ],
+      "independent_review_agent": "/root/policy_independent_review",
+      "independent_review_artifact": "policy-independent-review.json",
+      "raw_and_normalized_data_unchanged": true,
+      "commands": [
+        {
+          "command": ".venv/bin/python -m unittest discover -s cases/inshining-elderly-driver -p 'test_*.py'",
+          "exit_code": 0,
+          "result": "53 tests passed"
+        },
+        {
+          "command": ".venv/bin/python -m compileall -q cases/inshining-elderly-driver",
+          "exit_code": 0
+        },
+        {
+          "command": ".venv/bin/python cases/inshining-elderly-driver/audit_policy.py",
+          "exit_code": 0,
+          "result": "errors=0 warnings=1 unknowns=2; analysis_approved=false"
+        }
+      ],
+      "input_sha256": "1f8c0f98f37ec8b393461ae1610d61734e9cd1773e11df941dfe6c469ca33af4",
+      "precision_correction": "서울 반납기간3/15를 지원개시일로 확정하지 않고 공식 본문의2019-03/month로 좁힘"
+    },
+    "project_readme_sha256": "b7b24a272a9047000a1e9cfe74b37fc9281d7304dfa2a0e4186ffa2b37a4bae5"
+  },
+  "historical_records_note": "Earlier source/review/code hashes describe their recorded collection/review point. Private absolute paths in two historical public policy records were removed with explicit public_copy_note. They are not current-code approvals. Local .local logs/commands cited in old notes are historical records, not files promised by this checkout. Use data/README.md and current descriptive manifests for present reproduction.",
+  "independent_review_scope": {
+    "research_report_runner": "15-file report/runner quality approval after independent spec update, prior to copying",
+    "age_figure_and_sources": "separate retained-input and figure reviews; unchanged four PNG bytes",
+    "site_adapter_fixture": "independent spec/quality on synthetic contract at old main; current compatibility and actual case require separate packaging spec and fresh quality",
+    "submission_writer_cannot_self_approve": true
+  },
+  "limitations": [
+    "Raw XML/CSV and derived series stay local and ignored except data/README.md; a new checkout needs separate source acquisition and validation.",
+    "No new network acquisition, source-term legal clearance or causal estimation in packaging.",
+    "Nine existing causal API/HTML/CSV objects exactly match current upstream archive with identical postmerge live git-history metadata.",
+    "Browser smoke and independent packaging approvals are recorded separately by the coordinator/reviewers; command success does not replace those reviews."
+  ],
+  "analysis_approved": false,
+  "publication_approved": false
+}

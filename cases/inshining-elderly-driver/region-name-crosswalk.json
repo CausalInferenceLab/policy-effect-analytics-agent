@@ -1,0 +1,146 @@
+{
+  "checked_at": "2026-10-27T06:02:02.695430+00:00",
+  "decision": "부산·2014~2019에 한정해 TAAS 진구를 행안부 부산광역시 부산진구로 연결",
+  "decision_type": "명칭 대응: 관할 내 15개 정확 일치 후 유일한 잔여 쌍의 일대일 대응에 근거한 판단",
+  "direct_source_code_crosswalk_obtained": false,
+  "full_boundary_history_verified": false,
+  "original_values_changed": false,
+  "scope": {
+    "taas_province": "부산",
+    "taas_district": "진구",
+    "start_year": 2014,
+    "end_year": 2019,
+    "target_name": "부산광역시 부산진구",
+    "target_code": "2623000000"
+  },
+  "sources": [
+    {
+      "url": "https://taas.koroad.or.kr/sta/acs/gus/selectSignguTfcacd.do?menuId=WEB_KMP_OVT_TAG_SGT",
+      "finding": "TAAS의 별도 시군구별 통계도 부산 관할의 진구라는 행을 제공. 표기 관행의 보강 근거이며 고령 사고 수치의 대조 자료는 아님"
+    },
+    {
+      "url": "https://jumin.mois.go.kr/ageStatMonth.do",
+      "finding": "2013~2018년12월 원본 각각 부산진구와2623000000코드 존재"
+    }
+  ],
+  "checks": [
+    {
+      "year": 2014,
+      "taas_districts": 16,
+      "population_districts": 16,
+      "exact_name_matches": 15,
+      "taas_only": [
+        "진구"
+      ],
+      "population_only": [
+        "부산진구"
+      ],
+      "target_code": "2623000000",
+      "source_accidents": 118,
+      "target_population65_start": 54218,
+      "province_accidents": 1069
+    },
+    {
+      "year": 2015,
+      "taas_districts": 16,
+      "population_districts": 16,
+      "exact_name_matches": 15,
+      "taas_only": [
+        "진구"
+      ],
+      "population_only": [
+        "부산진구"
+      ],
+      "target_code": "2623000000",
+      "source_accidents": 147,
+      "target_population65_start": 56777,
+      "province_accidents": 1224
+    },
+    {
+      "year": 2016,
+      "taas_districts": 16,
+      "population_districts": 16,
+      "exact_name_matches": 15,
+      "taas_only": [
+        "진구"
+      ],
+      "population_only": [
+        "부산진구"
+      ],
+      "target_code": "2623000000",
+      "source_accidents": 184,
+      "target_population65_start": 58579,
+      "province_accidents": 1324
+    },
+    {
+      "year": 2017,
+      "taas_districts": 16,
+      "population_districts": 16,
+      "exact_name_matches": 15,
+      "taas_only": [
+        "진구"
+      ],
+      "population_only": [
+        "부산진구"
+      ],
+      "target_code": "2623000000",
+      "source_accidents": 175,
+      "target_population65_start": 60541,
+      "province_accidents": 1468
+    },
+    {
+      "year": 2018,
+      "taas_districts": 16,
+      "population_districts": 16,
+      "exact_name_matches": 15,
+      "taas_only": [
+        "진구"
+      ],
+      "population_only": [
+        "부산진구"
+      ],
+      "target_code": "2623000000",
+      "source_accidents": 228,
+      "target_population65_start": 62942,
+      "province_accidents": 1696
+    },
+    {
+      "year": 2019,
+      "taas_districts": 16,
+      "population_districts": 16,
+      "exact_name_matches": 15,
+      "taas_only": [
+        "진구"
+      ],
+      "population_only": [
+        "부산진구"
+      ],
+      "target_code": "2623000000",
+      "source_accidents": 238,
+      "target_population65_start": 64599,
+      "province_accidents": 1894
+    }
+  ],
+  "raw_sha256": {
+    "data/raw/population-2013-12.csv": "f8618e748dfb09089c6ba8c19f833454a41f27bf5219469112a13033ea79c297",
+    "data/raw/population-2014-12.csv": "69ea0e01d81ff29c08565c5b713fdccf05eb87709ad45faecc6e00420c423fe2",
+    "data/raw/population-2015-12.csv": "874c47fa8245964ba2571420005c93b49747ede5ce54234f9b090f63476c9b90",
+    "data/raw/population-2016-12.csv": "dd900fdf4540779737210a7a8f7d4cc0b2a61d3045ad2e6d760ba86d32430bff",
+    "data/raw/population-2017-12.csv": "6069a70fb332c0afc2ca51b89e3bd0b0e1a688cf42394b3634ef7a1acacb277a",
+    "data/raw/population-2018-12.csv": "a203d43bc534382faa492e90548e5d4dbd994afe92a4fc37f08be6ef254304e8",
+    "data/raw/taas-2014-2018-page-1.xml": "afc507f06539b612934192bd12caec23c7eda4481679567f9653e1d90e7c803a",
+    "data/raw/taas-2014-2018-page-2.xml": "4f7a631e152bfc75dc4f5a73591bd05b1d5dbefee6b0b30e231ed40540316ba4",
+    "data/raw/taas-2019-2019-page-1.xml": "c36733c27200a602e01d67ebce0021e3779a0250cd16758e74318de8f21a1bf6",
+    "data/raw/taas-2019-2019-page-2.xml": "f2bb484a897d67759052576819a74b6104722aae5067ecedbeccd70656b832db"
+  },
+  "previous_panel": {
+    "rows": 1362,
+    "unjoined_rows": 17,
+    "output_sha256": "3d1f183883580b36a589f807a8930e4eea047fe8fcff9ad6d174bc35838453a2"
+  },
+  "limitations": [
+    "명칭 대응이 구 경계의 모든 연도 동일성이나 경찰 집계 경계 검증을 대신하지 않음",
+    "다른 지역·연도·유사 문자열로 일반화하지 않음",
+    "정책 효과·대조군 적격성과 독립적인 자료 연결 판단"
+  ]
+}

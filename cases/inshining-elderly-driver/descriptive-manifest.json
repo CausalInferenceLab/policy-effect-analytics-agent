@@ -1,0 +1,71 @@
+{
+  "schema_version": 1,
+  "status": "local_draft",
+  "descriptive_only": true,
+  "analysis_approved": false,
+  "publication_approved": false,
+  "input": {
+    "path": "cases/inshining-elderly-driver/data/taas-national.csv",
+    "sha256": "a2b63b48e0166da5ab17677303f7ca227d299cebdf9689a8dd5855c55496d641",
+    "collected_on": "2026-10-27"
+  },
+  "code": {
+    "path": "cases/inshining-elderly-driver/describe.py",
+    "sha256": "03086457d19994516acc6d94ab761dc4b5ab654a1f8abe76d9c5c53cbbcfc0ca"
+  },
+  "command": ".venv/bin/python cases/inshining-elderly-driver/describe.py",
+  "command_working_directory": "project root",
+  "years": [
+    2014,
+    2015,
+    2016,
+    2017,
+    2018,
+    2019
+  ],
+  "base_year": 2017,
+  "metric": "65세 이상 가해운전자(1당사자) 교통사고 연간 건수",
+  "geography": {
+    "busan": "taas_province=부산 AND taas_district=합계",
+    "national": "taas_province=합계 AND taas_district=합계",
+    "rest": "전국 합계 - 부산 합계; 하위 지역 재합산 없음"
+  },
+  "index_definition": "각 계열의 해당 연도 건수 / 같은 계열의 2017년 건수 × 100",
+  "known_limits": [
+    "사고건수는 사망자 수가 아니며 사망자 35→18 보도를 검증하거나 반증하지 않는다.",
+    "인구·운전자 수·운전량으로 보정하지 않은 연간 사고건수다.",
+    "2017년=100은 각 계열의 크기를 맞추는 정규화이며 정책 효과 지수가 아니다.",
+    "다른 지역의 관련 정책 시행 여부를 검증하지 않았으며 미처치·대조군이 아니다.",
+    "2018년은 7월 정책 시작으로 시행 전·후가 혼재한 연간 집계이며 월별 효과를 구분할 수 없다.",
+    "2019년 11월 안전속도 5030 등 동시 정책의 영향을 분리하지 않았다.",
+    "정책이 없었을 반사실과 인과효과를 추정하지 않았다.",
+    "TAAS 자료 이용조건 및 공개 전 검토가 끝나지 않은 로컬 시안이다."
+  ],
+  "rendering": {
+    "matplotlib_version": "3.11.2",
+    "font_name": "AppleGothic",
+    "font_file": "AppleGothic.ttf",
+    "font_file_sha256": "def69dc2b5e12746049a5dcb189f95341ec460589f47587938567313af3020b1",
+    "font_glyph_check": "all chart characters present",
+    "image_size_pixels": [
+      2240,
+      1400
+    ],
+    "backend": "Agg"
+  },
+  "outputs": [
+    {
+      "path": "cases/inshining-elderly-driver/figures/01_busan_counts.png",
+      "sha256": "f9e1871005ede0b3ebe53acbb2ae763485018ed92cabbdcf33ee36aeee5a1cd5"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/figures/02_busan_vs_rest_counts.png",
+      "sha256": "4eabbd90427b712225128805e8d8a8e294efbcdd24ccde4480b5f43fcaf9b79e"
+    },
+    {
+      "path": "cases/inshining-elderly-driver/data/descriptive-series.csv",
+      "sha256": "fd188601245b8d2bd1b06daedcda5e0f1cbf91994138edc74b9c0d7a80ceff73"
+    }
+  ],
+  "manifest_hash_note": "자기 참조 해시는 포함하지 않으며 독립 실행 증거에 별도 기록한다."
+}

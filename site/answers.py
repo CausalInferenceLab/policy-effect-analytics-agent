@@ -376,7 +376,9 @@ def load_answers() -> list[dict]:
                 else [],
                 "sources": plan.get("data_sources", []),
                 "manifest": manifest,
-                "finished": (log.get("ended_at") or "")[:10],
+                "finished": (
+                    log.get("ended_at") or (log.get("generated_at") if descriptive else "") or ""
+                )[:10],
                 "page": f"answers/{case.name}.html",
                 "reproduced_by": list(meta.get("reproduced_by") or []),
                 "prereg": prereg(case),
@@ -693,7 +695,8 @@ def _descriptive_page(e, a: dict, topics_by_id: dict) -> str:
         f"<dt>{e(key)}</dt><dd>{e(value)}</dd>" for key, value in data["definitions"].items()
     )
     figs = "".join(
-        f'<img src="../cases/{e(a["case"])}/{e(f)}" alt="{e(a["title"])} — {e(f)}" loading="lazy">'
+        f'<a href="../cases/{e(a["case"])}/{e(f)}"><img src="../cases/{e(a["case"])}/{e(f)}" '
+        f'alt="{e(a["title"])} — {e(f)}" loading="lazy"><span class="small">원본 크기로 보기</span></a>'
         for f in a["figures"][:4]
     )
     cautions = "".join(f"<li>{e(c)}</li>" for c in a.get("cautions", []))
@@ -732,11 +735,12 @@ def _descriptive_page(e, a: dict, topics_by_id: dict) -> str:
 <section><div class="card answer-box"><span class="badge info big">{DESCRIPTIVE_LABEL}</span>
 <p>연도별 관측값을 정리했습니다. 인과효과 추정은 실행하지 않아 정책 효과를 판단할 수 없습니다.</p>{author}</div></section>
 {_usage(e, a)}
-<section id="evidence"><h2>관측 통계</h2>{changed}<div class="tablewrap"><table><tr>{header}</tr>{rows}</table></div>
-<p>아래 수치는 관측값이며 정책 효과 추정치가 아닙니다. 같은 지역·연도·지표·단위에 한정하여 출처와 함께 인용할 수 있습니다.</p>
+<section id="evidence"><h2>관측 통계</h2>{changed}<div class="figs" style="grid-template-columns: minmax(0, 1fr)">{figs}</div>
+<h3>연도별 관측값</h3><div class="tablewrap"><table><tr>{header}</tr>{rows}</table></div>
+<p>표의 수치는 관측값이며 정책 효과 추정치가 아닙니다. 같은 지역·연도·지표·단위에 한정하여 출처와 함께 인용할 수 있습니다.</p>
 <h3>지표 정의</h3><dl>{definitions}</dl>
 <p><a href="{e(a["case"])}-descriptive.csv" download data-track="csv-download">관측 통계 CSV</a> · <a href="../api/results.json">관측 통계 포함 API (JSON)</a></p>
-<div class="figs">{figs}</div><h3>작성자가 적은 한계</h3><ul>{cautions}</ul>
+<h3>작성자가 적은 한계</h3><ul>{cautions}</ul>
 <p>비교군·교란 요인 검토와 인과효과 식별은 별도 과제입니다. 한계 기재만으로 교란이 제거되지는 않습니다.</p></section>
 {trust_block(e, a)}
 <section id="data"><h2>쓴 공공데이터 · 출처와 이용 조건</h2><div class="tablewrap"><table><tr><th>자료</th><th>이용 조건</th></tr>{"".join(source_rows)}</table></div>
