@@ -57,6 +57,11 @@ projects:
     topic: traffic-safety
     issue: 58
 
+  - case: heart5459oo-subway-safety
+    owner: heart5459oo-ctrl
+    track: B
+    topic: traffic-safety
+
   - case: whatfontisthis-wonju-voucher-202409
     owner: whatfontisthis
     track: B

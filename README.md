@@ -35,7 +35,7 @@
 ## 지금까지 만든 것
 
 <!-- highlights:start -->
-**주제 11개 · 지금 이슈 7개 · 공공데이터 55개 · 계보 4개 · 참여자 프로젝트 12개(결과 9개) · 함께 만든 사람 14명**
+**주제 11개 · 지금 이슈 7개 · 공공데이터 55개 · 계보 4개 · 참여자 프로젝트 13개(결과 9개) · 함께 만든 사람 15명**
 
 | 프로젝트 | 주제 | 누가 | 지금 | 보기 |
 |---|---|---|---|---|
@@ -51,6 +51,7 @@
 | 강남대로 광역버스 분산 전후 일반도로 속도 변화 | 도로교통 운영 | [@sgim49697-ops](https://github.com/sgim49697-ops) | 해석 단계 | [폴더](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/tree/main/cases/sgim49697-ops-gangnam-bus-2024) |
 | 서울 기후동행카드 시범사업 전후 지하철 승차 흐름 비교 | 대중교통 요금 지원 | [@jm-git-163](https://github.com/jm-git-163) | 수집 단계 | [폴더](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/tree/main/cases/jm-git-163-climate-card) |
 | 행정안전부 'AI 친화적 보고서' 도입(2026.3 시범)이 보도자료 형식·기계 판독·언론 확산에 미친 효과 | 디지털포용·무인정보단말기 접근성 | [@gyeom-yee](https://github.com/gyeom-yee) | 계획 단계 | [폴더](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/tree/main/cases/gyeom-yee-public-markdown) |
+| 지하철 승강장 발빠짐 안전 관리 및 Edge-AI 실시간 제어 효과 분석 (Aegis-Rail) | 교통안전 | [@heart5459oo-ctrl](https://github.com/heart5459oo-ctrl) | 계획 단계 | [폴더](https://github.com/CausalInferenceLab/policy-effect-analytics-agent/tree/main/cases/heart5459oo-subway-safety) |
 | 기후동행카드 성남 편입(2025.5.3)이 성남 분당선·경강선 역 평일 승차에 미친 효과 | 대중교통 요금 지원 | 멘토 예시 | 판단 불가 | [결과 보기](https://causalinferencelab.github.io/policy-effect-analytics-agent/answers/t3-climate-card-seongnam.html) |
 | 토지거래허가구역 확대 지정(2025.3.24)이 강남·서초·송파·용산 아파트 거래에 미친 효과 | 부동산 거래 규제 | 멘토 예시 | 크기를 판별하지 못함 | [결과 보기](https://causalinferencelab.github.io/policy-effect-analytics-agent/answers/t3-land-permit-2025.html) |
 <!-- highlights:end -->
