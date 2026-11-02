@@ -1,0 +1,27 @@
+{
+  "case_id": "gyeom-yee-public-markdown",
+  "started_at": "2026-11-02T01:46:16+00:00",
+  "finished_at": "2026-11-02T01:46:17+00:00",
+  "git_sha": "77201061a1bc816a744e43600f477864a427c6ba",
+  "git_dirty": true,
+  "plan_sha256": "a492bf7ed1b7cff27b7691974976ba81feb0ab98b4c18a809b652d0f206263ec",
+  "data_sha256": "5a1b68dbbe3bce9f811e442f2e17c7feb6980f8ecd4ac073643d61fe988c0c60",
+  "data_path": "data\\panel.csv",
+  "versions": {
+    "python": "3.13.9",
+    "pandas": "2.3.3",
+    "numpy": "2.5.4",
+    "scipy": "1.18.1",
+    "pyfixest": "0.60.0",
+    "statsmodels": "0.15.0",
+    "pydantic": "2.14.2",
+    "matplotlib": "3.11.2"
+  },
+  "platform": "Windows-11-10.0.26200-SP0",
+  "verdicts": {
+    "narrative_share": "not_identified",
+    "tables_per_release": "not_identified",
+    "nested_table_share": "not_identified",
+    "parse_table_loss": "not_identified"
+  }
+}
