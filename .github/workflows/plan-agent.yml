@@ -1,0 +1,76 @@
+name: Plan agent (작업 제안 → 가설·데이터 점검 → plan 초안 PR)
+
+# 작업 제안 이슈가 열리거나 고쳐지면: 가설·데이터 점검과 plan.yaml 초안을 댓글로 (하나의 댓글을 계속 고침)
+# 메인테이너가 'plan-approved' 라벨을 붙이면: 그 초안으로 브랜치와 PR 을 연다 — 사람이 승인하는 관문
+# 이슈 본문은 믿지 않는 입력이라 셸에 넣지 않고 환경변수로만 파이썬에 넘긴다.
+on:
+  issues:
+    types: [opened, edited, labeled]
+
+permissions:
+  contents: read
+
+jobs:
+  comment:
+    if: contains(github.event.issue.labels.*.name, 'case-proposal') && github.event.action != 'labeled'
+    runs-on: ubuntu-latest
+    permissions:
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+      - run: pip install -e .
+      - name: Feasibility comment
+        env:
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          GH_TOKEN: ${{ github.token }}
+          NUM: ${{ github.event.issue.number }}
+        run: |
+          python -m core.causal.issue_agent comment > comment.md
+          id=$(gh api "repos/$GITHUB_REPOSITORY/issues/$NUM/comments" --paginate \
+                 --jq '.[] | select(.user.login == "github-actions[bot]" and (.body | startswith("<!-- plan-agent -->"))) | .id' | head -1)
+          if [ -n "$id" ]; then
+            gh api -X PATCH "repos/$GITHUB_REPOSITORY/issues/comments/$id" -F body=@comment.md > /dev/null
+          else
+            gh api "repos/$GITHUB_REPOSITORY/issues/$NUM/comments" -F body=@comment.md > /dev/null
+          fi
+
+  draft-pr:
+    if: github.event.action == 'labeled' && github.event.label.name == 'plan-approved' && contains(github.event.issue.labels.*.name, 'case-proposal')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+      issues: write
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+      - run: pip install -e .
+      - name: Write plan draft and open PR
+        env:
+          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_BODY: ${{ github.event.issue.body }}
+          GH_TOKEN: ${{ github.token }}
+          NUM: ${{ github.event.issue.number }}
+        run: |
+          branch="agent/plan-issue-$NUM"
+          git switch -c "$branch"
+          case=$(python -m core.causal.issue_agent write)
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add "cases/$case/plan.yaml"
+          git commit -m "plan($case): 작업 제안 #$NUM 에서 만든 plan.yaml 초안 (TODO 를 채운 뒤 머지)"
+          git push origin "$branch"
+          printf '작업 제안 #%s 에서 `python -m core.causal.draft` 로 만든 초안입니다.\n\n- [ ] 데이터를 보기 **전에** TODO 를 모두 채웠습니다\n- [ ] 처치 시점·비교 대상 근거를 확인했습니다\n\n이 PR 을 머지하는 것이 사전 등록입니다. Closes #%s 는 결과 PR 에서 씁니다.\n' "$NUM" "$NUM" > pr.md
+          if ! gh pr create --head "$branch" --title "plan($case): 질문에서 만든 초안 (#$NUM)" --body-file pr.md; then
+            gh api "repos/$GITHUB_REPOSITORY/issues/$NUM/comments" -f body="초안 브랜치 \`$branch\` 를 만들었어요. 저장소 설정에서 Actions 의 PR 생성이 꺼져 있어 PR 은 직접 열어 주세요." > /dev/null
+          fi

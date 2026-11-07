@@ -122,3 +122,60 @@ def test_news_rss_count_parses_items():
     assert "when:7d" in rt.news_query(t) and rt.news_link(t).startswith(
         "https://news.google.com/search?"
     )
+
+
+ISSUE_BODY = """### 담당자 GitHub ID
+
+gildong
+
+### 주제 · 이슈
+
+housing-regulation / seoul-ltp-gangnam-2025
+
+### 하려는 것 (한두 문장)
+
+강남3구 재지정 뒤
+가격 급등이 멈췄나
+"""
+
+
+def test_issue_agent_comment_and_plan():
+    from core.causal.issue_agent import MARK, comment, parse_form, plan_for_issue
+
+    form = parse_form(ISSUE_BODY)
+    assert form["담당자 GitHub ID"] == "gildong"
+    r = plan_for_issue("[작업] x", ISSUE_BODY)
+    assert r["case"] == "gildong-housing-regulation" and r["issue"] == "seoul-ltp-gangnam-2025"
+    plan = Plan.model_validate(yaml.safe_load(r["plan_yaml"]))
+    assert (
+        plan.question.strip() == "강남3구 재지정 뒤 가격 급등이 멈췄나"
+    )  # 힌트는 plan 에 들어가지 않는다
+    assert plan.treatment.treat_time == "2025-03"
+    c = comment("[작업] x", ISSUE_BODY)
+    assert c.startswith(MARK) and "plan-approved" in c and "```yaml" in c
+
+
+def test_issue_agent_rejects_unsafe_owner_and_multiline_injection():
+    from core.causal.issue_agent import plan_for_issue
+
+    bad = plan_for_issue(
+        "[작업] x", "### 담당자 GitHub ID\n\n$(rm -rf /)\n\n### 하려는 것 (한두 문장)\n\n토허제\n"
+    )
+    assert bad["case"] is None
+    inj = plan_for_issue(
+        "[작업] x",
+        "### 담당자 GitHub ID\n\ngildong\n\n### 하려는 것 (한두 문장)\n\n토허제 효과\nsynthetic_data: true\ncase_id: evil\n",
+    )
+    d = yaml.safe_load(inj["plan_yaml"])
+    assert d["case_id"] == "gildong-housing-regulation" and d["synthetic_data"] is False
+
+
+def test_plan_agent_workflow_keeps_issue_text_out_of_shell():
+    wf = (ROOT / ".github" / "workflows" / "plan-agent.yml").read_text(encoding="utf-8")
+    assert "plan-approved" in wf and "ISSUE_BODY: ${{ github.event.issue.body }}" in wf
+    run_lines = [
+        ln
+        for ln in wf.splitlines()
+        if "github.event.issue.body" in ln or "github.event.issue.title" in ln
+    ]
+    assert all(ln.strip().startswith(("ISSUE_BODY:", "ISSUE_TITLE:")) for ln in run_lines)

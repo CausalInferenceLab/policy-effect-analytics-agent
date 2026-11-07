@@ -49,6 +49,7 @@ pip install -e ".[causal]" && make pywhy CASE=cases/<내ID>-<주제>    # make f
 | 단계 | 무엇을 하나 | 어디에 보이나 |
 |---|---|---|
 | 가설·데이터 점검 (`core/causal/feasibility.py`) | 주제마다 ① 처치 시점 근거 ② 비교 대상 ③ 결과 데이터 ④ 공통 원인(통제) 데이터 ⑤ 공간 ⑥ 시간 단위를 카탈로그로 확인. PyWhy 식 인과 그래프(정책 → 결과, 공통 원인 → 둘 다) | 이슈 보드 맨 위, 검색에서 결과가 없을 때 |
+| 작업 제안 → 초안 PR (`.github/workflows/plan-agent.yml`) | 작업 제안 이슈가 열리면 가설·데이터 점검과 plan.yaml 초안을 **댓글**로 달고, 메인테이너가 `plan-approved` 라벨을 붙이면 그 초안으로 **PR**을 연다. 사람이 TODO 를 채워 머지하는 것이 사전 등록 | 이슈 댓글, PR |
 | plan.yaml 초안 (`core/causal/draft.py`) | 질문 → 주제·이슈 매칭 → 스키마를 통과하는 초안. 시행일은 `issues.yaml`의 공식 날짜만, 모르는 칸은 `TODO` | 터미널, `cases/` |
 | DoWhy (`core/causal/pywhy.py`) | 단위별 정책 전후 변화(Δy) 표 → 뒷문 기준 식별(정책 전 수준·공변량 보정) → 추정 → 반박 검정 3종(가짜 처치 · 무작위 공통 원인 · 80% 부분 표본) | 답 페이지 '두 번째 의견' |
 | CausalML | T-러너로 단위별 효과(CATE), 정책 전 수준 셋으로 나눠 평균. 처치·비교가 각각 10곳 이상일 때만 | 답 페이지 '두 번째 의견' |

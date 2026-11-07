@@ -1,0 +1,59 @@
+name: 뉴스 주장 검토 기록
+description: 검색 화면의 '문장 검증' 결과를 실제 주장(기사·발표)의 검토 기록으로 남깁니다 → 답 페이지 팩트체크 마크업
+title: "[주장 검토] "
+labels: ["claim-review"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        누군가 **실제로 한 주장**만 기록합니다. 검토자(작성자가 아닌 참여자)가 아래를 확인한 뒤 `catalog/projects.yaml` 의
+        그 케이스 `claims:` 에 한 줄을 추가하면 답 페이지에 schema.org ClaimReview 가 붙습니다.
+        주장 문장은 원문 그대로, 짧게(한 문장) 적어 주세요. 기사 전문을 옮기지 마세요.
+  - type: input
+    id: claim
+    attributes:
+      label: 주장 문장 (원문 그대로 한 문장)
+    validations:
+      required: true
+  - type: input
+    id: by
+    attributes:
+      label: 누가 말했나 (기관·언론사·인물)
+    validations:
+      required: true
+  - type: input
+    id: url
+    attributes:
+      label: 주장이 실린 곳 (URL)
+    validations:
+      required: true
+  - type: input
+    id: date
+    attributes:
+      label: 주장 날짜 (YYYY-MM-DD)
+  - type: input
+    id: case
+    attributes:
+      label: 비교한 분석 (cases/ 폴더 이름)
+    validations:
+      required: true
+  - type: input
+    id: auto
+    attributes:
+      label: 자동 문장 검증 결과
+      description: "뒷받침 · 범위 안 · 결과를 넘어섬 · 결과와 다름 — 검색 화면에서 채워집니다"
+  - type: dropdown
+    id: rating
+    attributes:
+      label: 검토자 평가 (projects.yaml claims.rating 에 그대로)
+      options:
+        - 결과와 맞음
+        - 범위 안
+        - 결과를 넘어섬
+        - 결과와 다름
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: 검토 메모 — 주장과 분석의 지역·기간·지표가 같은가
