@@ -537,21 +537,105 @@ details.todo[open] summary { font-weight: 700; color: var(--ink) }
 @media (max-width: 960px) { ol.path { grid-template-columns: repeat(2, minmax(0, 1fr)) } }
 @media (max-width: 560px) { ol.path { grid-template-columns: minmax(0, 1fr) } }
 
-/* 통합 검색 */
+/* 통합 검색 — 표지 요소는 판정 패널 하나. 나머지는 조용한 목록 */
 .sbox { display: flex; gap: 8px; margin: 18px 0 10px; max-width: 760px }
-.sbox input { flex: 1; min-width: 0; font: inherit; font-size: 17px; padding: 13px 16px; border: 2px solid var(--ink); border-radius: 12px; background: var(--surface); color: var(--ink) }
-.sbox input:focus-visible { outline: 3px solid var(--accent-soft); outline-offset: 1px }
-.sbox .btn { border: 0; cursor: pointer; white-space: nowrap }
-.home-search { margin-top: 22px }
-.s-verdict { margin: 16px 0; border-left: 5px solid var(--accent) }
-.s-group { padding: 18px 0 4px }
-.s-group h2 { font-size: 17px; margin: 0 0 10px }
-.s-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 10px }
-.s-item { display: flex; flex-direction: column; gap: 4px; padding: 12px 14px; background: var(--surface); border: 1px solid var(--hair); border-radius: 12px; text-decoration: none; color: inherit }
-.s-item:hover { border-color: var(--ink2) }
-.s-item b { color: var(--ink); line-height: 1.45 }
-.s-item .s-top { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; min-height: 4px }
-.s-result { border-left: 4px solid var(--accent) }
+.sbox input { flex: 1; min-width: 0; font: inherit; font-size: 17px; padding: 13px 16px; border: 1px solid var(--hair); border-radius: 14px; background: var(--surface); color: var(--ink); box-shadow: 0 10px 28px -20px rgba(20, 23, 28, .45) }
+.sbox input:focus { outline: none; border-color: var(--accent); box-shadow: 0 0 0 4px var(--accent-soft) }
+.sbox .btn { border: 0; cursor: pointer; white-space: nowrap; border-radius: 14px; padding: 0 22px }
+.home-search { max-width: 760px; margin: 26px 0 6px }
+details.ask { margin-top: 26px; border-top: 1px solid var(--hair); padding-top: 4px }
+details.ask > summary { cursor: pointer; list-style: none; padding: 14px 0; font-weight: 700; color: var(--ink); display: flex; gap: 6px 12px; flex-wrap: wrap; align-items: baseline }
+details.ask > summary::-webkit-details-marker { display: none }
+details.ask > summary::before { content: "+"; display: inline-grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--sunk); font-weight: 700 }
+details.ask[open] > summary::before { content: "−" }
+details.ask > summary span { font-weight: 400; font-size: 14px; color: var(--muted) }
+@media (max-width: 560px) { .sbox { flex-direction: column } .sbox .btn { padding: 12px 22px } }
+
+.s-hero { padding: 64px 0 4px; max-width: 820px }
+.s-hero h1 { font-size: clamp(34px, 6.2vw, 58px); line-height: 1.08; letter-spacing: -.045em; font-weight: 800; margin: 0 0 16px }
+.s-hero .lede { font-size: 17px; max-width: 54ch }
+.qbar { position: relative; display: grid; grid-template-columns: 52px minmax(0, 1fr) auto auto; align-items: center; margin: 28px 0 14px;
+  background: var(--surface); border: 1px solid var(--hair); border-radius: 20px; padding: 6px; min-height: 68px;
+  box-shadow: 0 1px 0 var(--hair), 0 22px 44px -30px rgba(20, 23, 28, .55); transition: border-color .15s, box-shadow .15s }
+.qbar:focus-within { border-color: var(--accent); box-shadow: 0 0 0 5px var(--accent-soft), 0 22px 44px -30px rgba(20, 23, 28, .55) }
+.qbar-icon { width: 22px; height: 22px; justify-self: center; fill: none; stroke: var(--muted); stroke-width: 2.2; stroke-linecap: round }
+.qbar input { border: 0; background: transparent; color: var(--ink); font: inherit; font-size: clamp(17px, 2.4vw, 21px); font-weight: 700; letter-spacing: -.02em; padding: 12px 6px; min-width: 0 }
+.qbar input::placeholder { color: var(--muted); font-weight: 400 }
+.qbar input:focus { outline: none }
+.qbar input::-webkit-search-cancel-button { cursor: pointer }
+.qbar-key { font: 12px var(--mono); color: var(--muted); border: 1px solid var(--hair); border-bottom-width: 2px; border-radius: 6px; padding: 1px 7px; margin-right: 10px }
+.qbar:focus-within .qbar-key { visibility: hidden }
+.qbar-go { border: 0; border-radius: 14px; background: var(--ink); color: var(--paper); font: inherit; font-weight: 700; font-size: 15px; padding: 0 22px; align-self: stretch; cursor: pointer }
+.qbar-go:hover { background: var(--accent); color: #fff }
+.qbar-go:focus-visible, .q-chip:focus-visible, .sf:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px }
+.q-examples { display: flex; flex-wrap: wrap; gap: 8px }
+.q-chip { font-size: 14px; color: var(--ink2); text-decoration: none; background: var(--sunk); border-radius: 10px; padding: 7px 12px; line-height: 1.4 }
+.q-chip:hover { background: var(--ink); color: var(--paper) }
+@media (max-width: 640px) {
+  .q-examples { flex-wrap: nowrap; overflow-x: auto; margin: 0 -16px; padding: 0 16px 4px; scrollbar-width: none }
+  .q-chip { flex: none }
+  .qbar { grid-template-columns: 40px minmax(0, 1fr) auto auto; min-height: 60px }
+  .qbar-go { padding: 0 16px }
+}
+
+.s-body { padding-top: 34px }
+.s-filters { display: flex; gap: 2px; overflow-x: auto; border-bottom: 1px solid var(--hair); margin-bottom: 22px; scrollbar-width: none }
+.sf { flex: none; border: 0; background: none; font: inherit; font-size: 14.5px; color: var(--muted); padding: 10px 12px 11px; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px }
+.sf .n { font-size: 12px; margin-left: 5px; color: var(--muted); font-variant-numeric: tabular-nums }
+.sf:hover { color: var(--ink) }
+.sf[aria-pressed=true] { color: var(--ink); font-weight: 700; border-bottom-color: var(--ink) }
+.sf:disabled { opacity: .35; cursor: default }
+
+.v-panel { --v: var(--warn); --v-bg: var(--warn-bg); position: relative; background: var(--surface); border: 1px solid var(--hair); border-radius: 20px;
+  padding: 22px 26px 18px 34px; margin: 0 0 26px; overflow: hidden; animation: v-in .22s ease-out }
+.v-panel::before { content: ""; position: absolute; inset: 0 auto 0 0; width: 8px; background: var(--v) }
+.v-panel.v-go { --v: var(--go); --v-bg: var(--go-bg) } .v-panel.v-stop { --v: var(--stop); --v-bg: var(--stop-bg) }
+.v-panel.v-info { --v: var(--accent); --v-bg: var(--accent-soft) } .v-panel.v-none { --v: var(--hair); --v-bg: var(--sunk) }
+.v-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap }
+.v-label { font-size: 13.5px; color: var(--muted) }
+.v-stamp { font-size: clamp(24px, 3.6vw, 34px); font-weight: 800; letter-spacing: -.04em; color: var(--v); line-height: 1.15 }
+.v-panel.v-none .v-stamp { color: var(--ink2) }
+.v-body { display: grid; grid-template-columns: minmax(0, 1fr) 280px; gap: 26px; align-items: center; margin-top: 10px }
+.v-body h2 { font-size: 19px; line-height: 1.45; margin: 0 0 6px } .v-body h2 a { color: var(--ink); text-decoration: none } .v-body h2 a:hover { text-decoration: underline }
+.v-body p, .v-msg { margin: 0; color: var(--ink2); font-size: 15px }
+.v-glyph { background: var(--v-bg); border-radius: 14px; padding: 16px 16px 10px }
+.v-glyph:empty { display: none }
+.v-glyph .glyph svg { height: 46px }
+.v-foot { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-top: 16px; padding-top: 14px; border-top: 1px solid var(--hair); font-size: 14.5px; align-items: baseline }
+.v-foot a { font-weight: 700; color: var(--ink); text-underline-offset: 3px }
+.v-foot span { color: var(--muted); margin-left: auto }
+.v-note { margin: 10px 0 0; font-size: 13px; color: var(--muted) }
+@keyframes v-in { from { opacity: 0; transform: translateY(6px) } }
+@media (prefers-reduced-motion: reduce) { .v-panel { animation: none } }
+@media (max-width: 720px) { .v-body { grid-template-columns: 1fr } .v-panel { padding: 20px 18px 16px 26px } .v-foot span { margin-left: 0 } }
+
+.s-group { padding: 6px 0 22px }
+.s-group h2 { font-size: 15px; font-weight: 700; color: var(--ink2); margin: 0 0 10px; display: flex; gap: 8px; align-items: baseline }
+.s-group h2 .n { font-size: 13px; color: var(--muted); font-weight: 400 }
+.r-list { display: flex; flex-direction: column; gap: 8px }
+.r-card { --v: var(--warn); display: grid; grid-template-columns: minmax(0, 1fr) 220px; gap: 20px; align-items: center; padding: 14px 18px 14px 20px;
+  background: var(--surface); border: 1px solid var(--hair); border-left: 4px solid var(--v); border-radius: 14px; text-decoration: none; color: inherit }
+.r-card.v-go { --v: var(--go) } .r-card.v-stop { --v: var(--stop) } .r-card.v-info { --v: var(--accent) }
+.r-card:hover { border-color: var(--ink2); border-left-color: var(--v) }
+.r-main { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; min-width: 0 }
+.r-main b { color: var(--ink); line-height: 1.45 }
+.r-line { color: var(--ink2); font-size: 14px; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden }
+.r-who { color: var(--muted); font-size: 13px }
+@media (max-width: 640px) { .r-card { grid-template-columns: 1fr } }
+.s-rows { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 440px), 1fr)); column-gap: 28px; border-top: 1px solid var(--hair) }
+.s-row { display: grid; grid-template-columns: 52px minmax(0, 1fr) auto; gap: 12px; align-items: center; padding: 11px 4px; border-bottom: 1px solid var(--hair); text-decoration: none; color: inherit }
+.s-row:hover b { color: var(--accent) }
+.s-kind { font-size: 12px; color: var(--muted); text-align: center; background: var(--sunk); border-radius: 6px; padding: 2px 0 }
+.t-issue .s-kind { background: var(--r-treat-bg); color: var(--r-treat) } .t-dataset .s-kind { background: var(--r-out-bg); color: var(--r-out) }
+.t-lineage .s-kind { background: var(--go-bg); color: var(--go) } .t-project .s-kind { background: var(--warn-bg); color: var(--warn) }
+.s-txt { min-width: 0; display: flex; flex-direction: column }
+.s-txt b { font-size: 15px; line-height: 1.45; color: var(--ink); overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.s-txt span { font-size: 13px; color: var(--muted); overflow: hidden; text-overflow: ellipsis; white-space: nowrap }
+.s-meta { font-size: 12.5px; color: var(--muted); white-space: nowrap }
+.s-more summary { cursor: pointer; font-size: 14px; color: var(--ink2); padding: 10px 4px }
+.s-empty { background: var(--surface); border: 1px dashed var(--hair); border-radius: 20px; padding: 26px }
+.s-empty h2 { font-size: 20px; margin: 0 0 6px }
+.s-idle p { color: var(--muted); font-size: 15px; margin: 0 }
+.s-privacy { color: var(--muted); font-size: 13px; max-width: 74ch; margin-top: 40px; padding-top: 16px; border-top: 1px solid var(--hair) }
 .search-terms { display: flex; flex-wrap: wrap; gap: 6px }
 .search-terms .chip b { font-weight: 700; margin-left: 4px }
-@media (max-width: 560px) { .sbox { flex-direction: column } }

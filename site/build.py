@@ -483,13 +483,15 @@ def index_page(topics, policies, issues, datasets, projects=(), answers=(), line
 <h1>그 정책, 진짜 먹혔을까?</h1>
 <p class="lede">뉴스에서 "효과 있었다", "실패했다"는 말이 나올 때, 공공데이터로 '받은 동네 vs 안 받은 동네'를 비교해 진짜 효과인지 확인하는 곳이에요.
 데이터가 모른다고 하면 모른다고 말하는 것까지가 이 사이트의 규칙이에요.</p>
-<form class="sbox home-search" role="search" action="search.html">
+<form class="qbar home-search" role="search" action="search.html">
+<svg class="qbar-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg>
 <label class="sr-only" for="hq">정책 검색</label>
-<input id="hq" name="q" type="search" autocomplete="off" placeholder="정책·지역·키워드 (예: 토허제, 기후동행카드, 출산지원금)">
-<button class="btn primary" type="submit" data-track="home-search">확인하기</button></form>
+<input id="hq" name="q" type="search" autocomplete="off" placeholder="정책 이름이나 지역 (토허제, 기후동행카드…)">
+<span></span><button class="qbar-go" type="submit" data-track="home-search">확인하기</button></form>
 {flow}
 
-<div class="ask" id="ask">
+<details class="ask" id="ask">
+<summary>검색으로 안 풀리면 대화로 물어보기 <span>주제 · 데이터 · 분석 계획 초안까지 같이 정리해 드려요</span></summary>
 <div id="chat-log" class="chat-log" aria-live="polite" hidden></div>
 <form id="chat-form" class="chat-form">
 <label class="sr-only" for="q">궁금한 정책</label>
@@ -510,7 +512,8 @@ def index_page(topics, policies, issues, datasets, projects=(), answers=(), line
 <button type="button" id="ai-off" class="btn ghost">가이드 모드로</button></div>
 <p class="muted small" style="margin:8px 0 0">로컬 Ollama는 <code>OLLAMA_ORIGINS=https://causalinferencelab.github.io</code>로 실행해야 브라우저에서 부를 수 있습니다.
 AI도 결과를 계산하지 않습니다. 주제·데이터·계획을 함께 정리할 뿐이고, 숫자는 레포의 분석 코드가 냅니다. 법률 자문이 아닙니다.</p></div>
-</div></div>
+</details>
+<script>if(location.hash==="#ask")document.getElementById("ask").open=true;</script></div>
 
 {proj.personas(e, n_answers, len(datasets))}
 
