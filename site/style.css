@@ -657,3 +657,25 @@ details.ask > summary span { font-weight: 400; font-size: 14px; color: var(--mut
 .c-parts li { display: flex; gap: 10px; align-items: baseline; font-size: 15px; color: var(--ink2) }
 .c-parts .badge { flex: none }
 @media (prefers-reduced-motion: reduce) { .c-panel { animation: none } }
+
+/* 홈: 최근 확인한 판정 — 같은 모양의 줄. 표지는 95% 범위 그림 */
+.vboard { display: flex; flex-direction: column; border-top: 1px solid var(--hair) }
+.vb-row { --v: var(--warn); display: grid; grid-template-columns: 190px minmax(0, 1fr) 200px; gap: 22px; align-items: center;
+  padding: 16px 6px 16px 14px; border-bottom: 1px solid var(--hair); text-decoration: none; color: inherit; position: relative }
+.vb-row.v-go { --v: var(--go) } .vb-row.v-stop { --v: var(--stop) } .vb-row.v-info { --v: var(--accent) }
+.vb-row::before { content: ""; position: absolute; left: 0; top: 16px; bottom: 16px; width: 3px; border-radius: 2px; background: var(--v) }
+.vb-row:hover { background: var(--surface) }
+.vb-row:hover b { color: var(--accent) }
+.vb-side { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; min-width: 0 }
+.vb-who { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; color: var(--ink2) }
+.vb-who img { width: 20px; height: 20px; border-radius: 50% }
+.vb-topic { font-size: 12.5px; color: var(--muted) }
+.vb-main { display: flex; flex-direction: column; gap: 4px; min-width: 0 }
+.vb-main b { font-size: 16px; line-height: 1.45; color: var(--ink) }
+.vb-main span { font-size: 14px; color: var(--ink2); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden }
+.vb-glyph:empty { display: none }
+@media (max-width: 760px) {
+  .vb-row { grid-template-columns: minmax(0, 1fr); gap: 8px; padding-left: 16px }
+  .vb-side { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 6px 10px }
+  .vb-glyph { max-width: 240px }
+}
