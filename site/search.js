@@ -146,9 +146,16 @@
         `<p class="v-note">판정은 '이 데이터와 이 비교로는'이라는 조건이 붙은 답이에요.</p>`;
       verdict.hidden = false;
     } else if (hits.length) {
+      const tp = hits.find((it) => it.t === "topic" && it.feas);
+      const MK = { ok: ["✓", "go"], warn: ["!", "warn"], miss: ["✕", "stop"] };
+      const feas = tp ? `<div class="v-feas"><p class="v-label">지금 있는 데이터로 분석할 수 있나 · <a href="${esc(tp.url)}#feasibility">${esc(tp.title)}</a></p>` +
+        `<p class="v-feas-stamp c-${MK[{ go: "ok", warn: "warn", stop: "miss" }[tp.feas.verdict]][1]}">${esc(tp.feas.label)}</p>` +
+        `<p class="small">${esc(tp.feas.hyp)}</p><ul class="v-checks">` +
+        tp.feas.checks.map(([st, lab, det]) => `<li><span class="badge ${MK[st][1]}">${MK[st][0]}</span> <b>${esc(lab)}</b> <span class="muted small">${esc(det)}</span></li>`).join("") +
+        `</ul></div>` : "";
       verdict.className = "v-panel v-none";
       verdict.innerHTML = `<div class="v-head"><span class="v-label">판정</span><span class="v-stamp">아직 분석 없음</span></div>` +
-        `<p class="v-msg">이 정책의 효과를 잰 분석은 아직 없어요. 아래 이슈·데이터·계보로 시작할 수 있어요.</p>` +
+        `<p class="v-msg">이 정책의 효과를 잰 분석은 아직 없어요. 아래 이슈·데이터·계보로 시작할 수 있어요.</p>` + feas +
         `<div class="v-foot"><a href="${esc(propose)}" data-track="search-propose">이 정책 분석 요청하기</a></div>`;
       verdict.hidden = false;
     } else verdict.hidden = true;

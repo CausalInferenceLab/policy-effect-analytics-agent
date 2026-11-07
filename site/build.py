@@ -405,7 +405,7 @@ def rank_topics(topics, issues, trends: dict, today: str | None = None):
         (
             t,
             tt.get(t.id, {}).get("questions", 0),
-            tt.get(t.id, {}).get("search", 0.0),
+            tt.get(t.id, {}).get("search", 0.0) + tt.get(t.id, {}).get("news", 0) / 1000,
             latest_event(t, issues, today),
         )
         for t in topics
@@ -413,10 +413,12 @@ def rank_topics(topics, issues, trends: dict, today: str | None = None):
     rows.sort(key=lambda r: (r[1], r[2], r[3]), reverse=True)
     srcs = set(trends.get("sources", []))
     has_q = "site_questions" in srcs and any(r[1] for r in rows)
-    has_s = "naver_datalab" in srcs and any(r[2] for r in rows)
+    has_s = bool({"naver_datalab", "news"} & srcs) and any(r[2] for r in rows)
     if has_q or has_s:
-        parts = (["최근 30일 사이트 질문 수"] if has_q else []) + (
-            ["네이버 검색 관심도"] if has_s else []
+        parts = (
+            (["최근 30일 사이트 질문 수"] if has_q else [])
+            + (["네이버 검색 관심도"] if "naver_datalab" in srcs else [])
+            + (["최근 7일 뉴스 언급"] if "news" in srcs else [])
         )
         basis = f"{' · '.join(parts)} 기준 · {e(trends.get('updated', ''))} 갱신"
     else:
@@ -437,6 +439,11 @@ def topic_rows(topics, issues, answers, trends: dict, datasets=(), lineages=()) 
             side.append('<span class="badge plain">지금 이슈</span>')
         if has_q and q:
             side.append(f'<span class="badge plain">질문 {q}</span>')
+        nw = trends.get("topics", {}).get(t.id, {})
+        if nw.get("news"):
+            side.append(
+                f'<a class="badge plain" href="{e(nw.get("news_url", "#"))}" title="최근 7일 뉴스 언급 (구글 뉴스 검색)">뉴스 {nw["news"]}</a>'
+            )
         if last:
             side.append(f'<span class="when">{last[:7].replace("-", ".")}</span>')
         out.append((t, board.topic_stages(t, issues, datasets, lineages, answers), "".join(side)))
@@ -844,6 +851,34 @@ def legal_block(t) -> str:
     )
 
 
+FEAS_MARK = {"ok": ("✓", "go"), "warn": ("!", "warn"), "miss": ("✕", "stop")}
+
+
+def feasibility_card(t, datasets, issues, n_results: int) -> str:
+    """이 주제, 지금 있는 데이터로 분석할 수 있나 — 가설 한 줄 + 점검 6개 + PyWhy 식 인과 그래프."""
+    from core.causal.feasibility import topic_feasibility
+
+    f = topic_feasibility(t, datasets, issues, n_results)
+    items = "".join(
+        f"<li class='fz-{c['status']}'><span class='fz-mark' aria-hidden='true'>{FEAS_MARK[c['status']][0]}</span>"
+        f"<span><b>{e(c['label'])}</b><span class='muted small'>{e(c['detail'])}</span></span></li>"
+        for c in f["checks"]
+    )
+    covs = [n.split(": ", 1)[1] for n in f["graph"]["nodes"] if n.startswith("공통 원인: ")]
+    cov_txt = (
+        ", ".join(covs[:3]) + (" 등" if len(covs) > 3 else "")
+        if covs
+        else "없음 — 정책 전 추세 가정에 기댐"
+    )
+    return f"""<section id="feasibility" class="fz {FEAS_MARK.get({"go": "ok", "warn": "warn", "stop": "miss"}[f["verdict"]])[1]}">
+<div class="fz-head"><div><span class="v-label">이 주제, 지금 있는 데이터로 분석할 수 있나</span>
+<span class="fz-stamp">{e(f["label"])}</span></div>
+<p class="fz-hyp"><b>가설</b> {e(f["hypothesis"]["sentence"])}</p></div>
+<ol class="fz-list">{items}</ol>
+<p class="small muted fz-graph"><b>인과 그래프(PyWhy 방식)</b> 정책 → 결과 · 시간 추세 → 결과 · 공통 원인 → 정책·결과. 공통 원인 후보: {e(cov_txt)}.
+분석용 표가 생기면 <code>python -m core.causal cases/&lt;케이스&gt;</code> 로 DoWhy 반박 검정과 CausalML 단위별 효과를 붙일 수 있어요.</p></section>"""
+
+
 def topic_page(t, policies, issues, datasets, projects=(), answers=(), lineages=()) -> str:
     """이슈 보드: 이슈 → 공공데이터 → 계보 → 분석 → 대시보드 순서로 한 장에."""
     import answers as ans
@@ -863,6 +898,7 @@ def topic_page(t, policies, issues, datasets, projects=(), answers=(), lineages=
         f"<div class='hero board-hero'><nav class='crumb' aria-label='위치'><a href='../index.html#topics'>이슈 보드</a></nav>"
         f"<h1>{e(t.name)}</h1><p class='lede'>{e(t.question)}</p></div>",
         board.rail(e, st),
+        feasibility_card(t, datasets, issues, len(mine)),
     ]
     # 1. 이슈
     body.append(f"<section id='s-issue' class='stage'>{board.stage_head(e, 'issue')}")
@@ -956,6 +992,7 @@ def topic_page(t, policies, issues, datasets, projects=(), answers=(), lineages=
     # 4. 분석
     body.append(f"<section id='s-analysis' class='stage'>{board.stage_head(e, 'analysis')}")
     if mine:
+        body.append(ans.forest_svg(e, mine, up="../"))
         body.append(
             f'<div class="answers">{"".join(ans.card(e, a, tb, up="../") for a in mine)}</div>'
         )
@@ -1029,6 +1066,21 @@ def topic_page(t, policies, issues, datasets, projects=(), answers=(), lineages=
 
 
 # ─── 빌드 ────────────────────────────────────────────────────────────────────
+def hot_topics(topics, answers, n: int = 5) -> list[dict]:
+    """최근 7일 뉴스에 많이 나온 주제 (refresh_trends 의 news 신호가 있을 때만)."""
+    tt = load_trends().get("topics", {})
+    rows = [
+        {
+            "name": t.name,
+            "id": t.id,
+            "news": tt.get(t.id, {}).get("news", 0),
+            "results": sum(a["topic"] == t.id for a in answers),
+        }
+        for t in topics
+    ]
+    return sorted([r for r in rows if r["news"]], key=lambda r: -r["news"])[:n]
+
+
 def answer_lineage(a: dict, lin, datasets) -> str:
     """답 페이지 아래: 이 숫자는 어디서 왔나 — 이슈·정책 → 데이터 → 가공 → 지표 → 이 분석."""
     import board
@@ -1153,7 +1205,9 @@ def main() -> None:
     (OUT / "search.html").write_text(
         page(
             "검색 · 그 정책, 진짜 효과였나? · 정책 효과 분석 플랫폼",
-            search.body(e, len(items), sum(i["t"] == "result" for i in items)),
+            search.body(
+                e, len(items), sum(i["t"] == "result" for i in items), hot_topics(topics, answers)
+            ),
             "search.html",
             desc="정책 이름·지역·키워드로 분석 결과와 판정, 공공데이터, 데이터 계보를 한 번에 찾기",
             path="search.html",

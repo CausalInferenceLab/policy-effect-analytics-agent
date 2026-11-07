@@ -407,7 +407,7 @@ def showcase(e, projects, answers, topics, crew: list[str], limit: int = 6) -> s
     for a in real[:limit]:
         t = tb.get(a["topic"])
         lab, cls = (
-            (DESCRIPTIVE_LABEL.split(" · ")[0], "info")
+            (DESCRIPTIVE_LABEL, "info")
             if a.get("execution_kind") == "descriptive_only"
             else VERDICT.get(a["verdict"], ("-", "warn"))
         )

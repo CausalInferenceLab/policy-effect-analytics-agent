@@ -33,6 +33,7 @@
 | **궁금한 시민** | [검색](https://causalinferencelab.github.io/policy-effect-analytics-agent/search.html)에 정책 이름 넣기, 또는 [사이트](https://causalinferencelab.github.io/policy-effect-analytics-agent/) 대화창에 물어보기. 주제·데이터·조심할 점을 같이 정리해 줍니다 |
 | **기자 · 공무원 · 연구자** | [분석 결과](https://causalinferencelab.github.io/policy-effect-analytics-agent/results.html)에서 판정과 그대로 가져다 써도 되는 인용문, 쓴 데이터, CSV를 받기 |
 | **분석가 · 개발자** | 아래 [5분 만에 돌려 보기](#5분-만에-돌려-보기) → [참여 가이드](docs/ops/mentee-guide.md). 공개 API(`api/*.json`)로 서비스를 만들어도 좋습니다 |
+| **인과추론을 하는 사람** | `make draft Q="질문"`으로 가설·데이터 점검과 plan.yaml 초안, `make pywhy`로 [PyWhy(DoWhy)](https://github.com/py-why/dowhy)·[CausalML](https://github.com/uber/causalml) 두 번째 의견(식별·반박 검정·단위별 효과)을 붙이기 |
 
 ## 지금까지 만든 것
 
