@@ -137,7 +137,7 @@ def goatcounter(code: str, token: str, days: int = 30) -> dict:
     q = {"start": start.isoformat(), "end": end.isoformat()}
     total = requests.get(f"{base}/stats/total", headers=h, params=q, timeout=30)
     total.raise_for_status()
-    hits = requests.get(f"{base}/stats/hits", headers=h, params=q | {"limit": 100}, timeout=30)
+    hits = requests.get(f"{base}/stats/hits", headers=h, params=q | {"limit": 200}, timeout=30)
     hits.raise_for_status()
     t = total.json()
     pages, events = {}, {}

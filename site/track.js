@@ -17,6 +17,25 @@
     if (window.goatcounter && window.goatcounter.count) go();
     else window.addEventListener("load", go, { once: true });
   };
+  // 검색어 통계: 숫자가 5자 넘게 이어진 것(전화·주민번호 등)·이메일·주소를 지우고 30자까지만, 'q-검색어'(결과 없음은 'q0-')로 셉니다.
+  window.cleanQuery = function (q) {
+    return String(q || "")
+      .replace(/https?:\/\/\S+/g, " ")
+      .replace(/\S+@\S+/g, " ")
+      .replace(/\d[\d\s-]{3,}\d/g, "#")
+      .replace(/[^\p{L}\p{N}# ]/gu, " ")
+      .replace(/\s+/g, " ")
+      .trim()
+      .toLowerCase()
+      .slice(0, 30);
+  };
+  window.trackSearch = function (q, n) {
+    const c = window.cleanQuery(q);
+    if (off || c.replace(/[# ]/g, "").length < 2) return;
+    const go = () => window.goatcounter && window.goatcounter.count && window.goatcounter.count({ path: (n ? "q-" : "q0-") + c, title: "검색", event: true });
+    if (window.goatcounter && window.goatcounter.count) go();
+    else window.addEventListener("load", go, { once: true });
+  };
   document.addEventListener("click", (e) => {
     const t = e.target.closest && e.target.closest("[data-track]");
     if (t) window.track(t.dataset.track);

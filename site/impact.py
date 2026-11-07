@@ -14,6 +14,7 @@ from __future__ import annotations
 import json
 from datetime import date, timedelta
 from pathlib import Path
+from urllib.parse import quote
 
 ROOT = Path(__file__).resolve().parents[1]
 CACHE = ROOT / "data" / "cache" / "metrics.json"
@@ -27,6 +28,8 @@ EVENTS = {
     "ask": "대화창 질문",
     "propose": "질문을 제안으로 올리기",
     "search": "결과 검색",
+    "home-search": "홈 검색창 사용",
+    "search-propose": "검색 후 분석 요청",
     "reproduce": "재현 기록 열기",
     "flow-stage": "홈 흐름 띠의 단계 누름",
 }
@@ -125,6 +128,7 @@ def compute(
             "stars": (g.get("repo") or {}).get("stars") if g else None,
             "forks": (g.get("repo") or {}).get("forks") if g else None,
         },
+        "search": search_terms(use),
         "weekly": {
             "merged_prs": weekly([p["merged"] for p in pulls if p["merged"]]) if g else [],
             "questions": weekly(
@@ -135,6 +139,59 @@ def compute(
             "pageviews": _weekly_views(use) if use else [],
         },
     }
+
+
+def search_terms(use: dict | None, n: int = 15) -> dict:
+    """GoatCounter 이벤트 'q-검색어'(결과 있음) · 'q0-검색어'(결과 없음) → 많이 찾은 순. 측정 전이면 None."""
+    if not use:
+        return {"on": False, "top": [], "zero": [], "total": None}
+    found, zero = {}, {}
+    for k, v in (use.get("events") or {}).items():
+        for pre, bucket in (("q0-", zero), ("q-", found)):
+            if k.startswith(pre):
+                q = k[len(pre) :].strip()
+                bucket[q] = bucket.get(q, 0) + v
+                break
+    allq = {q: found.get(q, 0) + zero.get(q, 0) for q in set(found) | set(zero)}
+    top = sorted(allq.items(), key=lambda x: (-x[1], x[0]))[:n]
+    return {
+        "on": True,
+        "total": sum(allq.values()),
+        "top": top,
+        "zero": sorted(zero.items(), key=lambda x: (-x[1], x[0]))[:n],
+    }
+
+
+def search_block(e, sq: dict) -> str:
+    """성과 화면: 사람들이 무엇을 찾았나 (결과 없던 검색어 = 다음 분석 후보)."""
+
+    def chips(rows, propose):
+        if not rows:
+            return "<p class='muted'>아직 없습니다.</p>"
+        out = []
+        for q, c in rows:
+            if propose:
+                href = f"{REPO}/issues/new?template=case-proposal.yml&title=" + quote(f"[작업] {q}")
+            else:
+                href = "search.html?q=" + quote(q)
+            out.append(f"<a class='chip' href='{e(href)}'>{e(q)}<b>{c}</b></a>")
+        return "<div class='search-terms'>" + "".join(out) + "</div>"
+
+    if not sq.get("on"):
+        inner = (
+            "<p class='muted'>방문 통계(GoatCounter)가 연결되면 여기에 사람들이 찾은 검색어가 나옵니다. "
+            "메인테이너가 Actions 변수 <code>GOATCOUNTER_CODE</code>와 시크릿 <code>GOATCOUNTER_TOKEN</code>을 넣으면 켜집니다.</p>"
+        )
+    else:
+        inner = (
+            f"<p class='sub'>최근 검색 {sq['total']}회. 숫자·이메일·주소를 지운 30자 이내 검색어의 횟수만 셉니다.</p>"
+            "<h3>많이 찾은 것</h3>"
+            + chips(sq["top"], False)
+            + "<h3>찾았는데 결과가 없던 것 — 다음 분석 후보</h3>"
+            + chips(sq["zero"], True)
+            + "<p class='small muted'>결과 없던 검색어를 누르면 그 정책으로 분석 요청 이슈를 엽니다.</p>"
+        )
+    return f"<section id='search'><h2>사람들이 찾은 것</h2>{inner}</section>"
 
 
 def _weekly_views(use: dict) -> list[tuple[str, int]]:
@@ -414,6 +471,7 @@ def body(e, k: dict) -> str:
 <p class="muted" style="margin:0">일주일 동안 사람들이 결과의 인용문·링크·CSV를 가져간 횟수입니다. 이 사이트의 목적은 공공데이터로 확인한 답이 <b>판정을 넘지 않는 형태로</b> 밖에서 쓰이는 것이라, 방문 수가 아니라 이것을 중심에 둡니다.
 나머지 표는 이 숫자를 움직이는 입력(도달 → 이해 → 가져감 → 참여)과 공급(이슈 보드가 얼마나 채워졌나), 지켜야 할 선(신뢰)입니다. 정의: <a href="{REPO}/blob/main/docs/ops/metrics.md">metrics.md</a></p></div></section>
 <section id="supply"><h2>흐름 완성도와 데이터 접근성</h2><p class="sub">이슈에서 대시보드까지 이어진 정도. 사용자가 볼 것이 있어야 쓰임도 생깁니다.</p>{table(rows_s)}</section>
+{search_block(e, k.get("search") or {})}
 <section id="use"><h2>쓰임</h2><p class="sub">사람들이 결과를 찾고, 가져가고, 질문하는지.</p>{table(rows_use)}</section>
 <section id="external"><h2>외부 검증</h2><p class="sub">레포를 모르는 사람이 혼자 결과를 찾아 판정을 넘지 않게 인용하는지. 1단계 관문입니다.
 진행 방법: <a href="{REPO}/blob/main/docs/ops/user-test.md">사용자 과업 테스트</a></p>{table(rows_ext)}</section>
