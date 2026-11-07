@@ -36,7 +36,9 @@ def _j(*parts) -> str:
 
 def index(topics, issues, datasets, answers, projects, lineages) -> list[dict]:
     """검색 항목 목록. kw 는 찾는 데만 쓰는 글(화면에 안 보임)."""
-    from answers import DESCRIPTIVE_LABEL, VERDICT, card_line
+    from html import escape
+
+    from answers import DESCRIPTIVE_LABEL, VERDICT, card_line, range_glyph
 
     from core.discovery.links import dataset_users, is_auto
 
@@ -57,6 +59,7 @@ def index(topics, issues, datasets, answers, projects, lineages) -> list[dict]:
                 "badge": lab,
                 "cls": cls,
                 "who": "멘토 예시" if a["mentor"] else f"@{a['owner']}",
+                "g": range_glyph(escape, a),
                 "kw": _j(a["question"], tname.get(a["topic"]), a["owner"], a["case"]),
             }
         )
@@ -148,44 +151,48 @@ def write(out_dir, items: list[dict]) -> None:
 
 
 EXAMPLES = [
-    "토지거래허가구역",
-    "기후동행카드",
-    "출산지원금",
-    "지역화폐",
-    "녹색교통",
-    "대형마트 의무휴업",
+    ("토허제 풍선효과", "토허제 뒤 옆 동네 집값은?"),
+    ("기후동행카드", "기후동행카드로 지하철 더 탔나?"),
+    ("출산지원금", "출산지원금 올리면 아이가 늘었나?"),
+    ("지역화폐", "상품권 할인 늘리면 결제가 늘었나?"),
+    ("녹색교통", "노후차 막으니 도심 공기가 좋아졌나?"),
+    ("대형마트 의무휴업", "마트 쉬는 날 바꾸니 동네 가게는?"),
 ]
 
 
 def body(e, n_items: int, n_results: int) -> str:
     chips = "".join(
-        f'<a class="chip" href="search.html?q={e(x)}" data-q="{e(x)}">{e(x)}</a>' for x in EXAMPLES
+        f'<a class="q-chip" href="search.html?q={e(q)}" data-q="{e(q)}">{e(label)}</a>'
+        for q, label in EXAMPLES
     )
     filters = "".join(
-        f'<button type="button" class="chip sf" data-t="{k}" aria-pressed="false">{e(v)}</button>'
+        f'<button type="button" class="sf" data-t="{k}" aria-pressed="false">{e(v)}<span class="n"></span></button>'
         for k, v in TYPE_KO.items()
     )
     return f"""
-<div class="hero" style="padding-bottom:0"><h1 class="h1-sm">그 정책, 진짜 효과였나?</h1>
-<p class="lede">뉴스에서 본 정책 이름·지역·키워드를 넣어 보세요. 이미 확인한 분석 결과와 판정, 쓸 수 있는 공공데이터, 데이터가 이어지는 길(계보)을 한 번에 찾아 드려요.</p>
-<form id="sform" class="sbox" role="search" action="search.html">
+<div class="s-hero">
+<h1>그 정책, 진짜 효과였나?</h1>
+<p class="lede">뉴스에서 본 정책 이름이나 지역을 넣어 보세요. 이미 확인한 판정, 쓸 수 있는 공공데이터, 숫자가 나온 길까지 한 번에 보여 드려요.</p>
+<form id="sform" class="qbar" role="search" action="search.html">
+<svg class="qbar-icon" viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></svg>
 <label class="sr-only" for="sq">검색어</label>
-<input id="sq" name="q" type="search" autocomplete="off" placeholder="예: 토허제 풍선효과, 기후동행카드, 출산지원금" autofocus>
-<button class="btn primary" type="submit">찾기</button></form>
-<div class="chips" aria-label="예시 검색어">{chips}</div></div>
+<input id="sq" name="q" type="search" autocomplete="off" placeholder="토허제, 기후동행카드, 출산지원금…" autofocus>
+<kbd class="qbar-key" aria-hidden="true">/</kbd>
+<button class="qbar-go" type="submit">찾기</button></form>
+<div class="q-examples" aria-label="자주 묻는 질문">{chips}</div></div>
 
-<section style="padding-top:20px">
-<div class="chips" role="group" aria-label="종류로 거르기"><button type="button" class="chip sf" data-t="" aria-pressed="true">전체</button>{filters}</div>
-<div id="verdict" class="card s-verdict" hidden></div>
+<section class="s-body">
+<div class="s-filters" role="group" aria-label="종류로 거르기"><button type="button" class="sf" data-t="" aria-pressed="true">전체<span class="n"></span></button>{filters}</div>
+<div id="verdict" class="v-panel" hidden></div>
 <div id="sres" aria-live="polite"></div>
-<div id="snone" class="card" hidden>
-<h3 style="margin-top:0">아직 이 질문에 답한 분석이 없어요</h3>
+<div id="snone" class="s-empty" hidden>
+<h2>아직 이 질문에 답한 분석이 없어요</h2>
 <p>그게 바로 다음 분석 거리예요. 무엇이 궁금한지 남겨 주면 참여자가 데이터부터 찾아봅니다.</p>
 <div class="cta"><a id="snone-propose" class="btn primary" data-track="search-propose" href="{REPO}/issues/new?template=case-proposal.yml">이 정책 분석 요청하기</a>
-<a id="snone-ask" class="btn ghost" href="index.html#ask">대화창에서 계획 초안 만들기</a>
+<a class="btn ghost" href="index.html#ask">대화창에서 계획 초안 만들기</a>
 <a class="btn ghost" href="data.html">데이터 지도 보기</a></div></div>
-<p class="muted small" id="sstat">분석 결과 {n_results}개 · 검색 항목 {n_items}개를 이 브라우저 안에서 찾습니다.</p>
-<p class="muted small">검색어는 서버에 저장하지 않습니다. 이용 통계가 켜진 경우에만 숫자·이메일·주소를 지운 짧은 검색어(30자)의 <b>횟수</b>를 쿠키 없이 셉니다(GoatCounter, 브라우저의 '추적 안 함'을 따름).
-많이 찾았는데 결과가 없던 검색어는 <a href="impact.html#search">성과</a>에 공개되고 다음 분석 주제의 후보가 됩니다.</p>
+<div id="sidle" class="s-idle"><p>지금 찾을 수 있는 것: 분석 결과 <b>{n_results}</b>개를 포함해 이슈·법령·계보·공공데이터 <b>{n_items}</b>개.</p></div>
+<p class="s-privacy">검색은 이 브라우저 안에서만 합니다. 이용 통계가 켜진 경우에만 숫자·이메일·주소를 지운 30자 이내 검색어의 <b>횟수</b>를 쿠키 없이 셉니다(GoatCounter, '추적 안 함'을 따름).
+결과가 없던 검색어는 <a href="impact.html#search">성과</a>에 공개되어 다음 분석 주제의 후보가 됩니다.</p>
 </section>
 <script src="search.js" defer></script>"""
