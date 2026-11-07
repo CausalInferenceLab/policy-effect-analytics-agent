@@ -30,6 +30,7 @@ EVENTS = {
     "search": "결과 검색",
     "home-search": "홈 검색창 사용",
     "search-propose": "검색 후 분석 요청",
+    "claim-check": "뉴스 문장 검증",
     "reproduce": "재현 기록 열기",
     "flow-stage": "홈 흐름 띠의 단계 누름",
 }

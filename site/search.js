@@ -59,6 +59,60 @@
       (xs.length > 8 ? `<details class="s-more"><summary>${xs.length - 8}개 더 보기</summary><div class="${cls}">${xs.slice(8).map(draw).join("")}</div></details>` : "") +
       `</section>`;
   }
+  // ─── 문장 검증: 뉴스 문장이 결과가 말할 수 있는 범위를 넘는지 (키워드 규칙) ───────────
+  const NULL_RE = /효과\s*(가|는|도)?\s*없|변화\s*(가|는|도)?\s*없|아무\s*변화|그대로였|실패|소용\s*없|안\s*먹혔|못\s*했|못했|헛수고/;
+  const UP_RE = /늘었|늘어|증가|올랐|오르|상승|개선|좋아|활성|살아났|많아/;
+  const DOWN_RE = /줄었|줄어|감소|떨어|내렸|하락|잡혔|잡았|억제|낮아|안정|적어/;
+  const EFFECT_RE = /효과|덕분|때문|성공|먹혔|통했|영향/;
+  const PCT_RE = /([+-]?\d+(?:\.\d+)?)\s*%/;
+  function looksLikeClaim(q) {
+    const t = q.trim();
+    return t.length >= 12 && /\s/.test(t) && (NULL_RE.test(t) || UP_RE.test(t) || DOWN_RE.test(t) || EFFECT_RE.test(t) || PCT_RE.test(t));
+  }
+  const RANK = { ok: 0, inside: 1, beyond: 2, conflict: 3 };
+  const MARK = { ok: ["뒷받침", "go"], inside: ["범위 안", "info"], beyond: ["결과를 넘어섬", "warn"], conflict: ["결과와 다름", "stop"] };
+  function checkClaim(q, r) {
+    const parts = [], v = r.v, pr = r.pr;
+    const isNull = NULL_RE.test(q), up = UP_RE.test(q), down = DOWN_RE.test(q) && !up, dir = up ? 1 : down ? -1 : 0;
+    const effect = !isNull && (dir !== 0 || EFFECT_RE.test(q));
+    if (isNull) {
+      if (v === "identified") parts.push(["conflict", "'효과가 없다'고 했지만, 이 분석은 효과 근거가 있다고 판정했어요."]);
+      else if (v === "conditional") parts.push(["beyond", "판별하지 못한 것과 효과가 없는 것은 달라요. 이 자료로는 있다·없다 모두 단정할 수 없어요."]);
+      else parts.push(["beyond", "이 분석은 효과를 판단하지 않았어요(판단 불가·관측 통계). '없다'고 말할 근거도 없어요."]);
+    } else if (effect) {
+      if (v === "identified" && pr) {
+        const sign = Math.sign(pr.est);
+        if (dir && dir !== sign) parts.push(["conflict", `방향이 반대예요. 분석의 추정치는 ${pr.est > 0 ? "증가" : "감소"} 쪽이에요.`]);
+        else parts.push(["ok", "효과가 있었다는 말은 이 분석의 판정과 맞아요. 같은 지역·기간·지표에 한정해서 쓰세요."]);
+      } else if (v === "conditional") parts.push(["beyond", "효과가 '있었다'고 말할 근거는 부족해요. 이 자료로는 효과가 있었는지 판별하지 못했어요."]);
+      else if (v === "descriptive") parts.push(["beyond", "관측값의 변화는 인용할 수 있지만, 정책 '때문'이라고 할 근거는 없어요(효과 미추정)."]);
+      else parts.push(["beyond", "이 설계로는 효과를 판단할 수 없었어요. 원인이라고 말할 근거가 없어요."]);
+    }
+    const m = q.match(PCT_RE);
+    if (m) {
+      let n = parseFloat(m[1]);
+      if (!/^[+-]/.test(m[1]) && down) n = -n;
+      if (!pr || pr.unit !== "%") parts.push(["beyond", v === "not_identified" ? "판단 불가 결과의 숫자는 진단용이라 비교하지 않아요." : "이 분석의 주 지표는 %로 비교할 수 없어요."]);
+      else if (n < pr.lo || n > pr.hi) parts.push(["conflict", `${n > 0 ? "+" : ""}${n}%는 이 자료의 95% 범위(${pr.lo.toFixed(1)}% ~ ${pr.hi.toFixed(1)}%) 밖이라 자료와 맞지 않아요.`]);
+      else parts.push(["inside", `${n > 0 ? "+" : ""}${n}%는 95% 범위(${pr.lo.toFixed(1)}% ~ ${pr.hi.toFixed(1)}%) 안이에요. ` + (v === "identified" ? "자료와 맞는 크기예요." : "자료와 어긋나지는 않지만, 그 크기로 판별된 것은 아니에요.")]);
+    }
+    if (!parts.length) parts.push(["inside", "문장에서 효과·방향·크기 주장을 찾지 못했어요. 아래 결과에서 직접 확인해 보세요."]);
+    const worst = parts.reduce((a, b) => (RANK[b[0]] > RANK[a[0]] ? b : a))[0];
+    return { worst, parts };
+  }
+  function renderClaim(q, results) {
+    const box = $("#claim");
+    if (!looksLikeClaim(q) || !results.length) { box.hidden = true; return; }
+    const r = results[0], c = checkClaim(q, r), [lab, cls] = MARK[c.worst];
+    box.className = "c-panel c-" + cls;
+    box.innerHTML = `<div class="c-head"><span class="v-label">이 문장, 분석 결과로 뒷받침되나요?</span><span class="c-stamp">${lab}</span></div>` +
+      `<blockquote>${esc(q)}</blockquote>` +
+      `<ul class="c-parts">${c.parts.map(([k, t]) => `<li><span class="badge ${MARK[k][1]}">${MARK[k][0]}</span>${esc(t)}</li>`).join("")}</ul>` +
+      (r.rules && r.rules[0] && r.rules[0][0] ? `<div class="takeaway"><span>이렇게 쓰면 결과 안에서 말할 수 있어요</span><p>${esc(r.rules[0][0])}</p></div>` : "") +
+      `<p class="v-note">비교한 분석: <a href="${esc(r.url)}">${esc(r.title)}</a>. 키워드 규칙으로 읽은 결과라, 문장의 지역·기간·지표가 이 분석과 같은지는 직접 확인하세요. 법률 자문이나 공식 팩트체크가 아니에요.</p>`;
+    box.hidden = false;
+    if (window.track) window.track("claim-check");
+  }
   function counts(hits) {
     document.querySelectorAll(".sf").forEach((b) => {
       const n = b.dataset.t ? hits.filter((it) => it.t === b.dataset.t).length : hits.length;
@@ -69,20 +123,23 @@
   function render(q) {
     const qn = norm(q), tks = tokens(q);
     idle.hidden = !!qn;
-    if (!qn) { res.innerHTML = ""; none.hidden = true; verdict.hidden = true; counts([]); return 0; }
+    if (!qn) { res.innerHTML = ""; none.hidden = true; verdict.hidden = true; $("#claim").hidden = true; counts([]); return 0; }
     const hits = items.map((it) => [it, score(it, tks, qn)]).filter(([, s]) => s > 0).sort((a, b) => b[1] - a[1]).map(([it]) => it);
     counts(hits);
     const shown = kind ? hits.filter((it) => it.t === kind) : hits;
     res.innerHTML = ORDER.map((t) => [t, shown.filter((it) => it.t === t)]).filter(([, xs]) => xs.length).map(([t, xs]) => group(t, xs)).join("");
     const results = hits.filter((it) => it.t === "result");
+    renderClaim(q, results);
     const propose = `${REPO}/issues/new?template=case-proposal.yml&title=${encodeURIComponent("[작업] " + q.trim().slice(0, 60))}`;
     $("#snone-propose").href = propose;
     if (results.length) {
       const top = results[0];
       verdict.className = "v-panel v-" + top.cls;
-      verdict.innerHTML = `<div class="v-head"><span class="v-label">가장 가까운 분석의 판정</span><span class="v-stamp">${esc(top.badge)}</span></div>` +
+      verdict.innerHTML = `<div class="v-head"><span class="v-label">가장 가까운 분석의 판정</span><span class="v-stamp">${esc(top.badge)}</span>` +
+        (top.rev ? `<span class="badge go">검토됨</span>` : `<span class="badge plain" title="작성자 외의 사람이 아직 검토하지 않았어요">검토 전</span>`) + `</div>` +
         `<div class="v-body"><div><h2><a href="${esc(top.url)}">${esc(top.title)}</a></h2><p>${esc(top.sub)}</p></div>` +
         `<div class="v-glyph">${top.g || ""}</div></div>` +
+        (top.ro ? `<div class="takeaway"><span>${esc(top.ro.head)}</span><p>${esc(top.ro.text)}</p></div>` : "") +
         `<div class="v-foot"><a href="${esc(top.url)}#use">인용해도 되는 문장</a><a href="${esc(top.url)}#lineage">숫자가 나온 길</a>` +
         `<a href="${esc(top.url)}#run">직접 돌려 보기</a>` +
         (results.length > 1 ? `<span>비슷한 분석 ${results.length - 1}개 더</span>` : "") + `</div>` +

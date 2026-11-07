@@ -4,6 +4,10 @@
 #   plan.yaml → 계획 · fetch.py → 수집 · flow_log.json → 분석 · discussion.md(템플릿과 다르면) → 해석
 # reproduced_by: [GitHub ID, ...] — 다른 참여자가 make flow 로 같은 판정을 얻었으면 재현 이슈를 확인하고 추가합니다.
 #   답 페이지의 '이 결과를 얼마나 믿을 수 있나'와 카드의 '교차 재현됨' 배지로 나옵니다.
+# reviewed_by: [GitHub ID, ...] — 작성자가 아닌 사람이 docs/ops/review-checklist.md 여덟 항목을 확인했으면 추가합니다('검토됨' 배지).
+# claims: 뉴스·발표에서 나온 구체적인 주장을 이 결과로 검토했을 때만 적습니다 → 답 페이지에 팩트체크 표준 마크업(ClaimReview)
+#   - text: "주장 문장 그대로"     by: "말한 사람·기관"     url: "주장이 실린 곳"     date: YYYY-MM-DD
+#     rating: "결과와 맞음" | "범위 안" | "결과를 넘어섬" | "결과와 다름"   (검토한 사람이 고름)
 version: 1
 projects:
   - case: sgim49697-ops-gangnam-bus-2024

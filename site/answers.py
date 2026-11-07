@@ -381,6 +381,10 @@ def load_answers() -> list[dict]:
                 )[:10],
                 "page": f"answers/{case.name}.html",
                 "reproduced_by": list(meta.get("reproduced_by") or []),
+                "reviewed_by": list(meta.get("reviewed_by") or []),
+                "claims": [
+                    c for c in meta.get("claims") or [] if isinstance(c, dict) and c.get("text")
+                ],
                 "prereg": prereg(case),
                 **read_discussion(case),
             }
@@ -569,6 +573,8 @@ def card(e, a: dict, topics_by_id: dict, up: str = "") -> str:
         tags.append('<span class="badge stop">시뮬레이션 데이터 결과</span>')
     if a["mentor"]:
         tags.append('<span class="badge">멘토 예시</span>')
+    if a.get("reviewed_by"):
+        tags.append('<span class="badge go">검토됨</span>')
     if a.get("reproduced_by"):
         tags.append('<span class="badge go">교차 재현됨</span>')
     if (a.get("prereg") or {}).get("level") == "go":
@@ -634,7 +640,56 @@ def trust_block(e, a: dict) -> str:
 <p class="small muted">교차 재현을 하셨나요? <a href="{REPO}/issues/new?template=reproduction.yml&amp;title=%5B재현%5D%20{e(a["case"])}" data-track="reproduce">재현 기록 남기기</a></p></section>"""
 
 
-def _usage(e, a: dict) -> str:
+def primary_range(a: dict) -> dict | None:
+    """주 지표의 추정치·95% 범위 (로그 지표는 % 로). 문장 검증·검색 패널이 쓴다."""
+    r = next(
+        (x for x in a["results"] if x.get("est") is not None and x.get("lo") is not None), None
+    )
+    if not r:
+        return None
+    col, unit = r.get("col") or "", r.get("unit")
+    pct = interpret.is_log(col, unit)
+
+    def tx(v):
+        return round((math.exp(v) - 1) * 100 if pct else v, 4)
+
+    return {
+        "name": r.get("name") or col,
+        "est": tx(r["est"]),
+        "lo": tx(r["lo"]),
+        "hi": tx(r["hi"]),
+        "unit": "%" if pct else (unit or ""),
+    }
+
+
+def takeaway(a: dict) -> dict | None:
+    """판정 바로 옆에 둘 한 줄: '모른다'만 남기지 않고 그래도 말할 수 있는 것을 앞에 둔다."""
+    if a.get("execution_kind") == "descriptive_only":
+        return {
+            "head": "말할 수 있는 것",
+            "text": "연도별 관측값은 지역·연도·단위와 함께 인용할 수 있어요. 정책 효과는 추정하지 않았어요.",
+        }
+    v = a["verdict"]
+    if v == "conditional":
+        r = next((r for r in a["results"] if (r.get("said") or {}).get("rule_out")), None)
+        if r:
+            return {"head": "그래도 말할 수 있는 것", "text": r["said"]["rule_out"]}
+        return None
+    if v == "not_identified":
+        why = ", ".join(dict.fromkeys(w for r in a["results"] for w in r.get("why") or []))
+        return {"head": "판단할 수 없는 이유", "text": why or "설계 조건을 채우지 못했어요"}
+    if v == "identified":
+        p = next(iter(a["results"]), None)
+        if p:
+            return {
+                "head": "말할 수 있는 것",
+                "text": f"{p['name']} {p['effect']} (95% 범위 {p['range']})",
+            }
+    return None
+
+
+def usage_rules(a: dict) -> tuple[list[str], list[str]]:
+    """이렇게 쓰세요 / 이렇게 쓰면 안 됩니다 — 결과 페이지와 문장 검증이 같은 규칙을 쓴다."""
     v = a["verdict"]
     p = next(iter(a["results"]), None)
     eff = ""
@@ -672,6 +727,13 @@ def _usage(e, a: dict) -> str:
         )
         do = [f'"이 설계로는 효과를 판단할 수 없다. 이유: {reasons}."']
         dont = ["표의 숫자·p값 인용 — 진단용입니다", "'효과가 있다' 또는 '없다'"]
+    return do, dont
+
+
+def _usage(e, a: dict) -> str:
+    v = a["verdict"]
+    descriptive = a.get("execution_kind") == "descriptive_only"
+    do, dont = usage_rules(a)
     cite = (
         f"{a['title']} — 판정: {DESCRIPTIVE_LABEL if descriptive else VERDICT.get(v, (v,))[0]}. 출처: 정책 효과 분석 플랫폼"
         f"(가짜연구소 인과추론팀 오픈소스), {a['finished'] or '날짜 미상'} 실행, {SITE}/{a['page']} · 공식 평가 아님"
@@ -739,7 +801,7 @@ def _descriptive_page(e, a: dict, topics_by_id: dict) -> str:
 <div class="hero"><nav class="crumb"><a href="../results.html">분석 결과</a> / {crumb}</nav>
 <h1>{e(a["title"])}</h1><p class="lede">{e(a["question"])}</p></div>
 <section><div class="card answer-box"><span class="badge info big">{DESCRIPTIVE_LABEL}</span>
-<p>연도별 관측값을 정리했습니다. 인과효과 추정은 실행하지 않아 정책 효과를 판단할 수 없습니다.</p>{author}</div></section>
+<p>연도별 관측값을 정리했습니다. 인과효과 추정은 실행하지 않아 정책 효과를 판단할 수 없습니다.</p>{takeaway_html(e, a)}{author}</div></section>
 {_usage(e, a)}
 <section id="evidence"><h2>관측 통계</h2>{changed}<div class="figs" style="grid-template-columns: minmax(0, 1fr)">{figs}</div>
 <h3>연도별 관측값</h3><div class="tablewrap"><table><tr>{header}</tr>{rows}</table></div>
@@ -755,6 +817,99 @@ def _descriptive_page(e, a: dict, topics_by_id: dict) -> str:
 <pre class="code"><code>{e(replay["command"])}</code></pre><p>기록된 명령은 이 페이지에서 실행되지 않습니다. 실행일 {e(a["finished"] or "미상")}.</p>
 <p><a href="{REPO}/blob/main/cases/{e(a["case"])}/report.md">전체 리포트</a> · <a href="{REPO}/tree/main/cases/{e(a["case"])}">분석 폴더</a> · <a href="../results.html">다른 결과</a></p></section>
 <script>document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',()=>{{const t=document.getElementById(b.dataset.copy).textContent;(navigator.clipboard?navigator.clipboard.writeText(t):Promise.reject()).then(()=>{{b.textContent='복사됨'}}).catch(()=>{{b.textContent='직접 선택해 복사하세요'}})}}))</script>"""
+
+
+CLAIM_RATINGS = {"결과와 맞음": 4, "범위 안": 3, "결과를 넘어섬": 2, "결과와 다름": 1}
+
+
+def jsonld(a: dict) -> str:
+    """검색엔진용 구조화 데이터. 결과 표(CSV)는 Dataset 으로, 사람이 적은 claims 가 있을 때만 ClaimReview.
+
+    ClaimReview 는 '누군가 실제로 한 주장'을 검토했을 때만 쓴다(질문을 주장처럼 꾸미지 않는다).
+    """
+    org = {
+        "@type": "Organization",
+        "name": "가짜연구소 인과추론팀 (정책 효과 분석 플랫폼)",
+        "url": SITE,
+    }
+    lab = (
+        DESCRIPTIVE_LABEL
+        if a.get("execution_kind") == "descriptive_only"
+        else VERDICT.get(a["verdict"], (a["verdict"] or "-",))[0]
+    )
+    csv_name = (
+        f"{a['case']}-descriptive.csv"
+        if a.get("execution_kind") == "descriptive_only"
+        else f"{a['case']}.csv"
+    )
+    items = [
+        {
+            "@context": "https://schema.org",
+            "@type": "Dataset",
+            "name": a["title"],
+            "description": f"{a['question'] or a['title']} — 판정: {lab}. 공공데이터로 정책을 받은 곳과 안 받은 곳을 비교한 결과표. 공식 평가가 아닙니다.",
+            "url": f"{SITE}/{a['page']}",
+            "creator": org,
+            "isAccessibleForFree": True,
+            "inLanguage": "ko",
+            "keywords": ["정책 효과", "공공데이터", "인과추론", lab],
+            "variableMeasured": [r["name"] for r in a["results"]][:6] or None,
+            "dateModified": a["finished"] or None,
+            "distribution": [
+                {
+                    "@type": "DataDownload",
+                    "encodingFormat": "text/csv",
+                    "contentUrl": f"{SITE}/answers/{csv_name}",
+                }
+            ],
+        }
+    ]
+    for c in a.get("claims") or []:
+        rating = c.get("rating")
+        if rating not in CLAIM_RATINGS:
+            continue
+        items.append(
+            {
+                "@context": "https://schema.org",
+                "@type": "ClaimReview",
+                "url": f"{SITE}/{a['page']}",
+                "claimReviewed": c["text"],
+                "author": org,
+                "datePublished": a["finished"] or None,
+                "itemReviewed": {
+                    "@type": "Claim",
+                    "author": {"@type": "Organization", "name": c.get("by", "")},
+                    "datePublished": c.get("date"),
+                    "appearance": {"@type": "CreativeWork", "url": c.get("url")}
+                    if c.get("url")
+                    else None,
+                },
+                "reviewRating": {
+                    "@type": "Rating",
+                    "ratingValue": CLAIM_RATINGS[rating],
+                    "bestRating": 4,
+                    "worstRating": 1,
+                    "alternateName": rating,
+                },
+            }
+        )
+
+    def clean(x):
+        if isinstance(x, dict):
+            return {k: clean(v) for k, v in x.items() if v not in (None, "", [])}
+        if isinstance(x, list):
+            return [clean(v) for v in x]
+        return x
+
+    body = json.dumps(clean(items if len(items) > 1 else items[0]), ensure_ascii=False)
+    return '<script type="application/ld+json">' + body.replace("</", "<\\/") + "</script>"
+
+
+def takeaway_html(e, a: dict) -> str:
+    t = takeaway(a)
+    if not t:
+        return ""
+    return f'<div class="takeaway"><span>{e(t["head"])}</span><p>{e(t["text"])}</p></div>'
 
 
 def page_body(e, a: dict, topics_by_id: dict, datasets_by_url: dict) -> str:
@@ -831,6 +986,7 @@ def page_body(e, a: dict, topics_by_id: dict, datasets_by_url: dict) -> str:
 <section style="padding-top:24px"><div class="card answer-box {cls}">
 <div class="answer-verdict"><span class="badge {cls} big">{e(lab)}</span></div>
 <p style="margin:10px 0 6px"><b>{e(VERDICT_PLAIN.get(a["verdict"], ""))}</b></p>
+{takeaway_html(e, a)}
 {author}
 <details class="small"><summary>파이프라인 자동 요약 보기</summary><p class="muted">{e(auto_summary(a))}</p></details></div></section>
 {_usage(e, a)}

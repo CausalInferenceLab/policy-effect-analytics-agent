@@ -4,7 +4,7 @@
 
 "효과 있었다", "실패했다"는 말이 나올 때 **진짜 효과인지 확인하는 장치**입니다. 정책을 받은 동네와 안 받은 동네를 공공데이터로 비교하고, 데이터가 모르면 "판단 불가"라고 정직하게 말합니다. 질문부터 데이터·계보·분석·대시보드까지 전부 오픈소스입니다.
 
-🔎 **[정책 이름으로 찾기](https://causalinferencelab.github.io/policy-effect-analytics-agent/search.html)** — 이미 확인한 결과와 판정, 쓸 수 있는 공공데이터, 데이터 계보가 한 번에 나옵니다. 결과가 없으면 그 자리에서 분석을 요청할 수 있습니다.
+🔎 **[정책 이름으로 찾기](https://causalinferencelab.github.io/policy-effect-analytics-agent/search.html)** — 이미 확인한 결과와 판정, 쓸 수 있는 공공데이터, 데이터 계보가 한 번에 나옵니다. 결과가 없으면 그 자리에서 분석을 요청할 수 있습니다. **뉴스 문장을 통째로 붙여 넣으면** 그 문장이 결과로 뒷받침되는지(뒷받침 · 범위 안 · 결과를 넘어섬 · 결과와 다름) 보여 줍니다.
 
 [![사이트 열기](https://img.shields.io/badge/사이트-열기-1d4e89)](https://causalinferencelab.github.io/policy-effect-analytics-agent/)
 [![분석 결과](https://img.shields.io/badge/분석_결과-보기-1e6a4d)](https://causalinferencelab.github.io/policy-effect-analytics-agent/results.html)

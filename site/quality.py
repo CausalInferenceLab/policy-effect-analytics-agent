@@ -8,6 +8,7 @@
    얕은 clone(Actions 기본)이면 기록이 없으므로 None (화면에서 빠진다).
 2. 교차 재현: catalog/projects.yaml 의 reproduced_by (다른 참여자가 make flow 로 같은 판정을 얻었음).
 3. 작성자 해석: discussion.md 에 '결과를 한 문장으로'가 있는가.
+5. 검토: catalog/projects.yaml 의 reviewed_by (작성자 외의 사람이 검토 체크리스트로 확인했음).
 4. 다음 할 일: 위 항목과 진행 단계로 참여자에게 보여 줄 할 일 목록.
 """
 
@@ -103,6 +104,24 @@ def checks(a: dict) -> list[tuple[str, str, str]]:
         out.append(
             ("info", "사전 등록 · 기록 확인 안 됨", "이 빌드에서는 git 기록을 읽지 못했습니다.")
         )
+    rev = a.get("reviewed_by") or []
+    if rev:
+        who = ", ".join(f"@{x}" for x in rev)
+        out.append(
+            (
+                "go",
+                "검토 · 통과",
+                f"{who} 이(가) 검토 체크리스트(docs/ops/review-checklist.md)로 확인했습니다.",
+            )
+        )
+    else:
+        out.append(
+            (
+                "warn",
+                "검토 · 아직 없음",
+                "작성자 외의 사람이 검토 체크리스트로 확인하지 않았습니다.",
+            )
+        )
     rep = a.get("reproduced_by") or []
     if rep:
         who = ", ".join(f"@{x}" for x in rep)
@@ -150,6 +169,8 @@ def next_steps(p: dict, a: dict | None, registered: bool) -> list[str]:
     if a is not None:
         if st[3] and not a.get("has_one_line"):
             todo.append("discussion.md 에 '## 결과를 한 문장으로' 추가")
+        if not a.get("reviewed_by"):
+            todo.append("검토 요청 (docs/ops/review-checklist.md)")
         if not a.get("reproduced_by"):
             todo.append("다른 참여자에게 교차 재현 요청")
         pr = a.get("prereg")
