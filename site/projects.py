@@ -397,53 +397,41 @@ def people(projects, lineages=(), activity: dict | None = None) -> list[str]:
 
 
 def showcase(e, projects, answers, topics, crew: list[str], limit: int = 6) -> str:
-    """홈 하이라이트: 그림이 있는 참여자 프로젝트 카드 + 함께 만든 사람들."""
-    tb = {t.id: t for t in topics}
-    ans = {a["case"]: a for a in answers}
-    mentee = [p for p in projects if not p["mentor"]]
-    mentee.sort(key=lambda p: (p["case"] not in ans, not p["figures"], -p["stage"], p["title"]))
-    cards = []
-    for p in mentee[:limit]:
-        t = tb.get(p["topic"])
-        a = ans.get(p["case"])
-        fig = next(
-            (f for f in THUMB_PREF if f in p["figures"]), p["figures"][0] if p["figures"] else None
-        )
-        thumb = (
-            f'<img src="cases/{e(p["case"])}/{e(fig)}" alt="" loading="lazy">'
-            if fig
-            else f'<span class="ph" aria-hidden="true">{e((t.name if t else p["title"])[:2])}</span>'
-        )
-        if a:
-            from answers import DESCRIPTIVE_LABEL, VERDICT
+    """홈: 최근 확인한 판정 — 같은 모양의 줄(판정 · 제목 · 그래도 말할 수 있는 것 · 95% 범위 그림)."""
+    from answers import DESCRIPTIVE_LABEL, VERDICT, card_line, range_glyph, takeaway
 
-            lab, cls = (
-                (DESCRIPTIVE_LABEL, "info")
-                if a.get("execution_kind") == "descriptive_only"
-                else VERDICT.get(a["verdict"], ("-", "warn"))
-            )
-            state = f'<span class="badge {cls}">{e(lab)}</span>'
-            href = f"answers/{p['case']}.html"
-        else:
-            st = STAGE_KO[p["stage"]] if p["stage"] >= 0 else "준비"
-            state = f'<span class="badge plain">{e(st)} 단계 진행 중</span>'
-            href = f"{REPO}/tree/main/cases/{p['case']}"
-        cards.append(
-            f'<a class="show" href="{e(href)}"><span class="thumb">{thumb}</span>'
-            f'<span class="show-body"><span class="who">{avatar(e, p["owner"])}@{e(p["owner"])}</span>'
-            f"<b>{e(p['title'])}</b>"
-            f'<span class="show-meta">{state}<span class="muted small">{e(t.name) if t else "주제 미지정"}</span></span></span></a>'
+    tb = {t.id: t for t in topics}
+    real = [a for a in answers if not a["mentor"] and not a["synthetic"]]
+    real.sort(key=lambda a: (a.get("finished") or ""), reverse=True)
+    rows = []
+    for a in real[:limit]:
+        t = tb.get(a["topic"])
+        lab, cls = (
+            (DESCRIPTIVE_LABEL.split(" · ")[0], "info")
+            if a.get("execution_kind") == "descriptive_only"
+            else VERDICT.get(a["verdict"], ("-", "warn"))
         )
+        tk = takeaway(a)
+        line = f"{tk['head']}: {tk['text']}" if tk else card_line(a)
+        rows.append(
+            f'<a class="vb-row v-{cls}" href="answers/{e(a["case"])}.html">'
+            f'<span class="vb-side"><span class="badge {cls}">{e(lab)}</span>'
+            f'<span class="vb-who">{avatar(e, a["owner"])}@{e(a["owner"])}</span>'
+            f'<span class="vb-topic">{e(t.name) if t else "주제 미지정"}</span></span>'
+            f'<span class="vb-main"><b>{e(a["title"])}</b><span>{e(line)}</span></span>'
+            f'<span class="vb-glyph">{range_glyph(e, a)}</span></a>'
+        )
+    mentee = [p for p in projects if not p["mentor"]]
     faces = "".join(
         f'<a href="https://github.com/{e(n)}" title="@{e(n)}{" (멘토)" if n == MENTOR else ""}">'
         f'<img src="https://github.com/{e(n)}.png?size=80" alt="@{e(n)}" loading="lazy" width="40" height="40"></a>'
         for n in crew
     )
-    return f"""<section id="showcase"><div class="sec-head"><h2>시민 데이터 과학자들이 만든 것</h2>
-<a class="more" href="projects.html">프로젝트 {len(mentee)}개 모두</a></div>
-<p class="sub">현업 개발자·분석가들이 각자 궁금했던 정책을 골라 공공데이터로 직접 비교했어요. 그림을 누르면 결과와 인용문, 따라 하는 법이 나와요.</p>
-<div class="shows">{"".join(cards)}</div>
-<div class="crew"><div class="faces">{faces}</div><p class="muted small">함께 만든 사람 {len(crew)}명. 여러분 자리도 비워 뒀어요 → <a href="projects.html#join">참여하기</a></p></div></section>"""
+    return f"""<section id="showcase"><div class="sec-head"><h2>최근 확인한 판정</h2>
+<a class="more" href="results.html">결과 {len(real)}개 모두</a></div>
+<p class="sub">참여자가 공공데이터로 '받은 곳 vs 안 받은 곳'을 비교한 결과예요. 판정이 '모른다'여도 말할 수 있는 범위를 함께 적었어요.</p>
+<div class="vboard">{"".join(rows)}</div>
+<div class="crew"><div class="faces">{faces}</div><p class="muted small">시민 데이터 과학자 {len(crew)}명이 프로젝트 {len(mentee)}개를 함께 만들고 있어요. <a href="projects.html#join">참여하기</a></p></div></section>"""
 
 
 def personas(e, n_answers: int, n_data: int) -> str:
@@ -452,8 +440,8 @@ def personas(e, n_answers: int, n_data: int) -> str:
         (
             "궁금한 시민",
             "뉴스에서 본 그 정책, 효과 있었는지 쉬운 말로 알고 싶어요",
-            "#ask",
-            "대화창에 물어보기",
+            "search.html",
+            "정책 이름으로 찾아보기",
         ),
         (
             "기자 · 공무원 · 연구자",
