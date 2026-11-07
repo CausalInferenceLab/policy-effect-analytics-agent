@@ -56,3 +56,27 @@ jobs:
             cases/_example_night_clinic/figures/
           if-no-files-found: warn
           retention-days: 14
+
+  # PyWhy(DoWhy)·CausalML 연계 — 무거운 선택 설치라 따로 돈다
+  causal:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      MPLBACKEND: Agg
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+          cache-dependency-path: pyproject.toml
+      - name: Install (causal extra)
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e ".[dev,causal]"
+      - name: License check with causal extra
+        run: python scripts/check_licenses.py
+      - name: PyWhy·CausalML tests
+        run: pytest -q tests/test_causal.py
+      - name: Second opinion on the example case
+        run: python -m core.causal cases/_example_night_clinic --no-write

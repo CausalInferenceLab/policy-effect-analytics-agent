@@ -1,4 +1,4 @@
-.PHONY: install check lint test format app activity flow demo site lineage readme
+.PHONY: install check lint test format app activity flow demo site lineage readme pywhy draft
 
 PY ?= python
 
@@ -24,6 +24,15 @@ format:
 CASE ?= cases/_example_night_clinic
 flow:
 	$(PY) -m core.agent $(CASE)
+
+# 두 번째 의견: PyWhy(DoWhy) 식별·반박 검정 + CausalML 단위별 효과 → cases/<케이스>/pywhy_check.json
+#   먼저 pip install -e ".[causal]"
+pywhy:
+	$(PY) -m core.causal $(CASE)
+
+# 질문 한 줄 → 가설·데이터 점검 → plan.yaml 초안 (Q="질문", NEW=<내ID>-<주제> 를 주면 cases/ 에 저장)
+draft:
+	$(PY) -m core.causal.draft "$(Q)" $(if $(NEW),--case $(NEW) --write,)
 
 # 연습: 토지거래허가구역 예시를 _demo/ 에 복사해 돌린다. 레포 파일은 바뀌지 않는다.
 demo:
