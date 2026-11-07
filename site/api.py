@@ -204,6 +204,7 @@ def _sample_cases() -> dict[str, str]:
 # ─── API 전체 ─────────────────────────────────────────────────────────────────
 def write_api(out: Path, topics, issues, datasets, legal_summary) -> dict:
     from core.discovery.lineage import graph
+    from core.discovery.links import all_lineages
 
     api = out / "api"
     files = {
@@ -216,7 +217,7 @@ def write_api(out: Path, topics, issues, datasets, legal_summary) -> dict:
         ],
         "issues.json": [i.model_dump(mode="json") for i in issues],
         "datasets.json": [d.model_dump(mode="json") for d in datasets],
-        "lineage.json": graph(),
+        "lineage.json": graph(all_lineages()),
         "results.json": case_results(out),
         "projects.json": _projects(),
     }

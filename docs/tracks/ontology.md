@@ -26,6 +26,10 @@ issue     policy                   dataset          transform  metric   used_by
 | `status` | `done`(기본) · `planned`(하려는 단계) · `missing`(필요하지만 아직 없는 데이터 = **빈칸**) | `missing`은 `dataset`에만, ref·url 없이 적을 수 있음 |
 | `artifact` | 이 단계를 만든 결과물 파일 (예: 역 → 시군 매핑표 CSV). `catalog/lineage/data/`에 둡니다 | 파일이 레포에 있는지 |
 
+**자동 계보.** 계보 파일이 없는 분석은 그 케이스의 `plan.yaml`(처치 정의 · `data_sources` · 분석 단위 · 결과 지표)로 사이트가 길을 자동으로 그립니다(`core/discovery/links.py`, id `auto-<케이스>`).
+`data_sources`의 URL이나 이름 속 id(`OA-12914`, `15126468`, `DT_1B040A3` …)가 `datasets.yaml`과 맞으면 카탈로그 데이터로 이어집니다. 그래서 새 데이터를 쓰면 **`datasets.yaml`에 한 줄 추가하는 것만으로** 데이터 지도·검색·계보가 함께 연결됩니다.
+시행일·가공 세부처럼 plan.yaml에 없는 것은 지어내지 않습니다. 더 자세히 적고 싶으면 계보 파일을 쓰세요. 같은 케이스를 `used_by`로 가진 계보 파일이 있으면 그쪽이 우선합니다.
+
 빈칸(`missing`)은 사이트의 [데이터 계보](https://causalinferencelab.github.io/policy-effect-analytics-agent/lineage.html) "주제별 연결 상태"에 개수로 나옵니다. 빈칸을 찾아 채우는 것이 트랙 A의 가장 좋은 기여입니다.
 
 예시:

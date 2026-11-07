@@ -2,7 +2,9 @@
 
 **뉴스 속 그 정책, 공공데이터로 직접 확인해 보는 시민 데이터 과학자 놀이터.**
 
-정책을 받은 동네와 안 받은 동네를 공공데이터로 비교하고, 데이터가 모르면 "판단 불가"라고 정직하게 말합니다. 질문부터 데이터·계보·분석·대시보드까지 전부 오픈소스입니다.
+"효과 있었다", "실패했다"는 말이 나올 때 **진짜 효과인지 확인하는 장치**입니다. 정책을 받은 동네와 안 받은 동네를 공공데이터로 비교하고, 데이터가 모르면 "판단 불가"라고 정직하게 말합니다. 질문부터 데이터·계보·분석·대시보드까지 전부 오픈소스입니다.
+
+🔎 **[정책 이름으로 찾기](https://causalinferencelab.github.io/policy-effect-analytics-agent/search.html)** — 이미 확인한 결과와 판정, 쓸 수 있는 공공데이터, 데이터 계보가 한 번에 나옵니다. 결과가 없으면 그 자리에서 분석을 요청할 수 있습니다.
 
 [![사이트 열기](https://img.shields.io/badge/사이트-열기-1d4e89)](https://causalinferencelab.github.io/policy-effect-analytics-agent/)
 [![분석 결과](https://img.shields.io/badge/분석_결과-보기-1e6a4d)](https://causalinferencelab.github.io/policy-effect-analytics-agent/results.html)
@@ -28,7 +30,7 @@
 
 | 나는 | 이렇게 시작하세요 |
 |---|---|
-| **궁금한 시민** | [사이트](https://causalinferencelab.github.io/policy-effect-analytics-agent/) 대화창에 정책 하나 물어보기. 주제·데이터·조심할 점을 같이 정리해 줍니다 |
+| **궁금한 시민** | [검색](https://causalinferencelab.github.io/policy-effect-analytics-agent/search.html)에 정책 이름 넣기, 또는 [사이트](https://causalinferencelab.github.io/policy-effect-analytics-agent/) 대화창에 물어보기. 주제·데이터·조심할 점을 같이 정리해 줍니다 |
 | **기자 · 공무원 · 연구자** | [분석 결과](https://causalinferencelab.github.io/policy-effect-analytics-agent/results.html)에서 판정과 그대로 가져다 써도 되는 인용문, 쓴 데이터, CSV를 받기 |
 | **분석가 · 개발자** | 아래 [5분 만에 돌려 보기](#5분-만에-돌려-보기) → [참여 가이드](docs/ops/mentee-guide.md). 공개 API(`api/*.json`)로 서비스를 만들어도 좋습니다 |
 

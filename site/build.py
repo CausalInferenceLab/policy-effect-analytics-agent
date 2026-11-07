@@ -64,6 +64,7 @@ COLLECT_KO = {
     "curated": "발표 자료를 표로 정리",
 }
 NAV = [
+    ("search.html", "검색"),
     ("results.html", "분석 결과"),
     ("index.html#topics", "이슈 보드"),
     ("issues.html", "지금 이슈"),
@@ -480,8 +481,12 @@ def index_page(topics, policies, issues, datasets, projects=(), answers=(), line
 <div class="hero home">
 <p class="sticker" aria-hidden="true">시민 데이터 과학자 모드 ON</p>
 <h1>그 정책, 진짜 먹혔을까?</h1>
-<p class="lede">뉴스 보다가 궁금했던 그 정책, 직접 확인해 봐요. 공공데이터를 찾아 드리고 '받은 동네 vs 안 받은 동네'를 비교하는 법을 알려 드려요.
+<p class="lede">뉴스에서 "효과 있었다", "실패했다"는 말이 나올 때, 공공데이터로 '받은 동네 vs 안 받은 동네'를 비교해 진짜 효과인지 확인하는 곳이에요.
 데이터가 모른다고 하면 모른다고 말하는 것까지가 이 사이트의 규칙이에요.</p>
+<form class="sbox home-search" role="search" action="search.html">
+<label class="sr-only" for="hq">정책 검색</label>
+<input id="hq" name="q" type="search" autocomplete="off" placeholder="정책·지역·키워드 (예: 토허제, 기후동행카드, 출산지원금)">
+<button class="btn primary" type="submit" data-track="home-search">확인하기</button></form>
 {flow}
 
 <div class="ask" id="ask">
@@ -697,11 +702,26 @@ def data_page(datasets, topics, issues) -> str:
     n_role = {r: sum(r in d.roles for d in datasets) for r in ROLE_KO}
     spaces = sorted({d.space for d in datasets})
     rows = []
+    from core.discovery.links import dataset_users
+
+    users = dataset_users(datasets)
+    n_used = sum(bool(users.get(d.id)) for d in datasets)
     for d in datasets:
         text = " ".join([d.name, d.provider, *d.measures]).lower()
         meas = (
             f"<div class='muted small'>{e(', '.join(d.measures[:5]))}</div>" if d.measures else ""
         )
+        if users.get(d.id):
+            meas += (
+                "<div class='small'>쓴 분석: "
+                + ", ".join(
+                    f"<a href='answers/{e(c)}.html'>{e(c)}</a>"
+                    if (ROOT / "cases" / c / "flow_log.json").exists()
+                    else f"<a href='{REPO}/tree/main/cases/{e(c)}'>{e(c)}</a>"
+                    for c in users[d.id]
+                )
+                + "</div>"
+            )
         rows.append(
             f'<tr data-roles="{" ".join(d.roles)}" data-topics="{" ".join(d.topics)}" data-space="{e(d.space)}" '
             f'data-access="{d.access}" data-text="{e(text)}">'
@@ -722,7 +742,8 @@ def data_page(datasets, topics, issues) -> str:
 <div class="hero" style="padding-bottom:0">
 <h1>재료부터 챙겨 볼까요</h1>
 <p class="lede">정책 효과를 재는 데 필요한 재료는 세 가지예요. <b>누가 언제 정책을 받았는지</b>, <b>무엇이 달라졌는지</b>,
-<b>결과를 흔드는 다른 요인</b>. 주제별로 받을 수 있는 공공데이터 {len(datasets)}개를 이 기준으로 정리했어요.</p></div>
+<b>결과를 흔드는 다른 요인</b>. 주제별로 받을 수 있는 공공데이터 {len(datasets)}개를 이 기준으로 정리했어요.
+그중 <b>{n_used}개는 참여자 분석에 실제로 쓰였고</b>, 표의 '쓴 분석'에서 그 결과로 바로 갈 수 있어요.</p></div>
 
 <section style="padding-top:32px"><h2>데이터를 이렇게 연결합니다</h2>
 <p class="sub">주제 → 이슈 → 데이터셋 → 제공 포털로 이어지고, 데이터셋마다 역할·단위·받는 법이 붙습니다.</p>
@@ -946,7 +967,12 @@ def topic_page(t, policies, issues, datasets, projects=(), answers=(), lineages=
                 f"<h3>{e(lin.title)}</h3>"
                 + board.lineage_svg(e, lin, names, verdicts, up="../")
                 + f"<p class='small muted'>점선은 계획이거나 아직 없는 데이터(빈칸)입니다. 마우스를 올리면 설명이 보입니다. "
-                f"<a href='../lineage.html#{e(lin.id)}'>단계별 설명</a> · <a href='{REPO}/blob/main/catalog/lineage/{e(lin.id)}.yaml'>YAML</a></p>"
+                f"<a href='../lineage.html#{e(lin.id)}'>단계별 설명</a> · "
+                + (
+                    f"<span class='badge info'>자동 계보</span> <a href='{REPO}/blob/main/cases/{e(lin.id[5:])}/plan.yaml'>plan.yaml</a></p>"
+                    if lin.id.startswith("auto-")
+                    else f"<a href='{REPO}/blob/main/catalog/lineage/{e(lin.id)}.yaml'>YAML</a></p>"
+                )
             )
     else:
         body.append(
@@ -1030,6 +1056,29 @@ def topic_page(t, policies, issues, datasets, projects=(), answers=(), lineages=
 
 
 # ─── 빌드 ────────────────────────────────────────────────────────────────────
+def answer_lineage(a: dict, lin, datasets) -> str:
+    """답 페이지 아래: 이 숫자는 어디서 왔나 — 이슈·정책 → 데이터 → 가공 → 지표 → 이 분석."""
+    import board
+
+    if lin is None:
+        return ""
+    ds_name = {d.id: d.name for d in datasets}
+    names = {s.id: ds_name.get(s.ref, s.ref) for s in lin.steps if s.kind == "dataset" and s.ref}
+    v = "descriptive" if a.get("execution_kind") == "descriptive_only" else a.get("verdict")
+    auto = lin.id.startswith("auto-")
+    src = (
+        f"이 계보는 분석의 <a href='{REPO}/blob/main/cases/{e(a['case'])}/plan.yaml'>plan.yaml</a> 에서 자동으로 그렸습니다."
+        if auto
+        else f"계보 파일: <a href='{REPO}/blob/main/catalog/lineage/{e(lin.id)}.yaml'>{e(lin.id)}.yaml</a>"
+    )
+    return (
+        "<section id='lineage'><h2>이 숫자는 어디서 왔나 · 데이터 계보</h2>"
+        "<p class='sub'>정책 → 원천 공공데이터 → 가공 → 지표 → 이 분석. 상자를 누르면 그 데이터·정책으로 갑니다.</p>"
+        + board.lineage_svg(e, lin, names, {a["case"]: v}, up="../")
+        + f"<p class='small muted'>{src} <a href='../lineage.html#{e(lin.id)}'>단계별 설명</a></p></section>"
+    )
+
+
 def main() -> None:
     import architecture
     import projects as proj
@@ -1041,9 +1090,9 @@ def main() -> None:
 
     answers = ans.load_answers()
     proj.attach_next_steps(projects, answers)
-    from core.discovery.lineage import load_lineages
+    from core.discovery.links import all_lineages
 
-    lineages = load_lineages()
+    lineages = all_lineages()  # 직접 쓴 계보 + plan.yaml 에서 그린 자동 계보
     if OUT.exists():
         shutil.rmtree(OUT)
     (OUT / "topics").mkdir(parents=True)
@@ -1074,7 +1123,7 @@ def main() -> None:
     (OUT / "lineage.html").write_text(
         page(
             "데이터 계보 · 정책 효과 분석 플랫폼",
-            tracks.lineage_body(e, topics, issues, datasets, load_lineages(), results),
+            tracks.lineage_body(e, topics, issues, datasets, lineages, results),
             "lineage.html",
         ),
         encoding="utf-8",
@@ -1093,12 +1142,14 @@ def main() -> None:
     (OUT / "answers").mkdir(exist_ok=True)
     tb = {t.id: t for t in topics}
     ds_by_url = {d.url: d for d in datasets}
+    lin_of = {c: lin for lin in lineages for s in lin.steps for c in s.used_by}
     for a in answers:
         fig = next((f for f in ("event_study.png", *a["figures"]) if f in a["figures"]), None)
         (OUT / a["page"]).write_text(
             page(
                 f"{a['title']} · 분석 결과",
-                ans.page_body(e, a, tb, ds_by_url),
+                ans.page_body(e, a, tb, ds_by_url)
+                + answer_lineage(a, lin_of.get(a["case"]), datasets),
                 "results.html",
                 depth=1,
                 desc=ans.share_text(a),
@@ -1111,7 +1162,7 @@ def main() -> None:
     (OUT / "projects.html").write_text(
         page(
             "참여자 프로젝트 · 정책 효과 분석 플랫폼",
-            proj.projects_body(e, projects, load_lineages(), topics),
+            proj.projects_body(e, projects, lineages, topics),
             "projects.html",
         ),
         encoding="utf-8",
@@ -1120,6 +1171,22 @@ def main() -> None:
         page("서비스 · 정책 효과 분석 플랫폼", tracks.apps_body(e, apps, index), "apps.html"),
         encoding="utf-8",
     )
+    # 통합 검색: api/search.json + search.html + search.js
+    import search
+
+    items = search.index(topics, issues, datasets, answers, projects, lineages)
+    search.write(OUT, items)
+    (OUT / "search.html").write_text(
+        page(
+            "검색 · 그 정책, 진짜 효과였나? · 정책 효과 분석 플랫폼",
+            search.body(e, len(items), sum(i["t"] == "result" for i in items)),
+            "search.html",
+            desc="정책 이름·지역·키워드로 분석 결과와 판정, 공공데이터, 데이터 계보를 한 번에 찾기",
+            path="search.html",
+        ),
+        encoding="utf-8",
+    )
+    shutil.copy(HERE / "search.js", OUT / "search.js")
     shutil.copy(HERE / "ask.js", OUT / "ask.js")
     shutil.copy(HERE / "track.js", OUT / "track.js")
     shutil.copy(HERE / "board.js", OUT / "board.js")

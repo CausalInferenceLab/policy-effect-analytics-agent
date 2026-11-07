@@ -82,7 +82,7 @@ def _lineage_card(lin, e, issues_by_id, ds_by_id, verdicts=None) -> str:
         )
     verdicts = verdicts or {}
     case_links = "".join(
-        f'<div class="lin-step k-case"><b><a href="{REPO}/tree/main/cases/{e(c)}">{e(c)}</a></b>'
+        f'<div class="lin-step k-case"><b><a href="{f"answers/{e(c)}.html" if c in verdicts else f"{REPO}/tree/main/cases/{e(c)}"}">{e(c)}</a></b>'
         + (f"<div class='small'>판정: {e(verdicts[c])}</div>" if c in verdicts else "")
         + "</div>"
         for c in cases
@@ -91,7 +91,11 @@ def _lineage_card(lin, e, issues_by_id, ds_by_id, verdicts=None) -> str:
     return (
         f'<div class="card" style="margin-bottom:14px" id="{e(lin.id)}"><h3>{e(lin.title)}</h3>'
         f"<p class='muted small'>작성 {e(lin.owner)} · 주제 <a href='topics/{e(lin.topic)}.html'>{e(lin.topic)}</a> · "
-        f"<a href='{REPO}/blob/main/catalog/lineage/{e(lin.id)}.yaml'>YAML 보기</a></p>"
+        + (
+            f"<span class='badge info'>자동 계보</span> <a href='{REPO}/blob/main/cases/{e(lin.id[5:])}/plan.yaml'>plan.yaml 에서 그림</a></p>"
+            if lin.id.startswith("auto-")
+            else f"<a href='{REPO}/blob/main/catalog/lineage/{e(lin.id)}.yaml'>YAML 보기</a></p>"
+        )
         + (f"<p>{e(lin.question)}</p>" if lin.question else "")
         + f'<div class="lin-grid">{"".join(cols)}</div></div>'
     )
@@ -135,8 +139,22 @@ def lineage_body(e, topics, issues, datasets, lineages, results) -> str:
         "conditional": "크기를 판별하지 못함",
         "not_identified": "판단 불가",
     }
-    verdicts = {r["case"]: ko.get(r.get("verdict"), r.get("verdict") or "") for r in results}
-    cards = "".join(_lineage_card(lin, e, issues_by_id, ds_by_id, verdicts) for lin in lineages)
+    verdicts = {
+        r["case"]: "관측 통계"
+        if r.get("execution_kind") == "descriptive_only"
+        else ko.get(r.get("verdict"), r.get("verdict") or "")
+        for r in results
+    }
+    hand = [lin for lin in lineages if not lin.id.startswith("auto-")]
+    auto = [lin for lin in lineages if lin.id.startswith("auto-")]
+    cards = "".join(_lineage_card(lin, e, issues_by_id, ds_by_id, verdicts) for lin in hand)
+    auto_cards = "".join(
+        f'<details class="card" style="margin-bottom:10px"><summary><b>{e(lin.title)}</b> '
+        f'<span class="muted small">@{e(lin.owner)} · {sum(s.kind == "dataset" for s in lin.steps)}개 데이터</span></summary>'
+        + _lineage_card(lin, e, issues_by_id, ds_by_id, verdicts)
+        + "</details>"
+        for lin in auto
+    )
     return f"""
 <div class="hero" style="padding-bottom:0"><nav class="crumb" aria-label="위치"><a href="projects.html#join">참여</a> / 트랙 A</nav>
 <h1>데이터 계보</h1>
@@ -146,8 +164,13 @@ def lineage_body(e, topics, issues, datasets, lineages, results) -> str:
 <section style="padding-top:28px"><h2>주제별 연결 상태</h2><p class="sub">빈칸이 트랙 A가 채울 곳입니다. 데이터는 처치 · 결과 · 통제 개수입니다.</p>
 <div class="tablewrap"><table><tr><th>주제</th><th>이슈</th><th>근거 법률</th><th>데이터 (처치·결과·통제)</th><th>계보</th><th>분석 결과</th><th>비어 있는 것</th></tr>{"".join(rows)}</table></div></section>
 
-<section><h2>계보 {len(lineages)}개</h2><p class="sub">한 파일이 한 길입니다. 왼쪽에서 오른쪽으로 읽고, ← 는 그 단계의 입력입니다. 점선은 <b>계획</b>(하려는 단계)과 <b>빈칸</b>(필요하지만 아직 없는 데이터)입니다 — 빈칸을 채우는 것이 트랙 A의 기여입니다.</p>
+<section><h2>직접 쓴 계보 {len(hand)}개</h2><p class="sub">한 파일이 한 길입니다. 왼쪽에서 오른쪽으로 읽고, ← 는 그 단계의 입력입니다. 점선은 <b>계획</b>(하려는 단계)과 <b>빈칸</b>(필요하지만 아직 없는 데이터)입니다 — 빈칸을 채우는 것이 트랙 A의 기여입니다.</p>
 {cards or "<p class='card'>아직 없습니다. 트랙 A에서 첫 계보를 만들어 주세요.</p>"}</section>
+
+<section id="auto"><h2>분석에서 자동으로 그린 계보 {len(auto)}개</h2>
+<p class="sub">계보 파일이 없는 분석은 그 분석의 <code>plan.yaml</code>(처치 정의 · 데이터 출처 · 분석 단위 · 결과 지표)로 길을 그립니다.
+plan.yaml 에 없는 것(정확한 시행일, 가공 세부)은 지어내지 않습니다. 더 자세히 적고 싶으면 계보 파일을 쓰면 그쪽이 우선합니다.</p>
+{auto_cards or "<p class='card'>없음</p>"}</section>
 
 <section><h2>계보 만들기</h2>
 <div class="grid3">

@@ -536,3 +536,22 @@ ol.path code { font-size: 12px; word-break: break-all }
 details.todo[open] summary { font-weight: 700; color: var(--ink) }
 @media (max-width: 960px) { ol.path { grid-template-columns: repeat(2, minmax(0, 1fr)) } }
 @media (max-width: 560px) { ol.path { grid-template-columns: minmax(0, 1fr) } }
+
+/* 통합 검색 */
+.sbox { display: flex; gap: 8px; margin: 18px 0 10px; max-width: 760px }
+.sbox input { flex: 1; min-width: 0; font: inherit; font-size: 17px; padding: 13px 16px; border: 2px solid var(--ink); border-radius: 12px; background: var(--surface); color: var(--ink) }
+.sbox input:focus-visible { outline: 3px solid var(--accent-soft); outline-offset: 1px }
+.sbox .btn { border: 0; cursor: pointer; white-space: nowrap }
+.home-search { margin-top: 22px }
+.s-verdict { margin: 16px 0; border-left: 5px solid var(--accent) }
+.s-group { padding: 18px 0 4px }
+.s-group h2 { font-size: 17px; margin: 0 0 10px }
+.s-list { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); gap: 10px }
+.s-item { display: flex; flex-direction: column; gap: 4px; padding: 12px 14px; background: var(--surface); border: 1px solid var(--hair); border-radius: 12px; text-decoration: none; color: inherit }
+.s-item:hover { border-color: var(--ink2) }
+.s-item b { color: var(--ink); line-height: 1.45 }
+.s-item .s-top { display: flex; gap: 6px; align-items: center; flex-wrap: wrap; min-height: 4px }
+.s-result { border-left: 4px solid var(--accent) }
+.search-terms { display: flex; flex-wrap: wrap; gap: 6px }
+.search-terms .chip b { font-weight: 700; margin-left: 4px }
+@media (max-width: 560px) { .sbox { flex-direction: column } }

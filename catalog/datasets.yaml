@@ -1218,3 +1218,415 @@ datasets:
     연 단위 분석에서는 4분기·하반기 값을 쓴다. 2008~2009 에는 마산·진해 행이 있다. 통합 전 옛 시들은 주민등록인구 가중 평균(근사).
     시군구별 공무원 현원(행안부 DT_110027_001)은 2015년부터라 '공무원 1인당 주민수'는 2010년 통합 사례에 쓸 수 없다.
   verified: 2026-10-22 OpenAPI 실수집으로 세 표의 ID·기간 확인 (cases/buildergarlic-changwon-jeonnam-frame/fetch.py). 공공누리 유형은 확인필요
+# ── 참여자 케이스가 실제로 쓴 데이터 (2026-11-07, plan.yaml data_sources 에서 옮김) ──
+- id: OA-15572
+  name: 서울시 상권분석서비스(추정매출-상권)
+  provider: 서울특별시·서울신용보증재단
+  portal: seoul
+  url: https://data.seoul.go.kr/dataList/OA-15572/S/1/datasetView.do
+  access: open_api
+  approval: 즉시
+  license: KOGL-1
+  space: 상권
+  time: 분기
+  period: 확인필요
+  measures:
+  - 상권별 업종별 추정매출
+  roles:
+  - outcome
+  topics:
+  - retail-hours
+  notes: 참여자 분석에서 실제로 쓴 데이터입니다 (YoungjaeKang-retail-hours). 받는 법·가공은 그 케이스의 fetch.py 와 plan.yaml 을 보세요.
+  verified: 2026-11-07 케이스 plan.yaml data_sources 에서 옮김 (cases/YoungjaeKang-retail-hours); 원본 페이지 재확인 안 함
+- id: OA-15560
+  name: 서울시 상권분석서비스(영역-상권)
+  provider: 서울특별시·서울신용보증재단
+  portal: seoul
+  url: https://data.seoul.go.kr/dataList/OA-15560/S/1/datasetView.do
+  access: open_api
+  approval: 즉시
+  license: KOGL-1
+  space: 상권(경계)
+  time: 수시
+  period: 확인필요
+  measures:
+  - 상권 경계·유형
+  roles:
+  - covariate
+  topics:
+  - retail-hours
+  notes: 참여자 분석에서 실제로 쓴 데이터입니다 (YoungjaeKang-retail-hours). 받는 법·가공은 그 케이스의 fetch.py 와 plan.yaml 을 보세요.
+  verified: 2026-11-07 케이스 plan.yaml data_sources 에서 옮김 (cases/YoungjaeKang-retail-hours); 원본 페이지 재확인 안 함
+- id: OA-15577
+  name: 서울시 상권분석서비스(점포-상권)
+  provider: 서울특별시·서울신용보증재단
+  portal: seoul
+  url: https://data.seoul.go.kr/dataList/OA-15577/A/1/datasetView.do
+  access: open_api
+  approval: 즉시
+  license: KOGL-1
+  space: 상권
+  time: 분기
+  period: 확인필요
+  measures:
+  - 상권별 업종별 점포 수·개폐업
+  roles:
+  - outcome
+  - covariate
+  topics:
+  - retail-hours
+  notes: 참여자 분석에서 실제로 쓴 데이터입니다 (YoungjaeKang-retail-hours). 받는 법·가공은 그 케이스의 fetch.py 와 plan.yaml 을 보세요.
+  verified: 2026-11-07 케이스 plan.yaml data_sources 에서 옮김 (cases/YoungjaeKang-retail-hours); 원본 페이지 재확인 안 함
+- id: OA-1176
+  name: 서울시 전통시장 현황
+  provider: 서울특별시
+  portal: seoul
+  url: https://data.seoul.go.kr/dataList/OA-1176/F/1/datasetView.do
+  access: file
+  approval: 즉시
+  license: KOGL-1
+  space: 개별(시장)
+  time: 수시
+  period: 확인필요
+  measures:
+  - 전통시장 위치·규모
+  roles:
+  - covariate
+  topics:
+  - retail-hours
+  notes: 참여자 분석에서 실제로 쓴 데이터입니다 (YoungjaeKang-retail-hours). 받는 법·가공은 그 케이스의 fetch.py 와 plan.yaml 을 보세요.
+  verified: 2026-11-07 케이스 plan.yaml data_sources 에서 옮김 (cases/YoungjaeKang-retail-hours); 원본 페이지 재확인 안 함
+- id: DT201004B010004
+  name: 서울시 가구원수별 가구 (인구주택총조사)
+  provider: 서울특별시
+  portal: seoul
+  url: https://data.seoul.go.kr/dataList/DT201004B010004/S/2/datasetView.do
+  access: open_api
+  approval: 즉시
+  license: KOGL-1
+  space: 자치구
+  time: 연
+  period: 확인필요
+  measures:
+  - 가구원수별 가구 수
+  roles:
+  - covariate
+  topics:
+  - retail-hours
+  notes: 참여자 분석에서 실제로 쓴 데이터입니다 (YoungjaeKang-retail-hours). 받는 법·가공은 그 케이스의 fetch.py 와 plan.yaml 을 보세요.
+  verified: 2026-11-07 케이스 plan.yaml data_sources 에서 옮김 (cases/YoungjaeKang-retail-hours); 원본 페이지 재확인 안 함
+- id: DT201004O010001
+  name: 서울시 행정구역 구별 면적
+  provider: 서울특별시
+  portal: seoul
+  url: https://data.seoul.go.kr/dataList/DT201004O010001/S/2/datasetView.do
+  access: open_api
+  approval: 즉시
+  license: KOGL-1
+  space: 자치구
+  time: 연
+  period: 확인필요
+  measures:
+  - 자치구 면적
+  roles:
+  - covariate
+  topics:
+  - retail-hours
+  notes: 참여자 분석에서 실제로 쓴 데이터입니다 (YoungjaeKang-retail-hours). 받는 법·가공은 그 케이스의 fetch.py 와 plan.yaml 을 보세요.
+  verified: 2026-11-07 케이스 plan.yaml data_sources 에서 옮김 (cases/YoungjaeKang-retail-hours); 원본 페이지 재확인 안 함
+- id: mois-age-pop
+  name: 행정안전부 주민등록 인구통계 — 연령별 인구 (행정동·월)
+  provider: 행정안전부
+  portal: other
+  url: https://jumin.mois.go.kr/ageStatMonth.do
+  access: manual
+  approval: 없음 (웹 조회·내려받기)
+  license: 확인필요
+  space: 읍면동
+  time: 월
+  period: 확인필요
+  measures:
+  - 연령별 주민등록 인구
+  roles:
+  - covariate
+  topics:
+  - retail-hours
+  - traffic-safety
+  notes: 참여자 분석에서 실제로 쓴 데이터입니다 (YoungjaeKang-retail-hours, inshining-elderly-driver). 받는 법·가공은 그 케이스의 fetch.py 와 plan.yaml 을 보세요.
+  verified: 2026-11-07 케이스 plan.yaml data_sources 에서 옮김 (cases/YoungjaeKang-retail-hours); 원본 페이지 재확인 안 함
+- id: mois-birth
+  name: 행정안전부 주민등록 인구통계 — 지역별 출생등록자수
+  provider: 행정안전부
+  portal: other
+  url: https://jumin.mois.go.kr/etcStatBirth.do
+  access: manual
+  approval: 없음 (웹 조회·내려받기)
+  license: 확인필요
+  space: 읍면동
+  time: 월
+  period: 확인필요
+  measures:
+  - 출생등록자 수
+  roles:
+  - outcome
+  topics:
+  - birth-marriage
+  notes: 참여자 분석에서 실제로 쓴 데이터입니다 (ingyeoking13-seoul-birth-support). 받는 법·가공은 그 케이스의 fetch.py 와 plan.yaml 을 보세요.
+  verified: 2026-11-07 케이스 plan.yaml data_sources 에서 옮김 (cases/ingyeoking13-seoul-birth-support); 원본 페이지 재확인 안 함
+- id: OA-12408
+  name: 서울시 출생·사망(신고기준)(동별) 통계
+  provider: 서울특별시 (원천 행정안전부)
+  portal: seoul
+  url: https://data.seoul.go.kr/dataList/OA-12408/S/1/datasetView.do
+  access: open_api
+  approval: 즉시
+  license: KOGL-1
+  space: 읍면동
+  time: 연
+  period: 확인필요
+  measures:
+  - 신고 기준 출생·사망 수
+  roles:
+  - outcome
+  topics:
+  - birth-marriage
+  notes: 참여자 분석에서 실제로 쓴 데이터입니다 (ingyeoking13-seoul-birth-support). 받는 법·가공은 그 케이스의 fetch.py 와 plan.yaml 을 보세요.
+  verified: 2026-11-07 케이스 plan.yaml data_sources 에서 옮김 (cases/ingyeoking13-seoul-birth-support); 원본 페이지 재확인 안 함
+- id: korea-kr-press
+  name: 대한민국 정책브리핑 보도자료 (목록·본문·첨부)
+  provider: 문화체육관광부 국정홍보
+  portal: other
+  url: https://www.korea.kr/briefing/pressReleaseList.do
+  access: manual
+  approval: 없음 (웹 게시판)
+  license: KOGL-1
+  space: 부처
+  time: 수시
+  period: 확인필요
+  measures:
+  - 보도자료 게시일·첨부파일 형식
+  roles:
+  - outcome
+  - treatment
+  topics:
+  - digital-inclusion
+  notes: 참여자 분석에서 실제로 쓴 데이터입니다 (gyeom-yee-public-markdown). 받는 법·가공은 그 케이스의 fetch.py 와 plan.yaml 을 보세요.
+  verified: 2026-11-07 케이스 plan.yaml data_sources 에서 옮김 (cases/gyeom-yee-public-markdown); 원본 페이지 재확인 안 함
+- id: '15126469'
+  name: 국토교통부_아파트 매매 실거래가 자료
+  provider: 국토교통부
+  portal: data.go.kr
+  url: https://www.data.go.kr/data/15126469/openapi.do
+  access: open_api
+  approval: 자동승인
+  license: 확인필요
+  space: 시군구(법정동)
+  time: 월
+  period: 확인필요
+  measures:
+  - 아파트 매매 거래 건별 금액·면적
+  roles:
+  - outcome
+  topics:
+  - housing-regulation
+  notes: 참여자 분석에서 실제로 쓴 데이터입니다 (hyun2-land-permit-spillover-2020). 받는 법·가공은 그 케이스의 fetch.py 와 plan.yaml 을 보세요.
+  verified: 2026-11-07 케이스 plan.yaml data_sources 에서 옮김 (cases/hyun2-land-permit-spillover-2020); 원본 페이지 재확인 안 함
+- id: taas-elderly
+  name: TAAS 교통사고분석시스템 — 시도·시군구별 월별 (노인운전자) 교통사고
+  provider: 한국도로교통공단
+  portal: koroad
+  url: https://taas.koroad.or.kr/sta/acs/exs/typical.do?menuId=WEB_KMP_OVT_UAS_ASA
+  access: manual
+  approval: 없음 (웹 조회·내려받기)
+  license: 확인필요
+  space: 시군구
+  time: 월
+  period: 확인필요
+  measures:
+  - 가해운전자 연령대별 사고 건수·사상자
+  roles:
+  - outcome
+  topics:
+  - traffic-safety
+  notes: 참여자 분석에서 실제로 쓴 데이터입니다 (inshining-elderly-driver). 받는 법·가공은 그 케이스의 fetch.py 와 plan.yaml 을 보세요.
+  verified: 2026-11-07 케이스 plan.yaml data_sources 에서 옮김 (cases/inshining-elderly-driver); 원본 페이지 재확인 안 함
+- id: '15065567'
+  name: 경찰청_시도경찰청별 고령운전자 운전면허 자진반납 현황
+  provider: 경찰청
+  portal: data.go.kr
+  url: https://www.data.go.kr/data/15065567/fileData.do
+  access: file
+  approval: 없음 (파일 내려받기)
+  license: 확인필요
+  space: 시도
+  time: 연
+  period: 확인필요
+  measures:
+  - 고령운전자 면허 자진반납 건수
+  roles:
+  - treatment
+  topics:
+  - traffic-safety
+  notes: 참여자 분석에서 실제로 쓴 데이터입니다 (inshining-elderly-driver). 받는 법·가공은 그 케이스의 fetch.py 와 plan.yaml 을 보세요.
+  verified: 2026-11-07 케이스 plan.yaml data_sources 에서 옮김 (cases/inshining-elderly-driver); 원본 페이지 재확인 안 함
+- id: DT_1K41018
+  name: 서비스업동향조사 시도별 소매판매액지수 (2020=100)
+  provider: 국가데이터처(구 통계청)
+  portal: kosis
+  url: https://kosis.kr/statHtml/statHtml.do?orgId=101&tblId=DT_1K41018
+  access: open_api
+  approval: 즉시
+  license: KOGL-1
+  space: 시도
+  time: 월
+  period: 확인필요
+  measures:
+  - 업태별 소매판매액지수
+  roles:
+  - outcome
+  topics:
+  - retail-hours
+  notes: 참여자 분석에서 실제로 쓴 데이터입니다 (jgkim1008-daegu-mart-holiday). 받는 법·가공은 그 케이스의 fetch.py 와 plan.yaml 을 보세요.
+  verified: 2026-11-07 케이스 plan.yaml data_sources 에서 옮김 (cases/jgkim1008-daegu-mart-holiday); 원본 페이지 재확인 안 함
+- id: '15099330'
+  name: 서울교통공사_역별 일별 시간대별 승하차인원
+  provider: 서울교통공사
+  portal: data.go.kr
+  url: https://www.data.go.kr/data/15099330/fileData.do
+  access: file
+  approval: 없음 (파일 내려받기)
+  license: 확인필요
+  space: 지점(역)
+  time: 시간
+  period: 확인필요
+  measures:
+  - 역별 시간대별 승차·하차 인원
+  roles:
+  - outcome
+  topics:
+  - public-transit
+  notes: 참여자 분석에서 실제로 쓴 데이터입니다 (jm-git-163-climate-card). 받는 법·가공은 그 케이스의 fetch.py 와 plan.yaml 을 보세요.
+  verified: 2026-11-07 케이스 plan.yaml data_sources 에서 옮김 (cases/jm-git-163-climate-card); 원본 페이지 재확인 안 함
+- id: '3057229'
+  name: 부산교통공사_시간대별 승하차인원
+  provider: 부산교통공사
+  portal: data.go.kr
+  url: https://www.data.go.kr/data/3057229/fileData.do
+  access: file
+  approval: 없음 (파일 내려받기)
+  license: 확인필요
+  space: 지점(역)
+  time: 시간
+  period: 확인필요
+  measures:
+  - 역별 시간대별 승차·하차 인원
+  roles:
+  - outcome
+  - covariate
+  topics:
+  - public-transit
+  notes: 참여자 분석에서 실제로 쓴 데이터입니다 (jm-git-163-climate-card). 받는 법·가공은 그 케이스의 fetch.py 와 plan.yaml 을 보세요.
+  verified: 2026-11-07 케이스 plan.yaml data_sources 에서 옮김 (cases/jm-git-163-climate-card); 원본 페이지 재확인 안 함
+- id: '15002503'
+  name: 대구교통공사_역별일별시간별승하차인원현황
+  provider: 대구교통공사
+  portal: data.go.kr
+  url: https://www.data.go.kr/data/15002503/fileData.do
+  access: file
+  approval: 없음 (파일 내려받기)
+  license: 확인필요
+  space: 지점(역)
+  time: 시간
+  period: 확인필요
+  measures:
+  - 역별 시간대별 승차·하차 인원
+  roles:
+  - outcome
+  - covariate
+  topics:
+  - public-transit
+  notes: 참여자 분석에서 실제로 쓴 데이터입니다 (jm-git-163-climate-card). 받는 법·가공은 그 케이스의 fetch.py 와 plan.yaml 을 보세요.
+  verified: 2026-11-07 케이스 plan.yaml data_sources 에서 옮김 (cases/jm-git-163-climate-card); 원본 페이지 재확인 안 함
+- id: '15060048'
+  name: 광주교통공사_역일시간대별 승하차량
+  provider: 광주교통공사
+  portal: data.go.kr
+  url: https://www.data.go.kr/data/15060048/fileData.do
+  access: file
+  approval: 없음 (파일 내려받기)
+  license: 확인필요
+  space: 지점(역)
+  time: 시간
+  period: 확인필요
+  measures:
+  - 역별 시간대별 승차·하차 인원
+  roles:
+  - outcome
+  - covariate
+  topics:
+  - public-transit
+  notes: 참여자 분석에서 실제로 쓴 데이터입니다 (jm-git-163-climate-card). 받는 법·가공은 그 케이스의 fetch.py 와 plan.yaml 을 보세요.
+  verified: 2026-11-07 케이스 plan.yaml data_sources 에서 옮김 (cases/jm-git-163-climate-card); 원본 페이지 재확인 안 함
+- id: '15060591'
+  name: 대전교통공사_시간대별 승하차인원
+  provider: 대전교통공사
+  portal: data.go.kr
+  url: https://www.data.go.kr/data/15060591/fileData.do
+  access: file
+  approval: 없음 (파일 내려받기)
+  license: 확인필요
+  space: 지점(역)
+  time: 시간
+  period: 확인필요
+  measures:
+  - 역별 시간대별 승차·하차 인원
+  roles:
+  - outcome
+  - covariate
+  topics:
+  - public-transit
+  notes: 참여자 분석에서 실제로 쓴 데이터입니다 (jm-git-163-climate-card). 받는 법·가공은 그 케이스의 fetch.py 와 plan.yaml 을 보세요.
+  verified: 2026-11-07 케이스 plan.yaml data_sources 에서 옮김 (cases/jm-git-163-climate-card); 원본 페이지 재확인 안 함
+- id: topis-speed
+  name: 서울 TOPIS 도로별 일자별 통행속도 (월별 XLSX)
+  provider: 서울특별시 TOPIS
+  portal: seoul
+  url: https://topis.seoul.go.kr/refRoom/openRefRoom_1.do
+  access: file
+  approval: 없음 (자료실 내려받기)
+  license: 확인필요
+  space: 도로 구간
+  time: 일
+  period: 확인필요
+  measures:
+  - 도로별 시간대별 평균 통행속도
+  roles:
+  - outcome
+  topics:
+  - traffic-operations
+  notes: 참여자 분석에서 실제로 쓴 데이터입니다 (sgim49697-ops-gangnam-bus-2024). 받는 법·가공은 그 케이스의 fetch.py 와 plan.yaml 을 보세요.
+  verified: 2026-11-07 케이스 plan.yaml data_sources 에서 옮김 (cases/sgim49697-ops-gangnam-bus-2024); 원본 페이지 재확인 안 함
+- id: airkorea-final
+  name: 에어코리아 최종확정 측정자료 (시간별)
+  provider: 한국환경공단·국립환경과학원
+  portal: airkorea
+  url: https://www.airkorea.or.kr/web/last_amb_hour_data?pMENU_NO=123
+  access: file
+  approval: 없음 (연도별 파일 내려받기)
+  license: KOGL-3
+  space: 지점(측정소)
+  time: 시간
+  period: 확인필요
+  measures:
+  - NO₂
+  - PM2.5
+  - PM10
+  - O₃
+  - CO
+  - SO₂
+  roles:
+  - outcome
+  topics:
+  - air-quality
+  notes: 참여자 분석에서 실제로 쓴 데이터입니다 (yesolee-green-traffic). 받는 법·가공은 그 케이스의 fetch.py 와 plan.yaml 을 보세요.
+  verified: 2026-11-07 케이스 plan.yaml data_sources 에서 옮김 (cases/yesolee-green-traffic); 원본 페이지 재확인 안 함
