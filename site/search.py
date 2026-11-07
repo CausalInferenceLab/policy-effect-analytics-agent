@@ -38,7 +38,15 @@ def index(topics, issues, datasets, answers, projects, lineages) -> list[dict]:
     """검색 항목 목록. kw 는 찾는 데만 쓰는 글(화면에 안 보임)."""
     from html import escape
 
-    from answers import DESCRIPTIVE_LABEL, VERDICT, card_line, range_glyph
+    from answers import (
+        DESCRIPTIVE_LABEL,
+        VERDICT,
+        card_line,
+        primary_range,
+        range_glyph,
+        takeaway,
+        usage_rules,
+    )
 
     from core.discovery.links import dataset_users, is_auto
 
@@ -60,6 +68,12 @@ def index(topics, issues, datasets, answers, projects, lineages) -> list[dict]:
                 "cls": cls,
                 "who": "멘토 예시" if a["mentor"] else f"@{a['owner']}",
                 "g": range_glyph(escape, a),
+                # 판정 패널 · 문장 검증용
+                "v": "descriptive" if desc else a["verdict"],
+                "ro": takeaway(a),
+                "pr": None if desc or a["verdict"] == "not_identified" else primary_range(a),
+                "rules": usage_rules(a),
+                "rev": bool(a.get("reviewed_by")),
                 "kw": _j(a["question"], tname.get(a["topic"]), a["owner"], a["case"]),
             }
         )
@@ -150,6 +164,7 @@ def write(out_dir, items: list[dict]) -> None:
     )
 
 
+CLAIM_EXAMPLE = "토지거래허가구역 지정 뒤 옆 동네 집값이 20% 넘게 올랐다"
 EXAMPLES = [
     ("토허제 풍선효과", "토허제 뒤 옆 동네 집값은?"),
     ("기후동행카드", "기후동행카드로 지하철 더 탔나?"),
@@ -179,10 +194,13 @@ def body(e, n_items: int, n_results: int) -> str:
 <input id="sq" name="q" type="search" autocomplete="off" placeholder="토허제, 기후동행카드, 출산지원금…" autofocus>
 <kbd class="qbar-key" aria-hidden="true">/</kbd>
 <button class="qbar-go" type="submit">찾기</button></form>
-<div class="q-examples" aria-label="자주 묻는 질문">{chips}</div></div>
+<div class="q-examples" aria-label="자주 묻는 질문">{chips}</div>
+<p class="q-hint">뉴스 문장을 통째로 붙여 넣어도 돼요. 그 문장이 분석 결과로 뒷받침되는지 봐 드려요.
+<a href="search.html?q={e(CLAIM_EXAMPLE)}" data-q="{e(CLAIM_EXAMPLE)}">예: "{e(CLAIM_EXAMPLE)}"</a></p></div>
 
 <section class="s-body">
 <div class="s-filters" role="group" aria-label="종류로 거르기"><button type="button" class="sf" data-t="" aria-pressed="true">전체<span class="n"></span></button>{filters}</div>
+<div id="claim" class="c-panel" hidden></div>
 <div id="verdict" class="v-panel" hidden></div>
 <div id="sres" aria-live="polite"></div>
 <div id="snone" class="s-empty" hidden>

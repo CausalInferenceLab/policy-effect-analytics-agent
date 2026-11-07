@@ -122,6 +122,7 @@ def page(
     desc: str | None = None,
     path: str | None = None,
     image: str | None = None,
+    head: str = "",
 ) -> str:
     """공통 틀. path(사이트 안 경로)를 주면 공유 미리보기(Open Graph)용 주소·그림을 붙인다."""
     up = "../" * depth
@@ -149,7 +150,7 @@ def page(
 <meta name="viewport" content="width=device-width,initial-scale=1"><title>{e(title)}</title>
 <meta name="description" content="{d}">{og}
 <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
-<style>{CSS}</style><script src="{up}track.js" defer></script></head><body>
+<style>{CSS}</style><script src="{up}track.js" defer></script>{head}</head><body>
 <a class="skip" href="#main">본문으로 건너뛰기</a>
 <nav class="nav" aria-label="주 메뉴"><div class="in"><a class="brand" href="{up}index.html"><span class="mark" aria-hidden="true"></span>정책 효과 분석</a>
 <span class="links">{links}<a href="{REPO}">GitHub</a></span></div></nav>
@@ -1158,6 +1159,7 @@ def main() -> None:
                 desc=ans.share_text(a),
                 path=a["page"],
                 image=f"cases/{a['case']}/{fig}" if fig else None,
+                head=ans.jsonld(a),
             ),
             encoding="utf-8",
         )
