@@ -96,3 +96,25 @@ def test_search_index_carries_claim_check_fields(tmp_path):
     assert all({"v", "ro", "pr", "rules", "rev"} <= i.keys() for i in res)
     js = (ROOT / "site" / "search.js").read_text(encoding="utf-8")
     assert "checkClaim" in js and "결과와 다름" in js and "공식 팩트체크가 아니에요" in js
+
+
+def test_claim_record_link_and_template():
+    js = (ROOT / "site" / "search.js").read_text(encoding="utf-8")
+    assert "template=claim-review.yml" in js and "&claim=" in js and "&case=" in js
+    tpl = (ROOT / ".github" / "ISSUE_TEMPLATE" / "claim-review.yml").read_text(encoding="utf-8")
+    for fid in ("id: claim", "id: url", "id: case", "id: auto", "id: rating"):
+        assert fid in tpl
+    for rating in ans.CLAIM_RATINGS:
+        assert rating in tpl
+
+
+def test_review_pairs_never_assign_self():
+    import projects as proj
+
+    mentee = [p for p in proj.load_projects() if not p["mentor"]]
+    html = proj.review_pairs(escape, mentee)
+    assert 'id="review"' in html
+    for row in re.findall(r"<tr><td>(.*?)</tr>", html):
+        owner = re.search(r"<div class='muted small'>@([^<]+)</div>", row).group(1)
+        reviewer = re.search(r"github.com/([^']+)'", row).group(1)
+        assert owner != reviewer

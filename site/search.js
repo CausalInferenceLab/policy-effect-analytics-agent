@@ -109,6 +109,7 @@
       `<blockquote>${esc(q)}</blockquote>` +
       `<ul class="c-parts">${c.parts.map(([k, t]) => `<li><span class="badge ${MARK[k][1]}">${MARK[k][0]}</span>${esc(t)}</li>`).join("")}</ul>` +
       (r.rules && r.rules[0] && r.rules[0][0] ? `<div class="takeaway"><span>이렇게 쓰면 결과 안에서 말할 수 있어요</span><p>${esc(r.rules[0][0])}</p></div>` : "") +
+      `<p class="v-note"><a data-track="claim-record" href="${esc(REPO + "/issues/new?template=claim-review.yml&title=" + encodeURIComponent("[주장 검토] " + q.slice(0, 60)) + "&claim=" + encodeURIComponent(q.slice(0, 300)) + "&case=" + encodeURIComponent(r.url.replace(/^answers\//, "").replace(/\.html$/, "")) + "&auto=" + encodeURIComponent(lab))}">실제 기사·발표의 주장이면 검토 기록으로 남기기</a></p>` +
       `<p class="v-note">비교한 분석: <a href="${esc(r.url)}">${esc(r.title)}</a>. 키워드 규칙으로 읽은 결과라, 문장의 지역·기간·지표가 이 분석과 같은지는 직접 확인하세요. 법률 자문이나 공식 팩트체크가 아니에요.</p>`;
     box.hidden = false;
     if (window.track) window.track("claim-check");

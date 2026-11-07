@@ -264,6 +264,31 @@ def lineage_list(e, lineages, topics_by_id) -> str:
     return "".join(items)
 
 
+def review_pairs(e, mentee: list[dict]) -> str:
+    """검토 짝 제안: 결과가 있는데 아직 검토받지 않은 분석마다, 결과가 있는 다른 참여자 한 명을 돌아가며 붙인다."""
+    reg = load_registry()
+    done = [p for p in mentee if p.get("has_flow")]
+    owners = sorted({p["owner"] for p in done})
+    if len(owners) < 2:
+        return ""
+    rows = []
+    for i, p in enumerate(sorted(done, key=lambda x: x["case"])):
+        if reg.get(p["case"], {}).get("reviewed_by"):
+            continue
+        others = [o for o in owners if o != p["owner"]]
+        who = others[i % len(others)]
+        rows.append(
+            f"<tr><td><a href='answers/{e(p['case'])}.html'>{e(p['title'])}</a><div class='muted small'>@{e(p['owner'])}</div></td>"
+            f"<td><a href='https://github.com/{e(who)}'>@{e(who)}</a></td></tr>"
+        )
+    if not rows:
+        return ""
+    return f"""<section id="review"><h2>검토 짝</h2>
+<p class="sub">결과가 있는데 아직 검토받지 않은 분석 {len(rows)}개입니다. 짝은 결과를 낸 다른 참여자 중에서 돌아가며 정했어요(바꿔도 됩니다).
+<a href="{REPO}/blob/main/docs/ops/review-checklist.md">검토 체크리스트 여덟 항목</a>을 확인하면 <code>catalog/projects.yaml</code>에 <code>reviewed_by</code>를 더해 '검토됨' 배지를 붙입니다.</p>
+<div class="tablewrap"><table><tr><th>분석</th><th>제안 검토자</th></tr>{"".join(rows)}</table></div></section>"""
+
+
 def projects_body(e, projects, lineages, topics) -> str:
     tb = {t.id: t for t in topics}
     act = load_activity()
@@ -307,6 +332,7 @@ def projects_body(e, projects, lineages, topics) -> str:
 <button class="chip pf" data-s="2" aria-pressed="false">분석까지 감</button>
 <button class="chip pf" data-s="0" aria-pressed="false">계획·수집 중</button></div></div>
 <div class="grid proj-grid" id="proj-cards">{cards or "<p class='card'>아직 없습니다.</p>"}</div></section>
+{review_pairs(e, mentee)}
 <section id="lineages"><h2>데이터 계보 (트랙 A)</h2>
 <p class="sub">이슈 → 정책 → 데이터 → 가공 → 지표의 길입니다. 빈칸은 아직 없는 데이터, 채울 곳입니다.</p>
 <div class="grid proj-grid">{lin_cards or "<p class='card'>아직 없습니다.</p>"}</div></section>
@@ -402,7 +428,7 @@ def showcase(e, projects, answers, topics, crew: list[str], limit: int = 6) -> s
 
     tb = {t.id: t for t in topics}
     real = [a for a in answers if not a["mentor"] and not a["synthetic"]]
-    real.sort(key=lambda a: (a.get("finished") or ""), reverse=True)
+    real.sort(key=lambda a: a.get("finished") or "", reverse=True)
     rows = []
     for a in real[:limit]:
         t = tb.get(a["topic"])

@@ -40,9 +40,18 @@ def _q(s: str) -> str:
     return '"' + str(s).replace("\\", "\\\\").replace('"', '\\"') + '"'
 
 
-def draft(question: str, case_id: str = "gildong-topic") -> dict:
+def draft(question: str, case_id: str = "gildong-topic", hint: str = "") -> dict:
+    """hint: 주제 id·이슈 id 처럼 매칭에만 쓰고 plan 에는 넣지 않는 글."""
+    question = " ".join(str(question).split())[:300]  # 한 줄로 — YAML 블록·주석을 깨지 않게
     topics = load_topics()
-    m = match_topic(question, topics, load_catalog())
+    ids = {t.id: t for t in topics}
+    hint_ids = [x for x in re.split(r"[\s/,]+", hint or "") if x]
+    hinted = next((ids[x] for x in hint_ids if x in ids), None)
+    m = match_topic(question + " " + (hint or ""), topics, load_catalog())
+    if hinted:
+        from core.discovery.match import TopicMatch
+
+        m = [TopicMatch(hinted, 99.0, ["hint"])] + [x for x in m if x.topic.id != hinted.id]
     if not m:
         return {
             "matched": False,
@@ -53,7 +62,7 @@ def draft(question: str, case_id: str = "gildong-topic") -> dict:
     feas = topic_feasibility(topic, datasets, issues)
     my_issues = [i for i in issues if i.topic == topic.id]
     qn = re.sub(r"\s+", "", question)
-    issue = max(
+    issue = next((i for i in my_issues if i.id in hint_ids), None) or max(
         my_issues,
         key=lambda i: sum(w in qn for w in re.findall(r"[가-힣A-Za-z0-9]{2,}", i.name)),
         default=None,

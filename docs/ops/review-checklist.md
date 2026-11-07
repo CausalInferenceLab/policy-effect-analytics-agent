@@ -16,8 +16,15 @@
 
 ## 절차
 
+검토 짝은 사이트 [참여](https://causalinferencelab.github.io/policy-effect-analytics-agent/projects.html#review) 화면의 '검토 짝'에 자동으로 제안됩니다(결과를 낸 다른 참여자를 돌아가며).
+
 1. 결과 PR에서 위 표를 복사해 PR 리뷰 댓글에 ✅/❌로 채웁니다. ❌가 있으면 작성자가 고친 뒤 다시 봅니다.
 2. 여덟 개가 모두 ✅면 `catalog/projects.yaml`의 그 케이스에 `reviewed_by: [내 GitHub ID]`를 더하는 커밋을 같은 PR에 올립니다.
 3. 사이트가 다시 빌드되면 결과 카드·검색 판정 패널에 **검토됨**, 답 페이지 신뢰 항목에 '검토 · 통과'가 나옵니다.
 
 작성자 본인은 자기 결과를 검토할 수 없습니다. 멘토 예시도 같은 규칙을 따릅니다.
+
+## 뉴스 주장 검토 기록
+
+검색 화면에 뉴스 문장을 붙여 넣어 나온 판정은 '실제 기사·발표의 주장이면 검토 기록으로 남기기'로 [주장 검토 이슈](../../.github/ISSUE_TEMPLATE/claim-review.yml)가 됩니다.
+검토자가 주장 원문·출처·날짜와 분석의 지역·기간·지표가 맞는지 확인한 뒤 `catalog/projects.yaml` 의 그 케이스 `claims:` 에 한 줄을 더하면, 답 페이지에 schema.org ClaimReview 가 붙습니다.
