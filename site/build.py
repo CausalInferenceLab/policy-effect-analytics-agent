@@ -452,7 +452,6 @@ def index_page(topics, policies, issues, datasets, projects=(), answers=(), line
         for x in HOME_EXAMPLES
     )
     n_answers = sum(not a["mentor"] and not a["synthetic"] for a in answers)
-    n_people = len({p["owner"] for p in projects if not p["mentor"]})
     topic_html, basis = topic_rows(topics, issues, answers, load_trends(), datasets, lineages)
     tot = board.totals(issues, datasets, lineages, answers)
     flow = board.flow_strip(
@@ -466,17 +465,6 @@ def index_page(topics, policies, issues, datasets, projects=(), answers=(), line
             "dashboard": "#topics",
         },
         board.ready_count(datasets),
-    )
-    issue_rows = "".join(
-        f'<a class="issue-row" href="issues.html#{i.id}"><span class="when">{e(i.effective)}</span>'
-        f"<b>{e(i.name)}</b>"
-        f'<span class="side"><span class="badge {SUPPORT[i.design][1]}">{DESIGN_SHORT[i.design]}</span></span></a>'
-        for i in issues[:4]
-    )
-    ready_rows = "".join(
-        f'<a class="issue-row" href="{e(d.url)}"><span class="when">{e(d.provider[:20])}</span><b>{e(d.name)}</b>'
-        f'<span class="side"><span class="badge plain">{e(d.time)}</span><span class="badge info">{e(d.approval)}</span></span></a>'
-        for d in [d for d in datasets if d.approval in board.READY and "outcome" in d.roles][:4]
     )
     body = f"""
 <div class="hero home">
@@ -516,33 +504,14 @@ AI도 결과를 계산하지 않습니다. 주제·데이터·계획을 함께 �
 </details>
 <script>if(location.hash==="#ask")document.getElementById("ask").open=true;</script></div>
 
-{proj.personas(e, n_answers, len(datasets))}
-
 {proj.showcase(e, list(projects), list(answers), topics, proj.people(list(projects), lineages))}
 
-<section id="topics"><div class="sec-head"><h2>이슈 보드</h2></div>
+<section id="topics"><div class="sec-head"><h2>이슈 보드</h2><a class="more" href="issues.html">지금 이슈 {len(issues)}개</a></div>
 <p class="sub">주제마다 이슈 → 공공데이터 → 계보 → 분석 → 대시보드가 어디까지 채워졌는지 보입니다. 칸의 숫자는 개수, 빈칸은 채울 곳입니다. {basis}</p>
 {topic_html}</section>
 
-
-<div class="two">
-<section id="issues"><div class="sec-head"><h2>지금 이슈</h2><a class="more" href="issues.html">{len(issues)}개 분석 가이드</a></div>
-<p class="sub small">논쟁 중인 정책을 어떤 비교로, 어떤 데이터로 볼 수 있는지 정리했습니다.</p>
-<div class="rows">{issue_rows}</div></section>
-<section id="data-ready"><div class="sec-head"><h2>바로 받을 수 있는 데이터</h2><a class="more" href="data.html">{len(datasets)}개 전체</a></div>
-<p class="sub small">정리한 공공데이터 {len(datasets)}개 중 {board.ready_count(datasets)}개는 키 발급 즉시 또는 키 없이 오늘 받을 수 있습니다. 데이터마다 단위·기간·받는 법·이용 조건을 적었습니다.</p>
-<div class="rows">{ready_rows}</div></section>
-</div>
-
-<section id="next"><h2>나는 몇 레벨 시민 데이터 과학자?</h2>
-<p class="sub">코딩을 몰라도 레벨 1부터 시작할 수 있어요. 한 칸씩 올라가 보세요.</p>
-<ol class="levels">
-<li><a href="#ask"><span class="lv">Lv.1</span><b>궁금해하기</b><span>대화창에 정책 하나 물어보기. 주제·데이터·조심할 점을 같이 정리해 드려요.</span></a></li>
-<li><a href="results.html"><span class="lv">Lv.2</span><b>읽고 가져가기</b><span>결과 하나 열어 판정을 읽고, 인용문을 복사해 가기. 지금 {n_answers}개 있어요.</span></a></li>
-<li><a href="data.html"><span class="lv">Lv.3</span><b>데이터 만져 보기</b><span>공공데이터 {len(datasets)}개 중 {board.ready_count(datasets)}개는 오늘 바로 받을 수 있어요. CSV로 같은 결과도 확인해 보기.</span></a></li>
-<li><a href="projects.html"><span class="lv">Lv.4</span><b>같이 만들기</b><span>우리 동네 정책으로 분석 제안하기. 이미 {n_people}명이 하고 있어요.</span></a></li>
-</ol>
-<p class="small muted">이 사이트가 잘 쓰이고 있는지는 <a href="impact.html">성과</a>에서 매일 다시 세요.</p></section>
+{proj.personas(e, n_answers, len(datasets))}
+<p class="small muted">이 사이트가 잘 쓰이고 있는지는 <a href="impact.html">성과</a>에서 매일 다시 셉니다.</p>
 <script type="application/json" id="catalog">{catalog_json(topics, policies, issues, datasets, answers)}</script>
 <script src="ask.js"></script><script src="board.js" defer></script>"""
     return page("정책 효과 분석 플랫폼", body, "index.html", path="index.html")

@@ -224,15 +224,16 @@ def test_answer_pages_for_users(tmp_path, monkeypatch):
         .replace("<\\/", "</")
     )
     assert cat["results"] and all("page" in x for x in cat["results"])
-    # 첫 화면: 흐름 띠·질문 → 이슈 보드(흐름 지도) → 이미 나온 답 → 지금 이슈 → 다음에 할 수 있는 것
+    # 첫 화면: 검색·흐름 띠·대화 → 최근 확인한 판정 → 이슈 보드 → 처음 온 사람 안내 (섹션은 네 개만)
     assert (
         home.index('id="ask"')
-        < home.index('id="start"')
         < home.index('id="showcase"')
         < home.index('id="topics"')
+        < home.index('id="start"')
     )
-    assert home.count('class="show"') >= 3 and 'class="crew"' in home
-    assert 'id="next"' in home and 'class="levels"' in home and "impact.html" in home
+    assert home.count('class="vb-row') >= 3 and 'class="crew"' in home
+    assert "class='glyph" in home and "impact.html" in home and 'action="search.html"' in home
+    assert 'id="next"' not in home and 'id="data-ready"' not in home
     assert 'id="reuse"' in (out / "results.html").read_text(encoding="utf-8")
     # 주제 페이지(이슈 보드)에는 분석 단계가 있고, 결과 CSV는 엑셀용 BOM 을 붙인다
     for t in (out / "topics").glob("*.html"):
