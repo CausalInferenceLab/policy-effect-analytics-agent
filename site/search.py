@@ -103,9 +103,18 @@ def index(topics, issues, datasets, answers, projects, lineages) -> list[dict]:
                 "kw": _j(i.treatment, " ".join(i.outcomes), tname.get(i.topic)),
             }
         )
+    from core.causal.feasibility import topic_feasibility
+
     for t in topics:
+        f = topic_feasibility(t, datasets, issues, sum(a["topic"] == t.id for a in answers))
         out.append(
             {
+                "feas": {
+                    "label": f["label"],
+                    "verdict": f["verdict"],
+                    "hyp": f["hypothesis"]["sentence"],
+                    "checks": [[c["status"], c["label"], c["detail"]] for c in f["checks"]],
+                },
                 "t": "topic",
                 "title": t.name,
                 "sub": getattr(t, "question", "") or "",
@@ -165,6 +174,25 @@ def write(out_dir, items: list[dict]) -> None:
 
 
 CLAIM_EXAMPLE = "토지거래허가구역 지정 뒤 옆 동네 집값이 20% 넘게 올랐다"
+
+
+def hot_html(e, hot: list[dict]) -> str:
+    if not hot:
+        return ""
+    rows = "".join(
+        f'<li><a href="topics/{e(h["id"])}.html"><b>{e(h["name"])}</b></a>'
+        f'<span class="muted small">뉴스 {h["news"]}건 · '
+        + (
+            f"분석 결과 {h['results']}개"
+            if h["results"]
+            else "<b>아직 분석 없음</b> — 다음 분석 후보"
+        )
+        + "</span></li>"
+        for h in hot
+    )
+    return f'<h2 class="hot-h">이번 주 뉴스에 많이 나온 주제</h2><ol class="hot">{rows}</ol>'
+
+
 EXAMPLES = [
     ("토허제 풍선효과", "토허제 뒤 옆 동네 집값은?"),
     ("기후동행카드", "기후동행카드로 지하철 더 탔나?"),
@@ -175,7 +203,7 @@ EXAMPLES = [
 ]
 
 
-def body(e, n_items: int, n_results: int) -> str:
+def body(e, n_items: int, n_results: int, hot: list[dict] | None = None) -> str:
     chips = "".join(
         f'<a class="q-chip" href="search.html?q={e(q)}" data-q="{e(q)}">{e(label)}</a>'
         for q, label in EXAMPLES
@@ -209,7 +237,7 @@ def body(e, n_items: int, n_results: int) -> str:
 <div class="cta"><a id="snone-propose" class="btn primary" data-track="search-propose" href="{REPO}/issues/new?template=case-proposal.yml">이 정책 분석 요청하기</a>
 <a class="btn ghost" href="index.html#ask">대화창에서 계획 초안 만들기</a>
 <a class="btn ghost" href="data.html">데이터 지도 보기</a></div></div>
-<div id="sidle" class="s-idle"><p>지금 찾을 수 있는 것: 분석 결과 <b>{n_results}</b>개를 포함해 이슈·법령·계보·공공데이터 <b>{n_items}</b>개.</p></div>
+<div id="sidle" class="s-idle"><p>지금 찾을 수 있는 것: 분석 결과 <b>{n_results}</b>개를 포함해 이슈·법령·계보·공공데이터 <b>{n_items}</b>개.</p>{hot_html(e, hot or [])}</div>
 <p class="s-privacy">검색은 이 브라우저 안에서만 합니다. 이용 통계가 켜진 경우에만 숫자·이메일·주소를 지운 30자 이내 검색어의 <b>횟수</b>를 쿠키 없이 셉니다(GoatCounter, '추적 안 함'을 따름).
 결과가 없던 검색어는 <a href="impact.html#search">성과</a>에 공개되어 다음 분석 주제의 후보가 됩니다.</p>
 </section>

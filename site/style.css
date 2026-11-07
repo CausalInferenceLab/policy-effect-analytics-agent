@@ -519,7 +519,7 @@ html.js:not(.calm) .lin-svg .edges path { transition: stroke-dashoffset 1.2s eas
 .show .who .avatar { width: 22px; height: 22px }
 .show-meta { margin-top: auto; display: flex; gap: 8px; align-items: center; flex-wrap: wrap }
 .crew { margin-top: 18px; display: flex; align-items: center; gap: 14px; flex-wrap: wrap }
-.faces { display: flex }
+.faces { display: flex; flex-wrap: wrap; row-gap: 6px; max-width: 100% }
 .faces a { margin-left: -8px } .faces a:first-child { margin-left: 0 }
 .faces img { width: 40px; height: 40px; border-radius: 50%; border: 3px solid var(--paper); background: var(--sunk); display: block }
 .faces a:hover img { transform: translateY(-3px) }
@@ -679,3 +679,37 @@ details.ask > summary span { font-weight: 400; font-size: 14px; color: var(--mut
   .vb-side { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 6px 10px }
   .vb-glyph { max-width: 240px }
 }
+
+/* 주제별: 결과를 한 축에 */
+.forest-wrap { background: var(--surface); border: 1px solid var(--hair); border-radius: 16px; padding: 18px 20px; margin: 0 0 16px }
+.forest-wrap h3 { margin: 0 0 4px }
+.forest { width: 100%; height: auto; display: block; margin-top: 8px; overflow: visible }
+.forest .tick { stroke: var(--hair); stroke-width: 1 }
+.forest .tl { fill: var(--muted); font-size: 11px; text-anchor: middle }
+.forest .zero { stroke: var(--ink); stroke-width: 1.5 }
+.forest .fn { fill: var(--ink); font-size: 13px }
+.forest .band { stroke-width: 7; stroke-linecap: round; stroke: var(--warn); opacity: .45 }
+.forest .est { fill: var(--warn); stroke: var(--surface); stroke-width: 2 }
+.forest .f-go .band { stroke: var(--go) } .forest .f-go .est { fill: var(--go) }
+.forest a:hover .fn { fill: var(--accent); text-decoration: underline }
+
+/* 가설·데이터 점검 */
+.fz { --fz: var(--accent); background: var(--surface); border: 1px solid var(--hair); border-left: 6px solid var(--fz); border-radius: 18px; padding: 20px 24px; margin: 18px 0 8px }
+.fz.go { --fz: var(--go) } .fz.warn { --fz: var(--warn) } .fz.stop { --fz: var(--stop) }
+.fz-head > div { display: flex; gap: 12px; align-items: baseline; flex-wrap: wrap }
+.fz-stamp { font-size: clamp(20px, 2.8vw, 26px); font-weight: 800; letter-spacing: -.03em; color: var(--fz) }
+.fz-hyp { margin: 8px 0 12px; color: var(--ink2) }
+.fz-list { list-style: none; padding: 0; margin: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 10px 22px }
+.fz-list li { display: grid; grid-template-columns: 24px minmax(0, 1fr); gap: 10px; align-items: start }
+.fz-list li > span:last-child { display: flex; flex-direction: column; gap: 2px }
+.fz-mark { width: 22px; height: 22px; border-radius: 50%; display: grid; place-items: center; font-size: 12px; font-weight: 800; color: #fff; background: var(--go) }
+.fz-warn .fz-mark { background: var(--warn) } .fz-miss .fz-mark { background: var(--stop) }
+.fz-graph { margin: 14px 0 0; padding-top: 12px; border-top: 1px solid var(--hair) }
+.v-feas { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--hair) }
+.v-feas .v-label { margin: 0 }
+.v-feas-stamp { font-size: 22px; font-weight: 800; letter-spacing: -.03em; margin: 2px 0 4px }
+.v-feas-stamp.c-go { color: var(--go) } .v-feas-stamp.c-warn { color: var(--warn) } .v-feas-stamp.c-stop { color: var(--stop) }
+.v-checks { list-style: none; padding: 0; margin: 8px 0 0; display: flex; flex-direction: column; gap: 6px; font-size: 14.5px }
+.hot-h { font-size: 16px; margin: 22px 0 8px }
+.hot { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px }
+.hot li a { margin-right: 10px }

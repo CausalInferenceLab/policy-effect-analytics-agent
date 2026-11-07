@@ -1,0 +1,88 @@
+{
+ "case": "t3-land-permit-2025",
+ "status": "ok",
+ "data": {
+  "path": "cases/t3-land-permit-2025/data/panel.csv",
+  "rows": 500
+ },
+ "outcome": {
+  "col": "log_trades",
+  "name": "아파트 매매 거래건수(로그)",
+  "unit": "log 건",
+  "expected": "decrease"
+ },
+ "units": {
+  "treated": 4,
+  "control": 21
+ },
+ "did_2x2": -0.4395291160608205,
+ "baseline_estimate": -0.4033194212892391,
+ "same_direction_as_baseline": true,
+ "dowhy": {
+  "status": "ok",
+  "graph": {
+   "nodes": [
+    "T",
+    "dy",
+    "y_pre"
+   ],
+   "edges": [
+    [
+     "T",
+     "dy"
+    ],
+    [
+     "y_pre",
+     "T"
+    ],
+    [
+     "y_pre",
+     "dy"
+    ]
+   ]
+  },
+  "identification": {
+   "method": "backdoor",
+   "adjust_for": [
+    "y_pre"
+   ]
+  },
+  "estimate": -0.43955510446812324,
+  "ci": [
+   -0.47734353202397894,
+   -0.40176667691226764
+  ],
+  "refutations": [
+   {
+    "method": "placebo_treatment_refuter",
+    "label": "가짜 처치(처치 순서 섞기)",
+    "rule": "가짜 처치의 효과는 0 근처여야 해요",
+    "new_effect": 0.012393113285063689,
+    "p_value": 0.94,
+    "status": "pass"
+   },
+   {
+    "method": "random_common_cause",
+    "label": "무작위 공통 원인 추가",
+    "rule": "아무 관련 없는 변수를 넣어도 추정치가 거의 같아야 해요",
+    "new_effect": -0.4408768057224783,
+    "p_value": 0.76,
+    "status": "pass"
+   },
+   {
+    "method": "data_subset_refuter",
+    "label": "80% 부분 표본",
+    "rule": "일부 단위를 빼도 추정치가 거의 같아야 해요",
+    "new_effect": -0.4389682781910143,
+    "p_value": 0.8799999999999999,
+    "status": "pass"
+   }
+  ],
+  "warning": "처치 단위가 4곳뿐이라 회귀 신뢰구간은 참고용입니다(기본 추정은 무작위화 추론을 씁니다)"
+ },
+ "causalml": {
+  "status": "skipped",
+  "message": "처치 4곳 · 비교 21곳 — 단위별 효과는 각각 10곳 이상일 때만 봅니다"
+ },
+ "note": "두 번째 의견입니다. 판정은 plan.yaml 과 기본 추정(make flow)이 냅니다."
+}

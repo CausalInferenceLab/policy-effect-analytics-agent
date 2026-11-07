@@ -287,6 +287,69 @@ def normalize_descriptive(log: dict) -> dict | None:
     }
 
 
+def _read_json(path: Path) -> dict | None:
+    try:
+        d = json.loads(path.read_text(encoding="utf-8"))
+    except (OSError, ValueError):
+        return None
+    return d if isinstance(d, dict) and d.get("status") == "ok" else None
+
+
+def _f(v, digits: int = 3) -> str:
+    return "-" if v is None else f"{v:+.{digits}g}"
+
+
+def pywhy_block(e, a: dict) -> str:
+    """두 번째 의견: PyWhy(DoWhy) 식별·반박 검정, CausalML 단위별 효과 (python -m core.causal 결과)."""
+    r = a.get("pywhy")
+    if not r:
+        return (
+            "<section id='pywhy'><h2>두 번째 의견 · PyWhy · CausalML</h2>"
+            "<p class='muted small'>아직 돌리지 않았어요. 분석용 표가 있으면 "
+            f'<code>pip install -e ".[causal]"</code> 뒤 <code>python -m core.causal cases/{e(a["case"])}</code> 로 만들 수 있어요.</p></section>'
+        )
+    dw, ml = r.get("dowhy") or {}, r.get("causalml") or {}
+    unit = (r.get("outcome") or {}).get("unit") or ""
+    same = r.get("same_direction_as_baseline")
+    same_b = (
+        "<span class='badge go'>기본 추정과 같은 방향</span>"
+        if same
+        else "<span class='badge stop'>기본 추정과 방향이 다름</span>"
+        if same is False
+        else ""
+    )
+    refs = "".join(
+        f"<li><span class='badge {'go' if x.get('status') == 'pass' else 'warn'}'>{'통과' if x.get('status') == 'pass' else '확인 필요'}</span> "
+        f"<b>{e(x.get('label', ''))}</b> <span class='muted small'>{e(x.get('rule', x.get('message', '')))} · 새 추정 {_f(x.get('new_effect'))}</span></li>"
+        for x in dw.get("refutations") or []
+    )
+    adj = ", ".join(dw.get("identification", {}).get("adjust_for") or []) or "없음"
+    adj = adj.replace("y_pre", "정책 전 수준(y_pre)")
+    ci = dw.get("ci") or []
+    ci_txt = f" (95% 범위 {_f(ci[0])} ~ {_f(ci[1])})" if len(ci) == 2 and None not in ci else ""
+    if ml.get("status") == "ok":
+        rows = "".join(
+            f"<tr><td>{e(g['group'])}</td><td>{g['n']}</td><td>{_f(g['cate_mean'])} {e(unit)}</td></tr>"
+            for g in ml.get("by_baseline") or []
+        )
+        ml_html = (
+            f"<p>T-러너 평균 효과 {_f(ml.get('ate'))} {e(unit)}. 단위별 효과(10~90%): "
+            f"{_f(ml['cate_quantiles']['p10'])} ~ {_f(ml['cate_quantiles']['p90'])}</p>"
+            f"<div class='tablewrap'><table><tr><th>정책 전 수준</th><th>단위 수</th><th>평균 효과</th></tr>{rows}</table></div>"
+        )
+    else:
+        ml_html = f"<p class='muted small'>{e(ml.get('message', '돌리지 않음'))}</p>"
+    warn = f"<p class='small muted'>{e(dw['warning'])}</p>" if dw.get("warning") else ""
+    return f"""<section id="pywhy"><h2>두 번째 의견 · PyWhy · CausalML</h2>
+<p class="sub">같은 질문을 인과추론 오픈소스 라이브러리로 다시 물었어요. 판정은 바꾸지 않고, 기본 추정과 어긋나는지만 봅니다.</p>
+<div class="split"><div class="card"><h3>DoWhy (PyWhy) {same_b}</h3>
+<p class="small muted">인과 그래프: 공통 원인 → 정책, 공통 원인 → 결과, 정책 → 결과. 뒷문 기준으로 보정한 공통 원인: <b>{e(adj)}</b></p>
+<p>단위별 정책 전후 변화로 추정 <b>{_f(dw.get("estimate"))} {e(unit)}</b>{e(ci_txt)} · 2×2 이중차분 {_f(r.get("did_2x2"))} · 기본 추정 {_f(r.get("baseline_estimate"))}</p>
+<ul class="plain trust">{refs}</ul>{warn}</div>
+<div class="card"><h3>CausalML · 효과가 곳마다 달랐나</h3>{ml_html}</div></div>
+<p class="small muted">처치 {r["units"]["treated"]}곳 · 비교 {r["units"]["control"]}곳 · 만든 명령 <code>python -m core.causal cases/{e(a["case"])}</code> · <a href="{REPO}/blob/main/cases/{e(a["case"])}/pywhy_check.json">pywhy_check.json</a></p></section>"""
+
+
 def load_answers() -> list[dict]:
     from projects import load_registry
     from quality import prereg
@@ -386,6 +449,7 @@ def load_answers() -> list[dict]:
                     c for c in meta.get("claims") or [] if isinstance(c, dict) and c.get("text")
                 ],
                 "prereg": prereg(case),
+                "pywhy": _read_json(case / "pywhy_check.json"),
                 **read_discussion(case),
             }
         )
@@ -660,6 +724,67 @@ def primary_range(a: dict) -> dict | None:
         "hi": tx(r["hi"]),
         "unit": "%" if pct else (unit or ""),
     }
+
+
+def forest_svg(e, answers: list[dict], up: str = "") -> str:
+    """한 주제의 결과를 한 축(%)에: 효과를 합치지 않고(설계가 다름) 범위만 나란히 놓는다.
+    판단 불가는 진단용이라 그리지 않는다."""
+    rows = []
+    skipped = []
+    for a in answers:
+        if a.get("execution_kind") == "descriptive_only" or a["verdict"] == "not_identified":
+            skipped.append(a)
+            continue
+        pr = primary_range(a)
+        if not pr or pr["unit"] != "%":
+            skipped.append(a)
+            continue
+        rows.append((a, pr))
+    if len(rows) < 2:
+        return ""
+    lo = min(min(pr["lo"], 0) for _, pr in rows)
+    hi = max(max(pr["hi"], 0) for _, pr in rows)
+    span = (hi - lo) or 1
+    lo, hi = lo - span * 0.06, hi + span * 0.06
+    W, L, R, RH, TOP = 720, 270, 24, 40, 26
+    x = lambda v: L + (v - lo) / (hi - lo) * (W - L - R)  # noqa: E731
+    step = 5 if span <= 40 else 10 if span <= 100 else 25
+    ticks = [t for t in range(int(lo // step * step), int(hi) + step, step) if lo <= t <= hi]
+    H = TOP + RH * len(rows) + 8
+    out = [
+        f"<svg class='forest' viewBox='0 0 {W} {H}' role='img' aria-label='결과 {len(rows)}개의 95% 범위를 한 축에 놓은 그림'>"
+    ]
+    for t in ticks:
+        out.append(
+            f"<line class='tick' x1='{x(t):.1f}' x2='{x(t):.1f}' y1='{TOP - 6}' y2='{H - 4}'/>"
+            f"<text class='tl' x='{x(t):.1f}' y='{TOP - 10}'>{f'{t:+d}%' if t else '0'}</text>"
+        )
+    out.append(f"<line class='zero' x1='{x(0):.1f}' x2='{x(0):.1f}' y1='{TOP - 6}' y2='{H - 4}'/>")
+    for i, (a, pr) in enumerate(rows):
+        y = TOP + RH * i + RH / 2
+        cls = {"identified": "go", "conditional": "warn"}.get(a["verdict"], "stop")
+        name = a["title"] if len(a["title"]) <= 26 else a["title"][:25] + "…"
+        label = f"{a['title']} — {pr['name']} {pr['est']:+.1f}% (95% 범위 {pr['lo']:+.1f}% ~ {pr['hi']:+.1f}%)"
+        out.append(
+            f"<a href='{up}{e(a['page'])}'><g class='fr f-{cls}'><title>{e(label)}</title>"
+            f"<text class='fn' x='0' y='{y + 4:.1f}'>{e(name)}</text>"
+            f"<line class='band' x1='{x(pr['lo']):.1f}' x2='{x(pr['hi']):.1f}' y1='{y:.1f}' y2='{y:.1f}'/>"
+            f"<circle class='est' cx='{x(pr['est']):.1f}' cy='{y:.1f}' r='5.5'/></g></a>"
+        )
+    out.append("</svg>")
+    note = (
+        f"<p class='small muted'>판단 불가·관측 통계·단위가 다른 결과 {len(skipped)}개는 함께 그리지 않았어요.</p>"
+        if skipped
+        else ""
+    )
+    return (
+        "<div class='forest-wrap'><h3>결과를 한 축에 놓고 보기</h3>"
+        "<p class='small muted'>각 줄은 결과 하나의 주 지표 95% 범위(점은 추정치)예요. 설계·지역·기간이 달라 숫자를 합치지 않고 나란히만 놓았어요. "
+        "모든 막대가 0을 지나면 '이 주제에서 큰 효과는 아직 확인되지 않았다'까지만 말할 수 있어요.</p>"
+        + "".join(out)
+        + note
+        + "</div>"
+    )
 
 
 def takeaway(a: dict) -> dict | None:
@@ -997,6 +1122,7 @@ def page_body(e, a: dict, topics_by_id: dict, datasets_by_url: dict) -> str:
 <div class="figs">{figs}</div>
 {("<h3>작성자가 적은 한계</h3>" + cautions) if cautions else ""}</section>
 {trust_block(e, a)}
+{pywhy_block(e, a)}
 <section id="data"><h2>쓴 공공데이터</h2>
 {src_html}
 <p class="small muted">원자료는 레포에 올리지 않습니다. 아래 명령이 공개 창구에서 직접 받아 같은 결과를 만듭니다. 각 데이터의 단위·받는 법·키 필요 여부는 <a href="../data.html">데이터 지도</a>에 있습니다.</p></section>

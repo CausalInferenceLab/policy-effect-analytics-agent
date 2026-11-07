@@ -24,7 +24,7 @@ dependencies = [
 
 [project.optional-dependencies]
 agent = ["langgraph>=0.2", "langchain-core>=0.3"]
-causal = ["dowhy>=0.12"]
+causal = ["dowhy>=0.12", "causalml>=0.15"]   # PyWhy·CausalML 두 번째 의견: python -m core.causal
 dev = ["pytest>=8", "ruff>=0.6", "pre-commit>=3.7"]
 app = ["streamlit>=1.35"]
 analysis = ["holidays>=0.50"]   # 탐색 분석(공휴일 달력): scripts/explore_climate_card.py   # 개발용 화면(선택). 공개 사이트는 site/ 의 정적 페이지
