@@ -584,7 +584,8 @@ details.ask > summary span { font-weight: 400; font-size: 14px; color: var(--mut
 .sf .n { font-size: 12px; margin-left: 5px; color: var(--muted); font-variant-numeric: tabular-nums }
 .sf:hover { color: var(--ink) }
 .sf[aria-pressed=true] { color: var(--ink); font-weight: 700; border-bottom-color: var(--ink) }
-.sf:disabled { opacity: .35; cursor: default }
+.sf.zero { color: var(--muted) } .sf.zero .n { opacity: .6 }
+.tab-hint { font-size: 14px; color: var(--ink2); margin: 0 0 14px }
 
 .v-panel { --v: var(--warn); --v-bg: var(--warn-bg); position: relative; background: var(--surface); border: 1px solid var(--hair); border-radius: 20px;
   padding: 22px 26px 18px 34px; margin: 0 0 26px; overflow: hidden; animation: v-in .22s ease-out }
@@ -713,3 +714,13 @@ details.ask > summary span { font-weight: 400; font-size: 14px; color: var(--mut
 .hot-h { font-size: 16px; margin: 22px 0 8px }
 .hot { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 6px }
 .hot li a { margin-right: 10px }
+
+/* 데이터 연동 */
+details.conn summary { cursor: pointer; list-style: none }
+details.conn summary::-webkit-details-marker { display: none }
+details.conn[open] { min-width: min(420px, 70vw) }
+details.conn pre.code { margin: 8px 0 4px; font-size: 12px; white-space: pre-wrap; word-break: break-all }
+details.conn ul { margin: 4px 0 0; padding-left: 18px }
+.cands { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px }
+.cands li { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: baseline; padding: 8px 0; border-bottom: 1px solid var(--hair) }
+.cands .when { font-size: 13px; color: var(--muted); font-variant-numeric: tabular-nums; min-width: 84px }

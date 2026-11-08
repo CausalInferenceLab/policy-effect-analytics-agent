@@ -14,6 +14,7 @@ import json
 import shutil
 import sys
 from pathlib import Path
+from urllib.parse import quote
 
 import pandas as pd
 
@@ -188,15 +189,45 @@ def readiness(t) -> tuple[str, str, str]:
     return "ready", "분석 가능", "go"
 
 
+_USERS: dict | None = None
+
+
+def data_users() -> dict:
+    """데이터셋 id → 그 데이터를 쓴 케이스 (빌드 중 한 번만 계산)."""
+    global _USERS
+    if _USERS is None:
+        from core.discovery.links import dataset_users
+        from core.discovery.ontology import load_datasets
+
+        _USERS = dataset_users(load_datasets())
+    return _USERS
+
+
+CONN_CLS = {"adapter": "go", "case": "info", "api_key": "warn", "file": "plain", "manual": "plain"}
+
+
+def conn_cell(d) -> str:
+    """데이터 연동: 연결 방식 배지 + 펼치면 명령·코드."""
+    from core.data import connector
+
+    c = connector(d, data_users())
+    steps = "".join(f"<li>{e(x)}</li>" for x in c["steps"] if x)
+    py = f"<pre class='code'><code>{e(c['python'])}</code></pre>" if c["python"] else ""
+    return (
+        f"<details class='conn'><summary><span class='badge {CONN_CLS[c['kind']]}'>{e(c['label'])}</span></summary>"
+        f"<pre class='code'><code>{e(c['code'])}</code></pre>{py}<ul class='small'>{steps}</ul></details>"
+    )
+
+
 def dataset_table(ds) -> str:
     rows = "".join(
         f"<tr><td><a href='{e(d.url)}'>{e(d.name)}</a><div class='muted small'>{e(d.provider)} · {PORTAL_KO.get(d.portal, d.portal)}</div></td>"
         f"<td>{role_badges(d.roles)}</td><td>{e(d.space)} × {e(d.time)}</td>"
-        f"<td>{ACCESS_KO[d.access]}<div class='muted small'>{e(d.approval)}</div></td></tr>"
+        f"<td>{conn_cell(d)}</td></tr>"
         for d in ds
     )
     return (
-        "<div class='tablewrap'><table><tr><th>데이터셋</th><th>역할</th><th>단위</th><th>받는 법</th></tr>"
+        "<div class='tablewrap'><table><tr><th>데이터셋</th><th>역할</th><th>단위</th><th>받는 법 (연동)</th></tr>"
         f"{rows}</table></div>"
     )
 
@@ -582,6 +613,89 @@ GUIDE_STEPS = [
 ]
 
 
+def issue_candidates(
+    topics, issues, today: str | None = None, days: int = 180, n: int = 10
+) -> list[dict]:
+    """자동으로 모은 이슈 후보: 법제처 변경(근거 법률 개정·지정 해제 이력) · 최근 7일 뉴스 · 사이트 질문.
+    사람이 확인해 issues.yaml 에 옮기기 전까지는 '후보'다."""
+    import datetime as _dt
+
+    today = today or _dt.date.today().isoformat()
+    since = (_dt.date.fromisoformat(today) - _dt.timedelta(days=days)).isoformat()
+    have = {i.topic for i in issues}
+    tt = load_trends().get("topics", {})
+    out = []
+    for t in topics:
+        df = legal_frame(t)
+        if df is not None:
+            core = legal_core(t, df)
+            core = core[
+                (core["effective"] <= today)
+                & (core["effective"] >= since)
+                & (core["change"] != "타법개정")
+            ]
+            for _, r in core.sort_values("effective", ascending=False).head(2).iterrows():
+                out.append(
+                    {
+                        "date": r["effective"],
+                        "topic": t,
+                        "kind": "법령 개정",
+                        "title": f"{r['name']} {r['change']}",
+                        "url": r.get("url") or "",
+                    }
+                )
+        news = tt.get(t.id, {}).get("news", 0)
+        if news and t.id not in have:
+            out.append(
+                {
+                    "date": load_trends().get("updated", ""),
+                    "topic": t,
+                    "kind": "뉴스",
+                    "title": f"최근 7일 기사 {news}건 — 지금 이슈 항목 없음",
+                    "url": tt.get(t.id, {}).get("news_url", ""),
+                }
+            )
+        q = tt.get(t.id, {}).get("questions", 0)
+        if q:
+            out.append(
+                {
+                    "date": load_trends().get("updated", ""),
+                    "topic": t,
+                    "kind": "사이트 질문",
+                    "title": f"최근 30일 질문 {q}건",
+                    "url": "",
+                }
+            )
+    return sorted(out, key=lambda x: x["date"], reverse=True)[:n]
+
+
+def issue_sources(issues, topics) -> str:
+    """지금 이슈는 어디서 오나 + 자동 후보."""
+    cands = issue_candidates(topics, issues)
+    rows = "".join(
+        f"<li><span class='when'>{e(c['date'])}</span><span class='badge plain'>{e(c['kind'])}</span> "
+        f"<a href='topics/{e(c['topic'].id)}.html'>{e(c['topic'].name)}</a> — "
+        + (f"<a href='{e(c['url'])}'>{e(c['title'])}</a>" if c["url"] else e(c["title"]))
+        + f" <a class='small' href='{REPO}/issues/new?template=case-proposal.yml&amp;title="
+        + e(quote(f"[이슈 후보] {c['topic'].name} — {c['title']}"))
+        + "'>이슈로 제안</a></li>"
+        for c in cands
+    )
+    snap = [
+        json.loads(f.read_text(encoding="utf-8")).get("fetched", "")
+        for f in (ROOT / "catalog" / "snapshots").glob("legal_*.source.json")
+    ]
+    return f"""<section id="sources" style="padding-top:28px"><h2>지금 이슈는 어디서 오나</h2>
+<div class="grid3">
+<div class="card"><h3>사람이 확인한 이슈 {len(issues)}개</h3><p class="muted" style="margin:0">아래 목록. 시행일·대상을 정부 공식 자료(정책브리핑·고시·보도자료)로 확인해 <code>catalog/issues.yaml</code>에 적었습니다. 이슈마다 '공식 출처' 링크가 붙습니다.</p></div>
+<div class="card"><h3>자동으로 모은 후보</h3><p class="muted" style="margin:0">법제처 법령·행정규칙 변경(매일 수집, 매주 변경 감지) · 최근 7일 뉴스 언급 · 사이트 질문과 결과 없던 검색어. 사람이 확인하기 전까지는 후보입니다.</p></div>
+<div class="card"><h3>이슈가 되기까지</h3><p class="muted" style="margin:0">후보의 '이슈로 제안' → 작업 제안 이슈 → 자동 가설·데이터 점검 댓글 → 메인테이너가 시행일 근거를 확인해 issues.yaml 에 추가.</p></div>
+</div>
+<h3 style="margin-top:20px">자동으로 모은 이슈 후보</h3>
+<ul class="cands">{rows or "<li class='muted'>지금은 후보가 없어요.</li>"}</ul>
+<p class="small muted">법령 목록 수집일 {e(max(snap, default="-"))} — 법제처 인증값(LAW_OC)이 등록되면 매일 갱신됩니다. 뉴스 언급은 기사 수만 셉니다.</p></section>"""
+
+
 def issues_page(issues, datasets, topics) -> str:
     by_ds = {d.id: d for d in datasets}
     by_topic = {t.id: t for t in topics}
@@ -614,6 +728,8 @@ def issues_page(issues, datasets, topics) -> str:
             f'<span class="badge {cls}">{sup}</span></dd>'
             f"<dt>난이도</dt><dd>{dots(i.difficulty)}</dd></dl>"
             f"<h3>받을 수 있는 데이터</h3>{dataset_table(ds)}"
+            f"<p class='small'>이 이슈의 데이터와 받는 법을 한 번에: <code>python -m core.data issue {e(i.id)}</code> · "
+            f"자동 수집기가 있는 데이터는 <code>python -m core.data fetch &lt;id&gt;</code></p>"
             f"<h3 style='margin-top:16px'>조심할 점</h3><ul>{pits}</ul>"
             f'<p class="muted"><a href="topics/{t.id}.html">{e(t.name)} 주제 전체 보기 →</a></p></div>'
         )
@@ -624,7 +740,8 @@ def issues_page(issues, datasets, topics) -> str:
 어떤 데이터를 받을 수 있는지 정리했습니다. 시작일은 모두 정부 공식 자료에서 확인했습니다.</p></div>
 <div class="banner info" style="margin-top:20px">분석은 이슈 하나가 아니라 그 이슈가 속한 <b>주제 전체</b>로 합니다.
 이 목록은 참여자가 어디서부터 볼지 정하는 출발점입니다.</div>
-<section style="padding-top:28px"><h2>효과 추정 5단계</h2><div class="grid3" style="margin-top:12px">{guide}</div></section>
+{issue_sources(issues, topics)}
+<section><h2>효과 추정 5단계</h2><div class="grid3" style="margin-top:12px">{guide}</div></section>
 <section><h2>분석 방법 고르기</h2><p class="sub">방법은 데이터 모양을 보고 규칙이 정합니다. 결과를 본 뒤 사람이나 AI가 고르지 않습니다.</p>
 <div class="grid">{designs}</div></section>
 <section><h2>정책별 가이드</h2><ol>{toc}</ol>{"".join(sections)}</section>"""
@@ -708,7 +825,7 @@ def data_page(datasets, topics, issues) -> str:
             f"<td><a href='{e(d.url)}'>{e(d.name)}</a><div class='muted small'>{e(d.provider)} · {PORTAL_KO.get(d.portal, d.portal)}</div>{meas}</td>"
             f"<td>{role_badges(d.roles)}</td>"
             f"<td>{e(d.space)} × {e(d.time)}<div class='muted small'>{e(d.period)}</div></td>"
-            f"<td>{ACCESS_KO[d.access]}<div class='muted small'>{e(d.approval)}</div></td>"
+            f"<td>{conn_cell(d)}</td>"
             f"<td>{e(d.license)}</td>"
             f"<td class='small'>{' · '.join(e(tname.get(t, t)) for t in d.topics)}</td>"
             f"<td class='muted small' title='{e(d.verified)}'>{e(d.verified[:10])}</td></tr>"
@@ -745,7 +862,7 @@ def data_page(datasets, topics, issues) -> str:
 <select id="fspace" aria-label="공간 단위"><option value="">모든 공간 단위</option>{_options((s, s) for s in spaces)}</select>
 <select id="faccess" aria-label="받는 법"><option value="">모든 방식</option>{_options(ACCESS_KO.items())}</select>
 <span class="muted"><b id="dcount">{len(datasets)}</b>개</span></div>
-<div class="tablewrap"><table id="dtable"><thead><tr><th>데이터셋</th><th>역할</th><th>단위</th><th>받는 법</th><th>이용 조건</th><th>주제</th><th>확인</th></tr></thead>
+<div class="tablewrap"><table id="dtable"><thead><tr><th>데이터셋</th><th>역할</th><th>단위</th><th>받는 법 (연동)</th><th>이용 조건</th><th>주제</th><th>확인</th></tr></thead>
 <tbody>{"".join(rows)}</tbody></table></div>
 <p class="muted">이용 조건이 <code>other</code>인 것은 포털에 공공누리 유형 없이 "이용허락범위 제한 없음"으로만 적힌 경우입니다.
 <code>KOGL-3</code>(변경금지)은 가공한 데이터를 다시 배포할 때 주의하세요.</p></section>

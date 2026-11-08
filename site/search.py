@@ -17,6 +17,7 @@
 from __future__ import annotations
 
 import json
+from urllib.parse import urlparse
 
 REPO = "https://github.com/CausalInferenceLab/policy-effect-analytics-agent"
 TYPE_KO = {
@@ -96,7 +97,7 @@ def index(topics, issues, datasets, answers, projects, lineages) -> list[dict]:
             {
                 "t": "issue",
                 "title": i.name,
-                "sub": i.issue,
+                "sub": f"{i.issue} · 근거 {urlparse(i.source).netloc}",
                 "url": f"issues.html#{i.id}",
                 "topic": i.topic,
                 "badge": f"시행 {i.effective}",
@@ -134,6 +135,8 @@ def index(topics, issues, datasets, answers, projects, lineages) -> list[dict]:
                     "kw": "",
                 }
             )
+    from core.data import connector
+
     users = dataset_users(datasets)
     for d in datasets:
         n = len(users.get(d.id, []))
@@ -145,9 +148,7 @@ def index(topics, issues, datasets, answers, projects, lineages) -> list[dict]:
                 "url": d.url,
                 "topic": d.topics[0] if d.topics else None,
                 "topics": d.topics,
-                "badge": {"treatment": "처치", "outcome": "결과", "covariate": "통제"}.get(
-                    d.roles[0], ""
-                ),
+                "badge": connector(d, users)["label"].split(" · ")[0],
                 "kw": _j(" ".join(d.measures), " ".join(tname.get(x, "") for x in d.topics)),
             }
         )

@@ -114,22 +114,49 @@
     box.hidden = false;
     if (window.track) window.track("claim-check");
   }
-  function counts(hits) {
+  function counts(pool) {  // 탭마다 개수: 검색어가 있으면 찾은 것, 없으면 전체 목록
     document.querySelectorAll(".sf").forEach((b) => {
-      const n = b.dataset.t ? hits.filter((it) => it.t === b.dataset.t).length : hits.length;
-      b.querySelector(".n").textContent = hits.length ? n : "";
-      b.disabled = !!b.dataset.t && hits.length > 0 && n === 0;
+      const n = b.dataset.t ? pool.filter((it) => it.t === b.dataset.t).length : pool.length;
+      b.querySelector(".n").textContent = n;
+      b.classList.toggle("zero", n === 0);
     });
+  }
+  const TAB_HINT = {
+    result: "판정이 나온 분석이에요. 카드를 누르면 쓸 수 있는 문장·데이터 계보·재현 방법이 나와요.",
+    project: "계획·수집 단계라 아직 판정이 없는 분석이에요.",
+    issue: "사람이 정부 공식 자료로 시행일을 확인한 정책이에요. 출처: catalog/issues.yaml (자동 후보는 '지금 이슈' 화면).",
+    topic: "주제마다 이슈 → 데이터 → 계보 → 분석 → 대시보드가 어디까지 왔는지 보여요.",
+    law: "법제처에서 자동으로 모은 근거 법령·행정규칙이에요.",
+    lineage: "데이터가 정책·가공·지표를 거쳐 분석으로 가는 길이에요.",
+    dataset: "공공데이터마다 받는 법(자동 수집 · 참여자 코드 · API 키 · 파일)이 붙어 있어요.",
+  };
+  function tabView(t, list, q) {  // 전체가 아닌 탭: 그 종류만 같은 모양으로
+    const head = `<p class="tab-hint">${TAB_HINT[t]}</p>`;
+    if (!list.length) {
+      return head + `<p class="s-empty">${q ? `'${esc(q)}' 검색 결과에는 이 종류가 없어요. 검색어를 바꾸거나 '전체'에서 다른 종류를 보세요.` : "아직 없어요."}</p>`;
+    }
+    return head + group(t, list);
   }
   function render(q) {
     const qn = norm(q), tks = tokens(q);
-    idle.hidden = !!qn;
-    if (!qn) { res.innerHTML = ""; none.hidden = true; verdict.hidden = true; $("#claim").hidden = true; counts([]); return 0; }
+    const claimBox = $("#claim");
+    if (!qn) {  // 검색어 없음: 전체 탭은 안내, 다른 탭은 그 종류 전체 목록
+      counts(items);
+      verdict.hidden = true; claimBox.hidden = true; none.hidden = true;
+      idle.hidden = !!kind;
+      res.innerHTML = kind ? tabView(kind, items.filter((it) => it.t === kind), "") : "";
+      return 0;
+    }
+    idle.hidden = true;
     const hits = items.map((it) => [it, score(it, tks, qn)]).filter(([, s]) => s > 0).sort((a, b) => b[1] - a[1]).map(([it]) => it);
     counts(hits);
-    const shown = kind ? hits.filter((it) => it.t === kind) : hits;
-    res.innerHTML = ORDER.map((t) => [t, shown.filter((it) => it.t === t)]).filter(([, xs]) => xs.length).map(([t, xs]) => group(t, xs)).join("");
     const results = hits.filter((it) => it.t === "result");
+    if (kind) {  // 종류 탭: 판정 패널 없이 그 종류만
+      verdict.hidden = true; claimBox.hidden = true; none.hidden = true;
+      res.innerHTML = tabView(kind, hits.filter((it) => it.t === kind), q);
+      return hits.length;
+    }
+    res.innerHTML = ORDER.map((t) => [t, hits.filter((it) => it.t === t)]).filter(([, xs]) => xs.length).map(([t, xs]) => group(t, xs)).join("");
     renderClaim(q, results);
     const propose = `${REPO}/issues/new?template=case-proposal.yml&title=${encodeURIComponent("[작업] " + q.trim().slice(0, 60))}`;
     $("#snone-propose").href = propose;
@@ -181,6 +208,7 @@
     const q = new URLSearchParams(location.search).get("q") || "";
     input.value = q;
     if (q) run(q, true);
+    else render("");
   }).catch(() => { res.innerHTML = '<p class="s-empty">검색 목록을 불러오지 못했어요. 새로고침해 보세요.</p>'; });
   input.addEventListener("input", () => run(input.value, false));
   document.addEventListener("keydown", (ev) => {  // '/' 로 검색창에 바로
